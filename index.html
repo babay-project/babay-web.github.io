@@ -3,7 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <title>Ramadhan Stream | Babay.27</title>
+    <meta name="description" content="Streaming Live Makkah, Madinah, dan Murottal 30 Juz gratis di Babay.web.id">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://babay.web.id/">
+    <meta property="og:title" content="Ramadhan Stream | Babay.27">
+    <meta property="og:description" content="Streaming Live Makkah, Madinah, dan Murottal 30 Juz gratis.">
+    <meta property="og:image" content="https://babay.web.id/thumbnail.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ramadhan Stream | Babay.27">
+    <meta name="twitter:description" content="Streaming Live Makkah, Madinah, dan Murottal 30 Juz gratis.">
+    <meta name="twitter:image" content="https://babay.web.id/thumbnail.jpg">
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
@@ -17,7 +33,6 @@
             --border: #e5e7eb;
             --nav-bg: rgba(255, 255, 255, 0.8);
         }
-
         [data-theme="dark"] {
             --bg: #121212;
             --card: #1e1e1e;
@@ -26,18 +41,15 @@
             --border: #333;
             --nav-bg: rgba(30, 30, 30, 0.8);
         }
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
         body {
             background-color: var(--bg);
             color: var(--text);
             font-family: 'Plus Jakarta Sans', sans-serif;
             margin: 0; padding: 0;
-            padding-bottom: 90px; /* Space for bottom nav */
+            padding-bottom: 90px;
             transition: all 0.3s ease;
         }
-
         .header {
             padding: 25px 20px;
             background: linear-gradient(135deg, var(--primary), #4285f4);
@@ -47,12 +59,9 @@
             text-align: center;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-
         .header h1 { font-size: 22px; font-weight: 800; margin: 0; }
         .header p { font-size: 13px; opacity: 0.9; margin-top: 5px; }
-
         .container { padding: 15px; width: 100%; max-width: 600px; margin: 0 auto; }
-
         .card {
             background: var(--card);
             border-radius: 24px;
@@ -61,8 +70,6 @@
             border: 1px solid var(--border);
             box-shadow: 0 10px 25px rgba(0,0,0,0.05);
         }
-
-        /* Video Player Mobile Style */
         .video-box {
             position: relative;
             background: #000;
@@ -72,21 +79,16 @@
             box-shadow: 0 8px 20px rgba(0,0,0,0.2);
         }
         video { width: 100%; height: 100%; }
-
         #placeholder {
             position: absolute; inset: 0; background: #000;
             display: flex; flex-direction: column; justify-content: center;
             align-items: center; z-index: 5; color: white; cursor: pointer;
         }
-
-        /* Section Title */
         .section-tag {
             font-size: 11px; font-weight: 800; color: var(--primary);
             text-transform: uppercase; letter-spacing: 1.5px;
             display: block; margin-bottom: 15px;
         }
-
-        /* Buttons & Selects */
         .grid-tv { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
         .btn-tab {
             padding: 14px; border-radius: 15px; border: 1px solid var(--border);
@@ -94,7 +96,6 @@
             font-size: 13px; cursor: pointer; transition: 0.3s;
         }
         .btn-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
-
         select {
             width: 100%; padding: 16px; border-radius: 15px;
             background: var(--bg); color: var(--text); border: 1px solid var(--border);
@@ -102,8 +103,6 @@
             appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
             background-repeat: no-repeat; background-position: right 15px center; background-size: 18px;
         }
-
-        /* Bottom Navigation */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             height: 75px; background: var(--nav-bg);
@@ -112,28 +111,23 @@
             border-top: 1px solid var(--border); z-index: 1000;
             padding-bottom: env(safe-area-inset-bottom);
         }
-
         .nav-item {
             display: flex; flex-direction: column; align-items: center;
             color: var(--sub); text-decoration: none; font-size: 11px; font-weight: 600;
         }
         .nav-item.active { color: var(--primary); }
         .nav-icon { font-size: 22px; margin-bottom: 4px; }
-
-        /* Theme Toggle FAB */
         .theme-fab {
             position: fixed; right: 20px; bottom: 95px;
             width: 50px; height: 50px; border-radius: 25px;
             background: var(--card); border: 1px solid var(--border);
-            box-shadow: var(--shadow); cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer;
             display: flex; align-items: center; justify-content: center; font-size: 20px;
         }
-
         audio { width: 100%; height: 45px; margin-top: 10px; }
     </style>
 </head>
 <body data-theme="light">
-
     <div class="header">
         <h1>Ramadhan Live</h1>
         <p>Makkah • Madinah • Murottal 30 Juz</p>
@@ -161,9 +155,7 @@
             <span class="section-tag">Murottal Al-Quran</span>
             <h2 id="juzTitle" style="font-size: 18px; margin-bottom: 5px;">Mishary Rashid</h2>
             <p style="font-size: 13px; color: var(--sub); margin-bottom: 15px;">Pilih juz untuk mendengarkan</p>
-            
             <audio id="audioPlayer" controls></audio>
-            
             <div style="margin-top: 15px;">
                 <select id="juzSelect" onchange="playAudio(this.value)">
                     <option value="" disabled selected>-- Pilih Juz (1 - 30) --</option>
@@ -181,7 +173,6 @@
             <span class="nav-icon">📖</span>
             <span>Murottal</span>
         </a>
-        
     </nav>
 
     <script>
@@ -196,7 +187,6 @@
         const placeholder = document.getElementById('placeholder');
         let hls;
 
-        // Generate Dropdown Juz
         const sel = document.getElementById('juzSelect');
         for(let i=1; i<=30; i++) {
             let n = i.toString().padStart(2, '0');
@@ -227,7 +217,6 @@
             if (hls) { hls.destroy(); video.pause(); }
             placeholder.style.display = 'flex';
             document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
-            
             audio.src = `${qBase}${n}.mp3`;
             audio.play();
             document.getElementById('juzTitle').textContent = `Memutar Juz ${parseInt(n)}`;
