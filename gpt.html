@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT Plus Reg Dashboard</title>
+    <style>
+        body { font-family: sans-serif; background: #121212; color: white; padding: 20px; }
+        .card { background: #1e1e1e; padding: 15px; border-radius: 10px; margin-bottom: 15px; border: 1px solid #333; }
+        h2 { color: #00ff88; margin-top: 0; }
+        .btn { display: block; width: 100%; padding: 12px; margin: 10px 0; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; text-align: center; text-decoration: none; }
+        .btn-green { background: #00ff88; color: black; }
+        .btn-blue { background: #00a2ff; color: white; }
+        .btn-orange { background: #ff8800; color: white; }
+        .data-box { background: #000; padding: 10px; border-radius: 5px; font-family: monospace; font-size: 13px; border: 1px dashed #555; position: relative; }
+        .copy-btn { position: absolute; right: 5px; top: 5px; background: #333; color: #fff; border: none; padding: 5px; font-size: 10px; border-radius: 3px; }
+        .label { font-size: 12px; color: #aaa; margin-bottom: 5px; display: block; }
+    </style>
+</head>
+<body>
+
+    <h2>🚀 GPT Plus Dashboard</h2>
+
+    <div class="card">
+        <span class="label">AKUN SAAT INI (DOMAIN: @ohgitu.me)</span>
+        <div class="data-box" id="email-box">Klik Generate...</div>
+        <button class="btn btn-green" onclick="generateAkun()">GENERATE NAMA INDO BARU</button>
+    </div>
+
+    <div class="card">
+        <span class="label">LANGKAH 1: REGISTRASI</span>
+        <button class="btn btn-blue" onclick="openGPT()">1. BUKA CHATGPT (REG)</button>
+        <button class="btn btn-blue" onclick="openEmail()">2. BUKA INBOX EMAIL</button>
+    </div>
+
+    <div class="card">
+        <span class="label">LANGKAH 2: PAYMENT (KOREA)</span>
+        <button class="btn btn-orange" onclick="openBinku()">3. BUKA BINKU (VERIFY)</button>
+        <div style="margin-top:10px;">
+            <span class="label">KODE BIN:</span>
+            <div class="data-box">6258142602</div>
+            <span class="label" style="margin-top:10px;">ALAMAT SEOUL (COPY SATU-SATU):</span>
+            <div class="data-box" id="address-box">
+                152 Teheran-ro, 8F, Yeoksam-dong, Gangnam-gu, Seoul, 06236
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const namaDepan = ["budi", "eko", "siti", "rizky", "dewi", "agus", "putri", "hendra", "maya", "dimas", "santi", "aditya", "ari", "indah"];
+        const namaBelakang = ["santoso", "lestari", "saputra", "aminah", "kurniawan", "wijaya", "pratama", "sari", "hidayat", "fitriani"];
+        let currentEmail = "";
+
+        function generateAkun() {
+            let depan = namaDepan[Math.floor(Math.random() * namaDepan.length)];
+            let belakang = namaBelakang[Math.floor(Math.random() * namaBelakang.length)];
+            let angka = Math.floor(Math.random() * 90) + 10;
+            currentEmail = `${depan}.${belakang}${angka}@ohgitu.me`;
+            document.getElementById('email-box').innerText = currentEmail;
+        }
+
+        function openGPT() {
+            if(!currentEmail) return alert("Generate email dulu!");
+            window.open("https://chatgpt.com/auth/login", "_blank");
+        }
+
+        function openEmail() {
+            if(!currentEmail) return alert("Generate email dulu!");
+            window.open(`https://generator.email/${currentEmail}`, "_blank");
+        }
+
+        function openBinku() {
+            window.open("https://binku.msverify.app/", "_blank");
+        }
+    </script>
+</body>
+</html>
