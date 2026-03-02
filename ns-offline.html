@@ -1,4 +1,187 @@
-<div class="card" style="border: 2px dashed var(--primary); text-align: center;">
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Guide: Ninja Saga Windows | Babay Private Server</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0f19;
+            --card-bg: #161b22;
+            --text-main: #c9d1d9;
+            --primary: #f85149; /* Ninja Red */
+            --accent: #3fb950; /* Success Green */
+            --border: #30363d;
+            --code-bg: #010409;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.8;
+            margin: 0;
+            padding: 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #f85149 0%, #8e0606 100%);
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(248, 81, 73, 0.2);
+        }
+        h1 { margin: 0; font-size: 2.8em; color: #fff; letter-spacing: -1px; }
+        .badge-admin { background: #fff; color: #f85149; padding: 5px 15px; border-radius: 20px; font-weight: 800; font-size: 0.8em; }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+        h2 { color: #fff; border-bottom: 2px solid var(--primary); padding-bottom: 10px; display: flex; align-items: center; gap: 15px; }
+        .step-tag { background: var(--primary); color: white; padding: 2px 10px; border-radius: 5px; font-size: 0.6em; }
+
+        .download-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .download-table th, .download-table td { border: 1px solid var(--border); padding: 12px; text-align: left; }
+        .download-table th { background: #21262d; color: var(--accent); }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .btn:hover { opacity: 0.8; transform: translateY(-2px); }
+        
+        .btn-main { display: block; text-align: center; font-size: 1.3em; background: var(--accent); margin: 20px 0; }
+
+        pre {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            overflow-x: auto;
+        }
+        code { font-family: 'Fira Code', monospace; color: #79c0ff; }
+        .cmd-info { color: #8b949e; font-size: 0.85em; margin-bottom: 5px; display: block; }
+
+        .password-box {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid #ffeeba;
+        }
+
+        .highlight-box {
+            background: rgba(63, 185, 80, 0.1);
+            border: 1px solid var(--accent);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        footer { text-align: center; padding: 40px; color: #8b949e; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <span class="badge-admin">OFFLINE EDITION</span>
+        <h1>NINJA SAGA WINDOWS TUTORIAL</h1>
+        <p>Created with Power by <b>Babay</b></p>
+    </header>
+
+    <div class="card">
+        <h2><span class="step-tag">STEP 01</span> Download Semua Bahan</h2>
+        <p>Pertama, siapkan semua "senjata" pendukung berikut ini:</p>
+        <table class="download-table">
+            <tr>
+                <th>Software</th>
+                <th>Kegunaan</th>
+                <th>Link</th>
+            </tr>
+            <tr>
+                <td><b>XAMPP</b></td>
+                <td>Database MySQL</td>
+                <td><a href="https://www.apachefriends.org/download.html" class="btn" target="_blank">Download</a></td>
+            </tr>
+            <tr>
+                <td><b>Composer</b></td>
+                <td>Install Laravel Engine</td>
+                <td><a href="https://getcomposer.org/Composer-Setup.exe" class="btn" target="_blank">Download</a></td>
+            </tr>
+            <tr>
+                <td><b>JPEXS</b></td>
+                <td>Edit Alamat Server</td>
+                <td><a href="https://github.com/jindrapetrik/jpexs-decompiler/releases" class="btn" target="_blank">Download</a></td>
+            </tr>
+        </table>
+
+        <a href="https://drive.google.com/drive/folders/1rf_IiRvvfV9DwIFDJaG34g6sPWhhC_sA" class="btn btn-main" target="_blank">📥 DOWNLOAD STARTER PACK (SERVER + GAME EXE)</a>
+        <div class="password-box">
+            🔐 PASSWORD ZIP: Tanya Admin Babay (Hubungi via WA/DM)
+        </div>
+    </div>
+
+    <div class="card">
+        <h2><span class="step-tag">STEP 02</span> Setup Database (XAMPP)</h2>
+        <ol>
+            <li>Install XAMPP, jalankan <b>XAMPP Control Panel</b>.</li>
+            <li>Klik <b>Start</b> pada <b>Apache</b> dan <b>MySQL</b>.</li>
+            <li>Buka browser, ketik <code>localhost/phpmyadmin</code>.</li>
+            <li>Buat database baru nama: <b style="color:var(--accent)">ninjasage</b>.</li>
+            <li>Import file <code>ninjasage.sql</code> dari starter pack ke dalam database tersebut.</li>
+        </ol>
+    </div>
+
+    <div class="card">
+        <h2><span class="step-tag">STEP 03</span> Konfigurasi Laravel Server</h2>
+        <ol>
+            <li>Ekstrak Folder Server ke <code>D:\NinjaSagaOffline</code>.</li>
+            <li>Rename file <code>.env.example</code> jadi <code>.env</code>.</li>
+            <li>Buka CMD di folder tersebut, lalu ketik perintah ini:</li>
+        </ol>
+        <span class="cmd-info"># 1. Menginstal sistem server</span>
+        <pre><code>composer install</code></pre>
+        <span class="cmd-info"># 2. Membuat kunci keamanan</span>
+        <pre><code>php artisan key:generate</code></pre>
+        <span class="cmd-info"># 3. Sinkronisasi data game</span>
+        <pre><code>php artisan migrate --seed</code></pre>
+    </div>
+
+    <div class="card">
+        <h2><span class="step-tag">STEP 04</span> Patching SWF (Agar Connect)</h2>
+        <p>Agar game tidak error saat loading, edit file SWF menggunakan JPEXS:</p>
+        <ul>
+            <li>Buka <b>JPEXS</b> > Open <code>public/game/NinjaSage.swf</code>.</li>
+            <li>Folder <b>scripts</b> > Cari <code>ZendAMFClient.as</code> > Ganti link ke <code>"http://127.0.0.1:8000/amf"</code>.</li>
+            <li>Cari <code>StorageLoader.as</code> > Ganti return link ke <code>"http://127.0.0.1:8000/game_data/"</code>.</li>
+            <li><b>Save All</b>.</li>
+        </ul>
+    </div>
+
+    <div class="card highlight-box">
+        <h2>🚀 CARA MENJALANKAN GAME</h2>
+        <ol>
+            <li>Buka XAMPP (Start Apache & MySQL).</li>
+            <li>Buka CMD di folder server, ketik: <code>php artisan serve</code>.</li>
+            <li>Buka folder <code>public/game</code>, klik 2x pada <b>NinjaSage.exe</b>.</li>
+            <li><b>Selesai!</b> Selamat bermain, Ninja!</li>
+        </ol>
+    </div>
+
+        <div class="card" style="border: 2px dashed var(--primary); text-align: center;">
         <h2 style="justify-content: center;">🔑 Butuh Password ZIP?</h2>
         <p>File Starter Pack dipassword untuk keamanan data. Silakan hubungi Admin Babay melalui WhatsApp untuk mendapatkan password</p>
         
@@ -15,3 +198,13 @@
         <p>Build with ❤️ by <b>Babay</b> | Ninja Saga Private Server Project 2026</p>
         <p>Official Site: <a href="http://www.babay.web.id" style="color: var(--primary); text-decoration: none;">www.babay.web.id</a></p>
     </footer>
+
+        
+    <footer>
+        <p>&copy; 2026 Babay Project - <a href="http://www.babay.web.id" style="color:var(--primary);">www.babay.web.id</a></p>
+    </footer>
+</div>
+
+</body>
+</html>
+
