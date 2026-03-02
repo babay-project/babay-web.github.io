@@ -10,8 +10,8 @@
             --bg: #0b0f19;
             --card-bg: #161b22;
             --text-main: #c9d1d9;
-            --primary: #f85149; /* Ninja Red */
-            --accent: #3fb950; /* Success Green */
+            --primary: #f85149;
+            --accent: #3fb950;
             --border: #30363d;
             --code-bg: #010409;
         }
@@ -23,26 +23,49 @@
             margin: 0;
             padding: 20px;
         }
-        .container { max-width: 900px; margin: 0 auto; }
         
-        header {
+        /* PIN Overlay Styles */
+        #pin-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 9999;
+        }
+        .pin-box {
+            background: var(--card-bg);
+            padding: 40px; border-radius: 12px; border: 1px solid var(--primary);
             text-align: center;
-            padding: 50px 20px;
-            background: linear-gradient(135deg, #f85149 0%, #8e0606 100%);
-            border-radius: 15px;
-            margin-bottom: 40px;
             box-shadow: 0 10px 30px rgba(248, 81, 73, 0.2);
+            max-width: 400px; width: 90%;
+        }
+        .pin-input {
+            font-size: 24px; padding: 15px; width: 200px; text-align: center;
+            letter-spacing: 10px; background: var(--code-bg); color: #fff;
+            border: 2px solid var(--border); border-radius: 8px; margin: 20px 0;
+            outline: none; transition: border-color 0.3s;
+        }
+        .pin-input:focus { border-color: var(--primary); }
+        #error-msg { color: var(--primary); display: none; margin-top: 15px; font-weight: bold; }
+
+        /* Main Content Container (Hidden by default) */
+        #main-content { display: none; max-width: 900px; margin: 0 auto; }
+        
+        /* Banner Styles */
+        .banner-img {
+            width: 100%; height: auto; border-radius: 15px; margin-bottom: 20px;
+            border: 2px solid var(--border); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); display: block;
+        }
+
+        header {
+            text-align: center; padding: 50px 20px;
+            background: linear-gradient(135deg, #f85149 0%, #8e0606 100%);
+            border-radius: 15px; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(248, 81, 73, 0.2);
         }
         h1 { margin: 0; font-size: 2.8em; color: #fff; letter-spacing: -1px; }
         .badge-admin { background: #fff; color: #f85149; padding: 5px 15px; border-radius: 20px; font-weight: 800; font-size: 0.8em; }
 
-        .card {
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 30px;
-            margin-bottom: 30px;
-        }
+        .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 30px; margin-bottom: 30px; }
         h2 { color: #fff; border-bottom: 2px solid var(--primary); padding-bottom: 10px; display: flex; align-items: center; gap: 15px; margin-top: 0; }
         .step-tag { background: var(--primary); color: white; padding: 2px 10px; border-radius: 5px; font-size: 0.6em; }
 
@@ -51,30 +74,27 @@
         .download-table th { background: #21262d; color: var(--accent); }
 
         .btn {
-            display: inline-block;
-            background: var(--primary);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            transition: 0.3s;
-            border: none;
-            cursor: pointer;
+            display: inline-block; background: var(--primary); color: white;
+            padding: 10px 20px; border-radius: 6px; text-decoration: none;
+            font-weight: 600; transition: 0.3s; border: none; cursor: pointer; font-size: 1em;
         }
         .btn:hover { opacity: 0.8; transform: translateY(-2px); }
         .btn-main { display: block; text-align: center; font-size: 1.3em; background: var(--accent); margin: 20px 0; }
         .btn-wa { background: #25d366 !important; font-size: 1.1em; padding: 15px 30px; display: inline-flex; align-items: center; gap: 10px; }
 
         .yt-box { background: rgba(255, 0, 0, 0.1); border: 1px solid #ff0000; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 5px solid red; }
+        
+        .video-container {
+            position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden;
+            border-radius: 10px; margin-top: 20px; margin-bottom: 15px; border: 2px solid var(--border); box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
         pre { background: var(--code-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border); overflow-x: auto; margin: 10px 0; }
         code { font-family: 'Fira Code', monospace; color: #79c0ff; }
         .cmd-info { color: #8b949e; font-size: 0.85em; margin-top: 10px; display: block; }
-
         .admin-info { background: #0d1117; border: 1px solid var(--accent); padding: 20px; border-radius: 8px; margin-top: 15px; }
         .password-box { background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; border: 1px solid #ffeeba; }
-
         .highlight-box { background: rgba(63, 185, 80, 0.1); border: 1px solid var(--accent); padding: 20px; border-radius: 10px; }
         footer { text-align: center; padding: 20px; color: #8b949e; border-top: 1px solid var(--border); margin-top: 20px; }
         a { color: var(--primary); text-decoration: none; }
@@ -83,18 +103,46 @@
 </head>
 <body>
 
-<div class="container">
+<div id="pin-overlay">
+    <div class="pin-box">
+        <h2 style="border:none; justify-content:center; color:#fff;">🔐 PRIVATE SERVER</h2>
+        <p>Masukkan 6 digit PIN untuk mengakses Master Guide instalasi.</p>
+        <input type="password" id="pin-input" class="pin-input" maxlength="6" placeholder="••••••" onkeyup="checkEnter(event)">
+        <br>
+        <button onclick="verifyPin()" class="btn" style="width: 200px; padding: 15px;">BUKA AKSES</button>
+        <p id="error-msg">❌ PIN Salah! Silakan coba lagi.</p>
+    </div>
+</div>
+
+<div id="main-content">
+    <img src="https://ninja-saga.org/data/img/banner.jpg" alt="Ninja Saga Banner" class="banner-img">
+
     <header>
         <span class="badge-admin">OFFLINE EDITION</span>
         <h1>NINJA SAGA WINDOWS TUTORIAL</h1>
         <p>Created with Power by <b>Babay</b></p>
     </header>
 
+    <div class="card highlight-box" style="border-color: var(--primary); background: rgba(248, 81, 73, 0.05);">
+        <h2><span class="step-tag" style="background: #ff0000;">YOUTUBE</span> Video Panduan Lengkap</h2>
+        <p>Ini adalah video dari cara install sampai bisa dimainkan game Ninja Saganya. Jika terdapat kesalahan atau error, silakan WA hubungi admin di <b>0878-8964-3544</b>.</p>
+        
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/0jhMXZws9V0" title="Tutorial Install Ninja Saga" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+        </div>
+        
+        <div style="text-align: center; margin-top: 15px;">
+            <a href="https://wa.me/6287889643544?text=Halo%20Admin%20Babay,%20saya%20mengalami%20error%20saat%20install%20Ninja%20Saga" class="btn btn-wa" target="_blank" style="padding: 10px 20px; font-size: 1em;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="18" alt="WA"> Hubungi Admin via WA
+            </a>
+        </div>
+    </div>
+
     <div class="card">
         <h2><span class="step-tag">STEP 01</span> Persiapan & Download</h2>
-        <p>Tonton video ini (10 menit awal) untuk panduan dasar install Laravel:</p>
+        <p>Tonton video di atas untuk panduan lengkap, atau cek video ini (10 menit awal) untuk panduan dasar install Laravel:</p>
         <div class="yt-box">
-            🎥 <b>Video Tutorial:</b> <a href="https://www.youtube.com/watch?v=yQItJNFbkpc&t=824s" target="_blank" style="color:#fff; font-weight:bold;">Tonton Disini (Install Laravel)</a>
+            🎥 <b>Video Tutorial Dasar:</b> <a href="https://www.youtube.com/watch?v=yQItJNFbkpc&t=824s" target="_blank" style="color:#fff; font-weight:bold;">Tonton Disini (Install Laravel)</a>
         </div>
         
         <table class="download-table">
@@ -178,6 +226,51 @@
         <p>&copy; 2026 Babay Project - <a href="http://www.babay.web.id">www.babay.web.id</a></p>
     </footer>
 </div>
+
+<script>
+    const CORRECT_PIN = "787898";
+    const EXPIRY_TIME = 24 * 60 * 60 * 1000; // 24 jam dalam satuan milidetik
+
+    // Cek status PIN saat halaman dimuat
+    window.onload = function() {
+        const lastUnlock = localStorage.getItem('ninjaSagaUnlockTime');
+        const now = new Date().getTime();
+
+        // Jika ada data unlock dan waktunya belum lewat 24 jam
+        if (lastUnlock && (now - lastUnlock < EXPIRY_TIME)) {
+            unlockPage();
+        }
+    };
+
+    // Fungsi verifikasi PIN
+    function verifyPin() {
+        const inputPin = document.getElementById('pin-input').value;
+        const errorMsg = document.getElementById('error-msg');
+
+        if (inputPin === CORRECT_PIN) {
+            // Simpan waktu berhasil login ke local storage
+            localStorage.setItem('ninjaSagaUnlockTime', new Date().getTime());
+            unlockPage();
+        } else {
+            // Munculkan pesan error
+            errorMsg.style.display = 'block';
+            document.getElementById('pin-input').value = ''; // Kosongkan input
+        }
+    }
+
+    // Fungsi membuka kunci
+    function unlockPage() {
+        document.getElementById('pin-overlay').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+    }
+
+    // Izinkan tekan tombol "Enter" di keyboard untuk submit PIN
+    function checkEnter(event) {
+        if (event.key === "Enter") {
+            verifyPin();
+        }
+    }
+</script>
 
 </body>
 </html>
