@@ -43,7 +43,7 @@
             padding: 30px;
             margin-bottom: 30px;
         }
-        h2 { color: #fff; border-bottom: 2px solid var(--primary); padding-bottom: 10px; display: flex; align-items: center; gap: 15px; }
+        h2 { color: #fff; border-bottom: 2px solid var(--primary); padding-bottom: 10px; display: flex; align-items: center; gap: 15px; margin-top: 0; }
         .step-tag { background: var(--primary); color: white; padding: 2px 10px; border-radius: 5px; font-size: 0.6em; }
 
         .download-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
@@ -59,38 +59,26 @@
             text-decoration: none;
             font-weight: 600;
             transition: 0.3s;
+            border: none;
+            cursor: pointer;
         }
         .btn:hover { opacity: 0.8; transform: translateY(-2px); }
-        
         .btn-main { display: block; text-align: center; font-size: 1.3em; background: var(--accent); margin: 20px 0; }
+        .btn-wa { background: #25d366 !important; font-size: 1.1em; padding: 15px 30px; display: inline-flex; align-items: center; gap: 10px; }
 
-        pre {
-            background: var(--code-bg);
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            overflow-x: auto;
-        }
+        .yt-box { background: rgba(255, 0, 0, 0.1); border: 1px solid #ff0000; padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 5px solid red; }
+
+        pre { background: var(--code-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border); overflow-x: auto; margin: 10px 0; }
         code { font-family: 'Fira Code', monospace; color: #79c0ff; }
-        .cmd-info { color: #8b949e; font-size: 0.85em; margin-bottom: 5px; display: block; }
+        .cmd-info { color: #8b949e; font-size: 0.85em; margin-top: 10px; display: block; }
 
-        .password-box {
-            background: #fff3cd;
-            color: #856404;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            font-weight: bold;
-            border: 1px solid #ffeeba;
-        }
+        .admin-info { background: #0d1117; border: 1px solid var(--accent); padding: 20px; border-radius: 8px; margin-top: 15px; }
+        .password-box { background: #fff3cd; color: #856404; padding: 15px; border-radius: 8px; text-align: center; font-weight: bold; border: 1px solid #ffeeba; }
 
-        .highlight-box {
-            background: rgba(63, 185, 80, 0.1);
-            border: 1px solid var(--accent);
-            padding: 20px;
-            border-radius: 10px;
-        }
-        footer { text-align: center; padding: 40px; color: #8b949e; }
+        .highlight-box { background: rgba(63, 185, 80, 0.1); border: 1px solid var(--accent); padding: 20px; border-radius: 10px; }
+        footer { text-align: center; padding: 20px; color: #8b949e; border-top: 1px solid var(--border); margin-top: 20px; }
+        a { color: var(--primary); text-decoration: none; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -103,92 +91,83 @@
     </header>
 
     <div class="card">
-        <h2><span class="step-tag">STEP 01</span> Download Semua Bahan</h2>
-        <p>Pertama, siapkan semua "senjata" pendukung berikut ini:</p>
+        <h2><span class="step-tag">STEP 01</span> Persiapan & Download</h2>
+        <p>Tonton video ini (10 menit awal) untuk panduan dasar install Laravel:</p>
+        <div class="yt-box">
+            🎥 <b>Video Tutorial:</b> <a href="https://www.youtube.com/watch?v=yQItJNFbkpc&t=824s" target="_blank" style="color:#fff; font-weight:bold;">Tonton Disini (Install Laravel)</a>
+        </div>
+        
         <table class="download-table">
-            <tr>
-                <th>Software</th>
-                <th>Kegunaan</th>
-                <th>Link</th>
-            </tr>
-            <tr>
-                <td><b>XAMPP</b></td>
-                <td>Database MySQL</td>
-                <td><a href="https://www.apachefriends.org/download.html" class="btn" target="_blank">Download</a></td>
-            </tr>
-            <tr>
-                <td><b>Composer</b></td>
-                <td>Install Laravel Engine</td>
-                <td><a href="https://getcomposer.org/Composer-Setup.exe" class="btn" target="_blank">Download</a></td>
-            </tr>
-            <tr>
-                <td><b>JPEXS</b></td>
-                <td>Edit Alamat Server</td>
-                <td><a href="https://github.com/jindrapetrik/jpexs-decompiler/releases" class="btn" target="_blank">Download</a></td>
-            </tr>
+            <tr><th>Software</th><th>Kegunaan</th><th>Link</th></tr>
+            <tr><td><b>XAMPP</b></td><td>Database MySQL</td><td><a href="https://www.apachefriends.org/download.html" target="_blank">Download</a></td></tr>
+            <tr><td><b>Composer</b></td><td>Laravel Engine</td><td><a href="https://getcomposer.org/Composer-Setup.exe" target="_blank">Download</a></td></tr>
+            <tr><td><b>JPEXS</b></td><td>Edit SWF</td><td><a href="https://github.com/jindrapetrik/jpexs-decompiler/releases" target="_blank">Download</a></td></tr>
         </table>
 
         <a href="https://drive.google.com/drive/folders/1rf_IiRvvfV9DwIFDJaG34g6sPWhhC_sA" class="btn btn-main" target="_blank">📥 DOWNLOAD STARTER PACK (SERVER + GAME EXE)</a>
-        <div class="password-box">
-            🔐 PASSWORD ZIP: Tanya Admin Babay (Hubungi via WA/DM)
-        </div>
+        <div class="password-box">🔐 PASSWORD ZIP: Tanya Admin Babay (Hubungi via WA)</div>
     </div>
 
     <div class="card">
-        <h2><span class="step-tag">STEP 02</span> Setup Database (XAMPP)</h2>
+        <h2><span class="step-tag">STEP 02</span> Setup Database</h2>
         <ol>
-            <li>Install XAMPP, jalankan <b>XAMPP Control Panel</b>.</li>
-            <li>Klik <b>Start</b> pada <b>Apache</b> dan <b>MySQL</b>.</li>
-            <li>Buka browser, ketik <code>localhost/phpmyadmin</code>.</li>
-            <li>Buat database baru nama: <b style="color:var(--accent)">ninjasage</b>.</li>
-            <li>Import file <code>ninjasage.sql</code> dari starter pack ke dalam database tersebut.</li>
+            <li>Jalankan XAMPP, <b>Start Apache & MySQL</b>.</li>
+            <li>Klik tombol di bawah untuk buka database:</li>
+        </ol>
+        <a href="http://localhost/phpmyadmin/" target="_blank" class="btn" style="background:#2563eb; margin-bottom:15px;">🌐 Buka phpMyAdmin</a>
+        <ol start="3">
+            <li>Buat database baru dengan nama: <b style="color:var(--accent)">ninjasage</b>.</li>
+            <li>Import file <code>ninjasage.sql</code> dari starter pack.</li>
         </ol>
     </div>
 
     <div class="card">
-        <h2><span class="step-tag">STEP 03</span> Konfigurasi Laravel Server</h2>
-        <ol>
-            <li>Ekstrak Folder Server ke <code>D:\NinjaSagaOffline</code>.</li>
-            <li>Rename file <code>.env.example</code> jadi <code>.env</code>.</li>
-            <li>Buka CMD di folder tersebut, lalu ketik perintah ini:</li>
-        </ol>
-        <span class="cmd-info"># 1. Menginstal sistem server</span>
+        <h2><span class="step-tag">STEP 03</span> Konfigurasi Server</h2>
+        <p>Ekstrak server ke <code>D:\NinjaSagaOffline</code>. Buka CMD di folder tersebut:</p>
+        
+        <span class="cmd-info"># Langkah 1: Install Library (Jika error, gunakan "composer update")</span>
         <pre><code>composer install</code></pre>
-        <span class="cmd-info"># 2. Membuat kunci keamanan</span>
+        
+        <span class="cmd-info"># Langkah 2: Generate Key</span>
         <pre><code>php artisan key:generate</code></pre>
-        <span class="cmd-info"># 3. Sinkronisasi data game</span>
+        
+        <span class="cmd-info"># Langkah 3: Sinkronisasi Database</span>
         <pre><code>php artisan migrate --seed</code></pre>
     </div>
 
     <div class="card">
-        <h2><span class="step-tag">STEP 04</span> Patching SWF (Agar Connect)</h2>
-        <p>Agar game tidak error saat loading, edit file SWF menggunakan JPEXS:</p>
+        <h2><span class="step-tag">STEP 04</span> Patching SWF</h2>
+        <p>Gunakan JPEXS Decompiler untuk mengedit <code>public/game/NinjaSage.swf</code>:</p>
         <ul>
-            <li>Buka <b>JPEXS</b> > Open <code>public/game/NinjaSage.swf</code>.</li>
-            <li>Folder <b>scripts</b> > Cari <code>ZendAMFClient.as</code> > Ganti link ke <code>"http://127.0.0.1:8000/amf"</code>.</li>
-            <li>Cari <code>StorageLoader.as</code> > Ganti return link ke <code>"http://127.0.0.1:8000/game_data/"</code>.</li>
-            <li><b>Save All</b>.</li>
+            <li><b>ZendAMFClient.as</b>: Ganti ke <code>"http://127.0.0.1:8000/amf"</code></li>
+            <li><b>StorageLoader.as</b>: Ganti return ke <code>"http://127.0.0.1:8000/game_data/"</code></li>
         </ul>
     </div>
 
     <div class="card highlight-box">
         <h2>🚀 CARA MENJALANKAN GAME</h2>
         <ol>
-            <li>Buka XAMPP (Start Apache & MySQL).</li>
+            <li>XAMPP wajib menyala (Apache & MySQL).</li>
             <li>Buka CMD di folder server, ketik: <code>php artisan serve</code>.</li>
-            <li>Buka folder <code>public/game</code>, klik 2x pada <b>NinjaSage.exe</b>.</li>
-            <li><b>Selesai!</b> Selamat bermain, Ninja!</li>
+            <li>Buka <code>public/game/NinjaSage.exe</code>.</li>
         </ol>
     </div>
 
-        <div class="card" style="border: 2px dashed var(--primary); text-align: center;">
+    <div class="card" style="border: 1px solid var(--accent);">
+        <h2>⚙️ Dashboard Admin (Cheat Center)</h2>
+        <p>Atur Gold, Token, dan Level akun kamu di sini:</p>
+        <div class="admin-info">
+            🔗 <b>Link:</b> <a href="http://127.0.0.1:8000/admin/login" target="_blank" style="color:var(--accent);">http://127.0.0.1:8000/admin/login</a><br>
+            📧 <b>Email:</b> <code>user1@gmail.com</code><br>
+            🔑 <b>Password:</b> <code>user123</code>
+        </div>
+    </div>
+
+    <div class="card" style="border: 2px dashed var(--primary); text-align: center;">
         <h2 style="justify-content: center;">🔑 Butuh Password ZIP?</h2>
-        <p>File Starter Pack dipassword untuk keamanan data. Silakan hubungi Admin Babay melalui WhatsApp untuk mendapatkan password</p>
-        
+        <p>File Starter Pack dipassword untuk keamanan. Klik tombol di bawah:</p>
         <a href="https://wa.me/6287889643544?text=Halo%20Admin%20Babay,%20saya%20mau%20minta%20password%20Starter%20Pack%20Ninja%20Saga%20Offline" 
-           class="btn" 
-           style="background: #25d366; font-size: 1.1em; padding: 15px 30px; display: inline-flex; align-items: center; gap: 10px;" 
-           target="_blank">
+           class="btn btn-wa" target="_blank">
             <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="20" alt="WA"> 
             Chat Admin (0878-8964-3544)
         </a>
@@ -196,15 +175,9 @@
 
     <footer>
         <p>Build with ❤️ by <b>Babay</b> | Ninja Saga Private Server Project 2026</p>
-        <p>Official Site: <a href="http://www.babay.web.id" style="color: var(--primary); text-decoration: none;">www.babay.web.id</a></p>
-    </footer>
-
-        
-    <footer>
-        <p>&copy; 2026 Babay Project - <a href="http://www.babay.web.id" style="color:var(--primary);">www.babay.web.id</a></p>
+        <p>&copy; 2026 Babay Project - <a href="http://www.babay.web.id">www.babay.web.id</a></p>
     </footer>
 </div>
 
 </body>
 </html>
-
