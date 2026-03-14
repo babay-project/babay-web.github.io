@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Konversi QRIS Dinamis ke Statik dengan mudah! Tool gratis untuk mengubah QR Code QRIS dinamis menjadi statik tanpa nominal atau dengan nominal tetap. 100% client-side, data aman." />
+    <meta name="keywords" content="QRIS, QR Code, Converter, Static QRIS, Dynamic QRIS, EMV, Payment, Indonesia, Konversi QRIS, QR Generator" />
+    <meta name="author" content="Iqra" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://your-domain.com/" />
+    <meta property="og:title" content="QRIS Converter Pro - Konversi QRIS Dinamis ke Statik" />
+    <meta property="og:description" content="Tool modern untuk mengubah QR Code QRIS dinamis menjadi statik. Gratis, aman, dan mudah digunakan!" />
+    <meta property="og:image" content="https://your-domain.com/og-image.png" />
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://your-domain.com/" />
+    <meta property="twitter:title" content="QRIS Converter Pro - Konversi QRIS Dinamis ke Statik" />
+    <meta property="twitter:description" content="Tool modern untuk mengubah QR Code QRIS dinamis menjadi statik. Gratis, aman, dan mudah digunakan!" />
+    <meta property="twitter:image" content="https://your-domain.com/og-image.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#10b981" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+    <title>QRIS Converter Pro - Konversi QRIS Dinamis ke Statik dengan Mudah</title>
+    <script type="module" crossorigin src="/assets/index-ByOvfom9.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-BwxQAXGp.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>
