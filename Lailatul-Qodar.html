@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tasbih Digital - Do'a Lailatul Qadar</title>
+    <title>Tasbih Digital - Do'a Lailatul Qodar</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -89,7 +89,7 @@
             font-weight: 700;
             text-align: center;
             line-height: 1.2;
-            margin-top: 40px; /* Tambahan margin atas karena header dihapus */
+            margin-top: 40px; 
             margin-bottom: 30px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.5);
         }
@@ -136,6 +136,7 @@
             font-size: 3.5rem;
             font-weight: 700;
             line-height: 1;
+            transition: color 0.3s ease;
         }
         .target-count {
             font-size: 1rem;
@@ -182,6 +183,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 10;
         }
         .btn-tap:active {
             transform: scale(0.92);
@@ -264,7 +266,74 @@
             z-index: 2;
         }
 
-        /* Efek Goal Selesai */
+        /* --- EFEK REWARD MILSTONE (CAHAYA BULAN) --- */
+        .milestone-reward {
+            position: fixed;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            background: radial-gradient(circle, rgba(1, 40, 45, 0.95) 0%, rgba(1, 20, 25, 0.95) 100%);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 25px;
+            padding: 30px 40px;
+            text-align: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none; /* Agar user tetap bisa nge-tap tombol di belakangnya */
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 60px rgba(178, 235, 242, 0.4), inset 0 0 20px rgba(178, 235, 242, 0.2);
+        }
+
+        .milestone-reward.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .moon-icon {
+            font-size: 4.5rem;
+            text-shadow: 0 0 30px #fffae6, 0 0 10px #fffae6;
+            animation: float-moon 2s ease-in-out infinite;
+            margin-bottom: 10px;
+        }
+
+        .milestone-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            margin-bottom: 5px;
+        }
+
+        .milestone-subtext {
+            font-size: 1rem;
+            color: var(--text-main);
+            opacity: 0.9;
+        }
+
+        .light-rays {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 250px;
+            height: 250px;
+            transform: translate(-50%, -50%);
+            background: repeating-conic-gradient(from 0deg, transparent 0deg 15deg, rgba(255,255,255,0.05) 15deg 30deg);
+            border-radius: 50%;
+            animation: spin-rays 15s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes float-moon {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        @keyframes spin-rays {
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Efek Goal 1000 Selesai */
         .completed .main-count {
             color: #ffd700;
             text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
@@ -288,6 +357,13 @@
 
     <div class="stars"></div>
     <div class="mosque-bg"></div>
+
+    <div class="milestone-reward" id="milestoneReward">
+        <div class="light-rays"></div>
+        <div class="moon-icon">🌙</div>
+        <div class="milestone-text">Masya Allah!</div>
+        <div class="milestone-subtext">Alhamdulillah, mencapai <strong id="milestoneCount"></strong> bacaan.<br>Terus Semangat! Semoga Allah Paring Barokah ✨</div>
+    </div>
 
     <div class="content">
 
@@ -337,7 +413,11 @@
         const btnTap = document.getElementById('btnTap');
         const btnMinus = document.getElementById('btnMinus');
         const btnReset = document.getElementById('btnReset');
+        const milestoneReward = document.getElementById('milestoneReward');
+        const milestoneCountText = document.getElementById('milestoneCount');
         const bodyElement = document.body;
+        
+        let rewardTimeout; // Untuk mengontrol durasi popup reward
 
         // Cek Local Storage
         if(localStorage.getItem('tasbihQadarDark')) {
@@ -355,28 +435,24 @@
             
             progressFill.style.width = displayPercent + '%';
             
-            // Format 1 angka di belakang koma (seperti di gambar 72.3%)
             if(displayPercent % 1 === 0) {
                 progressText.innerText = displayPercent + '%';
             } else {
                 progressText.innerText = displayPercent.toFixed(1) + '%';
             }
 
-            // Ubah warna teks progress bar jika fill sudah melewatinya agar terbaca
             if(displayPercent > 50) {
-                progressText.style.color = '#011e22'; // Gelap
+                progressText.style.color = '#011e22'; 
             } else {
-                progressText.style.color = '#ffffff'; // Terang
+                progressText.style.color = '#ffffff'; 
             }
 
-            // Cek pencapaian
             if (count >= target) {
                 bodyElement.classList.add('completed');
             } else {
                 bodyElement.classList.remove('completed');
             }
 
-            // Simpan ke storage
             localStorage.setItem('tasbihQadarDark', count);
         }
 
@@ -387,12 +463,44 @@
             }
         }
 
+        // Fungsi Menampilkan Reward Kelipatan 50
+        function checkAndShowMilestone() {
+            // Cek apakah angka kelipatan 50 dan bukan 0
+            if (count > 0 && count % 50 === 0 && count <= target) {
+                // Getaran spesial yang lebih panjang/berirama
+                triggerVibration([100, 50, 100, 50, 200]);
+                
+                // Ubah teks angka di popup
+                milestoneCountText.innerText = count;
+                
+                // Tampilkan popup
+                milestoneReward.classList.add('show');
+                
+                // Bersihkan timeout sebelumnya jika user nge-tap sangat cepat
+                clearTimeout(rewardTimeout);
+                
+                // Hilangkan otomatis setelah 2.5 detik
+                rewardTimeout = setTimeout(() => {
+                    milestoneReward.classList.remove('show');
+                }, 2500);
+            } else {
+                // Getaran standar
+                triggerVibration(40);
+            }
+        }
+
         // Event: TAP (Tambah)
         btnTap.addEventListener('click', (e) => {
             e.preventDefault();
             count++;
             updateUI();
-            triggerVibration(40); // Getaran sedang/mantap
+            checkAndShowMilestone(); // Panggil fungsi cek reward
+            
+            // Efek berkedip sebentar pada angka saat di-tap
+            countDisplay.style.color = '#b2ebf2';
+            setTimeout(() => {
+                countDisplay.style.color = (count >= target) ? '#ffd700' : '#ffffff';
+            }, 100);
         });
 
         // Event: MUNDUR (Kurangi)
@@ -401,11 +509,13 @@
             if (count > 0) {
                 count--;
                 updateUI();
-                triggerVibration(20); // Getaran lebih pendek/halus
+                triggerVibration(20);
+                // Jika mundur, tutup popup reward seandainya sedang terbuka
+                milestoneReward.classList.remove('show');
             }
         });
 
-        // Event: RESET (Dengan Peringatan)
+        // Event: RESET
         btnReset.addEventListener('click', (e) => {
             e.preventDefault();
             let konfirmasi = confirm("⚠️ PERINGATAN\n\nApakah Anda yakin ingin menghapus hitungan dan meresetnya kembali ke 0?");
@@ -413,7 +523,8 @@
             if (konfirmasi) {
                 count = 0;
                 updateUI();
-                triggerVibration([50, 100, 50, 100, 50]); // Getaran panjang
+                milestoneReward.classList.remove('show');
+                triggerVibration([50, 100, 50, 100, 50]); 
             }
         });
 
