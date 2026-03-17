@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tasbih Digital - Do'a Lailatul Qodar</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Playfair+Display:wght@600;700&family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep: #011e22;
+            --bg-mid: #013a40;
+            --text-main: #ffffff;
+            --text-dim: rgba(255, 255, 255, 0.7);
+            --glow-color: rgba(255, 255, 255, 0.8);
+            --accent-cyan: #b2ebf2;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at 50% 30%, var(--bg-mid) 0%, var(--bg-deep) 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Bintang-bintang di background */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 80px 70px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 150px 120px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 250px 80px, rgba(255,255,255,0.8), rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 320px 180px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 100px 250px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 300px 350px, #ffffff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 400px 400px;
+            opacity: 0.6;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Siluet Masjid */
+        .mosque-bg {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 35vh;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 300" preserveAspectRatio="none"><path fill="%23000b0d" d="M0,300 L1000,300 L1000,250 Q980,250 975,200 L970,150 Q960,100 950,150 L945,200 Q940,250 920,250 L840,250 Q830,250 825,180 L820,100 L815,180 Q810,250 800,250 L680,250 Q660,250 650,180 L620,50 Q600,0 550,0 Q500,0 480,50 L450,180 Q440,250 420,250 L300,250 Q290,250 285,180 L280,100 L275,180 Q270,250 260,250 L180,250 Q160,250 155,200 L150,150 Q140,100 130,150 L125,200 Q120,250 100,250 L0,250 Z"/></svg>') no-repeat bottom center;
+            background-size: cover;
+            z-index: 1;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        /* Konten Utama */
+        .content {
+            z-index: 2;
+            width: 100%;
+            max-width: 600px;
+            padding: 20px 20px 100px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Judul & Doa */
+        .title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            line-height: 1.2;
+            margin-top: 40px; 
+            margin-bottom: 30px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .arabic {
+            font-family: 'Amiri', serif;
+            font-size: 2.8rem;
+            text-align: center;
+            direction: rtl;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .translation {
+            text-align: center;
+            font-size: 0.95rem;
+            font-style: italic;
+            opacity: 0.9;
+            margin-bottom: 40px;
+            line-height: 1.5;
+            padding: 0 10px;
+        }
+
+        /* UI Kontrol Tasbih */
+        .tasbih-ui {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        /* Bagian Angka Kiri */
+        .counter-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 30%;
+        }
+        .main-count {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1;
+            transition: color 0.3s ease;
+        }
+        .target-count {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 10px;
+        }
+        .btn-minus {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 15px;
+            padding: 4px 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            transition: 0.1s;
+        }
+        .btn-minus:active {
+            transform: scale(0.9);
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Tombol TAP Tengah */
+        .tap-section {
+            width: 40%;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+        .btn-tap {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #ffffff 40%, #e0f2f1 100%);
+            border: none;
+            color: var(--bg-deep);
+            font-size: 1.5rem;
+            font-weight: 800;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--glow-color), 0 0 40px rgba(255,255,255,0.3), inset 0 0 10px rgba(0,0,0,0.1);
+            transition: all 0.1s;
+            touch-action: manipulation;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+        .btn-tap:active {
+            transform: scale(0.92);
+            box-shadow: 0 0 10px var(--glow-color), inset 0 0 15px rgba(0,0,0,0.2);
+        }
+
+        /* Ripple effect untuk TAP */
+        .ripple {
+            position: absolute;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.5);
+            animation: ripple-anim 2s infinite;
+            pointer-events: none;
+        }
+        .ripple:nth-child(2) {
+            animation-delay: 1s;
+        }
+
+        @keyframes ripple-anim {
+            0% { transform: scale(0.8); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        /* Bagian Reset Kanan */
+        .reset-section {
+            width: 30%;
+            display: flex;
+            justify-content: center;
+        }
+        .btn-reset {
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            color: white;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.2s;
+        }
+        .btn-reset:active {
+            transform: scale(0.9);
+            background: rgba(255,0,0,0.3);
+            border-color: rgba(255,0,0,0.5);
+        }
+
+        /* Progress Bar */
+        .progress-wrapper {
+            width: 100%;
+            height: 25px;
+            background: rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+        }
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, rgba(255,255,255,0.7) 0%, #ffffff 100%);
+            box-shadow: 0 0 10px rgba(255,255,255,0.8);
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--bg-deep);
+            text-shadow: 0 0 3px rgba(255,255,255,0.8);
+            z-index: 2;
+        }
+
+        /* --- EFEK REWARD MILSTONE (CAHAYA BULAN) --- */
+        .milestone-reward {
+            position: fixed;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.5);
+            background: radial-gradient(circle, rgba(1, 40, 45, 0.95) 0%, rgba(1, 20, 25, 0.95) 100%);
+            border: 2px solid var(--accent-cyan);
+            border-radius: 25px;
+            padding: 30px 40px;
+            text-align: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none; /* Agar user tetap bisa nge-tap tombol di belakangnya */
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 60px rgba(178, 235, 242, 0.4), inset 0 0 20px rgba(178, 235, 242, 0.2);
+        }
+
+        .milestone-reward.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .moon-icon {
+            font-size: 4.5rem;
+            text-shadow: 0 0 30px #fffae6, 0 0 10px #fffae6;
+            animation: float-moon 2s ease-in-out infinite;
+            margin-bottom: 10px;
+        }
+
+        .milestone-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #ffd700;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            margin-bottom: 5px;
+        }
+
+        .milestone-subtext {
+            font-size: 1rem;
+            color: var(--text-main);
+            opacity: 0.9;
+        }
+
+        .light-rays {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 250px;
+            height: 250px;
+            transform: translate(-50%, -50%);
+            background: repeating-conic-gradient(from 0deg, transparent 0deg 15deg, rgba(255,255,255,0.05) 15deg 30deg);
+            border-radius: 50%;
+            animation: spin-rays 15s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes float-moon {
+            0%, 100% { transform: translateY(0) rotate(-5deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        @keyframes spin-rays {
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Efek Goal 1000 Selesai */
+        .completed .main-count {
+            color: #ffd700;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+        .completed .progress-fill {
+            background: linear-gradient(90deg, #ffd700 0%, #ffea00 100%);
+            box-shadow: 0 0 15px #ffd700;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 50px;
+            text-align: center;
+            font-size: 0.8rem;
+            opacity: 0.8;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stars"></div>
+    <div class="mosque-bg"></div>
+
+    <div class="milestone-reward" id="milestoneReward">
+        <div class="light-rays"></div>
+        <div class="moon-icon">🌙</div>
+        <div class="milestone-text">Masya Allah!</div>
+        <div class="milestone-subtext">Alhamdulillah, mencapai <strong id="milestoneCount"></strong> bacaan.<br>Semangat! Semoga Allah Paring Barokah ✨</div>
+    </div>
+
+    <div class="content">
+
+        <div class="title">DO'A LAILATUL<br>QADAR</div>
+        <div class="arabic">اللَّهُمَّ إِنَّكَ عَفُوٌّ تُحِبُّ الْعَفْوَ فَاعْفُ عَنِّي</div>
+        <div class="translation">
+            "Ya Allah Engkau Maha pengampun, Engkau menyukai orang yang minta ampunan. Maka ampunilah aku." (HR.Tirmidzi)
+        </div>
+
+        <div class="tasbih-ui">
+            <div class="counter-section">
+                <div class="main-count" id="countDisplay">0</div>
+                <div class="target-count">/ 1000</div>
+                <button class="btn-minus" id="btnMinus">Mundur -1</button>
+            </div>
+
+            <div class="tap-section">
+                <div class="ripple"></div>
+                <div class="ripple"></div>
+                <button class="btn-tap" id="btnTap">TAP</button>
+            </div>
+
+            <div class="reset-section">
+                <button class="btn-reset" id="btnReset">↺ RESET</button>
+            </div>
+        </div>
+
+        <div class="progress-wrapper">
+            <div class="progress-fill" id="progressFill"></div>
+            <div class="progress-text" id="progressText">0%</div>
+        </div>
+
+        <div class="footer">
+            &copy; 2026 by Babay.27
+        </div>
+    </div>
+
+    <script>
+        // Inisialisasi
+        let count = 0;
+        const target = 1000;
+
+        // Ambil elemen DOM
+        const countDisplay = document.getElementById('countDisplay');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const btnTap = document.getElementById('btnTap');
+        const btnMinus = document.getElementById('btnMinus');
+        const btnReset = document.getElementById('btnReset');
+        const milestoneReward = document.getElementById('milestoneReward');
+        const milestoneCountText = document.getElementById('milestoneCount');
+        const bodyElement = document.body;
+        
+        let rewardTimeout; // Untuk mengontrol durasi popup reward
+
+        // Cek Local Storage
+        if(localStorage.getItem('tasbihQadarDark')) {
+            count = parseInt(localStorage.getItem('tasbihQadarDark'));
+            updateUI();
+        }
+
+        // Fungsi Update Tampilan
+        function updateUI() {
+            countDisplay.innerText = count;
+            
+            // Hitung persentase (Maks 100%)
+            let percentage = (count / target) * 100;
+            let displayPercent = percentage > 100 ? 100 : percentage;
+            
+            progressFill.style.width = displayPercent + '%';
+            
+            if(displayPercent % 1 === 0) {
+                progressText.innerText = displayPercent + '%';
+            } else {
+                progressText.innerText = displayPercent.toFixed(1) + '%';
+            }
+
+            if(displayPercent > 50) {
+                progressText.style.color = '#011e22'; 
+            } else {
+                progressText.style.color = '#ffffff'; 
+            }
+
+            if (count >= target) {
+                bodyElement.classList.add('completed');
+            } else {
+                bodyElement.classList.remove('completed');
+            }
+
+            localStorage.setItem('tasbihQadarDark', count);
+        }
+
+        // Fungsi Getar (Haptic Feedback)
+        function triggerVibration(pattern) {
+            if (navigator.vibrate) {
+                navigator.vibrate(pattern);
+            }
+        }
+
+        // Fungsi Menampilkan Reward Kelipatan 50
+        function checkAndShowMilestone() {
+            // Cek apakah angka kelipatan 50 dan bukan 0
+            if (count > 0 && count % 50 === 0 && count <= target) {
+                // Getaran spesial yang lebih panjang/berirama
+                triggerVibration([100, 50, 100, 50, 200]);
+                
+                // Ubah teks angka di popup
+                milestoneCountText.innerText = count;
+                
+                // Tampilkan popup
+                milestoneReward.classList.add('show');
+                
+                // Bersihkan timeout sebelumnya jika user nge-tap sangat cepat
+                clearTimeout(rewardTimeout);
+                
+                // Hilangkan otomatis setelah 2.5 detik
+                rewardTimeout = setTimeout(() => {
+                    milestoneReward.classList.remove('show');
+                }, 2500);
+            } else {
+                // Getaran standar
+                triggerVibration(40);
+            }
+        }
+
+        // Event: TAP (Tambah)
+        btnTap.addEventListener('click', (e) => {
+            e.preventDefault();
+            count++;
+            updateUI();
+            checkAndShowMilestone(); // Panggil fungsi cek reward
+            
+            // Efek berkedip sebentar pada angka saat di-tap
+            countDisplay.style.color = '#b2ebf2';
+            setTimeout(() => {
+                countDisplay.style.color = (count >= target) ? '#ffd700' : '#ffffff';
+            }, 100);
+        });
+
+        // Event: MUNDUR (Kurangi)
+        btnMinus.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (count > 0) {
+                count--;
+                updateUI();
+                triggerVibration(20);
+                // Jika mundur, tutup popup reward seandainya sedang terbuka
+                milestoneReward.classList.remove('show');
+            }
+        });
+
+        // Event: RESET
+        btnReset.addEventListener('click', (e) => {
+            e.preventDefault();
+            let konfirmasi = confirm("⚠️ PERINGATAN\n\nApakah Anda yakin ingin menghapus hitungan dan meresetnya kembali ke 0?");
+            
+            if (konfirmasi) {
+                count = 0;
+                updateUI();
+                milestoneReward.classList.remove('show');
+                triggerVibration([50, 100, 50, 100, 50]); 
+            }
+        });
+
+    </script>
+</body>
+</html>
