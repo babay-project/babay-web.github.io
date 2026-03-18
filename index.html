@@ -2,238 +2,254 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bayu Rizky Sampurna | babay.web.id</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <title>Ramadhan Stream | Babay.27</title>
-    <meta name="description" content="Streaming Live Makkah, Madinah, dan Murottal 30 Juz gratis di Babay.web.id">
-
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://babay.web.id/">
-    <meta property="og:title" content="Ramadhan Stream | Babay Web">
-    <meta property="og:description" content="Streaming Live Makkah, Madinah, dan Murottal 30 Juz gratis.">
-    <meta property="og:image" content="https://babay.web.id/thumbnail.png">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Ramadhan Stream | Babay Web">
-    <meta name="twitter:description" content="Streaming Live Makkah, Madinah, dan Murottal 30 Juz gratis.">
-    <meta name="twitter:image" content="https://babay.web.id/thumbnail.png">
-
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         :root {
-            --bg: #f3f4f6;
-            --card: #ffffff;
-            --text: #1f2937;
-            --sub: #6b7280;
-            --primary: #1a73e8;
-            --accent: #34a853;
-            --border: #e5e7eb;
-            --nav-bg: rgba(255, 255, 255, 0.8);
+            /* Warna khas Google */
+            --g-blue: #4285F4;
+            --g-red: #EA4335;
+            --g-yellow: #FBBC05;
+            --g-green: #34A853;
+            --bg-color: #f8f9fa; /* Abu-abu sangat muda khas background Google */
+            --text-main: #202124;
+            --text-muted: #5f6368;
         }
-        [data-theme="dark"] {
-            --bg: #121212;
-            --card: #1e1e1e;
-            --text: #f3f4f6;
-            --sub: #9ca3af;
-            --border: #333;
-            --nav-bg: rgba(30, 30, 30, 0.8);
-        }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            margin: 0; padding: 0;
-            padding-bottom: 90px;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header Profile */
+        .profile-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+
+        .profile-header h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0 0 5px 0;
+        }
+
+        .profile-header p {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 15px;
+        }
+
+        /* Link Buttons */
+        .links-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 50px;
+        }
+
+        .link-btn {
+            display: flex;
+            align-items: center;
+            padding: 16px 24px;
+            background-color: #ffffff;
+            border-radius: 30px; /* Rounded melengkung ala Google Search bar */
+            text-decoration: none;
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .link-btn i {
+            font-size: 20px;
+            margin-right: 15px;
+            width: 24px;
+            text-align: center;
+        }
+
+        /* Hover Effects dengan warna Google */
+        .link-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .btn-blue:hover { border-color: var(--g-blue); color: var(--g-blue); }
+        .btn-blue i { color: var(--g-blue); }
+
+        .btn-red:hover { border-color: var(--g-red); color: var(--g-red); }
+        .btn-red i { color: var(--g-red); }
+
+        .btn-yellow:hover { border-color: var(--g-yellow); color: #d9a000; }
+        .btn-yellow i { color: var(--g-yellow); }
+
+        .btn-green:hover { border-color: var(--g-green); color: var(--g-green); }
+        .btn-green i { color: var(--g-green); }
+
+        .btn-gray:hover { border-color: var(--text-muted); color: var(--text-main); }
+        .btn-gray i { color: var(--text-muted); }
+
+        /* About Section */
+        .about-section {
+            background-color: #ffffff;
+            border-radius: 24px;
+            padding: 35px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .about-section h2 {
+            font-size: 20px;
+            color: var(--g-blue);
+            margin-top: 0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .about-section p {
+            font-size: 14px;
+            color: var(--text-muted);
+            text-align: justify;
+            margin-bottom: 15px;
+        }
+
+        .about-section ul {
+            font-size: 14px;
+            color: var(--text-muted);
+            padding-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        .about-section li {
+            margin-bottom: 8px;
+        }
+        
+        .about-section li strong {
+            color: var(--text-main);
+        }
+
+        /* Social Media Contacts */
+        .social-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .social-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            height: 50px;
+            background-color: #ffffff;
+            border-radius: 50%;
+            text-decoration: none;
+            color: var(--text-main);
+            font-size: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
         }
-        .header {
-            padding: 25px 20px;
-            background: linear-gradient(135deg, var(--primary), #4285f4);
-            color: white;
-            border-bottom-left-radius: 30px;
-            border-bottom-right-radius: 30px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+        .social-icon:hover {
+            transform: translateY(-3px);
         }
-        .header h1 { font-size: 22px; font-weight: 800; margin: 0; }
-        .header p { font-size: 13px; opacity: 0.9; margin-top: 5px; }
-        .container { padding: 15px; width: 100%; max-width: 600px; margin: 0 auto; }
-        .card {
-            background: var(--card);
-            border-radius: 24px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-        .video-box {
-            position: relative;
-            background: #000;
-            aspect-ratio: 16 / 9;
-            border-radius: 18px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-        video { width: 100%; height: 100%; }
-        #placeholder {
-            position: absolute; inset: 0; background: #000;
-            display: flex; flex-direction: column; justify-content: center;
-            align-items: center; z-index: 5; color: white; cursor: pointer;
-        }
-        .section-tag {
-            font-size: 11px; font-weight: 800; color: var(--primary);
-            text-transform: uppercase; letter-spacing: 1.5px;
-            display: block; margin-bottom: 15px;
-        }
-        .grid-tv { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 15px; }
-        .btn-tab {
-            padding: 14px; border-radius: 15px; border: 1px solid var(--border);
-            background: var(--bg); color: var(--text); font-weight: 600;
-            font-size: 13px; cursor: pointer; transition: 0.3s;
-        }
-        .btn-tab.active { background: var(--primary); color: white; border-color: var(--primary); }
-        select {
-            width: 100%; padding: 16px; border-radius: 15px;
-            background: var(--bg); color: var(--text); border: 1px solid var(--border);
-            font-size: 15px; font-family: inherit; font-weight: 600; outline: none;
-            appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: right 15px center; background-size: 18px;
-        }
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; right: 0;
-            height: 75px; background: var(--nav-bg);
-            backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-            display: flex; justify-content: space-around; align-items: center;
-            border-top: 1px solid var(--border); z-index: 1000;
-            padding-bottom: env(safe-area-inset-bottom);
-        }
-        .nav-item {
-            display: flex; flex-direction: column; align-items: center;
-            color: var(--sub); text-decoration: none; font-size: 11px; font-weight: 600;
-        }
-        .nav-item.active { color: var(--primary); }
-        .nav-icon { font-size: 22px; margin-bottom: 4px; }
-        .theme-fab {
-            position: fixed; right: 20px; bottom: 95px;
-            width: 50px; height: 50px; border-radius: 25px;
-            background: var(--card); border: 1px solid var(--border);
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1); cursor: pointer;
-            display: flex; align-items: center; justify-content: center; font-size: 20px;
-        }
-        audio { width: 100%; height: 45px; margin-top: 10px; }
+        
+        .wa:hover { color: #25D366; }
+        .ig:hover { color: #E1306C; }
+        .fb:hover { color: #1877F2; }
+
     </style>
 </head>
-<body data-theme="light">
-    <div class="header">
-        <h1>Ramadhan Live</h1>
-        <p>Makkah • Madinah • Murottal 30 Juz</p>
-    </div>
-
-    <button class="theme-fab" onclick="toggleTheme()">🌓</button>
+<body>
 
     <div class="container">
-        <div class="card" id="tv-section">
-            <span class="section-tag">Live Haramain</span>
-            <div class="video-box">
-                <div id="placeholder" onclick="loadTV('makkah')">
-                    <div style="font-size: 50px;">▶</div>
-                    <span style="font-weight: 600; margin-top: 10px;">Tap to Live Stream</span>
-                </div>
-                <video id="tvPlayer" playsinline controls></video>
-            </div>
-            <div class="grid-tv">
-                <button id="btn-makkah" class="btn-tab" onclick="loadTV('makkah')">🕋 Makkah</button>
-                <button id="btn-madinah" class="btn-tab" onclick="loadTV('madinah')">🕌 Madinah</button>
-            </div>
+        
+        <div class="profile-header">
+            <img src="https://ui-avatars.com/api/?name=Bayu+Rizky&background=4285F4&color=fff&size=256" alt="Bayu Rizky Sampurna" class="profile-image">
+            <h1>Bayu Rizky Sampurna</h1>
+            <p>Digital Creator & AR Developer</p>
         </div>
 
-        <div class="card" id="quran-section">
-            <span class="section-tag">Murottal Al-Quran</span>
-            <h2 id="juzTitle" style="font-size: 18px; margin-bottom: 5px;">Mishary Rashid</h2>
-            <p style="font-size: 13px; color: var(--sub); margin-bottom: 15px;">Pilih juz untuk mendengarkan</p>
-            <audio id="audioPlayer" controls></audio>
-            <div style="margin-top: 15px;">
-                <select id="juzSelect" onchange="playAudio(this.value)">
-                    <option value="" disabled selected>-- Pilih Juz (1 - 30) --</option>
-                </select>
-            </div>
+        <div class="links-container">
+            <a href="https://babay.web.id/lailatul-qodar.html" class="link-btn btn-green" target="_blank">
+                <i class="fa-solid fa-kaaba"></i>
+                Penghitung (Tasbih) Doa Lailatul Qodar
+            </a>
+
+            <a href="https://babayproject.my.id/" class="link-btn btn-blue" target="_blank">
+                <i class="fa-solid fa-briefcase"></i>
+                Bio & Portfolio Lengkap
+            </a>
+
+            <a href="https://babayshop.my.id/" class="link-btn btn-red" target="_blank">
+                <i class="fa-solid fa-store"></i>
+                Babayshop (Aplikasi Premium & Digital)
+            </a>
+
+            <a href="#" class="link-btn btn-yellow">
+                <i class="fa-solid fa-link"></i>
+                Coming Soon Project 1
+            </a>
+
+            <a href="#" class="link-btn btn-gray">
+                <i class="fa-solid fa-plus"></i>
+                Coming Soon Project 2
+            </a>
         </div>
+
+        <div class="about-section">
+            <h2>Tentang Saya</h2>
+            <p>Saya adalah <strong>Bayu Rizky Sampurna</strong>, seorang Digital Creator, AR Developer, dan Photographer yang berfokus pada pengembangan konten kreatif berbasis teknologi, khususnya di platform TikTok dan Instagram.</p>
+            <p>Sebagai Top TikTok Effect Creator, saya telah menciptakan berbagai efek yang digunakan oleh jutaan pengguna, membantu brand maupun personal dalam meningkatkan engagement dan visibilitas secara signifikan. Saya juga aktif mengembangkan filter AR custom untuk kebutuhan branding, campaign digital, hingga hiburan interaktif.</p>
+            <p>Selain itu, saya membangun beberapa ekosistem digital seperti:</p>
+            <ul>
+                <li><strong>babayfilter.id</strong> (AR Filter & Effect)</li>
+                <li><strong>undangannya.web.id</strong> (Undangan Digital)</li>
+                <li><strong>babayshop.id</strong> (Layanan Digital Premium)</li>
+                <li><strong>babay.gallery</strong> (Photography & Visual Content)</li>
+            </ul>
+            <p>Dengan pengalaman di dunia kreatif dan digital, saya berkomitmen untuk menghadirkan solusi yang inovatif, estetis, dan berdampak bagi individu maupun bisnis.</p>
+            <p>Saat ini, saya terus berkembang sebagai kreator dan developer untuk menciptakan karya yang tidak hanya menarik secara visual, tetapi juga memiliki nilai fungsional dan komersial.</p>
+        </div>
+
+        <div class="social-container">
+            <a href="https://wa.me/6288215993544" class="social-icon wa" target="_blank" title="WhatsApp">
+                <i class="fa-brands fa-whatsapp"></i>
+            </a>
+            <a href="https://instagram.com/babay.27" class="social-icon ig" target="_blank" title="Instagram">
+                <i class="fa-brands fa-instagram"></i>
+            </a>
+            <a href="https://www.facebook.com/BayuRizkySampurna" class="social-icon fb" target="_blank" title="Facebook">
+                <i class="fa-brands fa-facebook-f"></i>
+            </a>
+        </div>
+
     </div>
 
-    <nav class="bottom-nav">
-        <a href="#tv-section" class="nav-item active" onclick="setNav(this)">
-            <span class="nav-icon">📺</span>
-            <span>Live TV</span>
-        </a>
-        <a href="#quran-section" class="nav-item" onclick="setNav(this)">
-            <span class="nav-icon">📖</span>
-            <span>Murottal</span>
-        </a>
-    </nav>
-
-    <script>
-        const tvLinks = {
-            makkah: "https://op-group1-swiftservesd-1.dens.tv/s/s28/01.m3u8",
-            madinah: "https://op-group1-swiftservesd-1.dens.tv/s/s27/01.m3u8"
-        };
-        const qBase = "https://ia601804.us.archive.org/11/items/MisharyRasyidPerJuz/Mishary/";
-        
-        const video = document.getElementById('tvPlayer');
-        const audio = document.getElementById('audioPlayer');
-        const placeholder = document.getElementById('placeholder');
-        let hls;
-
-        const sel = document.getElementById('juzSelect');
-        for(let i=1; i<=30; i++) {
-            let n = i.toString().padStart(2, '0');
-            let opt = document.createElement('option');
-            opt.value = n; opt.textContent = `Juz ${i}`;
-            sel.appendChild(opt);
-        }
-
-        function loadTV(type) {
-            placeholder.style.display = 'none';
-            audio.pause();
-            document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
-            document.getElementById(`btn-${type}`).classList.add('active');
-
-            if (hls) hls.destroy();
-            if (Hls.isSupported()) {
-                hls = new Hls();
-                hls.loadSource(tvLinks[type]);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
-            } else {
-                video.src = tvLinks[type];
-                video.play();
-            }
-        }
-
-        function playAudio(n) {
-            if (hls) { hls.destroy(); video.pause(); }
-            placeholder.style.display = 'flex';
-            document.querySelectorAll('.btn-tab').forEach(b => b.classList.remove('active'));
-            audio.src = `${qBase}${n}.mp3`;
-            audio.play();
-            document.getElementById('juzTitle').textContent = `Memutar Juz ${parseInt(n)}`;
-        }
-
-        function toggleTheme() {
-            const b = document.body;
-            b.setAttribute('data-theme', b.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
-        }
-
-        function setNav(el) {
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            el.classList.add('active');
-        }
-    </script>
 </body>
 </html>
-
-
-
