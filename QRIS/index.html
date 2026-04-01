@@ -4,6 +4,13 @@
   <meta charset="UTF-8">
   <title>Pembayaran QRIS - Babayshop</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <meta property="og:title" content="Pembayaran QRIS - Babayshop">
+  <meta property="og:description" content="Selesaikan pembayaran Anda menggunakan QRIS di Babayshop. Aman, instan, dan terpercaya.">
+  <meta property="og:image" content="https://blogger.googleusercontent.com/img/a/AVvXsEicxgapeHgByovmscN00Pj6eEKg4NQ-FqU-AJwOCL1IKzrs4wrET4cdvSxe4k5CEKzr7-Vs6XM_OmDOvt7yAr7Nf9SQOyy4BCxMGrtRtgKicZOrKkfxhlYOwFiEPIIeVkBb2BvmEcL3pFnxHJ5HSJ33b9-aUdf82Q9RkFyqF1rFeUfzlNTLoQ3qXZfOkB1b">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://blogger.googleusercontent.com/img/a/AVvXsEicxgapeHgByovmscN00Pj6eEKg4NQ-FqU-AJwOCL1IKzrs4wrET4cdvSxe4k5CEKzr7-Vs6XM_OmDOvt7yAr7Nf9SQOyy4BCxMGrtRtgKicZOrKkfxhlYOwFiEPIIeVkBb2BvmEcL3pFnxHJ5HSJ33b9-aUdf82Q9RkFyqF1rFeUfzlNTLoQ3qXZfOkB1b">
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -18,39 +25,33 @@
     <div class="shape shape-5"></div>
   </div>
 
-  <!-- Dark Mode Toggle -->
   <button id="themeToggle" class="theme-toggle" title="Toggle Dark Mode">
     <i class="fas fa-moon"></i>
   </button>
 
   <div class="main-container">
     <div class="payment-card">
-      <!-- Header -->
       <div class="card-header">
         <div class="logo-container">
-          <i class="fas fa-qrcode"></i>
-        </div>
+          <img src="https://blogger.googleusercontent.com/img/a/AVvXsEicxgapeHgByovmscN00Pj6eEKg4NQ-FqU-AJwOCL1IKzrs4wrET4cdvSxe4k5CEKzr7-Vs6XM_OmDOvt7yAr7Nf9SQOyy4BCxMGrtRtgKicZOrKkfxhlYOwFiEPIIeVkBb2BvmEcL3pFnxHJ5HSJ33b9-aUdf82Q9RkFyqF1rFeUfzlNTLoQ3qXZfOkB1b" alt="Thumbnail Babayshop" style="max-width: 120px; height: auto; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+          </div>
         <h1>Pembayaran QRIS</h1>
         <p class="subtitle">Babayshop Payment Gateway</p>
       </div>
 
-      <!-- Amount Display -->
       <div class="amount-section">
         <span class="amount-label">Total Pembayaran</span>
         <h2 id="amountDisplay" class="amount-value">Rp 0</h2>
       </div>
 
-      <!-- Timer -->
       <div class="timer-section" id="timerSection">
         <i class="fas fa-clock"></i>
         <span>Berlaku dalam: </span>
-        <span id="countdown" class="countdown">15:00</span>
+        <span id="countdown" class="countdown">60:00</span>
       </div>
 
-      <!-- Message Container -->
       <div id="messageContainer"></div>
 
-      <!-- QR Container -->
       <div class="qr-section">
         <div id="qrContainer" class="qr-wrapper">
           <div class="loading-spinner">
@@ -60,13 +61,11 @@
         </div>
       </div>
 
-      <!-- Merchant Info -->
       <div id="merchantDisplay" class="merchant-info" style="display:none;">
         <i class="fas fa-store"></i>
         <span id="displayMerchantName"></span>
       </div>
 
-      <!-- Action Buttons -->
       <div id="actionButtons" class="action-buttons" style="display:none;">
         <button onclick="downloadQR()" class="btn-action btn-download">
           <i class="fas fa-download"></i>
@@ -82,7 +81,6 @@
         </button>
       </div>
 
-      <!-- Status Section -->
       <div class="status-section">
         <div class="status-item">
           <i class="fas fa-shield-alt"></i>
@@ -100,7 +98,6 @@
 
       <hr class="divider">
 
-      <!-- Instructions -->
       <div class="instructions">
         <h6><i class="fas fa-info-circle"></i> Cara Pembayaran</h6>
         <div class="steps">
@@ -123,7 +120,6 @@
         </div>
       </div>
 
-      <!-- Supported Payment -->
       <div class="supported-payment">
         <p>Didukung oleh:</p>
         <div class="payment-icons">
@@ -135,7 +131,6 @@
         </div>
       </div>
 
-      <!-- Footer -->
       <div class="card-footer">
         <i class="fas fa-lock"></i>
         <span>Transaksi aman dengan QRIS</span>
