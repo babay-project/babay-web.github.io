@@ -15,6 +15,72 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+
+  <style>
+    .alert-qris-error {
+      background-color: #fff3cd;
+      color: #856404;
+      padding: 12px 15px;
+      border-radius: 8px;
+      font-size: 13px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border: 1px solid #ffeeba;
+    }
+    .alert-qris-error i { margin-top: 3px; }
+    .manual-payment-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+      border: 1px solid #e8e8e8;
+      text-align: left;
+    }
+    .manual-payment-card h5 { margin-bottom: 5px; font-size: 18px; }
+    .manual-payment-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid #e8e8e8;
+      border-radius: 8px;
+      padding: 12px 15px;
+      margin-bottom: 12px;
+      transition: all 0.2s ease;
+    }
+    .manual-payment-item:last-child { margin-bottom: 0; }
+    .manual-payment-item:hover {
+      border-color: #d9d9d9;
+      background-color: #fafafa;
+    }
+    .bank-logo-placeholder {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      font-size: 18px;
+    }
+    .btn-copy-manual {
+      background: transparent;
+      border: 1px solid #d9d9d9;
+      color: #333;
+      font-weight: 700;
+      border-radius: 20px;
+      padding: 6px 16px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-copy-manual:hover { background: #f0f0f0; }
+    .btn-copy-manual.copied {
+      background: #4caf50;
+      color: white;
+      border-color: #4caf50;
+    }
+  </style>
 </head>
 <body>
   <div class="floating-shapes">
@@ -33,7 +99,8 @@
     <div class="payment-card">
       <div class="card-header">
         <div class="logo-container">
-          </div>
+          <img src="https://blogger.googleusercontent.com/img/a/AVvXsEicxgapeHgByovmscN00Pj6eEKg4NQ-FqU-AJwOCL1IKzrs4wrET4cdvSxe4k5CEKzr7-Vs6XM_OmDOvt7yAr7Nf9SQOyy4BCxMGrtRtgKicZOrKkfxhlYOwFiEPIIeVkBb2BvmEcL3pFnxHJ5HSJ33b9-aUdf82Q9RkFyqF1rFeUfzlNTLoQ3qXZfOkB1b" alt="Thumbnail Babayshop" style="max-width: 120px; height: auto; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+        </div>
         <h1>Pembayaran QRIS</h1>
         <p class="subtitle">Babayshop Payment Gateway</p>
       </div>
@@ -130,13 +197,9 @@
         </div>
       </div>
 
-      <div class="card-footer">
-        <i class="fas fa-lock"></i>
-        <span>Transaksi aman dengan QRIS</span>
-      </div>
-    </div>
+      <hr class="divider">
 
-<div class="alert-qris-error mt-4 mb-3">
+      <div class="alert-qris-error mt-4 mb-3">
         <i class="fas fa-info-circle"></i>
         <span>Jika QRIS error/tidak muncul, silakan transfer manual sesuai <strong>Total Pembayaran</strong> ke salah satu tujuan di bawah ini.</span>
       </div>
@@ -242,11 +305,32 @@
           <button class="btn-copy-manual" onclick="copyManualText('901375940437', this)">Copy</button>
         </div>
       </div>
-    
-    
+
+      <div class="card-footer">
+        <i class="fas fa-lock"></i>
+        <span>Transaksi aman dengan QRIS</span>
+      </div>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <script src="script.js"></script>
+  
+  <script>
+    function copyManualText(text, btnElement) {
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btnElement.innerText;
+        btnElement.innerText = "Copied!";
+        btnElement.classList.add("copied");
+        setTimeout(() => {
+          btnElement.innerText = originalText;
+          btnElement.classList.remove("copied");
+        }, 2000);
+      }).catch(err => {
+        console.error('Gagal menyalin teks: ', err);
+        alert('Gagal menyalin nomor.');
+      });
+    }
+  </script>
 </body>
 </html>
