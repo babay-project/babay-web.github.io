@@ -1,6 +1,6 @@
 let currentQRData = null;
 let countdownInterval = null;
-let timeLeft = 900; // 15 minutes
+let timeLeft = 3600; // 60 minutes
 
 // URL Parameters
 const urlParams = new URLSearchParams(window.location.search);
