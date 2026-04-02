@@ -211,7 +211,7 @@ function copyQRCode() {
 function shareQR() {
     if (navigator.share && currentQRData) {
         navigator.share({
-            title: 'QRIS Payment - Aldo Soft',
+            title: 'QRIS Payment - Babayshop',
             text: `Pembayaran ${formatCurrency(payAmount)} via QRIS`,
             url: window.location.href
         });
