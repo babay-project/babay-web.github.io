@@ -1,0 +1,1076 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Order Undangan Digital</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #f6f8fc;
+        --card: #ffffff;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --line: #e5e7eb;
+        --input: #f9fafb;
+        --primary: #4f46e5;
+        --primary-hover: #4338ca;
+        --success: #25d366;
+        --danger: #ef4444;
+        --warning: #f59e0b;
+        --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+        --radius: 18px;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+        background: linear-gradient(180deg, #eef2ff 0%, #f8fafc 30%, #f6f8fc 100%);
+        color: var(--text);
+      }
+
+      .container {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 28px 16px 64px;
+      }
+
+      .hero {
+        text-align: center;
+        margin-bottom: 24px;
+      }
+
+      .badge {
+        display: inline-block;
+        padding: 8px 14px;
+        border-radius: 999px;
+        background: rgba(79, 70, 229, 0.1);
+        color: var(--primary);
+        font-weight: 700;
+        font-size: 12px;
+        letter-spacing: 0.4px;
+        margin-bottom: 14px;
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-size: clamp(28px, 4vw, 42px);
+        line-height: 1.1;
+      }
+
+      .hero p {
+        margin: 10px auto 0;
+        max-width: 680px;
+        color: var(--muted);
+        font-size: 15px;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 1.5fr 0.95fr;
+        gap: 20px;
+        align-items: start;
+      }
+
+      @media (max-width: 920px) {
+        .layout { grid-template-columns: 1fr; }
+      }
+
+      .card {
+        background: var(--card);
+        border: 1px solid rgba(229, 231, 235, 0.9);
+        box-shadow: var(--shadow);
+        border-radius: 24px;
+      }
+
+      .form-card {
+        padding: 24px;
+      }
+
+      .preview-card {
+        position: sticky;
+        top: 16px;
+        padding: 20px;
+      }
+
+      @media (max-width: 920px) {
+        .preview-card { position: static; }
+      }
+
+      .section {
+        padding-top: 18px;
+        margin-top: 18px;
+        border-top: 1px solid var(--line);
+      }
+
+      .section:first-child {
+        border-top: 0;
+        padding-top: 0;
+        margin-top: 0;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 16px;
+        font-size: 15px;
+        font-weight: 800;
+        color: var(--primary);
+        letter-spacing: 0.2px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .full { grid-column: 1 / -1; }
+
+      @media (max-width: 680px) {
+        .grid { grid-template-columns: 1fr; }
+      }
+
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      label {
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .req::after {
+        content: " *";
+        color: var(--danger);
+      }
+
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin: 0;
+      }
+
+      input, select, textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        background: var(--input);
+        padding: 13px 14px;
+        border-radius: 14px;
+        font: inherit;
+        color: var(--text);
+        outline: none;
+        transition: 0.2s ease;
+      }
+
+      input:focus, select:focus, textarea:focus {
+        border-color: var(--primary);
+        background: #fff;
+        box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+      }
+
+      textarea {
+        min-height: 96px;
+        resize: vertical;
+      }
+
+      .inline {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+
+      .toggle-box {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: var(--input);
+      }
+
+      .toggle-box label {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      input[type="checkbox"], input[type="radio"] {
+        width: 16px;
+        height: 16px;
+        accent-color: var(--primary);
+      }
+
+      .hidden { display: none !important; }
+
+      .pay-row {
+        display: grid;
+        grid-template-columns: 110px 1fr 1fr 1fr 42px;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      @media (max-width: 680px) {
+        .pay-row { grid-template-columns: 1fr; }
+      }
+
+      .icon-btn, .primary-btn, .ghost-btn {
+        border: 0;
+        border-radius: 14px;
+        font: inherit;
+        cursor: pointer;
+        transition: 0.2s ease;
+      }
+
+      .icon-btn {
+        background: #fee2e2;
+        color: var(--danger);
+        font-weight: 800;
+      }
+
+      .primary-btn {
+        padding: 14px 18px;
+        background: var(--success);
+        color: #fff;
+        font-weight: 800;
+        box-shadow: 0 10px 24px rgba(37, 211, 102, 0.24);
+      }
+
+      .primary-btn:hover { filter: brightness(0.96); }
+
+      .ghost-btn {
+        padding: 14px 18px;
+        background: #fff;
+        border: 1px solid var(--line);
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        margin-top: 22px;
+      }
+
+      .mini-btn {
+        margin-top: 8px;
+        padding: 10px 14px;
+        background: rgba(79, 70, 229, 0.08);
+        color: var(--primary);
+        font-weight: 700;
+      }
+
+      .preview-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .preview-head h2 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .wa-box {
+        background: #0b141a;
+        border-radius: 22px;
+        padding: 14px;
+      }
+
+      .wa-screen {
+        background: #111b21;
+        border-radius: 18px;
+        padding: 14px;
+        min-height: 560px;
+      }
+
+      .wa-bubble {
+        background: #202c33;
+        color: #e9edef;
+        border-radius: 14px 14px 14px 4px;
+        padding: 14px;
+        white-space: pre-wrap;
+        line-height: 1.55;
+        font-size: 13px;
+        border: 1px solid rgba(255,255,255,0.05);
+      }
+
+      .preview-note {
+        margin-top: 12px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .paket-pill {
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 999px;
+        padding: 10px 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .paket-pill.active {
+        background: var(--primary);
+        border-color: var(--primary);
+        color: #fff;
+      }
+
+      .muted-card {
+        margin-top: 14px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: #f8fafc;
+        border: 1px dashed var(--line);
+        color: var(--muted);
+        font-size: 12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="hero">
+        <div class="badge">FORM ORDER + PREVIEW CHAT WA</div>
+        <h1>Order Undangan Digital</h1>
+        <p>
+          Tetap detail, tapi hasil chat WhatsApp lebih rapi, mudah dibaca admin,
+          dan tetap lengkap tanpa terasa berantakan.
+        </p>
+      </div>
+
+      <div class="layout">
+        <section class="card form-card">
+          <div class="section">
+            <div class="section-title">🎨 Detail Order</div>
+            <div class="grid">
+              <div class="field">
+                <label class="req" for="namaTema">Nama Tema / Kode</label>
+                <input id="namaTema" placeholder="Contoh: Premium 12" />
+              </div>
+              <div class="field">
+                <label class="req" for="susunan">Susunan Nama</label>
+                <select id="susunan">
+                  <option value="">— Pilih susunan —</option>
+                  <option>Laki-laki dulu</option>
+                  <option>Perempuan dulu</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">👨 Data Mempelai Pria</div>
+            <div class="grid">
+              <div class="field full">
+                <label class="req" for="priaNama">Nama Lengkap</label>
+                <input id="priaNama" placeholder="Nama lengkap mempelai pria" />
+              </div>
+              <div class="field">
+                <label for="priaPanggilan">Nama Panggilan</label>
+                <input id="priaPanggilan" placeholder="Contoh: Andi" />
+              </div>
+              <div class="field">
+                <label for="priaAnakKe">Anak ke-</label>
+                <input id="priaAnakKe" placeholder="Contoh: 1" />
+              </div>
+              <div class="field">
+                <label for="priaBapak">Nama Ayah</label>
+                <input id="priaBapak" placeholder="Nama ayah kandung" />
+              </div>
+              <div class="field">
+                <label for="priaIbu">Nama Ibu</label>
+                <input id="priaIbu" placeholder="Nama ibu kandung" />
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">👩 Data Mempelai Wanita</div>
+            <div class="grid">
+              <div class="field full">
+                <label class="req" for="wanitaNama">Nama Lengkap</label>
+                <input id="wanitaNama" placeholder="Nama lengkap mempelai wanita" />
+              </div>
+              <div class="field">
+                <label for="wanitaPanggilan">Nama Panggilan</label>
+                <input id="wanitaPanggilan" placeholder="Contoh: Sinta" />
+              </div>
+              <div class="field">
+                <label for="wanitaAnakKe">Anak ke-</label>
+                <input id="wanitaAnakKe" placeholder="Contoh: 2" />
+              </div>
+              <div class="field">
+                <label for="wanitaBapak">Nama Ayah</label>
+                <input id="wanitaBapak" placeholder="Nama ayah kandung" />
+              </div>
+              <div class="field">
+                <label for="wanitaIbu">Nama Ibu</label>
+                <input id="wanitaIbu" placeholder="Nama ibu kandung" />
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">💍 Akad Nikah</div>
+            <div class="grid">
+              <div class="field">
+                <label class="req" for="akadHari">Hari</label>
+                <input id="akadHari" placeholder="Contoh: Sabtu" />
+              </div>
+              <div class="field">
+                <label class="req" for="akadTanggal">Tanggal</label>
+                <input id="akadTanggal" type="date" />
+              </div>
+              <div class="field">
+                <label class="req" for="akadJamMulai">Jam Mulai</label>
+                <input id="akadJamMulai" placeholder="08.00" />
+              </div>
+              <div class="field">
+                <label for="akadJamSelesai">Jam Selesai</label>
+                <div class="inline">
+                  <input id="akadJamSelesai" placeholder="10.00" />
+                  <label style="white-space: nowrap; font-size: 12px;">
+                    <input id="akadSelesaiCheck" type="checkbox" /> Selesai
+                  </label>
+                </div>
+              </div>
+              <div class="field">
+                <label for="akadZona">Zona Waktu</label>
+                <select id="akadZona">
+                  <option>WIB</option>
+                  <option>WITA</option>
+                  <option>WIT</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="akadMapsAda">Google Maps</label>
+                <select id="akadMapsAda">
+                  <option>Tidak</option>
+                  <option>Ada</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label class="req" for="akadAlamat">Alamat Lokasi</label>
+                <textarea id="akadAlamat" placeholder="Nama gedung / jalan / desa / kecamatan"></textarea>
+              </div>
+              <div class="field full hidden" id="akadMapsLinkWrap">
+                <label for="akadMapsLink">Link Maps</label>
+                <input id="akadMapsLink" placeholder="https://maps.app.goo.gl/..." />
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">🎉 Resepsi</div>
+            <div class="grid">
+              <div class="field">
+                <label for="resHari">Hari</label>
+                <input id="resHari" placeholder="Contoh: Minggu" />
+              </div>
+              <div class="field">
+                <label for="resTanggal">Tanggal</label>
+                <input id="resTanggal" type="date" />
+              </div>
+              <div class="field">
+                <label for="resJamMulai">Jam Mulai</label>
+                <input id="resJamMulai" placeholder="11.00" />
+              </div>
+              <div class="field">
+                <label for="resJamSelesai">Jam Selesai</label>
+                <div class="inline">
+                  <input id="resJamSelesai" placeholder="13.00" />
+                  <label style="white-space: nowrap; font-size: 12px;">
+                    <input id="resSelesaiCheck" type="checkbox" /> Selesai
+                  </label>
+                </div>
+              </div>
+              <div class="field">
+                <label for="resZona">Zona Waktu</label>
+                <select id="resZona">
+                  <option>WIB</option>
+                  <option>WITA</option>
+                  <option>WIT</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="resMapsAda">Google Maps</label>
+                <select id="resMapsAda">
+                  <option>Tidak</option>
+                  <option>Ada</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label for="resAlamat">Alamat Lokasi</label>
+                <textarea id="resAlamat" placeholder="Kosongkan jika sama dengan akad"></textarea>
+              </div>
+              <div class="field full hidden" id="resMapsLinkWrap">
+                <label for="resMapsLink">Link Maps</label>
+                <input id="resMapsLink" placeholder="https://maps.app.goo.gl/..." />
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">📌 Acara Tambahan</div>
+            <div class="grid">
+              <div class="field full">
+                <label for="extraAda">Ada acara tambahan?</label>
+                <select id="extraAda">
+                  <option>Tidak</option>
+                  <option>Ada</option>
+                </select>
+              </div>
+            </div>
+
+            <div id="extraWrap" class="grid hidden" style="margin-top:14px;">
+              <div class="field full">
+                <label for="extraNama">Nama Acara</label>
+                <input id="extraNama" placeholder="Contoh: Ngunduh Mantu" />
+              </div>
+              <div class="field">
+                <label for="extraHari">Hari</label>
+                <input id="extraHari" />
+              </div>
+              <div class="field">
+                <label for="extraTanggal">Tanggal</label>
+                <input id="extraTanggal" type="date" />
+              </div>
+              <div class="field">
+                <label for="extraJamMulai">Jam Mulai</label>
+                <input id="extraJamMulai" placeholder="08.00" />
+              </div>
+              <div class="field">
+                <label for="extraJamSelesai">Jam Selesai</label>
+                <div class="inline">
+                  <input id="extraJamSelesai" placeholder="10.00" />
+                  <label style="white-space: nowrap; font-size: 12px;">
+                    <input id="extraSelesaiCheck" type="checkbox" /> Selesai
+                  </label>
+                </div>
+              </div>
+              <div class="field">
+                <label for="extraZona">Zona Waktu</label>
+                <select id="extraZona">
+                  <option>WIB</option>
+                  <option>WITA</option>
+                  <option>WIT</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="extraMapsAda">Google Maps</label>
+                <select id="extraMapsAda">
+                  <option>Tidak</option>
+                  <option>Ada</option>
+                </select>
+              </div>
+              <div class="field full">
+                <label for="extraAlamat">Alamat</label>
+                <textarea id="extraAlamat"></textarea>
+              </div>
+              <div class="field full hidden" id="extraMapsLinkWrap">
+                <label for="extraMapsLink">Link Maps</label>
+                <input id="extraMapsLink" placeholder="https://maps.app.goo.gl/..." />
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">⚙️ Fitur Tambahan</div>
+            <div class="grid">
+              <div class="field full">
+                <label for="musik">Musik (Link YouTube)</label>
+                <div class="inline">
+                  <input id="musik" placeholder="https://youtu.be/..." />
+                  <input id="musikStart" placeholder="Mulai 01:20" style="max-width: 160px;" />
+                </div>
+              </div>
+              <div class="field">
+                <label>Love Story</label>
+                <div class="toggle-box">
+                  <label><input type="radio" name="lovestory" value="Ya" /> Ya</label>
+                  <label><input type="radio" name="lovestory" value="Tidak" checked /> Tidak</label>
+                </div>
+              </div>
+              <div class="field">
+                <label>Foto Prewed</label>
+                <div class="toggle-box">
+                  <label><input type="radio" name="prewed" value="Ya" /> Ya</label>
+                  <label><input type="radio" name="prewed" value="Tidak" checked /> Tidak</label>
+                </div>
+              </div>
+              <div class="field full hidden" id="lsField">
+                <label for="lovestoryText">Isi Love Story</label>
+                <textarea id="lovestoryText" placeholder="Tulis cerita singkat"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">💳 Amplop Digital</div>
+            <div class="grid">
+              <div class="field full">
+                <label>Tampilkan Amplop Digital?</label>
+                <div class="toggle-box">
+                  <label><input type="radio" name="amplop" value="Ya" checked /> Ya</label>
+                  <label><input type="radio" name="amplop" value="Tidak" /> Tidak</label>
+                </div>
+              </div>
+              <div class="field full" id="amplopFields">
+                <p class="hint">Maksimal 4 metode pembayaran.</p>
+                <button type="button" id="addPayBtn" class="ghost-btn mini-btn">+ Tambah Metode Pembayaran</button>
+                <div id="payMethods"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">🎁 Kirim Kado</div>
+            <div class="grid">
+              <div class="field full">
+                <label for="kadoAda">Terima kado fisik?</label>
+                <select id="kadoAda">
+                  <option>Tidak</option>
+                  <option>Ada</option>
+                </select>
+              </div>
+            </div>
+            <div id="kadoWrap" class="grid hidden" style="margin-top:14px;">
+              <div class="field full">
+                <label for="kadoAlamat">Alamat Kirim</label>
+                <textarea id="kadoAlamat"></textarea>
+              </div>
+              <div class="field">
+                <label for="kadoNama">Nama Penerima</label>
+                <input id="kadoNama" />
+              </div>
+              <div class="field">
+                <label for="kadoHp">No HP</label>
+                <input id="kadoHp" />
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">💼 Paket Harga</div>
+            <div class="field">
+              <div id="paketRow" class="pill-row"></div>
+              <p id="paketHint" class="hint"></p>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="button" id="resetBtn" class="ghost-btn">Reset Form</button>
+            <button type="button" id="sendBtn" class="primary-btn">Kirim ke WhatsApp Admin</button>
+          </div>
+        </section>
+
+        <aside class="card preview-card">
+          <div class="preview-head">
+            <h2>Preview Chat WhatsApp</h2>
+            <span class="badge" style="margin:0;">Live</span>
+          </div>
+
+          <div class="wa-box">
+            <div class="wa-screen">
+              <div class="wa-bubble" id="previewMessage"></div>
+            </div>
+          </div>
+
+          <div class="muted-card">
+            Output chat dibuat tetap detail, tapi dipisah per section supaya admin lebih cepat membaca.
+          </div>
+          <p class="preview-note">
+            Nomor admin masih bisa diganti langsung di script: <strong>waNumber</strong>.
+          </p>
+        </aside>
+      </div>
+    </div>
+
+    <script>
+      (() => {
+        const waNumber = "6288215993544";
+        const STORAGE_KEY = "order_undangan_rapih_v1";
+        const $ = (s) => document.querySelector(s);
+        const $$ = (s) => document.querySelectorAll(s);
+
+        const safe = (id) => ($("#" + id)?.value || "").trim();
+        const has = (id) => safe(id) !== "";
+        const radioVal = (name) => [...$$("input[name='" + name + "']")].find((el) => el.checked)?.value || "";
+
+        const bindShow = (triggerSel, targetSel, value = "Ada") => {
+          const trigger = $(triggerSel);
+          const target = $(targetSel);
+          const sync = () => target.classList.toggle("hidden", trigger.value !== value);
+          trigger.addEventListener("change", sync);
+          sync();
+        };
+
+        bindShow("#akadMapsAda", "#akadMapsLinkWrap");
+        bindShow("#resMapsAda", "#resMapsLinkWrap");
+        bindShow("#extraMapsAda", "#extraMapsLinkWrap");
+
+        const syncExtra = () => $("#extraWrap").classList.toggle("hidden", $("#extraAda").value !== "Ada");
+        const syncKado = () => $("#kadoWrap").classList.toggle("hidden", $("#kadoAda").value !== "Ada");
+        const syncLoveStory = () => $("#lsField").classList.toggle("hidden", radioVal("lovestory") !== "Ya");
+        const syncAmplop = () => $("#amplopFields").classList.toggle("hidden", radioVal("amplop") !== "Ya");
+
+        $("#extraAda").addEventListener("change", syncExtra);
+        $("#kadoAda").addEventListener("change", syncKado);
+        $$('input[name="lovestory"]').forEach((el) => el.addEventListener("change", syncLoveStory));
+        $$('input[name="amplop"]').forEach((el) => el.addEventListener("change", syncAmplop));
+
+        const linkCheck = (checkId, inputId) => {
+          const c = $(checkId);
+          const i = $(inputId);
+          const sync = () => {
+            i.disabled = c.checked;
+            if (c.checked) i.value = "";
+          };
+          c.addEventListener("change", sync);
+          sync();
+        };
+
+        linkCheck("#akadSelesaiCheck", "#akadJamSelesai");
+        linkCheck("#resSelesaiCheck", "#resJamSelesai");
+        linkCheck("#extraSelesaiCheck", "#extraJamSelesai");
+
+        const paketRow = $("#paketRow");
+        const paketHint = $("#paketHint");
+
+        function renderPaket(active = null) {
+          const prewed = radioVal("prewed") || "Tidak";
+          const options = prewed === "Ya"
+            ? [
+                { value: "normal", label: "Normal (85rb)" },
+                { value: "exclusive", label: "Exclusive (100rb)" }
+              ]
+            : [
+                { value: "hemat", label: "Hemat (70rb)" }
+              ];
+
+          const current = active || options[0].value;
+          paketRow.innerHTML = "";
+
+          options.forEach((opt) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "paket-pill" + (opt.value === current ? " active" : "");
+            btn.textContent = opt.label;
+            btn.dataset.value = opt.value;
+            btn.addEventListener("click", () => {
+              $$(".paket-pill").forEach((pill) => pill.classList.remove("active"));
+              btn.classList.add("active");
+              saveDraft();
+              updatePreview();
+            });
+            paketRow.appendChild(btn);
+          });
+
+          paketHint.textContent = prewed === "Ya"
+            ? "Karena ada foto prewed, paket yang tersedia: Normal atau Exclusive."
+            : "Karena tanpa foto prewed, otomatis paket Hemat.";
+        }
+
+        $$('input[name="prewed"]').forEach((el) => el.addEventListener("change", () => {
+          const prevActive = document.querySelector(".paket-pill.active")?.dataset.value;
+          renderPaket(prevActive);
+          saveDraft();
+          updatePreview();
+        }));
+
+        const payWrap = $("#payMethods");
+        const addPayBtn = $("#addPayBtn");
+        const MAX_PAY = 4;
+
+        function payRowTemplate(data = {}) {
+          const row = document.createElement("div");
+          row.className = "pay-row";
+          row.innerHTML = `
+            <select class="p-type">
+              <option>Bank</option>
+              <option>E-Wallet</option>
+            </select>
+            <input class="p-prov" placeholder="Nama Bank / E-Wallet" />
+            <input class="p-num" placeholder="No Rek / No HP" />
+            <input class="p-name" placeholder="Atas Nama" />
+            <button type="button" class="icon-btn">✕</button>
+          `;
+
+          row.querySelector(".p-type").value = data.type || "Bank";
+          row.querySelector(".p-prov").value = data.prov || "";
+          row.querySelector(".p-num").value = data.num || "";
+          row.querySelector(".p-name").value = data.name || "";
+
+          row.querySelectorAll("input, select").forEach((el) => {
+            el.addEventListener("input", () => {
+              saveDraft();
+              updatePreview();
+            });
+          });
+
+          row.querySelector(".icon-btn").addEventListener("click", () => {
+            row.remove();
+            togglePayButton();
+            saveDraft();
+            updatePreview();
+          });
+
+          return row;
+        }
+
+        function togglePayButton() {
+          addPayBtn.disabled = payWrap.children.length >= MAX_PAY;
+          addPayBtn.textContent = payWrap.children.length >= MAX_PAY ? "Maksimal 4 metode" : "+ Tambah Metode Pembayaran";
+        }
+
+        addPayBtn.addEventListener("click", () => {
+          if (payWrap.children.length >= MAX_PAY) return;
+          payWrap.appendChild(payRowTemplate());
+          togglePayButton();
+          saveDraft();
+          updatePreview();
+        });
+
+        function formatDate(dateStr) {
+          if (!dateStr) return "-";
+          const date = new Date(dateStr);
+          if (Number.isNaN(date.getTime())) return dateStr;
+          return new Intl.DateTimeFormat("id-ID", {
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+          }).format(date);
+        }
+
+        function formatTime(startId, endId, checkId, zoneId) {
+          const start = safe(startId);
+          const end = safe(endId);
+          const zone = safe(zoneId);
+          const done = $("#" + checkId).checked;
+          if (!start) return "-";
+          if (done) return `${start} - Selesai ${zone}`.trim();
+          if (end) return `${start} - ${end} ${zone}`.trim();
+          return `${start} ${zone}`.trim();
+        }
+
+        function valOrDash(text) {
+          return text && text.trim() ? text.trim() : "-";
+        }
+
+        function section(title, body) {
+          return [`━━━━━━━━━━━━━━━━━━`, title, `━━━━━━━━━━━━━━━━━━`, body].join("\n");
+        }
+
+        function getPaketLabel() {
+          return document.querySelector(".paket-pill.active")?.textContent || "-";
+        }
+
+        function buildPayments() {
+          if (radioVal("amplop") !== "Ya") return "Tidak";
+          const rows = [...payWrap.querySelectorAll(".pay-row")];
+          if (!rows.length) return "Belum diisi";
+          return rows.map((row, idx) => {
+            const type = row.querySelector(".p-type").value;
+            const prov = valOrDash(row.querySelector(".p-prov").value);
+            const num = valOrDash(row.querySelector(".p-num").value);
+            const name = valOrDash(row.querySelector(".p-name").value);
+            return `${idx + 1}. ${type} - ${prov}\n   No: ${num}\n   a.n ${name}`;
+          }).join("\n\n");
+        }
+
+        function buildExtraSection() {
+          if ($("#extraAda").value !== "Ada") return "Tidak ada";
+          const lines = [
+            `Nama Acara: ${valOrDash(safe("extraNama"))}`,
+            `Hari/Tgl   : ${valOrDash(safe("extraHari"))}, ${formatDate(safe("extraTanggal"))}`,
+            `Waktu      : ${formatTime("extraJamMulai", "extraJamSelesai", "extraSelesaiCheck", "extraZona")}`,
+            `Lokasi     : ${valOrDash(safe("extraAlamat"))}`,
+            `Maps       : ${$("#extraMapsAda").value === "Ada" ? valOrDash(safe("extraMapsLink")) : "Tidak ada"}`
+          ];
+          return lines.join("\n");
+        }
+
+        function buildGiftSection() {
+          if ($("#kadoAda").value !== "Ada") return "Tidak";
+          return [
+            `Alamat   : ${valOrDash(safe("kadoAlamat"))}`,
+            `Penerima : ${valOrDash(safe("kadoNama"))}`,
+            `No HP    : ${valOrDash(safe("kadoHp"))}`
+          ].join("\n");
+        }
+
+        function buildMessage() {
+          const priaPanggilan = has("priaPanggilan") ? ` (${safe("priaPanggilan")})` : "";
+          const wanitaPanggilan = has("wanitaPanggilan") ? ` (${safe("wanitaPanggilan")})` : "";
+
+          const priaBlock = [
+            `*Pria*`,
+            `${valOrDash(safe("priaNama"))}${priaPanggilan}`,
+            `Anak ke-${valOrDash(safe("priaAnakKe"))} dari Bpk ${valOrDash(safe("priaBapak"))} & Ibu ${valOrDash(safe("priaIbu"))}`
+          ].join("\n");
+
+          const wanitaBlock = [
+            `*Wanita*`,
+            `${valOrDash(safe("wanitaNama"))}${wanitaPanggilan}`,
+            `Anak ke-${valOrDash(safe("wanitaAnakKe"))} dari Bpk ${valOrDash(safe("wanitaBapak"))} & Ibu ${valOrDash(safe("wanitaIbu"))}`
+          ].join("\n");
+
+          const akadLokasi = has("akadAlamat") ? safe("akadAlamat") : "-";
+          const resLokasi = has("resAlamat") ? safe("resAlamat") : "Sama dengan akad";
+
+          const musikText = has("musik")
+            ? `${safe("musik")}${has("musikStart") ? ` (${safe("musikStart")})` : ""}`
+            : "Tidak ada";
+
+          const sections = [
+            `*📩 ORDER UNDANGAN DIGITAL*`,
+            "",
+            section("👰🤵 *DATA MEMPELAI*", `${priaBlock}\n\n${wanitaBlock}`),
+            section("🎨 *DETAIL ORDER*", [
+              `Tema      : ${valOrDash(safe("namaTema"))}`,
+              `Susunan   : ${valOrDash(safe("susunan"))}`,
+              `Paket     : ${getPaketLabel()}`
+            ].join("\n")),
+            section("💍 *AKAD NIKAH*", [
+              `Hari/Tgl : ${valOrDash(safe("akadHari"))}, ${formatDate(safe("akadTanggal"))}`,
+              `Waktu    : ${formatTime("akadJamMulai", "akadJamSelesai", "akadSelesaiCheck", "akadZona")}`,
+              `Lokasi   : ${akadLokasi}`,
+              `Maps     : ${$("#akadMapsAda").value === "Ada" ? valOrDash(safe("akadMapsLink")) : "Tidak ada"}`
+            ].join("\n")),
+            section("🎉 *RESEPSI*", [
+              `Hari/Tgl : ${has("resHari") || has("resTanggal") ? `${valOrDash(safe("resHari"))}, ${formatDate(safe("resTanggal"))}` : "Tidak ada / belum diisi"}`,
+              `Waktu    : ${has("resJamMulai") ? formatTime("resJamMulai", "resJamSelesai", "resSelesaiCheck", "resZona") : "-"}`,
+              `Lokasi   : ${resLokasi}`,
+              `Maps     : ${$("#resMapsAda").value === "Ada" ? valOrDash(safe("resMapsLink")) : "Tidak ada"}`
+            ].join("\n")),
+            section("📌 *ACARA TAMBAHAN*", buildExtraSection()),
+            section("⚙️ *FITUR TAMBAHAN*", [
+              `Musik       : ${musikText}`,
+              `Love Story  : ${radioVal("lovestory") === "Ya" ? valOrDash(safe("lovestoryText")) : "Tidak"}`,
+              `Foto Prewed : ${valOrDash(radioVal("prewed"))}`
+            ].join("\n")),
+            section("💳 *AMPLOP DIGITAL*", buildPayments()),
+            section("🎁 *KIRIM KADO*", buildGiftSection()),
+            "━━━━━━━━━━━━━━━━━━",
+            "Halo min, saya mau order ini ya 🙏"
+          ];
+
+          return sections.join("\n\n").trim();
+        }
+
+        function updatePreview() {
+          $("#previewMessage").textContent = buildMessage();
+        }
+
+        function saveDraft() {
+          const data = {};
+          $$('input:not([type="radio"]), select, textarea').forEach((el) => {
+            if (el.id) data[el.id] = el.type === "checkbox" ? el.checked : el.value;
+          });
+
+          ["lovestory", "prewed", "amplop"].forEach((name) => data[name] = radioVal(name));
+          data.paket = document.querySelector(".paket-pill.active")?.dataset.value || "";
+          data.payments = [...payWrap.querySelectorAll(".pay-row")].map((row) => ({
+            type: row.querySelector(".p-type").value,
+            prov: row.querySelector(".p-prov").value,
+            num: row.querySelector(".p-num").value,
+            name: row.querySelector(".p-name").value
+          }));
+
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        }
+
+        function loadDraft() {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          try {
+            const data = JSON.parse(raw);
+            Object.entries(data).forEach(([key, value]) => {
+              const el = document.getElementById(key);
+              if (!el) return;
+              if (el.type === "checkbox") el.checked = value;
+              else el.value = value;
+            });
+
+            ["lovestory", "prewed", "amplop"].forEach((name) => {
+              if (!data[name]) return;
+              const target = [...$$("input[name='" + name + "']")].find((el) => el.value === data[name]);
+              if (target) target.checked = true;
+            });
+
+            syncExtra();
+            syncKado();
+            syncLoveStory();
+            syncAmplop();
+
+            renderPaket(data.paket || null);
+
+            payWrap.innerHTML = "";
+            if (Array.isArray(data.payments) && data.payments.length) {
+              data.payments.forEach((item) => payWrap.appendChild(payRowTemplate(item)));
+            }
+            togglePayButton();
+          } catch (err) {
+            console.error(err);
+          }
+        }
+
+        document.body.addEventListener("input", (e) => {
+          if (e.target.matches("input, textarea, select")) {
+            saveDraft();
+            updatePreview();
+          }
+        });
+
+        $("#sendBtn").addEventListener("click", () => {
+          const required = ["namaTema", "susunan", "priaNama", "wanitaNama", "akadHari", "akadTanggal", "akadAlamat"];
+          const missing = required.find((id) => !safe(id));
+          if (missing) {
+            alert("Mohon lengkapi data wajib terlebih dahulu.");
+            return;
+          }
+          const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(buildMessage())}`;
+          window.open(url, "_blank");
+        });
+
+        $("#resetBtn").addEventListener("click", () => {
+          if (!confirm("Yakin reset semua data form?")) return;
+          localStorage.removeItem(STORAGE_KEY);
+          location.reload();
+        });
+
+        renderPaket();
+        loadDraft();
+        syncExtra();
+        syncKado();
+        syncLoveStory();
+        syncAmplop();
+        if (payWrap.children.length === 0) payWrap.appendChild(payRowTemplate());
+        togglePayButton();
+        updatePreview();
+      })();
+    </script>
+  </body>
+</html>
