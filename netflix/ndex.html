@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Nota Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* Menggunakan font Inter sebagai default */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Latar belakang Netflix dengan overlay gelap */
+        .netflix-background {
+            background-image: url('https://assets.nflxext.com/ffe/siteui/vlv3/e94073b0-a056-402f-9015-16cb1e7e45c2/web/ID-en-20251110-TRIFECTA-perspective_29287120-1497-47a9-8b0a-49e7ded22f31_large.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Animasi fade-in untuk container */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        /* Animasi slide-in untuk hasil nota */
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .slide-in-up {
+            animation: slideInUp 0.6s ease-out forwards;
+        }
+
+        /* Custom scrollbar */
+        textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+        textarea::-webkit-scrollbar-track {
+            background: #111; /* Latar scrollbar gelap */
+            border-radius: 10px;
+        }
+        textarea::-webkit-scrollbar-thumb {
+            background: #E50914; /* Merah Netflix */
+            border-radius: 10px;
+        }
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: #b30710; /* Merah Netflix (hover) */
+        }
+    </style>
+</head>
+<body class="netflix-background text-white min-h-screen">
+
+    <div class="min-h-screen w-full bg-black/80 flex items-center justify-center p-4">
+
+        <div class="w-full max-w-md md:max-w-lg bg-black/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-800 p-6 md:p-10 fade-in">
+
+            <div class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-black uppercase text-red-600">
+                    Netflix
+                </h1>
+                <p class="text-gray-300 text-lg mt-2">Nota Generator Premium</p>
+            </div>
+
+            <form id="notaForm" class="space-y-5">
+
+                <div>
+                    <label for="nomorOrder" class="block mb-2 text-sm font-medium text-gray-300">Nomor Order</label>
+                    <input type="text" id="nomorOrder" name="nomorOrder" required placeholder="Contoh: ORD-69D0F30D936E3"
+                           class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block p-2.5 transition-all duration-300 placeholder-gray-500">
+                </div>
+
+                <div>
+                    <label for="email" class="block mb-2 text-sm font-medium text-gray-300">Email</label>
+                    <input type="email" id="email" name="email" required placeholder="email@akun.com"
+                           class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block p-2.5 transition-all duration-300 placeholder-gray-500">
+                </div>
+
+                <div>
+                    <label for="password" class="block mb-2 text-sm font-medium text-gray-300">Password</label>
+                    <input type="text" id="password" name="password" required placeholder="Masukkan password..."
+                           class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block p-2.5 transition-all duration-300 placeholder-gray-500">
+                </div>
+
+                <div>
+                    <label for="profil" class="block mb-2 text-sm font-medium text-gray-300">Profile</label>
+                    <input type="text" id="profil" name="profil" required placeholder="Contoh: bebas / Profil 1"
+                           class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block p-2.5 transition-all duration-300 placeholder-gray-500">
+                </div>
+
+                <button type="submit"
+                        class="w-full text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-800 font-bold rounded-lg text-lg px-5 py-3 text-center transition-all duration-300 transform hover:scale-105 shadow-lg shadow-red-500/30 mt-8">
+                    Generate Nota
+                </button>
+            </form>
+
+            <div id="outputSection" class="mt-10 hidden">
+                <h2 class="text-2xl font-semibold text-gray-200 mb-4 slide-in-up">Hasil Nota</h2>
+
+                <textarea id="notaOutput" rows="22"
+                          class="w-full bg-gray-900 border border-gray-700 text-gray-300 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block p-4 font-mono slide-in-up"
+                          style="animation-delay: 100ms;" readonly></textarea>
+
+                <div class="mt-4 flex flex-col sm:flex-row items-center gap-4 slide-in-up" style="animation-delay: 200ms;">
+                    <button id="editButton"
+                            class="w-full sm:w-auto text-white bg-amber-600 hover:bg-amber-700 focus:ring-4 focus:outline-none focus:ring-amber-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300 transform hover:scale-105">
+                        Edit Nota
+                    </button>
+                    <button id="copyButton"
+                            class="w-full sm:w-auto text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-all duration-300 transform hover:scale-105">
+                        Salin Nota
+                    </button>
+                    <span id="copyMessage" class="text-green-400 text-sm hidden sm:ml-4">Berhasil disalin!</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const notaFormEl = document.getElementById('notaForm');
+            const outputSectionEl = document.getElementById('outputSection');
+            const notaOutputEl = document.getElementById('notaOutput');
+            const copyButtonEl = document.getElementById('copyButton');
+            const copyMessageEl = document.getElementById('copyMessage');
+            const editButtonEl = document.getElementById('editButton');
+            const nomorOrderInput = document.getElementById('nomorOrder');
+
+            // Generate otomatis format Nomor Order saat halaman dimuat
+            nomorOrderInput.value = 'ORD-' + Math.random().toString(16).substring(2, 15).toUpperCase();
+
+            // Event listener saat form disubmit
+            notaFormEl.addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                // Ambil nilai dari semua input
+                const nomorOrder = document.getElementById('nomorOrder').value;
+                const email = document.getElementById('email').value;
+                const password = document.getElementById('password').value;
+                const profil = document.getElementById('profil').value;
+
+                // Membuat format Waktu Transaksi (Contoh: 04 Apr 2026)
+                const now = new Date();
+                const options = { day: '2-digit', month: 'short', year: 'numeric' };
+                // Mengganti nama bulan ke format singkatan bahasa Indonesia atau Inggris sesuai kebutuhan
+                const tgl = now.toLocaleDateString('en-GB', options); 
+
+                // Template Nota Netflix Sesuai Request
+                const notaTemplate = `
+Waktu Order : ${tgl}
+Nomor Order : ${nomorOrder}
+
+✨ NETFLIX PRIVATE PREMIUM – FULL GARANSI ✨
+🔒 DETAIL AKUN 🔒
+📧Email : ${email}
+🔑Password : ${password}
+👤Profile: ${profil}
+
+----------------------------------------------------------
+⚠ Perhatian Penting:
+
+TOLONG DIBACA CARA LOGIN NYA YA KAKAK :
+KALO DIMINTA KODE KLIK DAPATKAN BANTUAN ATAU GET HELP LALU KLIK GUNAKAN SANDI ATAU USE PASWORD YA
+
+✅ GARANSI AKTIF 100%
+🚫 DILARANG mengubah email, password,profil, ataupun setting akun.
+📺 Maksimal digunakan untuk 1 device saja,
+🚫 Jika terdapat tulisan salah password jangan dipaksa buat login dan segera lapor admin
+🧹 Pastikan clear cache browser / aplikasi sebelum login.
+📶 Disarankan login menggunakan data seluler, bukan WiFi publik.
+📺 Untuk User SMART TV tidak bisa LOGIN melalui APK dan Dimohonkan "LOGIN MELALUI BROWSER Atau Bisa Kami Bantu Login Menggunakan Code
+`.trim();
+
+                // Tampilkan hasil
+                notaOutputEl.value = notaTemplate;
+                notaOutputEl.readOnly = true; // Set readonly saat nota baru dibuat
+                outputSectionEl.classList.remove('hidden');
+
+                // Reset tombol Edit
+                editButtonEl.textContent = 'Edit Nota';
+                editButtonEl.classList.remove('bg-gray-600');
+                editButtonEl.classList.add('bg-amber-600');
+                editButtonEl.disabled = false;
+
+                // Scroll ke hasil
+                outputSectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+
+            // Event listener untuk tombol salin
+            copyButtonEl.addEventListener('click', () => {
+                notaOutputEl.select();
+                try {
+                    document.execCommand('copy');
+                    copyMessageEl.classList.remove('hidden');
+                    copyButtonEl.textContent = 'Berhasil Disalin!';
+                    copyButtonEl.classList.replace('bg-green-600', 'bg-blue-600'); // Ganti warna saat sukses
+
+                    setTimeout(() => {
+                        copyMessageEl.classList.add('hidden');
+                        copyButtonEl.textContent = 'Salin Nota';
+                        copyButtonEl.classList.replace('bg-blue-600', 'bg-green-600');
+                    }, 2500);
+                } catch (err) {
+                    console.error('Gagal menyalin teks: ', err);
+                    copyMessageEl.textContent = 'Gagal menyalin!';
+                    copyMessageEl.classList.replace('text-green-400', 'text-red-400');
+                    copyMessageEl.classList.remove('hidden');
+                }
+            });
+
+            // Event listener untuk tombol edit
+            editButtonEl.addEventListener('click', () => {
+                notaOutputEl.readOnly = false; // Aktifkan mode edit
+                notaOutputEl.focus(); // Fokus ke textarea
+
+                // Ubah tampilan tombol edit
+                editButtonEl.textContent = 'Mode Edit Aktif';
+                editButtonEl.classList.remove('bg-amber-600');
+                editButtonEl.classList.add('bg-gray-600');
+                editButtonEl.disabled = true; // Nonaktifkan tombol setelah diklik
+            });
+
+        });
+    </script>
+</body>
+</html>
