@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WhatsApp Nota Generator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #10a37f;
+      --wa-bg: #efe7de;
+      --wa-bubble: #dcf8c6;
+      --bg: #0f1115;
+      --card: #1a1d23;
+      --border: rgba(255,255,255,0.1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 20px;
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    .glass-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 25px;
+      height: fit-content;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .group { margin-bottom: 15px; }
+
+    label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 5px;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    input, select {
+      width: 100%;
+      background: #252830;
+      border: 1px solid #333;
+      padding: 12px;
+      border-radius: 10px;
+      color: #fff;
+      outline: none;
+      font: inherit;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+
+    .wa-preview {
+      background: url('https://user-images.githubusercontent.com/15075759/28719144-86dc0f70-73b1-11e7-911d-60d70fcded21.png');
+      background-color: var(--wa-bg);
+      border-radius: 20px;
+      padding: 20px;
+      position: relative;
+      box-shadow: inset 0 0 100px rgba(0,0,0,0.08);
+      min-height: 100%;
+    }
+
+    .wa-bubble {
+      width: 100%;
+      min-height: 460px;
+      background: var(--wa-bubble);
+      color: #303030;
+      padding: 14px;
+      border-radius: 10px 10px 10px 0;
+      font-size: 13px;
+      white-space: pre-wrap;
+      line-height: 1.55;
+      border: none;
+      resize: vertical;
+      font-family: inherit;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      transition: 0.2s;
+      font: inherit;
+    }
+
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-secondary { background: #252830; color: white; border: 1px solid #333; }
+    .btn-copy { background: #25d366; color: white; }
+
+    .helper {
+      font-size: 12px;
+      color: #999;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <div class="glass-panel">
+      <h2>🛠️ Input Data</h2>
+
+      <div class="group">
+        <label>Pilih Garansi</label>
+        <select id="inGaransi" onchange="renderWA()">
+          <option value="0">No Garansi</option>
+          <option value="7">Garansi 7 Hari</option>
+          <option value="14">Garansi 14 Hari</option>
+          <option value="25">Garansi 25 Hari Full</option>
+        </select>
+      </div>
+
+      <div class="group">
+        <label>Email Akun</label>
+        <input type="text" id="inEmail" placeholder="user@mail.com" oninput="renderWA()">
+      </div>
+
+      <div class="group">
+        <label>Password</label>
+        <input type="text" id="inPass" placeholder="••••••••" oninput="renderWA()">
+      </div>
+
+      <div class="group">
+        <label>Tanggal Pembelian</label>
+        <input type="date" id="inTgl" oninput="renderWA()">
+      </div>
+
+      <div class="helper">
+        Hasil pesan di kanan bisa langsung diedit manual sebelum disalin ke WhatsApp.
+      </div>
+    </div>
+
+    <div class="glass-panel">
+      <h2>📱 Hasil WhatsApp</h2>
+      <div class="wa-preview">
+        <textarea id="waEditable" class="wa-bubble"></textarea>
+        <div style="font-size: 10px; color: #999; margin-top: 8px; text-align: right;">12:21 PM ✓✓</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-copy" onclick="copyWA()">Salin Teks WhatsApp</button>
+        <button class="btn btn-secondary" onclick="renderWA()">Reset dari Input</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function formatTanggalIndonesia(tanggal) {
+      if (!tanggal) return '-';
+      const date = new Date(tanggal);
+      return date.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+
+    function hitungGaransi(tanggal, durasi) {
+      if (!tanggal) return 'No Garansi';
+      if (durasi <= 0) return 'No Garansi';
+
+      const date = new Date(tanggal);
+      date.setDate(date.getDate() + durasi);
+      return date.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+
+    function getRefundInfo(durasi, garansiLabel) {
+      if (durasi !== 25) return '';
+
+      const tarifPerHari = 800;
+      const contohHariNonaktif = 20;
+      const sisaHari = durasi - contohHariNonaktif;
+      const refundContoh = sisaHari * tarifPerHari;
+
+      return `\n\nINFO REFUND FULL GARANSI:\n` +
+        `Jika akun nonaktif di tengah masa garansi dan promo method kami sudah tidak bisa digunakan untuk membuat ChatGPT Plus lagi, maka refund dihitung dari sisa hari garansi.\n` +
+        `Rumus refund: sisa hari x Rp${tarifPerHari.toLocaleString('id-ID')}.\n` +
+        `Contoh: jika nonaktif di hari ke-${contohHariNonaktif}, maka sisa ${sisaHari} hari x Rp${tarifPerHari.toLocaleString('id-ID')} = Rp${refundContoh.toLocaleString('id-ID')}.`;
+    }
+
+    function renderWA() {
+      const email = document.getElementById('inEmail').value || 'customer@mail.com';
+      const pass = document.getElementById('inPass').value || 'Password123';
+      const tglBeli = document.getElementById('inTgl').value;
+      const durasi = parseInt(document.getElementById('inGaransi').value, 10);
+      const garansiLabel = document.getElementById('inGaransi').options[document.getElementById('inGaransi').selectedIndex].text;
+      const linkAkses = `https://emailqu.com/${email}`;
+
+      const tglFormatted = formatTanggalIndonesia(tglBeli);
+      const expFormatted = hitungGaransi(tglBeli, durasi);
+
+      const refundInfo = getRefundInfo(durasi, garansiLabel);
+
+      const waText = `PESANAN CHATGPT PLUS BERHASIL\n` +
+        `----------------------------------\n` +
+        `Tgl Beli: ${tglFormatted}\n` +
+        `Variasi: ${garansiLabel}\n` +
+        `Garansi: ${expFormatted}\n` +
+        `----------------------------------\n` +
+        `Email: ${email}\n` +
+        `Pass: ${pass}\n` +
+        `Akses OTP: ${linkAkses}\n` +
+        `----------------------------------\n` +
+        `CARA LOGIN:\n` +
+        `Jika meminta kode verifikasi, langsung buka link akses OTP di atas. Kode akan muncul di inbox web tersebut.\n\n` +
+        `INFO GARANSI:\n` +
+        `Klaim garansi estimasi max 48 jam. Jangan ganti data profil atau billing agar garansi tetap aktif.` + refundInfo;
+
+      document.getElementById('waEditable').value = waText;
+    }
+
+    function copyWA() {
+      const text = document.getElementById('waEditable');
+      text.select();
+      text.setSelectionRange(0, 99999);
+      document.execCommand('copy');
+
+      const btn = document.querySelector('.btn-copy');
+      const original = btn.innerText;
+      btn.innerText = '✅ Tersalin!';
+      setTimeout(() => {
+        btn.innerText = original;
+      }, 2000);
+    }
+
+    document.getElementById('inTgl').valueAsDate = new Date();
+    renderWA();
+  </script>
+</body>
+</html>
