@@ -10,12 +10,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
 
     <style>
-        /* Menggunakan font Inter sebagai default */
         body {
             font-family: 'Inter', sans-serif;
         }
 
-        /* Latar belakang Netflix dengan overlay gelap */
         .netflix-background {
             background-image: url('https://assets.nflxext.com/ffe/siteui/vlv3/e94073b0-a056-402f-9015-16cb1e7e45c2/web/ID-en-20251110-TRIFECTA-perspective_29287120-1497-47a9-8b0a-49e7ded22f31_large.jpg');
             background-size: cover;
@@ -23,7 +21,6 @@
             background-repeat: no-repeat;
         }
 
-        /* Animasi fade-in untuk container */
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -33,7 +30,6 @@
             animation: fadeIn 0.8s ease-out forwards;
         }
 
-        /* Animasi slide-in untuk hasil nota */
         @keyframes slideInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
@@ -43,27 +39,25 @@
             animation: slideInUp 0.6s ease-out forwards;
         }
 
-        /* Custom scrollbar */
         textarea::-webkit-scrollbar {
             width: 8px;
         }
         textarea::-webkit-scrollbar-track {
-            background: #111; /* Latar scrollbar gelap */
+            background: #111;
             border-radius: 10px;
         }
         textarea::-webkit-scrollbar-thumb {
-            background: #E50914; /* Merah Netflix */
+            background: #E50914;
             border-radius: 10px;
         }
         textarea::-webkit-scrollbar-thumb:hover {
-            background: #b30710; /* Merah Netflix (hover) */
+            background: #b30710;
         }
     </style>
 </head>
 <body class="netflix-background text-white min-h-screen">
 
     <div class="min-h-screen w-full bg-black/80 flex items-center justify-center p-4">
-
         <div class="w-full max-w-md md:max-w-lg bg-black/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-800 p-6 md:p-10 fade-in">
 
             <div class="text-center mb-8">
@@ -77,7 +71,7 @@
 
                 <div>
                     <label for="nomorOrder" class="block mb-2 text-sm font-medium text-gray-300">Nomor Order</label>
-                    <input type="text" id="nomorOrder" name="nomorOrder" required placeholder="Contoh: ORD-69D0F30D936E3"
+                    <input type="text" id="nomorOrder" name="nomorOrder" required placeholder="Isi nomor order..."
                            class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block p-2.5 transition-all duration-300 placeholder-gray-500">
                 </div>
 
@@ -94,8 +88,17 @@
                 </div>
 
                 <div>
-                    <label for="profil" class="block mb-2 text-sm font-medium text-gray-300">Profile</label>
-                    <input type="text" id="profil" name="profil" required placeholder="Contoh: bebas / Profil 1"
+                    <label for="profilMode" class="block mb-2 text-sm font-medium text-gray-300">Profile</label>
+                    <select id="profilMode" name="profilMode"
+                            class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block p-2.5 transition-all duration-300">
+                        <option value="bebas">Bebas Pilih (asal jangan profile kids)</option>
+                        <option value="custom">Isi sendiri</option>
+                    </select>
+                </div>
+
+                <div id="profilCustomWrapper" class="hidden">
+                    <label for="profilCustom" class="block mb-2 text-sm font-medium text-gray-300">Isi Profile Sendiri</label>
+                    <input type="text" id="profilCustom" name="profilCustom" placeholder="Contoh: Profil 1"
                            class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block p-2.5 transition-all duration-300 placeholder-gray-500">
                 </div>
 
@@ -108,7 +111,7 @@
             <div id="outputSection" class="mt-10 hidden">
                 <h2 class="text-2xl font-semibold text-gray-200 mb-4 slide-in-up">Hasil Nota</h2>
 
-                <textarea id="notaOutput" rows="22"
+                <textarea id="notaOutput" rows="28"
                           class="w-full bg-gray-900 border border-gray-700 text-gray-300 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block p-4 font-mono slide-in-up"
                           style="animation-delay: 100ms;" readonly></textarea>
 
@@ -136,76 +139,110 @@
             const copyButtonEl = document.getElementById('copyButton');
             const copyMessageEl = document.getElementById('copyMessage');
             const editButtonEl = document.getElementById('editButton');
-            const nomorOrderInput = document.getElementById('nomorOrder');
 
-            // Generate otomatis format Nomor Order saat halaman dimuat
-            nomorOrderInput.value = 'ORD-' + Math.random().toString(16).substring(2, 15).toUpperCase();
+            const profilModeEl = document.getElementById('profilMode');
+            const profilCustomWrapperEl = document.getElementById('profilCustomWrapper');
+            const profilCustomEl = document.getElementById('profilCustom');
 
-            // Event listener saat form disubmit
+            profilModeEl.addEventListener('change', () => {
+                if (profilModeEl.value === 'custom') {
+                    profilCustomWrapperEl.classList.remove('hidden');
+                    profilCustomEl.required = true;
+                } else {
+                    profilCustomWrapperEl.classList.add('hidden');
+                    profilCustomEl.required = false;
+                    profilCustomEl.value = '';
+                }
+            });
+
             notaFormEl.addEventListener('submit', (e) => {
                 e.preventDefault();
 
-                // Ambil nilai dari semua input
                 const nomorOrder = document.getElementById('nomorOrder').value;
                 const email = document.getElementById('email').value;
                 const password = document.getElementById('password').value;
-                const profil = document.getElementById('profil').value;
 
-                // Membuat format Waktu Transaksi (Contoh: 04 Apr 2026)
+                let profil = 'Bebas Pilih (asal jangan profile kids)';
+                if (profilModeEl.value === 'custom') {
+                    profil = profilCustomEl.value.trim();
+                }
+
                 const now = new Date();
                 const options = { day: '2-digit', month: 'short', year: 'numeric' };
-                // Mengganti nama bulan ke format singkatan bahasa Indonesia atau Inggris sesuai kebutuhan
-                const tgl = now.toLocaleDateString('en-GB', options); 
+                const tgl = now.toLocaleDateString('id-ID', options);
 
-                // Template Nota Netflix Sesuai Request
                 const notaTemplate = `
 Waktu Order : ${tgl}
 Nomor Order : ${nomorOrder}
 
-✨ NETFLIX PRIVATE PREMIUM – FULL GARANSI ✨
+✨ NETFLIX 1 DEVICE ✨ 
 🔒 DETAIL AKUN 🔒
-📧Email : ${email}
-🔑Password : ${password}
-👤Profile: ${profil}
+📧 Email : ${email}
+🔑 Password : ${password}
+👤 Profile : ${profil}
 
-----------------------------------------------------------
+────────────────────────────
 ⚠ Perhatian Penting:
 
-TOLONG DIBACA CARA LOGIN NYA YA KAKAK :
-KALO DIMINTA KODE KLIK DAPATKAN BANTUAN ATAU GET HELP LALU KLIK GUNAKAN SANDI ATAU USE PASWORD YA
+TOLONG DIBACA CARA LOGIN NYA YA KAKAK:
+KALO DIMINTA KODE, KLIK "DAPATKAN BANTUAN" / "GET HELP"
+LALU KLIK "GUNAKAN SANDI" / "USE PASSWORD" YA
 
-✅ GARANSI AKTIF 100%
-🚫 DILARANG mengubah email, password,profil, ataupun setting akun.
-📺 Maksimal digunakan untuk 1 device saja,
-🚫 Jika terdapat tulisan salah password jangan dipaksa buat login dan segera lapor admin
-🧹 Pastikan clear cache browser / aplikasi sebelum login.
-📶 Disarankan login menggunakan data seluler, bukan WiFi publik.
-📺 Untuk User SMART TV tidak bisa LOGIN melalui APK dan Dimohonkan "LOGIN MELALUI BROWSER Atau Bisa Kami Bantu Login Menggunakan Code
+✅ MAX GARANSI 25 hari dan harus mengikuti peraturan
+✅ WAJIB laporan device jika berhasil login
+📶 WAJIB login menggunakan data seluler / hotspot dari kuota pribadi
+Jangan pakai WiFi publik dulu saat login
+Kalau sudah untuk nonton, boleh pakai WiFi provider (Indihome, Biznet, dll)
+
+🚫 DILARANG mengubah email, password, profil, ataupun setting akun
+HANYA BOLEH NONTON
+
+📺 Maksimal digunakan untuk 1 device saja
+Jika ketahuan lebih, AKSES KAMI CABUT & NO GARANSI
+
+🚫 Jika terdapat tulisan salah password, jangan dipaksa login
+Segera lapor admin
+
+🧹 Pastikan clear cache browser / aplikasi sebelum login
+
+📺 Untuk user SMART TV:
+Jika di TV tidak bisa login langsung menggunakan email & Password, silahkan LOGIN MELALUI Browser HP (akses kode nya cek di link bawah)
+atau bisa kami bantu login menggunakan kode
+
+Berikut link bantuan Netflix:
+A. Hapus cookies Netflix:
+https://www.netflix.com/clearcookies
+
+B. Akses kode login untuk TV:
+https://www.netflix.com/tv2
+(masukkan kode yang ada di TV, lalu masukkan email & password akun)
+
+C. Login Netflix di browser agar muncul halaman email & password:
+1. https://help.netflix.com/id/node/311830241325668
+2. Klik "Gabung ke Netflix"
+3. Klik "Masuk"
+4. Akan muncul halaman login berupa Email & Password
 `.trim();
 
-                // Tampilkan hasil
                 notaOutputEl.value = notaTemplate;
-                notaOutputEl.readOnly = true; // Set readonly saat nota baru dibuat
+                notaOutputEl.readOnly = true;
                 outputSectionEl.classList.remove('hidden');
 
-                // Reset tombol Edit
                 editButtonEl.textContent = 'Edit Nota';
                 editButtonEl.classList.remove('bg-gray-600');
                 editButtonEl.classList.add('bg-amber-600');
                 editButtonEl.disabled = false;
 
-                // Scroll ke hasil
                 outputSectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
             });
 
-            // Event listener untuk tombol salin
             copyButtonEl.addEventListener('click', () => {
                 notaOutputEl.select();
                 try {
                     document.execCommand('copy');
                     copyMessageEl.classList.remove('hidden');
                     copyButtonEl.textContent = 'Berhasil Disalin!';
-                    copyButtonEl.classList.replace('bg-green-600', 'bg-blue-600'); // Ganti warna saat sukses
+                    copyButtonEl.classList.replace('bg-green-600', 'bg-blue-600');
 
                     setTimeout(() => {
                         copyMessageEl.classList.add('hidden');
@@ -220,19 +257,18 @@ KALO DIMINTA KODE KLIK DAPATKAN BANTUAN ATAU GET HELP LALU KLIK GUNAKAN SANDI AT
                 }
             });
 
-            // Event listener untuk tombol edit
             editButtonEl.addEventListener('click', () => {
-                notaOutputEl.readOnly = false; // Aktifkan mode edit
-                notaOutputEl.focus(); // Fokus ke textarea
+                notaOutputEl.readOnly = false;
+                notaOutputEl.focus();
 
-                // Ubah tampilan tombol edit
                 editButtonEl.textContent = 'Mode Edit Aktif';
                 editButtonEl.classList.remove('bg-amber-600');
                 editButtonEl.classList.add('bg-gray-600');
-                editButtonEl.disabled = true; // Nonaktifkan tombol setelah diklik
+                editButtonEl.disabled = true;
             });
-
         });
     </script>
+
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v8c78df7c7c0f484497ecbca7046644da1771523124516" integrity="sha512-8DS7rgIrAmghBFwoOTujcf6D9rXvH8xm8JQ1Ja01h9QX8EzXldiszufYa4IFfKdLUKTTrnSFXLDkUEOTrZQ8Qg==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
