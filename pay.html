@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Babayshop QRIS Chat Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(125, 211, 252, 0.32), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(196, 181, 253, 0.32), transparent 30%),
+        linear-gradient(135deg, #eef6ff 0%, #f8fafc 45%, #f5f3ff 100%);
+    }
+    .glass-card {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 20px 60px rgba(15, 23, 42, 0.10);
+    }
+    .soft-ring:focus {
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.14);
+      border-color: rgba(99, 102, 241, 0.55);
+    }
+  </style>
+</head>
+<body class="min-h-screen p-4 md:p-6">
+  <div class="max-w-3xl mx-auto">
+    <div class="glass-card rounded-[28px] border border-white/70 overflow-hidden">
+      <div class="h-2 bg-gradient-to-r from-sky-400 via-indigo-500 to-violet-400"></div>
+
+      <div class="p-5 md:p-8">
+        <div class="text-center mb-6 md:mb-8">
+          <div class="w-14 h-14 rounded-2xl mx-auto mb-3 bg-gradient-to-br from-sky-400 to-indigo-500 text-white flex items-center justify-center text-2xl font-extrabold shadow-lg">B</div>
+          <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">Babayshop QRIS Chat Generator</h1>
+          <p class="text-slate-500 mt-2 text-sm md:text-base">Isi nama produk dan total nominal. Hasil chat bisa langsung diedit lalu disalin.</p>
+        </div>
+
+        <form id="chatForm" class="space-y-4">
+          <div>
+            <label for="productName" class="block text-sm font-semibold text-slate-700 mb-2">Nama produk</label>
+            <input id="productName" type="text" placeholder="Tulis nama produk di sini" class="soft-ring w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-700 placeholder:text-slate-400 transition" />
+          </div>
+
+          <div>
+            <label for="nominal" class="block text-sm font-semibold text-slate-700 mb-2">Nominal (sudah termasuk fee)</label>
+            <input id="nominal" type="number" inputmode="numeric" placeholder="Contoh: 35500" class="soft-ring w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-700 placeholder:text-slate-400 transition" />
+          </div>
+
+          <button type="submit" class="w-full rounded-2xl bg-gradient-to-r from-sky-500 via-indigo-500 to-violet-500 px-4 py-3.5 text-white font-bold shadow-lg shadow-indigo-200 transition hover:-translate-y-0.5">
+            Generate Chat
+          </button>
+        </form>
+
+        <div id="outputSection" class="hidden mt-6 pt-6 border-t border-dashed border-slate-200">
+          <div class="flex items-center justify-between gap-3 mb-3">
+            <div>
+              <h2 class="text-lg font-bold text-slate-800">Hasil Chat</h2>
+              <p class="text-sm text-slate-500">Bisa langsung diedit sebelum disalin.</p>
+            </div>
+            <span id="totalBadge" class="inline-flex items-center rounded-full bg-indigo-50 px-3 py-1 text-sm font-semibold text-indigo-600">Rp0</span>
+          </div>
+
+          <textarea id="chatOutput" rows="14" class="soft-ring w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm md:text-[15px] leading-7 text-slate-700 resize-y"></textarea>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
+            <button id="copyBtn" type="button" class="rounded-2xl bg-emerald-500 px-4 py-3 text-white font-bold shadow-md shadow-emerald-100 hover:bg-emerald-600 transition">Salin Hasil</button>
+            <button id="regenerateBtn" type="button" class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-700 font-bold hover:bg-slate-50 transition">Generate Ulang</button>
+          </div>
+
+          <p id="feedback" class="hidden text-center text-emerald-600 font-semibold text-sm mt-3">Berhasil disalin ✨</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function formatRupiah(value) {
+      const number = Number(value) || 0;
+      return 'Rp' + number.toLocaleString('id-ID');
+    }
+
+    function encodeDigitsToPercent(value) {
+      return String(value)
+        .split('')
+        .map(function(char) {
+          return '%' + char.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0');
+        })
+        .join('');
+    }
+
+    function getTemplate(productName, total, link) {
+      const safeProduct = productName && productName.trim() ? productName.trim() : '';
+      const productLine = safeProduct
+        ? 'Silahkan lakukan payment, untuk produk digital :
+- ' + safeProduct
+        : 'Silahkan lakukan payment, untuk produk digital :
+- ';
+
+      return productLine +
+        '
+
+' +
+        'dengan cara :
+' +
+        'Klik link dibawah ini untuk melihat Barcode QRIS :
+
+' +
+        link +
+        '
+
+' +
+        'Total payment + fee : ' + formatRupiah(total) + '
+' +
+        'Jika sudah melakukan payment, mohon kirimkan bukti transfer ya.
+
+' +
+        'Terimakasih 🙏🏻';
+    }
+
+    function generateChat() {
+      var productName = document.getElementById('productName').value;
+      var nominalValue = document.getElementById('nominal').value;
+      var total = Number(nominalValue);
+
+      if (!nominalValue || isNaN(total) || total <= 0) {
+        alert('Masukkan nominal yang valid dulu ya.');
+        return;
+      }
+
+      var encodedTotal = encodeDigitsToPercent(total);
+      var link = 'https://babay.web.id/QRIS/?pay=' + encodedTotal;
+      var message = getTemplate(productName, total, link);
+
+      document.getElementById('chatOutput').value = message;
+      document.getElementById('totalBadge').textContent = formatRupiah(total);
+      document.getElementById('outputSection').classList.remove('hidden');
+    }
+
+    document.getElementById('chatForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      generateChat();
+    });
+
+    document.getElementById('regenerateBtn').addEventListener('click', function() {
+      generateChat();
+    });
+
+    document.getElementById('copyBtn').addEventListener('click', function() {
+      var output = document.getElementById('chatOutput');
+      var feedback = document.getElementById('feedback');
+
+      output.focus();
+      output.select();
+      output.setSelectionRange(0, 99999);
+
+      try {
+        document.execCommand('copy');
+        feedback.classList.remove('hidden');
+        setTimeout(function() {
+          feedback.classList.add('hidden');
+        }, 1800);
+      } catch (err) {
+        alert('Gagal menyalin otomatis. Silahkan copy manual dari kolom hasil chat.');
+      }
+    });
+  </script>
+</body>
+</html>
