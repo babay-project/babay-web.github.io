@@ -49,7 +49,7 @@
 
           <div>
             <label for="nominal" class="block text-sm font-semibold text-slate-700 mb-2">Nominal (sudah termasuk fee)</label>
-            <input id="nominal" type="number" inputmode="numeric" placeholder="Contoh: 35500" class="soft-ring w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-700 placeholder:text-slate-400 transition" />
+            <input id="nominal" type="number" inputmode="numeric" placeholder="Contoh: 35000" class="soft-ring w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-700 placeholder:text-slate-400 transition" />
           </div>
 
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -85,15 +85,6 @@
       return 'Rp' + number.toLocaleString('id-ID');
     }
 
-    function encodeDigitsToPercent(value) {
-      return String(value)
-        .split('')
-        .map(function(char) {
-          return '%' + char.charCodeAt(0).toString(16).toUpperCase().padStart(2, '0');
-        })
-        .join('');
-    }
-
     function getTemplate(productName, total, link) {
       var safeProduct = productName && productName.trim() ? productName.trim() : '';
       var productLine = safeProduct
@@ -121,20 +112,19 @@
         return;
       }
 
-      var encodedTotal = encodeDigitsToPercent(total);
-      var link = 'https://babay.web.id/QRIS/?pay=' + encodedTotal;
+      var link = 'https://babay.web.id/QRIS/?pay=' + total;
       var message = getTemplate(productName, total, link);
 
       document.getElementById('chatOutput').value = message;
       document.getElementById('totalBadge').textContent = formatRupiah(total);
     }
 
-    document.getElementById('chatForm').addEventListener('submit', function(e) {
+    document.getElementById('chatForm').addEventListener('submit', function (e) {
       e.preventDefault();
       generateChat();
     });
 
-    document.getElementById('copyBtn').addEventListener('click', function() {
+    document.getElementById('copyBtn').addEventListener('click', function () {
       var output = document.getElementById('chatOutput');
       var feedback = document.getElementById('feedback');
 
@@ -145,7 +135,7 @@
       try {
         document.execCommand('copy');
         feedback.classList.remove('hidden');
-        setTimeout(function() {
+        setTimeout(function () {
           feedback.classList.add('hidden');
         }, 1800);
       } catch (err) {
