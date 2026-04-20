@@ -17,7 +17,7 @@
         linear-gradient(135deg, #eef6ff 0%, #f8fafc 45%, #f5f3ff 100%);
     }
     .glass-card {
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       box-shadow: 0 20px 60px rgba(15, 23, 42, 0.10);
@@ -38,7 +38,7 @@
         <div class="text-center mb-6 md:mb-8">
           <div class="w-14 h-14 rounded-2xl mx-auto mb-3 bg-gradient-to-br from-sky-400 to-indigo-500 text-white flex items-center justify-center text-2xl font-extrabold shadow-lg">B</div>
           <h1 class="text-2xl md:text-3xl font-extrabold text-slate-800 tracking-tight">Babayshop QRIS Chat Generator</h1>
-          <p class="text-slate-500 mt-2 text-sm md:text-base">Isi nama produk dan total nominal. Hasil chat bisa langsung diedit lalu disalin.</p>
+          <p class="text-slate-500 mt-2 text-sm md:text-base">Isi data, klik generate, lalu edit hasilnya langsung di bawah dan salin semuanya.</p>
         </div>
 
         <form id="chatForm" class="space-y-4">
@@ -52,26 +52,26 @@
             <input id="nominal" type="number" inputmode="numeric" placeholder="Contoh: 35500" class="soft-ring w-full rounded-2xl border border-slate-200 bg-white px-4 py-3.5 text-slate-700 placeholder:text-slate-400 transition" />
           </div>
 
-          <button type="submit" class="w-full rounded-2xl bg-gradient-to-r from-sky-500 via-indigo-500 to-violet-500 px-4 py-3.5 text-white font-bold shadow-lg shadow-indigo-200 transition hover:-translate-y-0.5">
-            Generate Chat
-          </button>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <button type="submit" class="w-full rounded-2xl bg-gradient-to-r from-sky-500 via-indigo-500 to-violet-500 px-4 py-3.5 text-white font-bold shadow-lg shadow-indigo-200 transition hover:-translate-y-0.5">
+              Generate Chat
+            </button>
+            <button id="copyBtn" type="button" class="w-full rounded-2xl bg-emerald-500 px-4 py-3.5 text-white font-bold shadow-md shadow-emerald-100 hover:bg-emerald-600 transition">
+              Copy All
+            </button>
+          </div>
         </form>
 
-        <div id="outputSection" class="hidden mt-6 pt-6 border-t border-dashed border-slate-200">
-          <div class="flex items-center justify-between gap-3 mb-3">
+        <div class="mt-6 pt-6 border-t border-dashed border-slate-200">
+          <div class="flex items-center justify-between gap-3 mb-3 flex-wrap">
             <div>
               <h2 class="text-lg font-bold text-slate-800">Hasil Chat</h2>
-              <p class="text-sm text-slate-500">Bisa langsung diedit sebelum disalin.</p>
+              <p class="text-sm text-slate-500">Kolom ini langsung tampil, bisa diedit, lalu disalin semua.</p>
             </div>
             <span id="totalBadge" class="inline-flex items-center rounded-full bg-indigo-50 px-3 py-1 text-sm font-semibold text-indigo-600">Rp0</span>
           </div>
 
-          <textarea id="chatOutput" rows="14" class="soft-ring w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm md:text-[15px] leading-7 text-slate-700 resize-y"></textarea>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-4">
-            <button id="copyBtn" type="button" class="rounded-2xl bg-emerald-500 px-4 py-3 text-white font-bold shadow-md shadow-emerald-100 hover:bg-emerald-600 transition">Salin Hasil</button>
-            <button id="regenerateBtn" type="button" class="rounded-2xl border border-slate-200 bg-white px-4 py-3 text-slate-700 font-bold hover:bg-slate-50 transition">Generate Ulang</button>
-          </div>
+          <textarea id="chatOutput" rows="14" class="soft-ring w-full rounded-2xl border border-slate-200 bg-slate-50 px-4 py-4 text-sm md:text-[15px] leading-7 text-slate-700 resize-y" placeholder="Hasil chat akan muncul di sini..."></textarea>
 
           <p id="feedback" class="hidden text-center text-emerald-600 font-semibold text-sm mt-3">Berhasil disalin ✨</p>
         </div>
@@ -81,7 +81,7 @@
 
   <script>
     function formatRupiah(value) {
-      const number = Number(value) || 0;
+      var number = Number(value) || 0;
       return 'Rp' + number.toLocaleString('id-ID');
     }
 
@@ -95,31 +95,19 @@
     }
 
     function getTemplate(productName, total, link) {
-      const safeProduct = productName && productName.trim() ? productName.trim() : '';
-      const productLine = safeProduct
-        ? 'Silahkan lakukan payment, untuk produk digital :
-- ' + safeProduct
-        : 'Silahkan lakukan payment, untuk produk digital :
-- ';
+      var safeProduct = productName && productName.trim() ? productName.trim() : '';
+      var productLine = safeProduct
+        ? 'Silahkan lakukan payment, untuk produk digital :\n- ' + safeProduct
+        : 'Silahkan lakukan payment, untuk produk digital :\n- ';
 
       return productLine +
-        '
-
-' +
-        'dengan cara :
-' +
-        'Klik link dibawah ini untuk melihat Barcode QRIS :
-
-' +
+        '\n\n' +
+        'dengan cara :\n' +
+        'Klik link dibawah ini untuk melihat Barcode QRIS :\n\n' +
         link +
-        '
-
-' +
-        'Total payment + fee : ' + formatRupiah(total) + '
-' +
-        'Jika sudah melakukan payment, mohon kirimkan bukti transfer ya.
-
-' +
+        '\n\n' +
+        'Total payment + fee : ' + formatRupiah(total) + '\n' +
+        'Jika sudah melakukan payment, mohon kirimkan bukti transfer ya.\n\n' +
         'Terimakasih 🙏🏻';
     }
 
@@ -139,15 +127,10 @@
 
       document.getElementById('chatOutput').value = message;
       document.getElementById('totalBadge').textContent = formatRupiah(total);
-      document.getElementById('outputSection').classList.remove('hidden');
     }
 
     document.getElementById('chatForm').addEventListener('submit', function(e) {
       e.preventDefault();
-      generateChat();
-    });
-
-    document.getElementById('regenerateBtn').addEventListener('click', function() {
       generateChat();
     });
 
