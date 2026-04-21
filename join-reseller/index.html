@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Open Reseller Babayshop</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: rgba(255,255,255,0.08);
+      --card-border: rgba(255,255,255,0.12);
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --accent: #f59e0b;
+      --accent-2: #22c55e;
+      --danger: #fb7185;
+      --shadow: 0 20px 50px rgba(0,0,0,0.3);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top right, rgba(245,158,11,0.18), transparent 30%),
+        radial-gradient(circle at top left, rgba(34,197,94,0.14), transparent 25%),
+        linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 72px 0 48px;
+    }
+
+    .hero-box {
+      background: linear-gradient(135deg, rgba(245,158,11,0.16), rgba(255,255,255,0.04));
+      border: 1px solid var(--card-border);
+      border-radius: 28px;
+      padding: 36px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(34,197,94,0.16);
+      border: 1px solid rgba(34,197,94,0.3);
+      color: #dcfce7;
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: clamp(34px, 6vw, 62px);
+      line-height: 1.05;
+      margin: 0 0 18px;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      font-size: 18px;
+      color: var(--muted);
+      margin-bottom: 28px;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 26px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-weight: 700;
+      transition: 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #111827;
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.06);
+      border-color: rgba(255,255,255,0.14);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+    .info-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .link-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .link-card small {
+      color: var(--muted);
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    .section {
+      padding: 28px 0;
+    }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      margin: 0 0 10px;
+    }
+
+    .section-desc {
+      color: var(--muted);
+      margin: 0 0 28px;
+      max-width: 760px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 22px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+    }
+
+    .card h3 {
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 22px;
+    }
+
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .steps {
+      counter-reset: step;
+      display: grid;
+      gap: 16px;
+    }
+
+    .step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .step::before {
+      counter-increment: step;
+      content: counter(step);
+      min-width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #111827;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+
+    .step strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 18px;
+    }
+
+    .example {
+      border-left: 5px solid var(--accent-2);
+      padding: 20px;
+      background: rgba(34,197,94,0.08);
+      border-radius: 18px;
+    }
+
+    .example ul,
+    .checklist,
+    .tips,
+    .padlet-list {
+      margin: 14px 0 0;
+      padding-left: 20px;
+    }
+
+    .highlight {
+      color: #fde68a;
+      font-weight: 700;
+    }
+
+    .mockup {
+      background: linear-gradient(180deg, #111827, #1e293b);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: 18px;
+    }
+
+    .mockup-header {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.3);
+    }
+
+    .mockup-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    .product-box {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 18px;
+      padding: 14px;
+      min-height: 150px;
+    }
+
+    .product-box .thumb {
+      height: 74px;
+      border-radius: 12px;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #f59e0b, #7c3aed);
+      opacity: 0.88;
+    }
+
+    .product-box strong {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .product-box span {
+      display: block;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .footer-cta {
+      margin: 28px 0 64px;
+      text-align: center;
+      padding: 28px;
+      background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(34,197,94,0.16));
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+    }
+
+    .footer-cta h2 {
+      margin-top: 0;
+      font-size: clamp(28px, 4vw, 42px);
+    }
+
+    .footer-cta p {
+      color: var(--muted);
+      max-width: 720px;
+      margin: 0 auto 20px;
+    }
+
+    @media (max-width: 720px) {
+      .hero-box, .card, .footer-cta { padding: 22px; }
+      .mockup-grid { grid-template-columns: 1fr; }
+      .subtitle { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="popup" class="popup-overlay">
+    <div class="popup-box">
+      <h2>Siap Jadi Reseller?</h2>
+      <p>
+        Apakah kamu benar-benar siap jadi reseller tanpa modal?
+      </p>
+      <ul>
+        <li>Siap fast respon ke customer</li>
+        <li>Siap kasih pelayanan terbaik</li>
+        <li>Sabar menghadapi customer</li>
+        <li>Sabar juga menghadapi admin Babay 😄</li>
+      </ul>
+      <p><strong>Kalau siap, yuk lanjut 🚀</strong></p>
+      <button onclick="closePopup()">Saya Siap</button>
+    </div>
+  </div>
+
+  <style>
+    .popup-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .popup-box {
+      background: #0f172a;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 28px;
+      border-radius: 20px;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      animation: fadeIn 0.4s ease;
+    }
+    .popup-box h2 { margin-top: 0; }
+    .popup-box ul {
+      text-align: left;
+      margin: 16px 0;
+      padding-left: 18px;
+    }
+    .popup-box button {
+      margin-top: 12px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      background: #f59e0b;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+
+  <script>
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+    }
+  </script>
+  <header class="hero">
+    <div class="container">
+      <div class="hero-box">
+        <div class="badge">OPEN RESELLER BABAYSHOP</div>
+        <h1>Jualan Digital Tanpa Modal, Tanpa Stok, dan Mudah Dijalanin</h1>
+        <p class="subtitle">
+          Buat kamu yang mau mulai jualan produk digital seperti Netflix, CapCut, Canva, ChatGPT, dan lainnya,
+          kamu bisa gabung jadi reseller Babayshop. Kamu cukup fokus promosi dan cari pembeli, sedangkan proses akun dan pesanan kami yang siapkan.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#cara-kerja">Lihat Cara Kerja</a>
+          <a class="btn btn-secondary" href="#padlet">Panduan Buat Price List</a>
+        </div>
+        <div class="info-links">
+          <a class="link-card" href="https://babayproject.my.id/seller" target="_blank" rel="noopener noreferrer">
+            <small>Harga khusus reseller</small>
+            <strong>babayproject.my.id/seller</strong>
+          </a>
+          <a class="link-card" href="https://babayshop.my.id/" target="_blank" rel="noopener noreferrer">
+            <small>Harga jual umum / referensi pasar</small>
+            <strong>babayshop.my.id</strong>
+          </a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <h2 class="section-title">Kenapa Cocok Buat Pemula?</h2>
+        <p class="section-desc">Sistem reseller ini dibuat supaya mudah dipahami dan bisa langsung dijalankan, bahkan kalau kamu baru mulai jualan online.</p>
+        <div class="grid grid-3">
+          <div class="card">
+            <h3>Tanpa Modal Besar</h3>
+            <p>Kamu tidak perlu stok produk dulu. Pembeli transfer ke kamu lebih dulu, baru pesanan diproses.</p>
+          </div>
+          <div class="card">
+            <h3>Tanpa Buat Akun Sendiri</h3>
+            <p>Semua proses akun, pesanan, dan penyiapan produk dibantu oleh kami. Kamu tinggal lanjutkan ke pembeli.</p>
+          </div>
+          <div class="card">
+            <h3>Bebas Atur Untung</h3>
+            <p>Kamu bisa tentukan sendiri harga jual ke pembeli, jadi keuntungan berasal dari selisih harga reseller.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="cara-kerja">
+      <div class="container">
+        <h2 class="section-title">Cara Kerja Reseller</h2>
+        <p class="section-desc">Alurnya sederhana. Tinggal ikuti langkah berikut dari awal sampai pesanan selesai.</p>
+        <div class="steps">
+          <div class="step"><div><strong>Kamu promosi dan cari pembeli</strong><span>Bisa lewat WhatsApp, Instagram, Facebook, Telegram, atau status harian.</span></div></div>
+          <div class="step"><div><strong>Pembeli order ke kamu</strong><span>Saat ada yang minat, kamu tinggal tawarkan produk dan durasi sesuai kebutuhan pembeli.</span></div></div>
+          <div class="step"><div><strong>Pembeli transfer ke kamu</strong><span>Pembeli membayar ke kamu sesuai harga jual yang sudah kamu tentukan sendiri.</span></div></div>
+          <div class="step"><div><strong>Kamu kirim detail pesanan ke kami</strong><span>Cukup info produk yang dipesan dan durasinya, misalnya CapCut 1 bulan.</span></div></div>
+          <div class="step"><div><strong>Kami siapkan akun atau pesanan</strong><span>Kami yang memproses pesanan sampai siap dikirim.</span></div></div>
+          <div class="step"><div><strong>Kami kirim ke kamu</strong><span>Setelah siap, detail akun atau pesanan akan kami kirim ke kamu.</span></div></div>
+          <div class="step"><div><strong>Kamu forward ke pembeli</strong><span>Kamu tinggal teruskan akun atau pesanan ke pembeli dengan cepat dan rapi.</span></div></div>
+          <div class="step"><div><strong>Pastikan pembeli berhasil login</strong><span>Kalau akun sudah bisa dipakai dan pembeli sudah masuk, berarti pesanan selesai.</span></div></div>
+          <div class="step"><div><strong>Kamu transfer modal ke kami</strong><span>Setelah pesanan beres, kamu transfer harga reseller sesuai produk yang dipesan.</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container grid grid-2">
+        <div class="card">
+          <h2 class="section-title" style="font-size:32px; margin-top:0;">Contoh Perhitungan Untung</h2>
+          <div class="example">
+            <strong>Contoh produk: CapCut 1 bulan</strong>
+            <ul>
+              <li>Harga reseller dari kami: <span class="highlight">Rp18.000</span></li>
+              <li>Harga jual kamu ke pembeli: <span class="highlight">Rp25.000</span></li>
+              <li>Pembeli transfer ke kamu: <span class="highlight">Rp25.000</span></li>
+              <li>Setelah pesanan selesai, kamu transfer ke kami: <span class="highlight">Rp18.000</span></li>
+            </ul>
+            <p style="margin-top:14px;"><strong>Keuntungan kamu: Rp7.000 per transaksi</strong></p>
+          </div>
+        </div>
+        <div class="card">
+          <h2 class="section-title" style="font-size:32px; margin-top:0;">Keuntungan Join</h2>
+          <ul class="checklist">
+            <li>Tanpa modal besar</li>
+            <li>Tanpa stok barang</li>
+            <li>Tidak perlu bikin akun sendiri</li>
+            <li>Proses dibantu dari awal sampai selesai</li>
+            <li>Bisa jual kapan saja dan dari mana saja</li>
+            <li>Cocok untuk tambahan penghasilan</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="padlet">
+      <div class="container grid grid-2">
+        <div>
+          <h2 class="section-title">Cara Membuat Daftar Harga Sendiri di Padlet</h2>
+          <p class="section-desc">
+            Supaya jualan terlihat lebih rapi dan profesional, kamu disarankan bikin price list sendiri.
+            Salah satu cara paling mudah adalah pakai <strong>Padlet</strong>, karena tampilannya bisa dibuat seperti katalog produk.
+          </p>
+          <div class="card">
+            <h3>Langkah-langkahnya</h3>
+            <ol class="padlet-list">
+              <li>Buka <strong>padlet.com</strong> lalu login.</li>
+              <li>Klik <strong>Make a Padlet</strong>.</li>
+              <li>Pilih tampilan <strong>Grid</strong> atau <strong>Wall</strong> supaya produk tersusun rapi.</li>
+              <li>Klik tombol <strong>(+)</strong> untuk menambah produk baru.</li>
+              <li>Isi judul dengan nama produk, misalnya CapCut, Netflix, Canva, atau ChatGPT.</li>
+              <li>Isi deskripsi dengan durasi, keterangan akun, garansi, dan harga jual kamu.</li>
+              <li>Tambahkan gambar agar tampilan lebih menarik dan lebih meyakinkan.</li>
+              <li>Ulangi sampai semua produk masuk, lalu bagikan link Padlet ke calon pembeli.</li>
+            </ol>
+          </div>
+        </div>
+        <div>
+          <div class="mockup card">
+            <div class="mockup-header">
+              <div class="dot"></div>
+              <div class="dot"></div>
+              <div class="dot"></div>
+            </div>
+            <div class="mockup-grid">
+              <div class="product-box">
+                <div class="thumb"></div>
+                <strong>CapCut Pro</strong>
+                <span>1 Bulan • Garansi</span>
+                <span>Harga: Rp25.000</span>
+              </div>
+              <div class="product-box">
+                <div class="thumb"></div>
+                <strong>Netflix Premium</strong>
+                <span>1 Bulan • 1 Profil</span>
+                <span>Harga: Rp40.000</span>
+              </div>
+              <div class="product-box">
+                <div class="thumb"></div>
+                <strong>ChatGPT Plus</strong>
+                <span>1 Bulan • Private</span>
+                <span>Harga: Rp35.000</span>
+              </div>
+              <div class="product-box">
+                <div class="thumb"></div>
+                <strong>Canva Pro</strong>
+                <span>1 Bulan • Invite</span>
+                <span>Harga: Rp18.000</span>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="margin-top:20px;">
+            <h3>Tips Biar Cepat Laku</h3>
+            <ul class="tips">
+              <li>Pakai gambar produk biar terlihat profesional.</li>
+              <li>Tuliskan keterangan yang jelas, misalnya private, garansi, atau jumlah device.</li>
+              <li>Ambil untung yang wajar supaya harga tetap bersaing.</li>
+              <li>Promosi rutin di status WhatsApp, grup, dan media sosial.</li>
+              <li>Usahakan fast response agar calon pembeli lebih yakin.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="footer-cta">
+          <h2>Siap Mulai Jadi Reseller?</h2>
+          <p>
+            Kamu bisa mulai dari promosi kecil-kecilan dulu. Tinggal ambil harga reseller, tentukan harga jual sendiri,
+            lalu jalankan pesanan dengan sistem yang sudah rapi dan mudah dipahami.
+          </p>
+          <div class="hero-actions" style="justify-content:center; margin-bottom:0;">
+            <a class="btn btn-primary" href="https://babayproject.my.id/seller" target="_blank" rel="noopener noreferrer">Lihat Harga Reseller</a>
+            <a class="btn btn-secondary" href="https://babayshop.my.id/" target="_blank" rel="noopener noreferrer">Lihat Harga Umum</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="footer-cta">
+          <h2>Tertarik Jadi Reseller?</h2>
+          <p>
+            Kalau kamu berminat gabung atau masih ada yang ingin ditanyakan,
+            langsung hubungi Babay melalui WhatsApp.
+          </p>
+          <div class="hero-actions" style="justify-content:center; margin-bottom:0;">
+            <a class="btn btn-primary" href="https://wa.me/6288215993544" target="_blank">Chat WhatsApp Babay</a>
+          </div>
+          <p style="margin-top:14px; font-weight:600;">WA: 0882 1599 3544</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
