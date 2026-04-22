@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generator GPT HEAD BUSINESS</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #10a37f;
+      --bg: #0f1115;
+      --card: #1a1d23;
+      --border: rgba(255,255,255,0.1);
+      --input-bg: #252830;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: #fff;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .dashboard {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 20px;
+      max-width: 1100px;
+      width: 100%;
+    }
+
+    .glass-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 25px;
+      height: fit-content;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin-top: 0;
+      margin-bottom: 20px;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .group { margin-bottom: 15px; }
+
+    label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #999;
+      margin-bottom: 5px;
+      font-weight: 700;
+      letter-spacing: .4px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid #333;
+      padding: 12px;
+      border-radius: 10px;
+      color: #fff;
+      outline: none;
+      font: inherit;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+
+    .result-box {
+      width: 100%;
+      min-height: 520px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .btn-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      font-weight: 700;
+      transition: 0.2s;
+      font: inherit;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #252830;
+      color: white;
+      border: 1px solid #333;
+    }
+
+    .helper {
+      font-size: 12px;
+      color: #999;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      .dashboard {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <div class="glass-panel">
+      <h2>🛠️ Input Data</h2>
+
+      <div class="group">
+        <label>Pilih Garansi</label>
+        <select id="inGaransi" onchange="renderText()">
+          <option value="0">No Garansi</option>
+          <option value="7">Garansi 7 Hari</option>
+          <option value="14">Garansi 14 Hari</option>
+          <option value="25">Garansi 25 Hari Full</option>
+        </select>
+      </div>
+
+      <div class="group">
+        <label>Email Akun</label>
+        <input type="text" id="inEmail" placeholder="user@mail.com" oninput="renderText()">
+      </div>
+
+      <div class="group">
+        <label>Password</label>
+        <input type="text" id="inPass" placeholder="••••••••" oninput="renderText()">
+      </div>
+
+      <div class="group">
+        <label>Link Akses OTP</label>
+        <input type="text" id="inOtpLink" placeholder="https://link-otp-kamu.com" oninput="renderText()">
+      </div>
+
+      <div class="group">
+        <label>Tanggal Pembelian</label>
+        <input type="date" id="inTgl" oninput="renderText()">
+      </div>
+
+      <div class="helper">
+        Hasil teks di kanan bisa diedit manual sebelum disalin.
+      </div>
+    </div>
+
+    <div class="glass-panel">
+      <h2>📄 Hasil Generator</h2>
+      <textarea id="resultEditable" class="result-box"></textarea>
+
+      <div class="btn-row">
+        <button class="btn btn-primary" onclick="copyText()">Salin Teks</button>
+        <button class="btn btn-secondary" onclick="renderText()">Reset dari Input</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function formatTanggalIndonesia(tanggal) {
+      if (!tanggal) return '-';
+      const date = new Date(tanggal);
+      return date.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+
+    function hitungGaransi(tanggal, durasi) {
+      if (!tanggal || durasi <= 0) return 'No Garansi';
+
+      const date = new Date(tanggal);
+      date.setDate(date.getDate() + durasi);
+
+      return date.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+
+    function getInfoGaransi(durasi) {
+      if (durasi <= 0) {
+        return 'Tidak ada garansi untuk variasi ini.';
+      }
+
+      return `Garansi mengikuti durasi paket yang dipilih, yaitu ${durasi} hari sejak tanggal pembelian.`;
+    }
+
+    function renderText() {
+      const email = document.getElementById('inEmail').value || 'customer@mail.com';
+      const pass = document.getElementById('inPass').value || 'Password123';
+      const otpLink = document.getElementById('inOtpLink').value || '-';
+      const tglBeli = document.getElementById('inTgl').value;
+      const garansiSelect = document.getElementById('inGaransi');
+      const durasi = parseInt(garansiSelect.value, 10);
+      const garansiLabel = garansiSelect.options[garansiSelect.selectedIndex].text;
+
+      const tglFormatted = formatTanggalIndonesia(tglBeli);
+      const expFormatted = hitungGaransi(tglBeli, durasi);
+      const infoGaransi = getInfoGaransi(durasi);
+
+      const resultText = `PESANAN GPT HEAD BUSINESS BERHASIL
+----------------------------------
+Tgl Beli: ${tglFormatted}
+Variasi: ${garansiLabel}
+Garansi: ${expFormatted}
+----------------------------------
+Email: ${email}
+Pass: ${pass}
+Akses OTP: ${otpLink}
+----------------------------------
+CARA LOGIN:
+Jika meminta kode verifikasi, langsung buka link akses OTP di atas lalu cek kode yang masuk.
+
+INFO GARANSI:
+${infoGaransi}
+Jangan ganti data profil atau billing agar garansi tetap aktif.
+Maximal member dalam 1 workspace adalah 5 member (1 admin + 4 email).
+Lebih dari itu, garansi hangus karena paket ini hanya untuk 5 kursi.`;
+
+      document.getElementById('resultEditable').value = resultText;
+    }
+
+    function copyText() {
+      const text = document.getElementById('resultEditable');
+      text.select();
+      text.setSelectionRange(0, 99999);
+      document.execCommand('copy');
+
+      const btn = document.querySelector('.btn-primary');
+      const original = btn.innerText;
+      btn.innerText = '✅ Tersalin!';
+      setTimeout(() => {
+        btn.innerText = original;
+      }, 2000);
+    }
+
+    document.getElementById('inTgl').valueAsDate = new Date();
+    renderText();
+  </script>
+</body>
+</html>
