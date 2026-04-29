@@ -53,8 +53,17 @@
             
             try {
                 // MENGARAH LANGSUNG KE API PETRIX
-                const res = await fetch('http://ezweystock.petrix.id/gpt/payment', {
-                    method: 'POST',
+                // UBAH MENJADI:
+const res = await fetch('proxy.php', { // Panggil file PHP tadi
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+        plan: selectedPlan,
+        payment: payMethod,
+        currency: currency,
+        session: session
+    })
+});
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         plan: selectedPlan,
