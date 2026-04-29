@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT Payment Generator - PetrixBot</title>
+    <meta name="description" content="Generate GPT subscription checkout links quickly and securely.">
+    <link rel="icon" href="http://ezweystock.petrix.id/gpt/petrix.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="http://ezweystock.petrix.id/gpt/petrix.ico" type="image/x-icon">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+                }
+            }
+        }
+    </script>
+    <style>
+        * { box-sizing: border-box; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: #0f172a; }
+        /* (Sisa CSS sama, saya ringkas di sini agar tidak kepanjangan) */
+    </style>
+</head>
+<body class="min-h-screen text-gray-100 antialiased">
+    <script>
+        let selectedPlan = 'team';
+        let currencies = [];
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            await Promise.all([loadStats(), loadCurrencies()]);
+        });
+
+        async function loadStats() {
+            try {
+                // Diperbarui ke URL absolute
+                const res = await fetch('http://ezweystock.petrix.id/gpt/stats');
+                const data = await res.json();
+                document.getElementById('stat-total').textContent = data.total.toLocaleString();
+                document.getElementById('stat-team').textContent = data.team.toLocaleString();
+                document.getElementById('stat-plus').textContent = data.plus.toLocaleString();
+            } catch (e) { console.error(e); }
+        }
+
+        async function loadCurrencies() {
+            try {
+                // Diperbarui ke URL absolute
+                const res = await fetch('http://ezweystock.petrix.id/gpt/currency');
+                currencies = await res.json();
+                renderCurrencyDropdown(currencies);
+                if (currencies.length > 0) selectCurrency(currencies[0]);
+            } catch (e) { console.error(e); }
+        }
+
+        // ... (Fungsi UI lainnya tetap sama) ...
+
+        async function generatePaymentLink() {
+            const tokenRaw = document.getElementById('accessToken').value.trim();
+            if (!tokenRaw) {
+                showError('Please paste your accessToken or session JSON.');
+                return;
+            }
+            let session = tokenRaw;
+            try {
+                const json = JSON.parse(tokenRaw);
+                if (json.accessToken) { session = json.accessToken; } else { showError('JSON is valid but missing the "accessToken" field.'); return; }
+            } catch { }
+
+            const currency = document.getElementById('currencyCode').value;
+            const payMethod = document.getElementById('paymentMethod').value;
+
+            setLoading(true);
+            hideResult();
+
+            try {
+                // Diperbarui ke URL absolute
+                const res = await fetch('http://ezweystock.petrix.id/gpt/payment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ plan: selectedPlan, payment: payMethod, currency: currency, session: session })
+                });
+                const data = await res.json();
+                setLoading(false);
+                if (data.success) {
+                    showSuccess(data.url);
+                    loadStats();
+                } else {
+                    showError(data.msg || 'Unknown error');
+                }
+            } catch (err) {
+                setLoading(false);
+                showError('Network error. Pastikan server mengizinkan akses (CORS).');
+            }
+        }
+        // ... (Fungsi lainnya tetap sama) ...
+    </script>
+</body>
+</html>
