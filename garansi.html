@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Waktu | babayshop</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Poppins', sans-serif; }
+        body {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            color: #333; padding: 20px;
+        }
+        .card {
+            background: #ffffff;
+            width: 100%; max-width: 500px;
+            padding: 25px; border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+        .tabs {
+            display: flex; gap: 5px; margin-bottom: 20px;
+            background: #f0f2f5; padding: 5px; border-radius: 12px;
+        }
+        .tab-btn {
+            flex: 1; padding: 10px 5px; border: none; background: none;
+            cursor: pointer; font-weight: 600; font-size: 11px;
+            border-radius: 8px; transition: all 0.3s; color: #666;
+            text-transform: uppercase;
+        }
+        .tab-btn.active { background: #ffffff; color: #1e3c72; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .header { text-align: center; margin-bottom: 20px; }
+        .header h2 { color: #1e3c72; font-size: 20px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 5px; color: #555; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 10px 12px; border: 1.5px solid #e0e0e0;
+            border-radius: 8px; font-size: 14px; outline: none; background-color: #f9f9fc;
+        }
+        .form-group input:focus { border-color: #2a5298; background-color: #fff; }
+        .row { display: flex; gap: 10px; }
+        
+        .nota-box {
+            margin-top: 20px; padding: 20px;
+            border-radius: 12px; border: 2px dashed #ddd;
+            background: #f8f9fa; display: none;
+            font-size: 13px; line-height: 1.6;
+        }
+        .nota-header { border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 10px; text-align: center; }
+        .status-badge {
+            display: inline-block; padding: 4px 12px; border-radius: 20px;
+            font-weight: 600; font-size: 12px; margin-top: 10px;
+        }
+        .active-garansi { background: #e8f5e9; color: #2e7d32; }
+        .expired-garansi { background: #ffebee; color: #c62828; }
+        
+        .btn-check {
+            width: 100%; padding: 12px; background: #1e3c72; color: white;
+            border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 10px;
+        }
+        .btn-copy {
+            width: 100%; padding: 10px; background: #25d366; color: white;
+            border: none; border-radius: 8px; font-weight: 600; cursor: pointer; margin-top: 15px;
+            display: none;
+        }
+        .btn-check:hover { background: #2a5298; }
+        .btn-copy:hover { background: #128c7e; }
+
+        .footer { margin-top: 25px; text-align: center; font-size: 12px; color: #888; }
+        .footer span { color: #2a5298; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <div class="tabs">
+        <button class="tab-btn active" onclick="openTab('garansi')">Masa Garansi</button>
+        <button class="tab-btn" onclick="openTab('selisih')">Selisih Waktu</button>
+        <button class="tab-btn" onclick="openTab('status')">Cek Status</button>
+    </div>
+
+    <!-- 1. Kalkulator Garansi -->
+    <div id="garansi" class="tab-content active">
+        <div class="header"><h2>Hitung Masa Garansi</h2></div>
+        <div class="form-group"><label>Nama Aplikasi</label><input type="text" id="appName" placeholder="Netflix..."></div>
+        <div class="form-group"><label>Tanggal Beli</label><input type="date" id="purchaseDate"></div>
+        <div class="row">
+            <div class="form-group" style="flex:2;"><label>Durasi</label><input type="number" id="duration" placeholder="0"></div>
+            <div class="form-group" style="flex:1;"><label>Satuan</label>
+                <select id="unit"><option value="days">Hari</option><option value="months" selected>Bulan</option><option value="years">Tahun</option></select>
+            </div>
+        </div>
+        <div class="form-group"><label>Hasil Akhir</label><input type="text" id="endDate" readonly style="background:#e8f5e9; border-color:#4caf50;"></div>
+    </div>
+
+    <!-- 2. Selisih Waktu -->
+    <div id="selisih" class="tab-content">
+        <div class="header"><h2>Hitung Selisih Waktu</h2></div>
+        <div class="form-group"><label>Tanggal Mulai</label><input type="date" id="startDateDiff"></div>
+        <div class="form-group"><label>Tanggal Akhir</label><input type="date" id="endDateDiff"></div>
+        <div class="form-group"><div id="diffResult" style="padding:15px; background:#e3f2fd; border-radius:8px; text-align:center; font-weight:600; color:#1565c0;">Pilih Tanggal</div></div>
+    </div>
+
+    <!-- 3. Cek Status Garansi -->
+    <div id="status" class="tab-content">
+        <div class="header"><h2>Pengecekan Status</h2></div>
+        <div class="form-group"><label>Nama Produk</label><input type="text" id="checkProd" placeholder="Contoh: Disney+ Hotstar"></div>
+        <div class="form-group"><label>Email Akun</label><input type="email" id="checkEmail" placeholder="user@gmail.com"></div>
+        
+        <div class="row">
+            <div class="form-group" style="flex:1;"><label>Tanggal Beli</label><input type="date" id="checkBuyDate"></div>
+            <div class="form-group" style="flex:1;"><label>Durasi App</label><input type="text" id="checkAppDur" placeholder="1 Bulan"></div>
+        </div>
+
+        <div class="row">
+            <div class="form-group" style="flex:2;"><label>Durasi Garansi</label><input type="number" id="checkGarDur" placeholder="0"></div>
+            <div class="form-group" style="flex:1;"><label>Satuan</label>
+                <select id="checkGarUnit">
+                    <option value="days" selected>Hari</option>
+                    <option value="months">Bulan</option>
+                    <option value="years">Tahun</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group"><label>Tanggal Pengecekan (Hari ini/Manual)</label><input type="date" id="checkNowDate"></div>
+        
+        <button class="btn-check" onclick="generateNota()">Proses Cek Garansi</button>
+
+        <div id="notaResult" class="nota-box">
+            <div class="nota-header">
+                <strong style="color: #1e3c72;">BABAYSHOP DIGITAL</strong><br>
+                <small>=== Status Garansi Produk ===</small>
+            </div>
+            <div id="notaBody"></div>
+        </div>
+        <button id="copyBtn" class="btn-copy" onclick="copyToWhatsApp()">📋 Salin Nota WhatsApp</button>
+    </div>
+
+    <div class="footer">create by <span>babayshop</span></div>
+</div>
+
+<script>
+    let textToCopy = ""; // Variable global untuk menampung teks WA
+
+    function openTab(tabName) {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    document.getElementById('checkNowDate').valueAsDate = new Date();
+
+    // Logic 1 & 2 tetap sama
+    const pDate = document.getElementById('purchaseDate');
+    const dur = document.getElementById('duration');
+    const unt = document.getElementById('unit');
+    function calcEnd() {
+        if (pDate.value && dur.value > 0) {
+            let d = new Date(pDate.value);
+            if (unt.value === 'days') d.setDate(d.getDate() + parseInt(dur.value));
+            else if (unt.value === 'months') d.setMonth(d.getMonth() + parseInt(dur.value));
+            else d.setFullYear(d.getFullYear() + parseInt(dur.value));
+            document.getElementById('endDate').value = d.toLocaleDateString('id-ID', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+        }
+    }
+    [pDate, dur, unt].forEach(e => e.addEventListener('change', calcEnd));
+
+    const sDiff = document.getElementById('startDateDiff');
+    const eDiff = document.getElementById('endDateDiff');
+    function calcDiff() {
+        if (sDiff.value && eDiff.value) {
+            let s = new Date(sDiff.value), e = new Date(eDiff.value);
+            let y = e.getFullYear() - s.getFullYear(), m = e.getMonth() - s.getMonth(), d = e.getDate() - s.getDate();
+            if (d < 0) { m--; d += new Date(e.getFullYear(), e.getMonth(), 0).getDate(); }
+            if (m < 0) { y--; m += 12; }
+            document.getElementById('diffResult').innerText = `${y} Tahun, ${m} Bulan, ${d} Hari`;
+        }
+    }
+    [sDiff, eDiff].forEach(e => e.addEventListener('change', calcDiff));
+
+    // 3. Logic Nota Status & Salin WA
+    function generateNota() {
+        const prod = document.getElementById('checkProd').value;
+        const email = document.getElementById('checkEmail').value;
+        const appDur = document.getElementById('checkAppDur').value;
+        const buyDateValue = document.getElementById('checkBuyDate').value;
+        const garDur = parseInt(document.getElementById('checkGarDur').value);
+        const garUnit = document.getElementById('checkGarUnit').value;
+        const nowDateValue = document.getElementById('checkNowDate').value;
+
+        if (!prod || !email || !buyDateValue || isNaN(garDur)) {
+            alert("Mohon lengkapi semua data!");
+            return;
+        }
+
+        const buyDate = new Date(buyDateValue);
+        const nowDate = new Date(nowDateValue);
+        let expDate = new Date(buyDate);
+
+        if (garUnit === 'days') expDate.setDate(expDate.getDate() + garDur);
+        else if (garUnit === 'months') expDate.setMonth(expDate.getMonth() + garDur);
+        else if (garUnit === 'years') expDate.setFullYear(expDate.getFullYear() + garDur);
+
+        const isSafe = nowDate <= expDate;
+        const opt = { year: 'numeric', month: 'long', day: 'numeric' };
+        const unitText = garUnit === 'days' ? 'Hari' : garUnit === 'months' ? 'Bulan' : 'Tahun';
+
+        // Tampilan di Browser (HTML)
+        document.getElementById('notaBody').innerHTML = `
+            <p><strong>Waktu Pembelian:</strong> ${buyDate.toLocaleDateString('id-ID', opt)}</p>
+            <p><strong>Nama Aplikasi:</strong> ${prod}</p>
+            <p><strong>Durasi Aplikasi:</strong> ${appDur}</p>
+            <p><strong>Durasi Garansi:</strong> ${garDur} ${unitText}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Garansi Berakhir:</strong> ${expDate.toLocaleDateString('id-ID', opt)}</p>
+            <hr style="margin:10px 0; border:0; border-top:1px solid #ccc;">
+            <div style="text-align:center;">
+                <span class="status-badge ${isSafe ? 'active-garansi' : 'expired-garansi'}">
+                    ${isSafe ? 'GARANSI AKTIF' : 'MASA GARANSI HABIS'}
+                </span>
+            </div>
+        `;
+
+        // Format Teks Khusus WhatsApp
+        textToCopy = `*BABAYSHOP DIGITAL*\n` +
+                     `=== Status Garansi Produk ===\n\n` +
+                     `📅 *Waktu Beli:* ${buyDate.toLocaleDateString('id-ID', opt)}\n` +
+                     `📱 *Produk:* ${prod}\n` +
+                     `⏳ *Durasi App:* ${appDur}\n` +
+                     `🛡️ *Durasi Garansi:* ${garDur} ${unitText}\n` +
+                     `📧 *Email:* ${email}\n` +
+                     `🔔 *Garansi Sampai:* ${expDate.toLocaleDateString('id-ID', opt)}\n\n` +
+                     `---------------------------\n` +
+                     `*STATUS:* ${isSafe ? '✅ GARANSI AKTIF' : '❌ MASA GARANSI HABIS'}\n` +
+                     `---------------------------\n` +
+                     `${isSafe ? 
+                        '_Silahkan hubungi admin jika ada kendala untuk klaim garansi / ganti baru._' : 
+                        '_Masa garansi telah berakhir. Silahkan order kembali di babayshop!_'}`;
+
+        document.getElementById('notaResult').style.display = 'block';
+        document.getElementById('copyBtn').style.display = 'block';
+        document.getElementById('copyBtn').innerText = "📋 Salin Nota WhatsApp";
+    }
+
+    function copyToWhatsApp() {
+        if (!textToCopy) return;
+        
+        navigator.clipboard.writeText(textToCopy).then(() => {
+            const btn = document.getElementById('copyBtn');
+            btn.innerText = "✅ Berhasil Disalin!";
+            setTimeout(() => {
+                btn.innerText = "📋 Salin Nota WhatsApp";
+            }, 2000);
+        }).catch(err => {
+            alert('Gagal menyalin teks: ', err);
+        });
+    }
+</script>
+
+</body>
+</html>
