@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Capcut Pro Renew Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <style>
+      body { font-family: "Inter", sans-serif; }
+      .galaxy-background {
+        background: linear-gradient(135deg, #0f172a, #1e3a8a, #000000);
+        background-size: cover;
+      }
+    </style>
+  </head>
+  <body class="galaxy-background text-white min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-lg bg-slate-900/90 backdrop-blur-md rounded-2xl shadow-2xl border border-blue-500/20 p-6 md:p-8">
+      <div class="text-center mb-8">
+        <h1 class="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-300">
+          RENEW GENERATOR
+        </h1>
+        <p class="text-slate-400 text-sm mt-1">Babayshop.my.id</p>
+      </div>
+
+      <form id="notaForm" class="space-y-5">
+        <div>
+          <label class="block mb-2 text-xs font-semibold text-slate-400 uppercase">Durasi Paket</label>
+          <select id="durasi" required class="w-full bg-slate-800 border border-slate-700 text-white text-sm rounded-lg p-3 outline-none focus:border-blue-500">
+            <option value="" selected disabled>-- Pilih Durasi --</option>
+            <option value="7 Day">7 Day</option>
+            <option value="14 Day">14 Day</option>
+            <option value="21 Day">21 Day</option>
+            <option value="28 Day">28 Day</option>
+            <option value="35 Day">35 Day</option>
+            <option value="42 Day">42 Day</option>
+            <option value="3 Bulan">3 Bulan</option>
+            <option value="custom">Custom Durasi</option>
+          </select>
+        </div>
+
+        <div id="customDurasiContainer" class="hidden">
+          <input type="text" id="customDurasi" placeholder="Input manual..." class="w-full bg-slate-800 border border-blue-500/30 text-white text-sm rounded-lg p-3" />
+        </div>
+
+        <div class="space-y-3">
+          <input type="email" id="email" required placeholder="Email Akun" class="w-full bg-slate-800 border border-slate-700 text-white text-sm rounded-lg p-3 outline-none focus:border-blue-500" />
+          <input type="text" id="password" required placeholder="Password Akun" class="w-full bg-slate-800 border border-slate-700 text-white text-sm rounded-lg p-3 outline-none focus:border-blue-500" />
+        </div>
+
+        <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg transition-all shadow-lg">
+          GENERATE NOTA ✨
+        </button>
+      </form>
+
+      <div id="outputSection" class="mt-8 hidden">
+        <textarea id="notaOutput" rows="20" class="w-full bg-black border border-slate-800 text-slate-300 text-sm rounded-lg p-4 font-mono leading-relaxed outline-none" readonly></textarea>
+        <div class="mt-4 flex gap-3">
+          <button id="editButton" class="flex-1 bg-slate-700 text-white text-xs py-3 rounded-xl">EDIT</button>
+          <button id="copyButton" class="flex-1 bg-green-600 text-white text-xs py-3 rounded-xl font-bold">SALIN NOTA 📋</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const durasiEl = document.getElementById("durasi");
+      const customDurasiContainer = document.getElementById("customDurasiContainer");
+      const notaFormEl = document.getElementById("notaForm");
+      const outputSectionEl = document.getElementById("outputSection");
+      const notaOutputEl = document.getElementById("notaOutput");
+
+      durasiEl.addEventListener("change", (e) => {
+        customDurasiContainer.classList.toggle("hidden", e.target.value !== "custom");
+      });
+
+      notaFormEl.addEventListener("submit", (e) => {
+        e.preventDefault();
+        let selectedDurasi = durasiEl.value === "custom" ? document.getElementById("customDurasi").value : durasiEl.value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const now = new Date();
+        const tgl = now.toLocaleString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+
+        const notaTemplate = `
+╭────〔 Babayshop.my.id 〕─
+┊ ✨ Service : Capcut Pro Team (RENEW)
+┊ ⏳ Durasi  : ${selectedDurasi}
+┊ 🛡️ Desc    : AKSES SEMUA FITUR PRO , GARANSI
+┊ 📅 Waktu   : ${tgl}
+╰┈┈┈┈┈┈┈┈
+- Email: ${email}
+- Password: ${password}
+╰┈┈┈┈┈┈┈┈
+📢 PENJELASAN SISTEM RENEW:
+Paket Renew ini adalah sistem langganan Capcut Pro Team berbasis "Auto-Renewal" setiap 7 hari. 
+
+Keunggulan Sistem Renew:
+➥ Jaminan Akun Tetap Aktif: Durasi total yang Anda beli akan diproses melalui siklus perpanjangan otomatis setiap minggunya.
+➥ Keamanan Extra: Sistem perpanjangan berkala menjaga akun tetap dalam pengawasan sistem kami sehingga meminimalisir resiko suspend atau deaktif secara tiba-tiba.
+➥ Tanpa Ganti Akun: Anda tetap menggunakan akun yang sama sampai masa durasi total berakhir.
+
+Syarat dan ketentuan :
+➥ Garansi pada saat pertama kali login
+➥ Hanya garansi Backfree bukan kesalahan sendiri (disable/hack/pelanggaran)
+➥ Maks login 1 akun private adalah 2 Device
+➥ Disarankan Hapus Data aplikasi sebelum login! (jika masih ada project penting di dalam capcut hp nya, diperbolehkan tidak hapus data)
+➥ Login hanya via Email / Scan QR (PC)
+➥ Jika terdapat kendala silahkan hubungi admin
+`.trim();
+
+        notaOutputEl.value = notaTemplate;
+        outputSectionEl.classList.remove("hidden");
+        outputSectionEl.scrollIntoView({ behavior: "smooth" });
+      });
+
+      document.getElementById("copyButton").addEventListener("click", () => {
+        notaOutputEl.select();
+        document.execCommand("copy");
+        alert("Nota berhasil disalin!");
+      });
+
+      document.getElementById("editButton").addEventListener("click", function() {
+        notaOutputEl.readOnly = false;
+        notaOutputEl.focus();
+        this.innerText = "MODE EDIT AKTIF";
+        this.classList.replace("bg-slate-700", "bg-amber-700");
+      });
+    </script>
+  </body>
+</html>
