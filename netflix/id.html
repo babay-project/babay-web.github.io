@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Netflix Region Indonesia Nota Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .netflix-background {
+            background-image: url('https://assets.nflxext.com/ffe/siteui/vlv3/e94073b0-a056-402f-9015-16cb1e7e45c2/web/ID-en-20251110-TRIFECTA-perspective_29287120-1497-47a9-8b0a-49e7ded22f31_large.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        .slide-in-up { animation: fadeIn 0.6s ease-out forwards; }
+    </style>
+</head>
+<body class="netflix-background text-white min-h-screen">
+    <div class="min-h-screen w-full bg-black/80 flex items-center justify-center p-4">
+        <div class="w-full max-w-md md:max-w-lg bg-black/80 backdrop-blur-sm rounded-2xl shadow-2xl border border-gray-800 p-6 md:p-10 fade-in">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-black uppercase text-red-600">Netflix</h1>
+                <p class="text-gray-300 text-lg mt-2">Region Indonesia Nota Generator</p>
+            </div>
+
+            <form id="notaForm" class="space-y-5">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-300">Nomor Order</label>
+                        <input type="text" id="nomorOrder" required placeholder="ORD-123" class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg p-2.5 focus:ring-red-500">
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-300">Durasi</label>
+                        <input type="text" id="durasi" required placeholder="Contoh: 1 Bulan / 28 Hari" class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg p-2.5 focus:ring-red-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-gray-300">Email</label>
+                    <input type="email" id="email" required placeholder="email@akun.com" class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg p-2.5 focus:ring-red-500">
+                </div>
+
+                <div>
+                    <label class="block mb-2 text-sm font-medium text-gray-300">Password</label>
+                    <input type="text" id="password" required placeholder="Masukkan password..." class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg p-2.5 focus:ring-red-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-300">Profil</label>
+                        <input type="text" id="profil" required placeholder="Contoh: Profil 1" class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg p-2.5 focus:ring-red-500">
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-300">PIN Profil</label>
+                        <input type="text" id="pinProfil" required placeholder="Contoh: 1234 / Tidak ada" class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg p-2.5 focus:ring-red-500">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-300">Garansi</label>
+                        <select id="garansiHari" required class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg p-2.5 focus:ring-red-500">
+                            <option value="25">25 Hari</option>
+                            <option value="26">26 Hari</option>
+                            <option value="27">27 Hari</option>
+                            <option value="28" selected>28 Hari</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block mb-2 text-sm font-medium text-gray-300">Server Indo</label>
+                        <select id="serverMode" required class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg p-2.5 focus:ring-red-500">
+                            <option value="server 1ooping">server 1ooping</option>
+                            <option value="server 4kira">server 4kira</option>
+                            <option value="other">other (isi sendiri)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="serverCustomWrapper" class="hidden">
+                    <label class="block mb-2 text-sm font-medium text-gray-300">Nama Server Lainnya</label>
+                    <input type="text" id="serverCustom" placeholder="Contoh: server custom" class="w-full bg-gray-800/70 border border-gray-700 text-white text-sm rounded-lg p-2.5 focus:ring-red-500">
+                </div>
+
+                <button type="submit" class="w-full text-white bg-red-600 hover:bg-red-700 font-bold rounded-lg text-lg px-5 py-3 transition-all transform hover:scale-105 shadow-lg shadow-red-500/30 mt-4">
+                    Generate Nota
+                </button>
+            </form>
+
+            <div id="outputSection" class="mt-10 hidden">
+                <h2 class="text-2xl font-semibold text-gray-200 mb-4 slide-in-up">Hasil Nota</h2>
+                <textarea id="notaOutput" rows="24" class="w-full bg-gray-900 border border-gray-700 text-gray-300 text-sm rounded-lg p-4 font-mono slide-in-up" readonly></textarea>
+
+                <div class="mt-4 flex flex-col sm:flex-row gap-4 slide-in-up">
+                    <button id="editButton" class="w-full sm:w-auto text-white bg-amber-600 hover:bg-amber-700 font-medium rounded-lg text-sm px-5 py-2.5">Edit Nota</button>
+                    <button id="copyButton" class="w-full sm:w-auto text-white bg-green-600 hover:bg-green-700 font-medium rounded-lg text-sm px-5 py-2.5">Salin Nota</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const serverModeEl = document.getElementById('serverMode');
+            const serverCustomWrapperEl = document.getElementById('serverCustomWrapper');
+            const serverCustomEl = document.getElementById('serverCustom');
+
+            serverModeEl.addEventListener('change', () => {
+                if (serverModeEl.value === 'other') {
+                    serverCustomWrapperEl.classList.remove('hidden');
+                    serverCustomEl.required = true;
+                } else {
+                    serverCustomWrapperEl.classList.add('hidden');
+                    serverCustomEl.required = false;
+                    serverCustomEl.value = '';
+                }
+            });
+
+            document.getElementById('notaForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+
+                const nomorOrder = document.getElementById('nomorOrder').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const password = document.getElementById('password').value.trim();
+                const profil = document.getElementById('profil').value.trim();
+                const pinProfil = document.getElementById('pinProfil').value.trim();
+                const durasi = document.getElementById('durasi').value.trim();
+                const garansiHari = parseInt(document.getElementById('garansiHari').value, 10);
+
+                let server = serverModeEl.value;
+                if (serverModeEl.value === 'other') {
+                    server = serverCustomEl.value.trim();
+                }
+
+                const now = new Date();
+                const options = { day: '2-digit', month: 'short', year: 'numeric' };
+                const tglOrder = now.toLocaleDateString('id-ID', options);
+
+                const tglGaransiExpired = new Date(now);
+                tglGaransiExpired.setDate(now.getDate() + garansiHari);
+                const tglGaransiStr = tglGaransiExpired.toLocaleDateString('id-ID', options);
+
+                const catatanHousehold = serverModeEl.value === 'server 1ooping'
+                    ? `D. Khusus server 1ooping (Household / Verifikasi):
+Bisa ambil kode OTP / link di sini:
+https://looping.raiden.my.id/household
+Lalu masukkan email akunnya.`
+                    : `D. Catatan Household:
+Jika akun kedapatan peringatan / notifikasi household, segera lapor admin.`;
+
+                const notaTemplate = `Waktu Order : ${tglOrder}
+Nomor Order : ${nomorOrder}
+
+✨ NETFLIX REGION INDONESIA ✨
+
+🔒 DETAIL AKUN 🔒
+📧 Email : ${email}
+🔑 Password : ${password}
+👤 Profil : ${profil}
+🔐 PIN Profil : ${pinProfil}
+⏳ Durasi : ${durasi}
+📅 Garansi s/d : ${tglGaransiStr}
+🇮🇩 Server Indo : ${server}
+
+────────────────────────────
+⚠️ PERHATIAN PENTING:
+
+Harap tidak mengubah password atau profil orang lain.
+Gunakan hanya profil yang sudah diberikan.
+
+TOLONG DIBACA CARA LOGIN NYA YA KAKAK:
+KALO DIMINTA KODE, KLIK "DAPATKAN BANTUAN" / "GET HELP"
+LALU KLIK "GUNAKAN SANDI" / "USE PASSWORD" YA
+
+✅ WAJIB laporan device jika berhasil login
+📶 WAJIB login menggunakan data seluler / hotspot pribadi
+Jangan pakai WiFi publik dulu saat login.
+Kalau sudah berhasil nonton, boleh pakai WiFi provider (Indihome, Biznet, dll)
+
+🚫 DILARANG mengubah email, password, profil, ataupun setting akun.
+HANYA BOLEH NONTON.
+
+📺 Maksimal digunakan untuk 1 device saja.
+Jika ketahuan lebih, AKSES KAMI CABUT & NO GARANSI.
+
+🚫 Jika terdapat tulisan salah password, jangan dipaksa login.
+Segera lapor admin.
+
+🧹 Pastikan clear cache browser / aplikasi sebelum login.
+
+Berikut link bantuan Netflix:
+A. Hapus cookies Netflix:
+https://www.netflix.com/clearcookies
+
+B. Akses kode login untuk TV:
+https://www.netflix.com/tv2
+(masukkan kode yang ada di TV)
+
+C. Login Netflix via browser agar muncul halaman email & password:
+1. https://help.netflix.com/id/node/311830241325668
+2. Klik "Gabung ke Netflix"
+3. Klik "Masuk"
+4. Akan muncul halaman login berupa Email & Password
+
+${catatanHousehold}`.trim();
+
+                const output = document.getElementById('notaOutput');
+                output.value = notaTemplate;
+                document.getElementById('outputSection').classList.remove('hidden');
+                output.scrollIntoView({ behavior: 'smooth' });
+            });
+
+            document.getElementById('copyButton').addEventListener('click', function() {
+                const output = document.getElementById('notaOutput');
+                output.select();
+                document.execCommand('copy');
+                this.textContent = 'Berhasil Disalin!';
+                setTimeout(() => { this.textContent = 'Salin Nota'; }, 2000);
+            });
+
+            document.getElementById('editButton').addEventListener('click', function() {
+                const output = document.getElementById('notaOutput');
+                output.readOnly = false;
+                output.focus();
+                this.textContent = 'Mode Edit Aktif';
+            });
+        });
+    </script>
+</body>
+</html>
