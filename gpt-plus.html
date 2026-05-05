@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GPT Plus Generator</title>
+  <title>GPT Plus Generator Pro</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -14,9 +14,7 @@
       --text: #e0e0e0;
       --border: rgba(255, 255, 255, 0.15);
     }
-
     * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
-
     body {
       background: var(--space-bg);
       background-attachment: fixed;
@@ -27,9 +25,7 @@
       justify-content: center;
       min-height: 100vh;
     }
-
     .container { width: 100%; max-width: 500px; }
-
     .card {
       background: var(--card-bg);
       backdrop-filter: blur(15px);
@@ -39,13 +35,10 @@
       margin-bottom: 20px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.3);
     }
-
     h1 { font-size: 22px; margin: 0 0 20px 0; color: #fff; text-align: center; text-shadow: 0 0 10px rgba(124, 77, 255, 0.5); }
-
     .group { margin-bottom: 15px; }
     label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #a5a5a5; margin-bottom: 6px; font-weight: 700; }
-
-    input, select {
+    input, select, textarea.input-field {
       width: 100%;
       background: rgba(0,0,0,0.2);
       border: 1px solid var(--border);
@@ -55,12 +48,10 @@
       font-size: 14px;
       transition: 0.3s;
     }
-
-    input:focus, select:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 10px rgba(124, 77, 255, 0.3); }
-
-    textarea {
+    input:focus, select:focus, textarea.input-field:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 10px rgba(124, 77, 255, 0.3); }
+    textarea.output-field {
       width: 100%;
-      height: 280px;
+      height: 380px;
       background: rgba(0,0,0,0.4);
       border: 1px solid var(--border);
       padding: 20px;
@@ -71,7 +62,6 @@
       resize: vertical;
       line-height: 1.6;
     }
-
     .btn {
       width: 100%;
       padding: 14px;
@@ -84,26 +74,31 @@
       transition: 0.3s;
       margin-top: 10px;
     }
-
     .btn:hover { background: #651fff; box-shadow: 0 0 15px rgba(124, 77, 255, 0.5); }
-    
     .hidden { display: none; }
+    .row { display: flex; gap: 10px; }
+    .row .group { flex: 1; }
   </style>
 </head>
 <body>
-
   <div class="container">
     <div class="card">
       <h1>🚀 GPT Plus Generator</h1>
       
       <div class="group">
-        <label>Pilih Garansi</label>
-        <select id="inGaransi" onchange="renderData()">
-          <option value="0">No Garansi</option>
-          <option value="7">Garansi 7 Hari</option>
-          <option value="14">Garansi 14 Hari</option>
-          <option value="25">Garansi 25 Hari Full</option>
-        </select>
+        <label>Tanggal Pembelian</label>
+        <input type="date" id="inTgl" oninput="renderData()">
+      </div>
+
+      <div class="row">
+        <div class="group">
+          <label>Durasi Paket</label>
+          <input type="text" id="inDurasiPaket" value="30" placeholder="Contoh: 30" oninput="renderData()">
+        </div>
+        <div class="group">
+          <label>Durasi Garansi (Hari)</label>
+          <input type="number" id="inGaransiDay" value="30" placeholder="Contoh: 30" oninput="renderData()">
+        </div>
       </div>
 
       <div class="group">
@@ -117,8 +112,9 @@
       </div>
 
       <div class="group">
-        <label>Provider Akses OTP</label>
+        <label>Akses OTP / Provider</label>
         <select id="inProvider" onchange="toggleCustom(); renderData();">
+          <option value="tepra.my.id/mailbox">tepra.my.id/mailbox (🔥 PW)</option>
           <option value="emailqu.com">emailqu.com</option>
           <option value="generator.email">generator.email</option>
           <option value="custom">Input Sendiri (Custom)</option>
@@ -131,14 +127,14 @@
       </div>
 
       <div class="group">
-        <label>Tanggal Pembelian</label>
-        <input type="date" id="inTgl" oninput="renderData()">
+        <label>Deskripsi Tambahan (Opsional)</label>
+        <textarea id="inNote" class="input-field" style="height: 60px;" placeholder="Contoh: Bonus Shared Akun" oninput="renderData()"></textarea>
       </div>
     </div>
 
     <div class="card">
       <label>Nota Hasil (Bisa Diedit Manual)</label>
-      <textarea id="output"></textarea>
+      <textarea id="output" class="output-field"></textarea>
       <button class="btn" onclick="copyText()">Salin Pesan</button>
     </div>
   </div>
@@ -147,11 +143,7 @@
     function toggleCustom() {
       const provider = document.getElementById('inProvider').value;
       const customDiv = document.getElementById('customProviderDiv');
-      if (provider === 'custom') {
-        customDiv.classList.remove('hidden');
-      } else {
-        customDiv.classList.add('hidden');
-      }
+      customDiv.classList.toggle('hidden', provider !== 'custom');
     }
 
     function formatTanggal(tanggal) {
@@ -159,10 +151,10 @@
       return new Date(tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
     }
 
-    function hitungGaransi(tanggal, durasi) {
-      if (!tanggal || durasi <= 0) return 'No Garansi';
+    function hitungTanggal(tanggal, durasi) {
+      if (!tanggal || durasi <= 0) return 'Tdk Ada';
       const date = new Date(tanggal);
-      date.setDate(date.getDate() + durasi);
+      date.setDate(date.getDate() + parseInt(durasi));
       return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
     }
 
@@ -170,31 +162,44 @@
       const email = document.getElementById('inEmail').value || '...';
       const pass = document.getElementById('inPass').value || '...';
       const tglBeli = document.getElementById('inTgl').value;
-      const durasi = parseInt(document.getElementById('inGaransi').value, 10);
-      const garansiLabel = document.getElementById('inGaransi').options[document.getElementById('inGaransi').selectedIndex].text;
+      const durasiPaket = document.getElementById('inDurasiPaket').value || 0;
+      const durasiGaransi = document.getElementById('inGaransiDay').value || 0;
+      const extraNote = document.getElementById('inNote').value;
       
       let provider = document.getElementById('inProvider').value;
+      let pwProviderNote = "";
+
+      if (provider === 'tepra.my.id/mailbox') {
+        pwProviderNote = "\nPW Akses OTP: @mlewe666666";
+      }
+
       if (provider === 'custom') {
         provider = document.getElementById('inCustom').value || 'web-anda.com';
       }
 
       const tglFormatted = formatTanggal(tglBeli);
-      const expFormatted = hitungGaransi(tglBeli, durasi);
+      const expPaket = hitungTanggal(tglBeli, durasiPaket);
+      const expGaransi = hitungTanggal(tglBeli, durasiGaransi);
 
-      const text = `PESANAN CHATGPT PLUS BERHASIL\n` +
+      let text = `PESANAN CHATGPT PLUS BERHASIL\n` +
         `----------------------------------\n` +
         `Tgl Beli: ${tglFormatted}\n` +
-        `Variasi: ${garansiLabel}\n` +
-        `Garansi: ${expFormatted}\n` +
+        `Durasi  : ${durasiPaket}\n` +
+        `Garansi : ${durasiGaransi} Hari (s/d ${expGaransi})\n` +
         `----------------------------------\n` +
-        `Email: ${email}\n` +
-        `Pass: ${pass}\n` +
-        `Akses OTP: https://${provider}/${email}\n` +
+        `Email   : ${email}\n` +
+        `Pass    : ${pass}\n` +
+        `OTP Link: https://${provider}/${email}${pwProviderNote}\n` +
         `----------------------------------\n` +
         `CARA LOGIN:\n` +
-        `Jika meminta kode verifikasi, buka link akses OTP di atas.\n\n` +
-        `INFO GARANSI:\n` +
-        `Klaim garansi estimasi max 48 jam. Jangan ganti data profil atau billing agar garansi tetap aktif.`;
+        `Buka ChatGPT > Login > Masukkan Detail di atas.\n` +
+        `Cek OTP di link yang disediakan secara berkala.\n\n` +
+        `INFO KLAIM GARANSI:\n` +
+        `Estimasi max 48 jam. Dilarang keras mengubah Profile/Billing/Plan agar garansi tetap aktif.`;
+
+      if (extraNote.trim() !== "") {
+        text += `\n\nCATATAN TAMBAHAN:\n${extraNote}`;
+      }
 
       document.getElementById('output').value = text;
     }
@@ -204,7 +209,7 @@
       output.select();
       document.execCommand("copy");
       const btn = document.querySelector('.btn');
-      btn.innerText = "Tersalin ke Clipboard!";
+      btn.innerText = "✅ Tersalin!";
       setTimeout(() => { btn.innerText = "Salin Pesan"; }, 2000);
     }
 
