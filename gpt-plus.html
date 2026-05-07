@@ -93,12 +93,21 @@
       <div class="row">
         <div class="group">
           <label>Durasi Paket</label>
-          <input type="text" id="inDurasiPaket" value="30" placeholder="Contoh: 30" oninput="renderData()">
+          <select id="inDurasiSelect" onchange="toggleDurasiCustom(); renderData();">
+            <option value="30">1 Bulan (30 Hari)</option>
+            <option value="90">3 Bulan (90 Hari)</option>
+            <option value="custom">Custom (Hari)</option>
+          </select>
         </div>
         <div class="group">
           <label>Durasi Garansi (Hari)</label>
           <input type="number" id="inGaransiDay" value="30" placeholder="Contoh: 30" oninput="renderData()">
         </div>
+      </div>
+
+      <div class="group hidden" id="customDurasiDiv">
+        <label>Masukkan Durasi Custom (Hari)</label>
+        <input type="number" id="inDurasiCustomVal" value="30" placeholder="Contoh: 15" oninput="renderData()">
       </div>
 
       <div class="group">
@@ -114,6 +123,7 @@
       <div class="group">
         <label>Akses OTP / Provider</label>
         <select id="inProvider" onchange="toggleCustom(); renderData();">
+          <option value="babaymail.web.id">babaymail.web.id</option>
           <option value="tepra.my.id/mailbox">tepra.my.id/mailbox (🔥 PW)</option>
           <option value="emailqu.com">emailqu.com</option>
           <option value="generator.email">generator.email</option>
@@ -146,6 +156,12 @@
       customDiv.classList.toggle('hidden', provider !== 'custom');
     }
 
+    function toggleDurasiCustom() {
+      const durasiType = document.getElementById('inDurasiSelect').value;
+      const customDurasiDiv = document.getElementById('customDurasiDiv');
+      customDurasiDiv.classList.toggle('hidden', durasiType !== 'custom');
+    }
+
     function formatTanggal(tanggal) {
       if (!tanggal) return '-';
       return new Date(tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
@@ -162,19 +178,33 @@
       const email = document.getElementById('inEmail').value || '...';
       const pass = document.getElementById('inPass').value || '...';
       const tglBeli = document.getElementById('inTgl').value;
-      const durasiPaket = document.getElementById('inDurasiPaket').value || 0;
+      
+      const durasiSelect = document.getElementById('inDurasiSelect').value;
+      let durasiPaket = 0;
+      let labelDurasiTeks = "";
+
+      if (durasiSelect === 'custom') {
+        durasiPaket = document.getElementById('inDurasiCustomVal').value || 0;
+        labelDurasiTeks = `${durasiPaket} Hari`;
+      } else {
+        durasiPaket = durasiSelect;
+        labelDurasiTeks = durasiPaket === "30" ? "1 Bulan" : "3 Bulan";
+      }
+
       const durasiGaransi = document.getElementById('inGaransiDay').value || 0;
       const extraNote = document.getElementById('inNote').value;
       
-      let provider = document.getElementById('inProvider').value;
+      let providerValue = document.getElementById('inProvider').value;
       let pwProviderNote = "";
 
-      if (provider === 'tepra.my.id/mailbox') {
+      // HANYA tepra yang mendapatkan catatan password
+      if (providerValue === 'tepra.my.id/mailbox') {
         pwProviderNote = "\nPW Akses OTP: @mlewe666666";
       }
 
-      if (provider === 'custom') {
-        provider = document.getElementById('inCustom').value || 'web-anda.com';
+      let displayProvider = providerValue;
+      if (providerValue === 'custom') {
+        displayProvider = document.getElementById('inCustom').value || 'web-anda.com';
       }
 
       const tglFormatted = formatTanggal(tglBeli);
@@ -184,12 +214,12 @@
       let text = `PESANAN CHATGPT PLUS BERHASIL\n` +
         `----------------------------------\n` +
         `Tgl Beli: ${tglFormatted}\n` +
-        `Durasi  : ${durasiPaket}\n` +
-        `Garansi : ${durasiGaransi} Hari (s/d ${expGaransi})\n` +
+        `Durasi  : ${labelDurasiTeks}\n` +
+        `Garansi : s/d ${expGaransi}\n` +
         `----------------------------------\n` +
         `Email   : ${email}\n` +
         `Pass    : ${pass}\n` +
-        `OTP Link: https://${provider}/${email}${pwProviderNote}\n` +
+        `OTP Link: https://${displayProvider}/${email}${pwProviderNote}\n` +
         `----------------------------------\n` +
         `CARA LOGIN:\n` +
         `Buka ChatGPT > Login > Masukkan Detail di atas.\n` +
