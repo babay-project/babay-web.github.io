@@ -51,7 +51,7 @@
     input:focus, select:focus, textarea.input-field:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 10px rgba(124, 77, 255, 0.3); }
     textarea.output-field {
       width: 100%;
-      height: 380px;
+      height: 420px;
       background: rgba(0,0,0,0.4);
       border: 1px solid var(--border);
       padding: 20px;
@@ -100,14 +100,23 @@
           </select>
         </div>
         <div class="group">
-          <label>Durasi Garansi (Hari)</label>
-          <input type="number" id="inGaransiDay" value="30" placeholder="Contoh: 30" oninput="renderData()">
+          <label>Tipe Garansi</label>
+          <select id="inGaransiType" onchange="toggleGaransiUI(); renderData();">
+            <option value="login">Garansi Login (3 Jam)</option>
+            <option value="hari">Garansi Hari</option>
+          </select>
         </div>
       </div>
 
+      <!-- UI Input Dinamis -->
       <div class="group hidden" id="customDurasiDiv">
         <label>Masukkan Durasi Custom (Hari)</label>
-        <input type="number" id="inDurasiCustomVal" value="30" placeholder="Contoh: 15" oninput="renderData()">
+        <input type="number" id="inDurasiCustomVal" value="30" oninput="renderData()">
+      </div>
+
+      <div class="group hidden" id="garansiHariDiv">
+        <label>Berapa Hari Garansi?</label>
+        <input type="number" id="inGaransiDay" value="30" oninput="renderData()">
       </div>
 
       <div class="group">
@@ -152,14 +161,17 @@
   <script>
     function toggleCustom() {
       const provider = document.getElementById('inProvider').value;
-      const customDiv = document.getElementById('customProviderDiv');
-      customDiv.classList.toggle('hidden', provider !== 'custom');
+      document.getElementById('customProviderDiv').classList.toggle('hidden', provider !== 'custom');
     }
 
     function toggleDurasiCustom() {
       const durasiType = document.getElementById('inDurasiSelect').value;
-      const customDurasiDiv = document.getElementById('customDurasiDiv');
-      customDurasiDiv.classList.toggle('hidden', durasiType !== 'custom');
+      document.getElementById('customDurasiDiv').classList.toggle('hidden', durasiType !== 'custom');
+    }
+
+    function toggleGaransiUI() {
+      const gType = document.getElementById('inGaransiType').value;
+      document.getElementById('garansiHariDiv').classList.toggle('hidden', gType !== 'hari');
     }
 
     function formatTanggal(tanggal) {
@@ -179,43 +191,38 @@
       const pass = document.getElementById('inPass').value || '...';
       const tglBeli = document.getElementById('inTgl').value;
       
+      // Durasi Paket
       const durasiSelect = document.getElementById('inDurasiSelect').value;
-      let durasiPaket = 0;
-      let labelDurasiTeks = "";
+      let durasiPaket = (durasiSelect === 'custom') ? document.getElementById('inDurasiCustomVal').value : durasiSelect;
+      let labelDurasiTeks = (durasiSelect === '30') ? "1 Bulan" : (durasiSelect === '90' ? "3 Bulan" : durasiPaket + " Hari");
 
-      if (durasiSelect === 'custom') {
-        durasiPaket = document.getElementById('inDurasiCustomVal').value || 0;
-        labelDurasiTeks = `${durasiPaket} Hari`;
+      // Garansi
+      const garansiType = document.getElementById('inGaransiType').value;
+      let garansiTeks = "";
+      let garansiNote = "Estimasi max 48 jam.";
+
+      if (garansiType === 'login') {
+        garansiTeks = "Login (3 Jam Sejak Nota Dikirim)";
+        garansiNote = "Wajib login maksimal 3 jam setelah nota ini diterima. Selebihnya dari 3 jam garansi tidak berlaku.";
       } else {
-        durasiPaket = durasiSelect;
-        labelDurasiTeks = durasiPaket === "30" ? "1 Bulan" : "3 Bulan";
+        const gDay = document.getElementById('inGaransiDay').value || 0;
+        const expG = hitungTanggal(tglBeli, gDay);
+        garansiTeks = `${gDay} Hari (s/d ${expG})`;
       }
-
-      const durasiGaransi = document.getElementById('inGaransiDay').value || 0;
-      const extraNote = document.getElementById('inNote').value;
       
+      // Provider
       let providerValue = document.getElementById('inProvider').value;
-      let pwProviderNote = "";
-
-      // HANYA tepra yang mendapatkan catatan password
-      if (providerValue === 'tepra.my.id/mailbox') {
-        pwProviderNote = "\nPW Akses OTP: @mlewe666666";
-      }
-
-      let displayProvider = providerValue;
-      if (providerValue === 'custom') {
-        displayProvider = document.getElementById('inCustom').value || 'web-anda.com';
-      }
+      let pwProviderNote = (providerValue === 'tepra.my.id/mailbox') ? "\nPW Akses OTP: @mlewe666666" : "";
+      let displayProvider = (providerValue === 'custom') ? (document.getElementById('inCustom').value || 'web-anda.com') : providerValue;
 
       const tglFormatted = formatTanggal(tglBeli);
-      const expPaket = hitungTanggal(tglBeli, durasiPaket);
-      const expGaransi = hitungTanggal(tglBeli, durasiGaransi);
+      const extraNote = document.getElementById('inNote').value;
 
       let text = `PESANAN CHATGPT PLUS BERHASIL\n` +
         `----------------------------------\n` +
         `Tgl Beli: ${tglFormatted}\n` +
         `Durasi  : ${labelDurasiTeks}\n` +
-        `Garansi : s/d ${expGaransi}\n` +
+        `Garansi : ${garansiTeks}\n` +
         `----------------------------------\n` +
         `Email   : ${email}\n` +
         `Pass    : ${pass}\n` +
@@ -225,7 +232,7 @@
         `Buka ChatGPT > Login > Masukkan Detail di atas.\n` +
         `Cek OTP di link yang disediakan secara berkala.\n\n` +
         `INFO KLAIM GARANSI:\n` +
-        `Estimasi max 48 jam. Dilarang keras mengubah Profile/Billing/Plan agar garansi tetap aktif.`;
+        `${garansiNote}\nDilarang keras mengubah Profile/Billing/Plan agar garansi tetap aktif.`;
 
       if (extraNote.trim() !== "") {
         text += `\n\nCATATAN TAMBAHAN:\n${extraNote}`;
