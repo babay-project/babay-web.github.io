@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kalkulator Kode TB PAREWA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #000000; 
+            color: #f3f4f6; 
+            overflow: hidden; /* Mencegah scroll saat pakai kalkulator */
+        }
+        .brand-font { font-family: 'Rajdhani', sans-serif; }
+        
+        /* Layar Kalkulator */
+        .screen-container {
+            background-color: #1c1c1c;
+            border-bottom: 1px solid #333;
+        }
+
+        /* Tombol Kalkulator */
+        .calc-btn {
+            background-color: #333333;
+            color: white;
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            border-radius: 50%; /* Bulat/Kotak tumpul ala iOS/Android Calc */
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.1s active;
+            height: 65px; /* Tinggi Fix */
+            width: 65px;  /* Lebar Fix (kecuali yang span) */
+            margin: 0 auto;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .calc-btn:active {
+            filter: brightness(1.3);
+            transform: scale(0.95);
+        }
+
+        /* Warna Tombol Khusus */
+        .btn-grey { background-color: #a5a5a5; color: black; } /* Top row */
+        .btn-orange { background-color: #f97316; color: white; } /* Right col */
+        .btn-dark { background-color: #333333; } /* Numbers */
+
+        /* Tombol Lebar (seperti 0) */
+        .btn-wide {
+            width: 100%;
+            border-radius: 40px;
+            justify-content: flex-start;
+            padding-left: 28px;
+        }
+        
+        /* Tombol Tinggi (seperti =) */
+        .btn-tall {
+            height: 100%;
+            border-radius: 40px;
+        }
+
+        .input-mini {
+            background: transparent;
+            border: none;
+            color: #9ca3af;
+            font-size: 0.8rem;
+            text-align: right;
+            width: 100%;
+        }
+        .input-mini:focus { outline: none; color: #f97316; }
+
+    </style>
+</head>
+<body class="h-screen flex flex-col">
+
+    <div class="flex-1 flex flex-col screen-container p-6 relative">
+        
+        <div class="flex justify-between items-start mb-4">
+            <div onclick="toggleStore()" class="cursor-pointer group">
+                <h1 id="storeTitle" class="text-2xl font-bold text-white brand-font tracking-widest uppercase">CITRA PAREWA</h1>
+                <div class="h-1 w-10 bg-orange-500 rounded group-hover:w-full transition-all duration-300"></div>
+            </div>
+            <div class="text-right">
+                <div class="text-[10px] text-slate-500 font-bold uppercase">SETTING (TAP TO EDIT)</div>
+                <div class="flex items-center justify-end gap-2">
+                    <span class="text-xs text-slate-500">Margin%</span>
+                    <input type="number" id="percentInput" value="0" class="input-mini w-8 border-b border-slate-700" oninput="calculate()">
+                </div>
+                <div class="flex items-center justify-end gap-2">
+                    <span class="text-xs text-slate-500">+Rp</span>
+                    <input type="number" id="nominalInput" value="" placeholder="0" class="input-mini w-12 border-b border-slate-700" oninput="calculate()">
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-1 flex flex-col justify-end text-right space-y-1 pb-4">
+            <div class="text-slate-400 text-3xl font-light tracking-[0.2em] break-all" id="codeDisplay">
+                <span class="text-slate-600 text-lg">Input Code...</span>
+            </div>
+            
+            <div class="flex justify-end items-center gap-2 group cursor-pointer">
+                <span class="text-[10px] text-slate-600 uppercase">Modal:</span>
+                <span id="basePriceDisplay" class="text-sm text-slate-600 font-mono blur-md group-hover:blur-none transition duration-200">Rp 0</span>
+            </div>
+
+            <div class="text-6xl font-medium text-white brand-font tracking-tight text-orange-500" id="finalPriceDisplay">0</div>
+        </div>
+    </div>
+
+    <div class="bg-black pb-8 pt-4 px-4">
+        
+        <div class="grid grid-cols-4 gap-3 max-w-md mx-auto">
+            
+            <button onclick="resetAll()" class="calc-btn btn-grey">AC</button>
+            <button onclick="toggleStore()" class="calc-btn btn-grey"><i class="fa-solid fa-store text-sm"></i></button>
+            <button onclick="backspace()" class="calc-btn btn-grey"><i class="fa-solid fa-delete-left"></i></button>
+            <button onclick="typeCode('W')" class="calc-btn btn-orange text-xl">W</button> <button onclick="typeCode('H')" class="calc-btn btn-dark">H</button>
+            <button onclick="typeCode('A')" class="calc-btn btn-dark">A</button>
+            <button onclick="typeCode('D')" class="calc-btn btn-dark">D</button>
+            <button onclick="typeCode('R')" class="calc-btn btn-orange text-xl">R</button> <button onclick="typeCode('K')" class="calc-btn btn-dark">K</button>
+            <button onclick="typeCode('T')" class="calc-btn btn-dark">T</button>
+            <button onclick="typeCode('Y')" class="calc-btn btn-dark">Y</button>
+            <button class="calc-btn btn-dark pointer-events-none opacity-0"></button> 
+
+            <button onclick="typeCode('I')" class="calc-btn btn-dark">I</button>
+            <button onclick="typeCode('J')" class="calc-btn btn-dark">J</button>
+            <button onclick="typeCode('E')" class="calc-btn btn-dark">E</button>
+            <div class="row-span-2 relative" style="margin-top: -78px;"> <button onclick="calculate()" class="calc-btn btn-orange btn-tall h-[142px] absolute bottom-0 right-0 w-[65px] flex items-center justify-center">
+                    <i class="fa-solid fa-check text-2xl"></i>
+                 </button>
+            </div>
+
+            <div class="col-span-2">
+                <button onclick="typeCode('P')" class="calc-btn btn-dark btn-wide">P</button>
+            </div>
+            <button onclick="typeCode('.')" class="calc-btn btn-dark font-bold">.</button>
+            
+        </div>
+    </div>
+
+    <input type="hidden" id="codeInput">
+
+    <script>
+        // === LOGIC ===
+        let isCitra = true;
+        
+        // Mapping Kode ke Angka (Sesuai Request)
+        const secretMap = {
+            'I': '1', 'J': '2', 'E': '3', 
+            'K': '4', 'T': '5', 'Y': '6', 
+            'H': '7', 'A': '8', 'D': '9', 
+            'P': '0', 'R': '00', 'W': '000',
+            '.': '.' // Membiarkan titik jika ada desimal/pemisah
+        };
+
+        function typeCode(char) {
+            const inputHidden = document.getElementById('codeInput');
+            const display = document.getElementById('codeDisplay');
+            
+            // Logic khusus untuk input
+            inputHidden.value += char;
+            
+            // Update Tampilan Kode
+            if (inputHidden.value.length > 0) {
+                // Tampilkan kode dengan spasi agar mudah dibaca
+                display.innerText = inputHidden.value;
+                display.classList.remove('text-slate-600', 'text-lg');
+                display.classList.add('text-white');
+            }
+            
+            calculate();
+        }
+
+        function backspace() {
+            const inputHidden = document.getElementById('codeInput');
+            inputHidden.value = inputHidden.value.slice(0, -1);
+            
+            const display = document.getElementById('codeDisplay');
+            if (inputHidden.value === '') {
+                display.innerHTML = '<span class="text-slate-600 text-lg">Input Code...</span>';
+            } else {
+                display.innerText = inputHidden.value;
+            }
+            calculate();
+        }
+
+        function resetAll() {
+            document.getElementById('codeInput').value = '';
+            document.getElementById('codeDisplay').innerHTML = '<span class="text-slate-600 text-lg">Input Code...</span>';
+            document.getElementById('finalPriceDisplay').innerText = '0';
+            document.getElementById('basePriceDisplay').innerText = 'Rp 0';
+        }
+
+        function calculate() {
+            const code = document.getElementById('codeInput').value.toUpperCase();
+            const percent = parseFloat(document.getElementById('percentInput').value) || 0;
+            const nominal = parseFloat(document.getElementById('nominalInput').value) || 0;
+
+            let rawPriceStr = "";
+            
+            // Parsing karakter per karakter
+            // Jika user menekan tombol R (00) atau W (000), mereka dianggap karakter string di input
+            // Kita perlu memecah input string dan mengkonversinya
+            
+            // Trik: Karena R dan W adalah tombol input langsung,
+            // logic typeCode akan memasukkan huruf 'R' atau 'W'.
+            // Kita convert di sini.
+            
+            for (let char of code) {
+                if (secretMap[char]) {
+                    rawPriceStr += secretMap[char];
+                } else if (!isNaN(char)) {
+                    // Jika ada angka nyasar
+                    rawPriceStr += char;
+                }
+            }
+
+            const basePrice = parseInt(rawPriceStr);
+
+            if (!isNaN(basePrice)) {
+                // Hitung Keuntungan
+                const profitAmount = basePrice * (percent / 100);
+                const finalPrice = basePrice + profitAmount + nominal;
+
+                document.getElementById('finalPriceDisplay').innerText = formatRupiah(finalPrice);
+                document.getElementById('basePriceDisplay').innerText = formatRupiah(basePrice);
+            } else {
+                document.getElementById('finalPriceDisplay').innerText = "0";
+                document.getElementById('basePriceDisplay').innerText = "Rp 0";
+            }
+        }
+
+        function formatRupiah(num) {
+            return new Intl.NumberFormat('id-ID').format(num);
+        }
+
+        function toggleStore() {
+            isCitra = !isCitra;
+            const title = document.getElementById('storeTitle');
+            const priceText = document.getElementById('finalPriceDisplay');
+            
+            if (isCitra) {
+                title.innerText = "CITRA PAREWA";
+                priceText.classList.remove('text-cyan-400');
+                priceText.classList.add('text-orange-500');
+            } else {
+                title.innerText = "GM PAREWA";
+                priceText.classList.remove('text-orange-500');
+                priceText.classList.add('text-cyan-400');
+            }
+        }
+    </script>
+</body>
+</html>
