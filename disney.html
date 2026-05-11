@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Babayshop Galaxy v2 - Disney+ Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --deep-space: #020617;
+            --nebula-purple: #6366f1;
+            --nebula-blue: #0ea5e9;
+            --accent-pink: #d946ef;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--deep-space);
+            color: #f8fafc;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .stars-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(217, 70, 239, 0.1) 0%, transparent 40%);
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: twinkle var(--duration) infinite ease-in-out;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .galaxy-card {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .input-glow {
+            background: rgba(2, 6, 23, 0.8);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-glow:focus {
+            border-color: var(--nebula-blue);
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.3);
+            outline: none;
+        }
+
+        .btn-galactic {
+            background: linear-gradient(135deg, #6366f1 0%, #a855f7 50%, #d946ef 100%);
+            background-size: 200% auto;
+            transition: 0.5s;
+        }
+
+        .btn-galactic:hover {
+            background-position: right center;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(168, 85, 247, 0.4);
+        }
+
+        .custom-active {
+            border-color: var(--accent-pink) !important;
+            box-shadow: 0 0 10px rgba(217, 70, 239, 0.2);
+        }
+    </style>
+</head>
+<body class="p-4 md:p-12">
+
+    <div id="stars" class="stars-container"></div>
+
+    <div class="max-w-6xl mx-auto relative">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl font-extrabold tracking-tight text-white mb-2 uppercase italic">
+                BABAY<span class="text-indigo-500">SHOP</span> <span class="text-sm not-italic font-light tracking-widest text-slate-400 block">Galaxy Receipt Engine v2.0</span>
+            </h1>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- Configuration Section -->
+            <div class="lg:col-span-5 space-y-6">
+                <div class="galaxy-card p-6 rounded-3xl">
+                    <h3 class="text-lg font-bold mb-5 flex items-center gap-2 text-indigo-300">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>
+                        Konfigurasi Paket
+                    </h3>
+
+                    <div class="space-y-4">
+                        <!-- Paket Selection -->
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">Pilih Dimensi Waktu</label>
+                            <select id="paket" onchange="handlePaketChange()" class="w-full input-glow p-4 rounded-xl text-slate-200">
+                                <option value="1 Minggu" data-harga="10.000" data-garansi="5">1 Minggu — Rp 10.000</option>
+                                <option value="1 Bulan" data-harga="25.000" data-garansi="25" selected>1 Bulan — Rp 25.000</option>
+                                <option value="2 Bulan" data-harga="45.000" data-garansi="50">2 Bulan — Rp 45.000</option>
+                                <option value="3 Bulan" data-harga="60.000" data-garansi="75">3 Bulan — Rp 60.000</option>
+                                <option value="KUSTOM" data-harga="0" data-garansi="0">✨ PAKET KUSTOM (Manual)</option>
+                            </select>
+                        </div>
+
+                        <!-- Custom Input Fields -->
+                        <div id="custom_fields" class="hidden grid grid-cols-2 gap-3 p-4 bg-fuchsia-500/5 border border-fuchsia-500/20 rounded-2xl animate-pulse">
+                            <div>
+                                <label class="text-[10px] font-bold text-fuchsia-400 uppercase mb-1 block">Durasi Kustom</label>
+                                <input type="text" id="kustom_durasi" placeholder="Misal: 5 Bulan" class="w-full input-glow p-3 rounded-lg text-sm">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold text-fuchsia-400 uppercase mb-1 block">Harga Kustom</label>
+                                <input type="text" id="kustom_harga" placeholder="75.000" class="w-full input-glow p-3 rounded-lg text-sm">
+                            </div>
+                            <div class="col-span-2">
+                                <label class="text-[10px] font-bold text-fuchsia-400 uppercase mb-1 block">Hari Garansi</label>
+                                <input type="number" id="kustom_garansi" placeholder="Berapa hari?" class="w-full input-glow p-3 rounded-lg text-sm">
+                            </div>
+                        </div>
+
+                        <!-- Access Info -->
+                        <div class="grid grid-cols-2 gap-3">
+                            <div class="col-span-2">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">Akses Nomor</label>
+                                <select id="phone_select" onchange="handlePhoneChange()" class="w-full input-glow p-4 rounded-xl text-sm">
+                                    <option value="(62) 85758058711">(62) 85758058711 (Utama)</option>
+                                    <option value="CUSTOM">Input Nomor Lain...</option>
+                                </select>
+                                <input type="text" id="custom_hp" placeholder="(62) 8..." class="hidden w-full input-glow p-3 rounded-xl mt-2 text-sm border-indigo-500/30">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">Profil</label>
+                                <input type="text" id="profil" value="SATU" class="w-full input-glow p-3 rounded-xl text-center">
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">PIN</label>
+                                <input type="text" id="pin" placeholder="0000" class="w-full input-glow p-3 rounded-xl text-center font-mono">
+                            </div>
+                        </div>
+
+                        <button onclick="generateNota()" class="btn-galactic w-full py-4 rounded-2xl font-black text-white uppercase tracking-widest shadow-xl mt-4">
+                            GENERATE RECEIPT
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Section -->
+            <div class="lg:col-span-7">
+                <div class="galaxy-card p-4 rounded-[2.5rem] h-full flex flex-col border-indigo-500/20">
+                    <div class="bg-slate-950/80 rounded-[2rem] p-6 h-full flex flex-col">
+                        <div class="flex justify-between items-center mb-6">
+                            <div class="flex gap-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500/50"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
+                            </div>
+                            <div id="price_tag" class="px-4 py-1 rounded-full bg-indigo-500 text-[10px] font-black tracking-tighter">IDR 25.000</div>
+                        </div>
+
+                        <textarea id="hasilNota" readonly class="w-full flex-grow bg-transparent border-none resize-none text-indigo-100 font-mono text-xs md:text-sm leading-relaxed focus:outline-none" placeholder="Menunggu perintah transaksi..."></textarea>
+                        
+                        <button onclick="copyNota()" id="copyBtn" class="mt-4 w-full bg-white text-slate-900 font-bold py-4 rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2">
+                            <span>SALIN NOTA GALAXY</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<script>
+    // Star System
+    const starContainer = document.getElementById('stars');
+    for (let i = 0; i < 150; i++) {
+        const star = document.createElement('div');
+        star.className = 'star';
+        const size = Math.random() * 2 + 'px';
+        star.style.width = size;
+        star.style.height = size;
+        star.style.left = Math.random() * 100 + '%';
+        star.style.top = Math.random() * 100 + '%';
+        star.style.setProperty('--duration', (Math.random() * 3 + 2) + 's');
+        starContainer.appendChild(star);
+    }
+
+    function handlePaketChange() {
+        const val = document.getElementById('paket').value;
+        const customArea = document.getElementById('custom_fields');
+        const priceTag = document.getElementById('price_tag');
+        
+        if (val === 'KUSTOM') {
+            customArea.classList.remove('hidden');
+            priceTag.innerText = 'KUSTOM';
+        } else {
+            customArea.classList.add('hidden');
+            const select = document.getElementById('paket');
+            priceTag.innerText = 'IDR ' + select.options[select.selectedIndex].getAttribute('data-harga');
+        }
+    }
+
+    function handlePhoneChange() {
+        const val = document.getElementById('phone_select').value;
+        const customInput = document.getElementById('custom_hp');
+        customInput.classList.toggle('hidden', val !== 'CUSTOM');
+    }
+
+    function generateNota() {
+        const select = document.getElementById('paket');
+        let paket, garansiHari, harga;
+
+        if (select.value === 'KUSTOM') {
+            paket = document.getElementById('kustom_durasi').value || 'Kustom';
+            garansiHari = document.getElementById('kustom_garansi').value || '0';
+            harga = document.getElementById('kustom_harga').value || '0';
+        } else {
+            paket = select.value;
+            garansiHari = select.options[select.selectedIndex].getAttribute('data-garansi');
+            harga = select.options[select.selectedIndex].getAttribute('data-harga');
+        }
+
+        let phone = document.getElementById('phone_select').value;
+        if (phone === 'CUSTOM') phone = document.getElementById('custom_hp').value || '(62) ';
+
+        const profil = document.getElementById('profil').value;
+        const pin = document.getElementById('pin').value;
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const beliDate = new Date();
+        const garansiDate = new Date();
+        garansiDate.setDate(beliDate.getDate() + parseInt(garansiHari));
+
+        document.getElementById('price_tag').innerText = 'IDR ' + harga;
+
+        const template = `🌌 *BABAYSHOP PREMIUM RECEIPT* 🌌
+━━━━━━━━━━━━━━━━━━━━
+📦 Produk: Disney+ ${paket} Sharing
+🛡️ Garansi: ${garansiHari} Hari Full
+💰 Total: Rp ${harga}
+📅 Tgl Beli: ${beliDate.toLocaleDateString('id-ID', options)}
+⌛ Berlaku s/d: ${garansiDate.toLocaleDateString('id-ID', options)}
+━━━━━━━━━━━━━━━━━━━━
+
+📱 *DATA LOGIN:*
+• No. Telp: ${phone}
+• Profil: ${profil}
+• Pin: ${pin}
+
+📩 *INFO OTP:*
+KODE OTP VIA EMAIL MINTA KE BABAY
+(Wajib lapor Nama Device setelah login!)
+
+💡 *CATATAN GALAXY:*
+- Max 1 Device & Wajib lapor merek.
+- Pindah device kena charge Rp 2.000.
+
+📜 *SYARAT & KETENTUAN:*
+◍ Login 1 Device & Menggunakan OTP Seller.
+◍ Durasi berjalan sejak awal pembelian.
+◍ Dilarang mengutak-atik pengaturan.
+◍ Akun SHARING (Bukan Private).
+◍ Patuhi S&K = Garansi Full.
+⚠️ Melanggar S&K? Garansi Hangus / No Refund!
+
+🚀 *TIPS TRAFFIC (JIKA ERROR):*
+1. Aktifkan Mode Pesawat (3-5 Menit).
+2. Gunakan Data Seluler (Matikan WIFI).
+3. Re-login / Reinstall jika masih gagal.
+4. Jika mentok, diamkan 1-2 hari (High Demand).
+5. Refund diproses jika 3 hari gagal total.
+
+Terima kasih telah mempercayai Babayshop! ✨`;
+
+        document.getElementById('hasilNota').value = template;
+    }
+
+    async function copyNota() {
+        const text = document.getElementById("hasilNota").value;
+        if(!text) return;
+        
+        await navigator.clipboard.writeText(text);
+        const btn = document.getElementById('copyBtn');
+        const original = btn.innerHTML;
+        btn.innerHTML = "✨ TERSALIN KE GALAXY!";
+        btn.style.background = "#22c55e";
+        btn.style.color = "white";
+        
+        setTimeout(() => {
+            btn.innerHTML = original;
+            btn.style.background = "white";
+            btn.style.color = "#0f172a";
+        }, 2000);
+    }
+</script>
+</body>
+</html>
