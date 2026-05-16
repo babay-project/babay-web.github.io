@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KODE GENERATOR</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <style>
+    body{
+      font-family:'Inter',sans-serif;
+      background:
+      radial-gradient(circle at top,#172554,#020617 50%,#000);
+      min-height:100vh;
+      color:white;
+    }
+
+    .brand{
+      font-family:'Rajdhani',sans-serif;
+    }
+
+    .glass{
+      background:rgba(15,23,42,.75);
+      backdrop-filter:blur(18px);
+      border:1px solid rgba(255,255,255,.08);
+    }
+
+    .mode-active{
+      background:linear-gradient(135deg,#f97316,#fb923c);
+      color:white;
+      box-shadow:0 0 25px rgba(249,115,22,.45);
+    }
+
+    .calc-btn{
+      background:#1e293b;
+      border:1px solid rgba(255,255,255,.06);
+      height:72px;
+      border-radius:22px;
+      font-size:24px;
+      font-weight:800;
+      transition:.1s;
+    }
+
+    .calc-btn:active{
+      transform:scale(.95);
+      filter:brightness(1.2);
+    }
+
+    .special-btn{
+      background:#ea580c;
+    }
+
+    .danger-btn{
+      background:#dc2626;
+    }
+
+    .copy-btn{
+      background:#0f172a;
+    }
+  </style>
+</head>
+
+<body class="flex items-center justify-center p-4">
+
+  <main class="glass w-full max-w-md rounded-[2.5rem] p-6 shadow-2xl">
+
+    <!-- HEADER -->
+    <div class="text-center mb-6">
+
+      <div class="text-orange-400 text-xs tracking-[0.4em] uppercase font-bold">
+        Parewa Tools
+      </div>
+
+      <h1 class="brand text-5xl tracking-widest font-bold mt-1">
+        GENERATOR
+      </h1>
+
+      <p class="text-slate-400 text-sm mt-1">
+        Angka ↔ Kode 
+      </p>
+
+    </div>
+
+    <!-- MODE -->
+    <div class="grid grid-cols-2 gap-3 mb-6">
+
+      <button
+        id="modeCode"
+        onclick="setMode('code')"
+        class="py-4 rounded-2xl font-bold bg-slate-800 text-slate-300"
+      >
+        Kode → Angka
+      </button>
+
+      <button
+        id="modeNumber"
+        onclick="setMode('number')"
+        class="py-4 rounded-2xl font-bold mode-active"
+      >
+        Angka → Kode
+      </button>
+
+    </div>
+
+    <!-- INPUT -->
+    <div class="space-y-4">
+
+      <div>
+
+        <div
+          id="inputLabel"
+          class="text-xs uppercase tracking-wider text-slate-400 font-bold"
+        >
+          Masukkan Angka
+        </div>
+
+        <div
+          id="displayInput"
+          class="mt-2 bg-black/40 border border-slate-700 rounded-3xl px-5 py-5 text-4xl font-bold overflow-x-auto whitespace-nowrap"
+        >
+          0
+        </div>
+
+      </div>
+
+      <!-- RESULT -->
+      <div class="bg-black/40 border border-orange-500/20 rounded-3xl p-5">
+
+        <div
+          id="resultLabel"
+          class="text-xs uppercase tracking-wider text-orange-400 font-bold"
+        >
+          Hasil Kode
+        </div>
+
+        <div
+          id="result"
+          class="brand text-6xl text-orange-400 font-bold mt-2 break-all"
+        >
+          -
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- NUMBER PAD -->
+    <div id="numberPad" class="grid grid-cols-3 gap-3 mt-6">
+
+      <button onclick="pressNumber('7')" class="calc-btn">7</button>
+      <button onclick="pressNumber('8')" class="calc-btn">8</button>
+      <button onclick="pressNumber('9')" class="calc-btn">9</button>
+
+      <button onclick="pressNumber('4')" class="calc-btn">4</button>
+      <button onclick="pressNumber('5')" class="calc-btn">5</button>
+      <button onclick="pressNumber('6')" class="calc-btn">6</button>
+
+      <button onclick="pressNumber('1')" class="calc-btn">1</button>
+      <button onclick="pressNumber('2')" class="calc-btn">2</button>
+      <button onclick="pressNumber('3')" class="calc-btn">3</button>
+
+      <button onclick="pressNumber('0')" class="calc-btn">0</button>
+      <button onclick="pressNumber('00')" class="calc-btn">00</button>
+      <button onclick="pressNumber('000')" class="calc-btn special-btn">000</button>
+
+      <button onclick="backspace()" class="calc-btn">⌫</button>
+      <button onclick="resetAll()" class="calc-btn danger-btn">AC</button>
+      <button onclick="copyResult()" class="calc-btn copy-btn">COPY</button>
+
+    </div>
+
+    <!-- CODE INPUT MODE -->
+    <div id="codeMode" class="hidden mt-6">
+
+      <input
+        id="codeInput"
+        type="text"
+        placeholder="Contoh: JTW"
+        oninput="convertCodeToNumber()"
+        class="w-full bg-black/40 border border-slate-700 rounded-3xl px-5 py-5 text-4xl uppercase font-bold outline-none focus:border-orange-500"
+      >
+
+    </div>
+
+    
+    </div>
+
+  </main>
+
+<script>
+
+let mode = "number";
+
+let numberInput = "";
+let parewaCode = "";
+
+const numberToCodeMap = {
+  "1":"I",
+  "2":"J",
+  "3":"E",
+  "4":"K",
+  "5":"T",
+  "6":"Y",
+  "7":"H",
+  "8":"A",
+  "9":"D",
+  "0":"P",
+  "00":"R",
+  "000":"W"
+};
+
+const codeToNumberMap = {
+  "I":"1",
+  "J":"2",
+  "E":"3",
+  "K":"4",
+  "T":"5",
+  "Y":"6",
+  "H":"7",
+  "A":"8",
+  "D":"9",
+  "P":"0",
+  "R":"00",
+  "W":"000"
+};
+
+function setMode(selected){
+
+  mode = selected;
+
+  const modeCode = document.getElementById("modeCode");
+  const modeNumber = document.getElementById("modeNumber");
+
+  const numberPad = document.getElementById("numberPad");
+  const codeMode = document.getElementById("codeMode");
+
+  const inputLabel = document.getElementById("inputLabel");
+  const resultLabel = document.getElementById("resultLabel");
+
+  resetAll();
+
+  if(selected === "number"){
+
+    modeNumber.classList.add("mode-active");
+    modeCode.classList.remove("mode-active");
+
+    numberPad.classList.remove("hidden");
+    codeMode.classList.add("hidden");
+
+    inputLabel.innerText = "Masukkan Angka";
+    resultLabel.innerText = "Hasil Kode Parewa";
+
+  }else{
+
+    modeCode.classList.add("mode-active");
+    modeNumber.classList.remove("mode-active");
+
+    numberPad.classList.add("hidden");
+    codeMode.classList.remove("hidden");
+
+    inputLabel.innerText = "Masukkan Kode";
+    resultLabel.innerText = "Hasil Angka";
+
+  }
+}
+
+function pressNumber(value){
+
+  numberInput += value;
+  parewaCode += numberToCodeMap[value];
+
+  document.getElementById("displayInput").innerText = numberInput;
+  document.getElementById("result").innerText = parewaCode;
+}
+
+function backspace(){
+
+  if(mode === "number"){
+
+    if(!numberInput) return;
+
+    if(numberInput.endsWith("000") && parewaCode.endsWith("W")){
+
+      numberInput = numberInput.slice(0,-3);
+
+    }else if(numberInput.endsWith("00") && parewaCode.endsWith("R")){
+
+      numberInput = numberInput.slice(0,-2);
+
+    }else{
+
+      numberInput = numberInput.slice(0,-1);
+    }
+
+    parewaCode = parewaCode.slice(0,-1);
+
+    document.getElementById("displayInput").innerText =
+      numberInput || "0";
+
+    document.getElementById("result").innerText =
+      parewaCode || "-";
+  }
+}
+
+function resetAll(){
+
+  numberInput = "";
+  parewaCode = "";
+
+  document.getElementById("displayInput").innerText = "0";
+  document.getElementById("result").innerText = "-";
+
+  const codeInput = document.getElementById("codeInput");
+
+  if(codeInput){
+    codeInput.value = "";
+  }
+}
+
+function copyResult(){
+
+  const text = document.getElementById("result").innerText;
+
+  navigator.clipboard.writeText(text);
+
+  alert("Berhasil dicopy:\n" + text);
+}
+
+function convertCodeToNumber(){
+
+  const input =
+    document.getElementById("codeInput")
+    .value
+    .toUpperCase();
+
+  let result = "";
+
+  for(let char of input){
+
+    if(codeToNumberMap[char]){
+      result += codeToNumberMap[char];
+    }
+  }
+
+  document.getElementById("result").innerText =
+    result || "-";
+
+  document.getElementById("displayInput").innerText =
+    input || "0";
+}
+
+</script>
+
+</body>
+</html>
