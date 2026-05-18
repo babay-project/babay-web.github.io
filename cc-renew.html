@@ -40,7 +40,19 @@
         </div>
 
         <div id="customDurasiContainer" class="hidden">
-          <input type="text" id="customDurasi" placeholder="Input manual..." class="w-full bg-slate-800 border border-blue-500/30 text-white text-sm rounded-lg p-3" />
+          <input type="text" id="customDurasi" placeholder="Input manual durasi..." class="w-full bg-slate-800 border border-blue-500/30 text-white text-sm rounded-lg p-3" />
+        </div>
+
+        <!-- FORM MASA GARANSI -->
+        <div>
+          <label class="block mb-2 text-xs font-semibold text-slate-400 uppercase">Masa Garansi</label>
+          <div class="flex gap-2">
+            <input type="number" id="angkaGaransi" min="1" required placeholder="Jumlah" class="w-1/3 bg-slate-800 border border-slate-700 text-white text-sm rounded-lg p-3 outline-none focus:border-blue-500" />
+            <select id="satuanGaransi" required class="w-2/3 bg-slate-800 border border-slate-700 text-white text-sm rounded-lg p-3 outline-none focus:border-blue-500">
+              <option value="hari" selected>Hari</option>
+              <option value="bulan">Bulan</option>
+            </select>
+          </div>
         </div>
 
         <div class="space-y-3">
@@ -78,34 +90,55 @@
         let selectedDurasi = durasiEl.value === "custom" ? document.getElementById("customDurasi").value : durasiEl.value;
         const email = document.getElementById("email").value;
         const password = document.getElementById("password").value;
+        
+        // Hitung Tanggal Sekarang
         const now = new Date();
         const tgl = now.toLocaleString("id-ID", { day: "numeric", month: "long", year: "numeric" });
 
+        // Hitung Tanggal Garansi
+        const angkaGaransi = parseInt(document.getElementById("angkaGaransi").value);
+        const satuanGaransi = document.getElementById("satuanGaransi").value;
+        const tglGaransi = new Date();
+        
+        if (satuanGaransi === "hari") {
+          tglGaransi.setDate(tglGaransi.getDate() + angkaGaransi);
+        } else if (satuanGaransi === "bulan") {
+          tglGaransi.setMonth(tglGaransi.getMonth() + angkaGaransi);
+        }
+        const tglGaransiFormat = tglGaransi.toLocaleString("id-ID", { day: "numeric", month: "long", year: "numeric" });
+
         const notaTemplate = `
-╭────〔 Babayshop.my.id 〕─
+╭────〔 DATA AKUN CAPCUT 〕─
 ┊ ✨ Service : Capcut Pro Team (RENEW)
 ┊ ⏳ Durasi  : ${selectedDurasi}
-┊ 🛡️ Desc    : AKSES SEMUA FITUR PRO , GARANSI
+┊ 🛡️ Garansi : S/D ${tglGaransiFormat} (${angkaGaransi} ${satuanGaransi})
 ┊ 📅 Waktu   : ${tgl}
 ╰┈┈┈┈┈┈┈┈
 - Email: ${email}
 - Password: ${password}
 ╰┈┈┈┈┈┈┈┈
-📢 PENJELASAN SISTEM RENEW:
-Paket Renew ini adalah sistem langganan Capcut Pro Team berbasis "Auto-Renewal" setiap 7 hari. 
 
-Keunggulan Sistem Renew:
-➥ Jaminan Akun Tetap Aktif: Durasi total yang Anda beli akan diproses melalui siklus perpanjangan otomatis setiap minggunya.
-➥ Keamanan Extra: Sistem perpanjangan berkala menjaga akun tetap dalam pengawasan sistem kami sehingga meminimalisir resiko suspend atau deaktif secara tiba-tiba.
-➥ Tanpa Ganti Akun: Anda tetap menggunakan akun yang sama sampai masa durasi total berakhir.
+📖 CARA LOGIN & CEK EXPIRED TIM:
+1. Login Capcut pakai Email & Password di atas.
+👉 contoh: https://prnt.sc/uz61plJIdpkv | https://prnt.sc/UuQ1844Bv2f7
+2. Klik Profil / Saya -> Klik tulisan "Pro" di samping username.
+👉 contoh: https://prnt.sc/NHM6KWUWmjrT
+3. Klik bagian "Tim", nanti akan muncul tampilan Tim Pro beserta tanggal expired tim nya.
+👉 contoh: https://prnt.sc/vLvb2i1Q17Ta
 
-Syarat dan ketentuan :
-➥ Garansi pada saat pertama kali login
-➥ Hanya garansi Backfree bukan kesalahan sendiri (disable/hack/pelanggaran)
-➥ Maks login 1 akun private adalah 2 Device
-➥ Disarankan Hapus Data aplikasi sebelum login! (jika masih ada project penting di dalam capcut hp nya, diperbolehkan tidak hapus data)
-➥ Login hanya via Email / Scan QR (PC)
-➥ Jika terdapat kendala silahkan hubungi admin
+📢 PENJELASAN SISTEM RENEW (7 HARI):
+• Sistem Capcut membatasi durasi 1 tim maksimal 7 hari.
+• Jika beli paket > 7 hari (misal 1 bulan), Anda akan otomatis ganti tim 4-5x setiap minggu secara berkala (tanpa ganti akun).
+• Saat tim lama expired (H-1 / Hari H), tim baru akan diproses dalam waktu 2 jam - 1 hari.
+• Mohon ingat tanggal expired tim Anda. Jika dalam 1x24 jam setelah expired tim belum diperbarui, silakan laporan ke seller.
+
+⚠️ SYARAT DAN KETENTUAN:
+➥ Garansi utama saat pertama kali login.
+➥ Hanya garansi Backfree (sistem), bukan karena kesalahan sendiri (disable/hack/pelanggaran).
+➥ Maksimal login hanya untuk 2 Device.
+➥ Disarankan Hapus Data aplikasi sebelum login (kecuali ada project penting).
+➥ Login wajib via Email / Scan QR (PC).
+➥ Ada kendala? Langsung hubungi admin.
 `.trim();
 
         notaOutputEl.value = notaTemplate;
