@@ -5,87 +5,205 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GPT Sharing Generator</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --galaxy-1: #070018;
+            --galaxy-2: #140033;
+            --galaxy-3: #2b0a5f;
+            --neon-pink: #ff4ecd;
+            --neon-blue: #43d9ff;
+            --neon-purple: #9d6cff;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            font-family: 'Open Sans', sans-serif;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            color: #ffffff;
+            background:
+                radial-gradient(circle at 15% 15%, rgba(255, 78, 205, 0.32), transparent 28%),
+                radial-gradient(circle at 85% 10%, rgba(67, 217, 255, 0.28), transparent 30%),
+                radial-gradient(circle at 50% 85%, rgba(157, 108, 255, 0.32), transparent 32%),
+                linear-gradient(135deg, var(--galaxy-1), var(--galaxy-2) 45%, #050013);
+            overflow-x: hidden;
+        }
+
+        body::before,
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::before {
+            background-image:
+                radial-gradient(circle, rgba(255,255,255,0.95) 1px, transparent 1.6px),
+                radial-gradient(circle, rgba(255,255,255,0.55) 1px, transparent 1.4px);
+            background-size: 72px 72px, 118px 118px;
+            background-position: 0 0, 35px 55px;
+            opacity: 0.42;
+            animation: starsMove 24s linear infinite;
+        }
+
+        body::after {
+            background: linear-gradient(120deg, transparent 20%, rgba(255,255,255,0.08), transparent 80%);
+            transform: translateX(-100%);
+            animation: auroraSweep 8s ease-in-out infinite;
+        }
+
+        @keyframes starsMove {
+            from { background-position: 0 0, 35px 55px; }
+            to { background-position: 220px 320px, 255px 375px; }
+        }
+
+        @keyframes auroraSweep {
+            0%, 100% { transform: translateX(-120%); opacity: 0; }
+            40%, 60% { opacity: 1; }
+            100% { transform: translateX(120%); opacity: 0; }
+        }
+
+        .glass-card {
+            position: relative;
+            z-index: 1;
+            background: rgba(12, 8, 35, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            box-shadow:
+                0 24px 80px rgba(0, 0, 0, 0.52),
+                inset 0 1px 0 rgba(255, 255, 255, 0.12),
+                0 0 44px rgba(157, 108, 255, 0.20);
+            backdrop-filter: blur(20px);
+        }
+
+        .input-galaxy,
+        .select-galaxy,
+        .textarea-galaxy {
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            outline: none;
+            transition: 0.2s ease;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .input-galaxy::placeholder,
+        .textarea-galaxy::placeholder {
+            color: rgba(255, 255, 255, 0.45);
+        }
+
+        .input-galaxy:focus,
+        .select-galaxy:focus,
+        .textarea-galaxy:focus {
+            border-color: rgba(67, 217, 255, 0.9);
+            box-shadow:
+                0 0 0 4px rgba(67, 217, 255, 0.14),
+                0 0 24px rgba(67, 217, 255, 0.14);
+            background: rgba(255, 255, 255, 0.11);
+        }
+
+        .select-galaxy option {
+            background: #16072f;
+            color: #ffffff;
+        }
+
+        .btn-galaxy {
+            background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple), var(--neon-blue));
+            box-shadow: 0 14px 34px rgba(157, 108, 255, 0.36);
+        }
+
+        .btn-galaxy:hover {
+            filter: brightness(1.1);
+            transform: translateY(-1px);
+            box-shadow: 0 18px 42px rgba(67, 217, 255, 0.28);
+        }
+
+        .btn-copy {
+            background: linear-gradient(135deg, #20e3b2, #43d9ff);
+            box-shadow: 0 14px 34px rgba(67, 217, 255, 0.24);
         }
     </style>
 </head>
-<body class="bg-[#f8f9fa] text-[#202124] min-h-screen py-12 px-4 flex justify-center items-start">
+<body class="px-4 py-8 sm:py-12 flex justify-center items-start">
 
-    <div class="w-full max-w-xl bg-white border border-[#dadce0] rounded-2xl shadow-sm overflow-hidden transition-all duration-300">
+    <main class="w-full max-w-2xl glass-card rounded-[2rem] overflow-hidden">
         
-        <!-- Header Minimalis -->
-        <div class="px-8 py-6 border-b border-[#f1f3f4]">
-            <div class="flex items-center gap-3">
-                <div class="text-[#1a73e8]">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        <!-- Header Galaxy -->
+        <div class="relative px-6 sm:px-8 py-8 border-b border-white/10">
+            <div class="absolute -top-20 -right-20 w-52 h-52 bg-fuchsia-500/20 blur-3xl rounded-full"></div>
+            <div class="absolute -bottom-24 -left-20 w-60 h-60 bg-cyan-400/20 blur-3xl rounded-full"></div>
+
+            <div class="relative flex items-start gap-4">
+                <div class="h-12 w-12 shrink-0 rounded-2xl bg-white/10 border border-white/15 flex items-center justify-center shadow-lg shadow-purple-950/30">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-cyan-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.889a1 1 0 00-.364 1.118l1.519 4.674c.3.921-.755 1.688-1.538 1.118l-3.976-2.889a1 1 0 00-1.176 0l-3.976 2.889c-.783.57-1.838-.197-1.538-1.118l1.519-4.674a1 1 0 00-.364-1.118L3.077 10.1c-.783-.57-.38-1.81.588-1.81H8.58a1 1 0 00.95-.69l1.519-4.674z" />
                     </svg>
                 </div>
                 <div>
-                    <h1 class="text-xl font-medium tracking-tight text-[#202124]">GPT Sharing Generator</h1>
-                    <p class="text-xs text-[#5f6368] mt-0.5">Buat nota WhatsApp otomatis untuk pelanggan premium</p>
+                    <p class="text-xs font-semibold tracking-[0.3em] text-cyan-200/90 uppercase">Galaxy Mode</p>
+                    <h1 class="mt-2 text-2xl sm:text-3xl font-extrabold tracking-tight">GPT Sharing Generator</h1>
+                    <p class="mt-2 text-sm text-white/65 leading-relaxed">Buat nota WhatsApp otomatis untuk pelanggan premium dengan tampilan lebih rapi dan mudah dipakai.</p>
                 </div>
             </div>
         </div>
 
-        <!-- Form Input -->
-        <div class="p-8 space-y-5">
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-medium text-[#5f6368] mb-1.5">Nama Toko / Brand</label>
-                    <input type="text" id="inputBrand" class="w-full px-3 py-2 bg-white border border-[#dadce0] rounded-md focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] outline-none text-sm transition text-[#202124]" value="BABAYSHOP.ID">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-[#5f6368] mb-1.5">Pilihan Aplikasi / Plan</label>
-                    <select id="inputPlan" class="w-full px-3 py-2 bg-white border border-[#dadce0] rounded-md focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] outline-none text-sm transition text-[#202124] h-[38px]">
-                        <option value="GPT Plus">GPT Plus</option>
-                        <option value="GPT Go">GPT Go</option>
-                    </select>
-                </div>
+        <!-- Form Input Vertikal -->
+        <div class="p-6 sm:p-8 space-y-5">
+            <div>
+                <label class="block text-sm font-semibold text-white/80 mb-2">Nama Toko / Brand</label>
+                <input type="text" id="inputBrand" class="input-galaxy px-4 py-3 rounded-2xl text-sm" value="BABAYSHOP.ID">
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-medium text-[#5f6368] mb-1.5">Email Akses</label>
-                    <input type="email" id="inputEmail" class="w-full px-3 py-2 bg-white border border-[#dadce0] rounded-md focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] outline-none text-sm transition text-[#202124] placeholder-gray-400" placeholder="user@email.com">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-[#5f6368] mb-1.5">Nama Folder</label>
-                    <input type="text" id="inputFolder" class="w-full px-3 py-2 bg-white border border-[#dadce0] rounded-md focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] outline-none text-sm transition text-[#202124] placeholder-gray-400" placeholder="Contoh: Folder-Budi">
-                </div>
+            <div>
+                <label class="block text-sm font-semibold text-white/80 mb-2">Pilihan Aplikasi / Plan</label>
+                <select id="inputPlan" class="select-galaxy px-4 py-3 rounded-2xl text-sm h-[48px]">
+                    <option value="GPT Plus">GPT Plus</option>
+                    <option value="GPT Go">GPT Go</option>
+                </select>
             </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div>
-                    <label class="block text-xs font-medium text-[#5f6368] mb-1.5">Durasi Paket</label>
-                    <input type="text" id="inputDurasi" class="w-full px-3 py-2 bg-white border border-[#dadce0] rounded-md focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] outline-none text-sm transition text-[#202124]" value="1 Bulan">
-                </div>
-                <div>
-                    <label class="block text-xs font-medium text-[#5f6368] mb-1.5">Masa Garansi</label>
-                    <input type="text" id="inputGaransi" class="w-full px-3 py-2 bg-white border border-[#dadce0] rounded-md focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] outline-none text-sm transition text-[#202124]" value="25 Hari Garansi">
-                </div>
+            <div>
+                <label class="block text-sm font-semibold text-white/80 mb-2">Email Akses</label>
+                <input type="email" id="inputEmail" class="input-galaxy px-4 py-3 rounded-2xl text-sm" placeholder="user@email.com">
             </div>
 
-            <button type="button" onclick="generateNota()" class="w-full bg-[#1a73e8] hover:bg-[#1557b0] text-white font-medium py-2.5 px-4 rounded-md transition duration-150 text-sm mt-2 shadow-sm">
-                Generate Nota
+            <div>
+                <label class="block text-sm font-semibold text-white/80 mb-2">Nama Folder</label>
+                <input type="text" id="inputFolder" class="input-galaxy px-4 py-3 rounded-2xl text-sm" placeholder="Contoh: Folder-Budi">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-white/80 mb-2">Durasi Paket</label>
+                <input type="text" id="inputDurasi" class="input-galaxy px-4 py-3 rounded-2xl text-sm" value="1 Bulan">
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold text-white/80 mb-2">Masa Garansi</label>
+                <input type="text" id="inputGaransi" class="input-galaxy px-4 py-3 rounded-2xl text-sm" value="25 Hari Garansi">
+            </div>
+
+            <button type="button" onclick="generateNota()" class="btn-galaxy w-full text-white font-bold py-3.5 px-5 rounded-2xl transition duration-200 text-sm mt-3 flex items-center justify-center gap-2">
+                <span>Generate Nota</span>
+                <span>✨</span>
             </button>
         </div>
 
         <!-- Bagian Hasil Output -->
-        <div id="resultSection" class="hidden bg-[#f8f9fa] p-8 border-t border-[#f1f3f4] space-y-4">
-            <div class="flex justify-between items-center">
-                <span class="text-xs font-medium text-[#5f6368] tracking-wide">
-                    Silakan edit atau langsung salin nota di bawah ini:
-                </span>
+        <div id="resultSection" class="hidden bg-white/5 p-6 sm:p-8 border-t border-white/10 space-y-4">
+            <div class="flex flex-col gap-1">
+                <span class="text-sm font-semibold text-white/85">Hasil Nota</span>
+                <span class="text-xs text-white/55">Silakan edit atau langsung salin nota di bawah ini.</span>
             </div>
 
             <!-- Textarea yang fleksibel bisa langsung diedit tangan -->
-            <textarea id="outputNota" rows="18" class="w-full p-4 bg-white border border-[#dadce0] rounded-lg font-mono text-xs focus:border-[#1a73e8] focus:ring-1 focus:ring-[#1a73e8] outline-none leading-relaxed text-[#202124] shadow-sm"></textarea>
+            <textarea id="outputNota" rows="18" class="textarea-galaxy p-4 rounded-2xl font-mono text-xs leading-relaxed shadow-sm resize-y"></textarea>
 
-            <button type="button" id="btnSalin" onclick="salinNota()" class="w-full bg-[#34a853] hover:bg-[#2b8a44] text-white font-medium py-2.5 px-4 rounded-md transition duration-150 text-sm flex items-center justify-center gap-2 shadow-sm">
+            <button type="button" id="btnSalin" onclick="salinNota()" class="btn-copy w-full text-[#06111f] font-bold py-3.5 px-5 rounded-2xl transition duration-200 text-sm flex items-center justify-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                 </svg>
@@ -93,7 +211,7 @@
             </button>
         </div>
 
-    </div>
+    </main>
 
     <script>
         function generateNota() {
@@ -142,7 +260,7 @@
             
             // Reset button text jika generate ulang
             document.getElementById('textSalin').innerText = "Salin Teks Nota";
-            document.getElementById('btnSalin').classList.replace('bg-[#4285f4]', 'bg-[#34a853]');
+            document.getElementById('btnSalin').classList.remove('bg-[#4285f4]');
         }
 
         function salinNota() {
@@ -156,11 +274,11 @@
             navigator.clipboard.writeText(copyText.value).then(() => {
                 // Feedback visual tombol
                 textSalin.innerText = "Copied! ✓";
-                btnSalin.classList.replace('bg-[#34a853]', 'bg-[#4285f4]');
+                btnSalin.classList.add('bg-[#4285f4]');
                 
                 setTimeout(() => {
                     textSalin.innerText = "Salin Teks Nota";
-                    btnSalin.classList.replace('bg-[#4285f4]', 'bg-[#34a853]');
+                    btnSalin.classList.remove('bg-[#4285f4]');
                 }, 2000);
             });
         }
