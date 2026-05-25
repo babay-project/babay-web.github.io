@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Payment ke Babay</title>
+  <title>Payment Gateway - Babayshop.id</title>
   <meta property="og:image" content="https://i.ibb.co.com/ch4cF3gk/BANNER.jpg" />
   <meta name="twitter:image" content="https://i.ibb.co.com/ch4cF3gk/BANNER.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <link rel="icon" href="https://i.ibb.co.com/BKY3T5H7/be134db2-d7fb-42c7-b561-fb3f08795a6e.png" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   
   <style>
   /* =============== Discord-ish Theme: Light <-> Dark =============== */
@@ -23,6 +23,7 @@
     --dc-line:#3a3d42;
     --dc-primary:#5865f2;
     --dc-primary-2:#4752c4;
+    --dc-verified:#23a55a;
 
     /* Light */
     --dcL-bg:#f2f3f5;
@@ -34,6 +35,7 @@
     --dcL-line:#eceff3;
     --dcL-primary:#5865f2;
     --dcL-primary-2:#4752c4;
+    --dcL-verified:#23a55a;
   }
 
   *{box-sizing:border-box}
@@ -46,11 +48,143 @@
   }
 
   .wrap{max-width:640px;margin:0 auto;padding:24px 16px 96px}
-  header{display:flex;align-items:center;gap:16px;margin:8px 0 24px;background:var(--dcL-bg-soft);padding:16px;border-radius:16px;border:1px solid var(--dcL-stroke)}
-  header .logo{width:48px;height:48px;border-radius:12px;object-fit:cover}
-  header .title{display:flex;flex-direction:column}
-  header .title h1{margin:0;font:800 20px/1.2 Poppins;letter-spacing:-0.5px}
-  header .title small{color:var(--dcL-muted);font-size:13px;margin-top:2px}
+  
+  /* ================= IMPROVED HERO / THUMBNAIL HEADER ================= */
+  .hero-header {
+    background: var(--dcL-bg-soft);
+    border: 1px solid var(--dcL-stroke);
+    border-radius: 20px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.03);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Dekorasi Background Banner Kecil ala Discord */
+  .hero-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 60px;
+    background: linear-gradient(135deg, var(--dcL-primary), var(--dcL-primary-2));
+    opacity: 0.15;
+    z-index: 1;
+  }
+
+  .hero-profile {
+    display: flex;
+    align-items: flex-start;
+    gap: 18px;
+    position: relative;
+    z-index: 2;
+    margin-top: 10px;
+  }
+
+  .hero-profile .logo-wrapper {
+    position: relative;
+  }
+
+  .hero-profile .logo {
+    width: 68px;
+    height: 68px;
+    border-radius: 16px;
+    object-fit: cover;
+    background: #fff;
+    border: 3px solid var(--dcL-bg-soft);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  /* Animasi Logo membesar saat di-hover */
+  .hero-header:hover .hero-profile .logo {
+    transform: scale(1.08) rotate(2deg);
+  }
+
+  .hero-info {
+    display: flex;
+    flex-direction: column;
+    margin-top: 4px;
+  }
+
+  .hero-brand {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .hero-brand h1 {
+    margin: 0;
+    font: 800 22px/1.1 Poppins;
+    letter-spacing: -0.5px;
+    background: linear-gradient(90deg, var(--dcL-text), #4f46e5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  html[data-dc]:not(.light) .hero-brand h1 {
+    background: linear-gradient(90deg, var(--dc-text), #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Badge Terverifikasi */
+  .badge-verified {
+    display: inline-flex;
+    color: var(--dcL-verified);
+    background: rgba(35, 165, 90, 0.1);
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .hero-info .subtitle {
+    color: var(--dcL-muted);
+    font-size: 13px;
+    font-weight: 500;
+    margin: 4px 0 0 0;
+    line-height: 1.3;
+  }
+
+  /* Kotak Atas Nama Rekening Resmi */
+  .owner-notice-box {
+    margin-top: 18px;
+    background: var(--dcL-surface);
+    border-left: 4px solid var(--dcL-primary);
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .owner-notice-box svg {
+    color: var(--dcL-primary);
+    flex-shrink: 0;
+  }
+
+  .owner-notice-text {
+    font-size: 11.5px;
+    line-height: 1.4;
+    color: var(--dcL-text);
+    margin: 0;
+  }
+
+  .owner-notice-text b {
+    font-weight: 700;
+    color: #ef4444; /* Warna merah penegas */
+  }
+  
+  html[data-dc]:not(.light) .owner-notice-text b {
+    color: #fca5a5;
+  }
+
+  /* =================================================================== */
 
   .card{
     background:var(--dcL-bg-soft);
@@ -194,8 +328,10 @@
 
   /* DARK mode overrides */
   html[data-dc]:not(.light) body{ background:var(--dc-bg); color:var(--dc-text) }
-  html[data-dc]:not(.light) header{ background:var(--dc-bg-soft); border-color:var(--dc-stroke) }
-  html[data-dc]:not(.light) header .title small{ color:var(--dc-muted) }
+  html[data-dc]:not(.light) .hero-header { background:var(--dc-bg-soft); border-color:var(--dc-stroke); box-shadow:0 12px 28px rgba(0,0,0,.2) }
+  html[data-dc]:not(.light) .hero-profile .logo { border-color: var(--dc-bg-soft); }
+  html[data-dc]:not(.light) .owner-notice-box { background: var(--dc-surface); border-color: var(--dc-primary); }
+  html[data-dc]:not(.light) .owner-notice-text { color: var(--dc-text); }
   html[data-dc]:not(.light) .card{ background:var(--dc-bg-soft); border-color:var(--dc-stroke); box-shadow:0 12px 28px rgba(0,0,0,.25) }
   html[data-dc]:not(.light) .sub{ color:var(--dc-muted) }
   html[data-dc]:not(.light) .btn{ background:var(--dc-surface); color:var(--dc-text); border-color:var(--dc-stroke) }
@@ -224,11 +360,27 @@
   <div id="toast" class="toast">Tersalin</div>
 
   <main class="wrap">
-    <header>
-      <img class="logo" alt="Logo" src="https://i.ibb.co.com/BKY3T5H7/be134db2-d7fb-42c7-b561-fb3f08795a6e.png">
-      <div class="title">
-        <h1>Pembayaran Online</h1>
-        <small>Semua A/N: <b>BAYU RIZKY SAMPURNA</b></small>
+    
+    <header class="hero-header">
+      <div class="hero-profile">
+        <div class="logo-wrapper">
+          <img class="logo" alt="Babayshop.id Logo" src="https://i.ibb.co.com/BKY3T5H7/be134db2-d7fb-42c7-b561-fb3f08795a6e.png">
+        </div>
+        <div class="hero-info">
+          <div class="hero-brand">
+            <h1>Babayshop.id</h1>
+            <span class="badge-verified">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/></svg>
+              Official
+            </span>
+          </div>
+          <p class="subtitle">Informasi Pusat Pembayaran Lengkap & Gateway Resmi.</p>
+        </div>
+      </div>
+      
+      <div class="owner-notice-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"/></svg>
+        <p class="owner-notice-text">Demi keamanan transaksi, pastikan seluruh rekening tujuan transfer wajib atas nama: <b>BAYU RIZKY SAMPURNA</b></p>
       </div>
     </header>
 
