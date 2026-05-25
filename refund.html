@@ -473,12 +473,9 @@
                 `⏱️ Masa Garansi: ${warrantyDays} Hari\n` +
                 `✅ Terpakai: ${diffUsed} Hari\n` +
                 `⏳ Sisa Garansi: ${remainingWarranty} Hari\n` +
-                `📉 Rate Refund Applied: ${refundRate.toFixed(2)} (${Math.round(refundRate*100)}%)\n` +
-                `----------------------------------\n` +
-                `💵 Nilai Sisa (Prorata): ${formatRupiah(grossRefund)}\n`;
-                        
+                `📉 Rate Refund Applied: ${refundRate.toFixed(2)} (${Math.round(refundRate*100)}%)\n`;
             if (adminFee > 0) {
-                commonHeader += `✂️ Potongan Layanan: -${formatRupiah(adminFee)}\n`;
+                commonHeader += `✂️ Service Fee: -${formatRupiah(adminFee)}\n`;
             }
             commonHeader += `----------------------------------\n`;
 
