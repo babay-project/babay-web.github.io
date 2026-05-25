@@ -1,1 +1,524 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Refund Modern - Babayshop</title>
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --wa-color: #22c55e;
+            --wa-hover: #16a34a;
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+        }
 
+        body {
+            font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px 20px;
+            box-sizing: border-box;
+        }
+
+        .container {
+            background-color: var(--card);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            width: 100%;
+            max-width: 520px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 1.75rem;
+            color: var(--primary);
+            font-weight: 800;
+            letter-spacing: -0.025em;
+        }
+
+        .header p {
+            margin: 8px 0 0;
+            font-size: 0.95rem;
+            color: var(--text-muted);
+        }
+
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #334155;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            background: #fff;
+            color: var(--text-main);
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+        }
+
+        /* Slider UX Style */
+        .slider-container {
+            background: #f8fafc;
+            padding: 14px;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .slider-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .slider-value {
+            font-weight: 700;
+            color: var(--primary);
+            background: rgba(59, 130, 246, 0.1);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+        }
+
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 6px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+
+        /* Live Info Badge */
+        #liveInfo {
+            display: none;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .live-normal {
+            background-color: #eff6ff;
+            color: #1e40af;
+            border: 1px solid #bfdbfe;
+        }
+
+        .live-error {
+            background-color: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        button.btn-calc {
+            width: 100%;
+            padding: 14px;
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.2);
+        }
+
+        button.btn-calc:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.25);
+        }
+
+        /* Result Area Customization */
+        #result-area {
+            display: none;
+            margin-top: 2.5rem;
+            border-top: 2px dashed #e2e8f0;
+            padding-top: 2rem;
+        }
+
+        textarea {
+            width: 100%;
+            height: 260px;
+            padding: 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-family: 'Fira Code', 'Courier New', monospace;
+            font-size: 0.9rem;
+            background-color: #fafafa; 
+            color: #1e293b;
+            resize: vertical;
+            box-sizing: border-box;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #cbd5e1;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 12px;
+        }
+
+        .btn-copy, .btn-wa {
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.95rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-copy { 
+            background-color: #475569; 
+            color: white; 
+        }
+        .btn-copy:hover { background-color: #334155; }
+
+        .btn-wa { 
+            background-color: var(--wa-color); 
+            color: white; 
+        }
+        .btn-wa:hover { background-color: var(--wa-hover); }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        hr.divider {
+            border: 0;
+            border-top: 1px solid var(--border);
+            margin: 8px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Babayshop Refund</h1>
+        <p>Kalkulator Prorata & Generator Nota Premium</p>
+    </div>
+
+    <form id="refundForm" class="form-section">
+        <div class="form-group">
+            <label for="appName">Nama Aplikasi</label>
+            <input type="text" id="appName" placeholder="Contoh: CapCut Pro, Netflix..." required>
+        </div>
+
+        <div class="form-group">
+            <label for="purchaseDate">Tanggal Beli</label>
+            <input type="date" id="purchaseDate" required oninput="liveCheck()">
+        </div>
+
+        <div class="form-row">
+            <div class="form-group">
+                <label for="duration">Durasi Aplikasi (Hari)</label>
+                <input type="number" id="duration" value="28" placeholder="28" required oninput="updateWarrantyValue()">
+            </div>
+            <div class="form-group">
+                <label for="warranty">Masa Garansi (Hari)</label>
+                <input type="number" id="warranty" value="28" placeholder="28" required oninput="liveCheck()">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Harga Beli (Rp)</label>
+            <input type="number" id="price" placeholder="Contoh: 20000" required oninput="liveCheck()">
+        </div>
+
+        <div class="form-group">
+            <label for="stopDate">Tanggal Stop / Error</label>
+            <input type="date" id="stopDate" required oninput="liveCheck()">
+        </div>
+
+        <div id="liveInfo">Menunggu kelengkapan data...</div>
+
+        <div class="form-group slider-container">
+            <div class="slider-header">
+                <label for="refundRate">Rate Refund (Persentase)</label>
+                <span class="slider-value" id="rateValue">1.00 (100%)</span>
+            </div>
+            <input type="range" id="refundRate" min="0.50" max="1.00" step="0.05" value="1.00" oninput="updateRateLabel()">
+        </div>
+
+        <hr class="divider">
+
+        <div class="form-group">
+            <label for="resolutionType">Pilih Solusi / Tindakan</label>
+            <select id="resolutionType">
+                <option value="refund">💸 Refund Uang (Transfer)</option>
+                <option value="replace">🔄 Ganti Akun / Aplikasi Lain</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="adminFee">Potongan Biaya Layanan (Rp)</label>
+            <input type="number" id="adminFee" placeholder="0" value="0">
+        </div>
+
+        <button type="button" class="btn-calc" onclick="calculateRefund()">📝 Buat Nota Sekarang</button>
+    </form>
+
+    <div id="result-area">
+        <label style="margin-bottom: 8px; display: block;">Preview Pesan (Bisa diedit manual):</label>
+        <div class="preview-box">
+            <textarea id="msgPreview"></textarea>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-copy" onclick="copyText()">
+                📋 Salin Nota
+            </button>
+            <button class="btn-wa" onclick="sendWA()">
+                🚀 Kirim Ke WA
+            </button>
+        </div>
+    </div>
+
+    <div class="footer">
+        &copy; 2026 Babayshop Official Tools &bull; Crafted with Care
+    </div>
+</div>
+
+<script>
+    // Set default date to today untuk Tanggal Stop
+    document.getElementById('stopDate').valueAsDate = new Date();
+
+    // Fungsi otomatis mengubah nilai garansi saat durasi aplikasi diketik
+    function updateWarrantyValue() {
+        const durationVal = document.getElementById('duration').value;
+        document.getElementById('warranty').value = durationVal;
+        liveCheck();
+    }
+
+    // Fungsi update teks value slider
+    function updateRateLabel() {
+        const rate = parseFloat(document.getElementById('refundRate').value);
+        const percentage = Math.round(rate * 100);
+        document.getElementById('rateValue').innerText = `${rate.toFixed(2)} (${percentage}%)`;
+    }
+
+    // Fungsi Live Check perhitungan hari sisa garansi
+    function liveCheck() {
+        const purchaseDateVal = document.getElementById('purchaseDate').value;
+        const stopDateVal = document.getElementById('stopDate').value;
+        const warrantyDays = parseInt(document.getElementById('warranty').value) || 0;
+        const liveInfo = document.getElementById('liveInfo');
+
+        if (!purchaseDateVal || !stopDateVal) {
+            liveInfo.style.display = 'none';
+            return;
+        }
+
+        const start = new Date(purchaseDateVal);
+        const stop = new Date(stopDateVal);
+        start.setHours(0,0,0,0);
+        stop.setHours(0,0,0,0);
+
+        const oneDay = 24 * 60 * 60 * 1000;
+        const diffUsed = Math.round((stop - start) / oneDay);
+        const remainingWarranty = warrantyDays - diffUsed;
+
+        liveInfo.style.display = 'block';
+
+        if (diffUsed < 0) {
+            liveInfo.className = 'live-error';
+            liveInfo.innerHTML = `⚠️ Error: Tanggal Stop mendahului Tanggal Beli!`;
+        } else if (remainingWarranty <= 0) {
+            liveInfo.className = 'live-error';
+            liveInfo.innerHTML = `⚠️ Masa Garansi Habis (Lewat ${Math.abs(remainingWarranty)} hari)`;
+        } else {
+            liveInfo.className = 'live-normal';
+            liveInfo.innerHTML = `✅ Terpakai: ${diffUsed} Hari &nbsp;|&nbsp; ⏳ Sisa Garansi: ${remainingWarranty} Hari`;
+        }
+    }
+
+    function formatRupiah(number) {
+        return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(number);
+    }
+
+    function formatDate(dateStr) {
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        return new Date(dateStr).toLocaleDateString('id-ID', options);
+    }
+
+    // Fungsi Utama Hitung Refund Berbasis Garansi dan Rate Slider
+    function calculateRefund() {
+        const appName = document.getElementById('appName').value;
+        const purchaseDateVal = document.getElementById('purchaseDate').value;
+        const warrantyDays = parseInt(document.getElementById('warranty').value);
+        const price = parseFloat(document.getElementById('price').value);
+        const stopDateVal = document.getElementById('stopDate').value;
+        const resolution = document.getElementById('resolutionType').value;
+        const refundRate = parseFloat(document.getElementById('refundRate').value);
+        let adminFee = parseFloat(document.getElementById('adminFee').value);
+
+        if (!appName || !purchaseDateVal || !stopDateVal || !warrantyDays || !price) {
+            alert("Mohon lengkapi seluruh form data pembelian!");
+            return;
+        }
+        if (isNaN(adminFee)) adminFee = 0;
+
+        const start = new Date(purchaseDateVal);
+        const stop = new Date(stopDateVal);
+        start.setHours(0,0,0,0);
+        stop.setHours(0,0,0,0);
+
+        const oneDay = 24 * 60 * 60 * 1000;
+        const diffUsed = Math.round((stop - start) / oneDay);
+                
+        if (diffUsed < 0) {
+            alert("Tanggal stop/error tidak valid!"); return;
+        }
+
+        const remainingWarranty = warrantyDays - diffUsed;
+        let messageBody = "";
+
+        if (remainingWarranty <= 0) {
+            messageBody = `*INFO LAYANAN BABAYSHOP*\n\n` +
+                          `Halo Kak, mohon maaf untuk kendala akun ${appName}.\n` +
+                          `Setelah dicek, masa garansi paket Anda telah habis (Total pemakaian: ${diffUsed} hari).\n` +
+                          `Sesuai ketentuan, tidak ada opsi refund tersedia. Terima kasih atas pengertiannya. 🙏`;
+        } else {
+            // Kalkulasi Berbasis Sisa Garansi & Dikalikan Slider Rate Refund
+            const pricePerDay = price / warrantyDays;
+            const grossRefund = Math.floor((pricePerDay * remainingWarranty) * refundRate);
+            let netRefund = grossRefund - adminFee;
+            if (netRefund < 0) netRefund = 0;
+
+            let commonHeader = `*INFO KENDALA AKUN - BABAYSHOP*\n\n` +
+                `Halo Kak, mohon maaf atas ketidaknyamanan kendala akunnya. Berikut rincian perhitungan prorata sisa masa garansi Anda:\n\n` +
+                `📦 *Aplikasi:* ${appName}\n` +
+                `📅 *Tgl Beli:* ${formatDate(purchaseDateVal)}\n` +
+                `📅 *Tgl Error:* ${formatDate(stopDateVal)}\n` +
+                `----------------------------------\n` +
+                `💰 Harga Beli: ${formatRupiah(price)}\n` +
+                `⏱️ Masa Garansi: ${warrantyDays} Hari\n` +
+                `✅ Terpakai: ${diffUsed} Hari\n` +
+                `⏳ Sisa Garansi: ${remainingWarranty} Hari\n` +
+                `📉 Rate Refund Applied: ${refundRate.toFixed(2)} (${Math.round(refundRate*100)}%)\n` +
+                `----------------------------------\n` +
+                `💵 Nilai Sisa (Prorata): ${formatRupiah(grossRefund)}\n`;
+                        
+            if (adminFee > 0) {
+                commonHeader += `✂️ Potongan Layanan: -${formatRupiah(adminFee)}\n`;
+            }
+            commonHeader += `----------------------------------\n`;
+
+            if (resolution === 'refund') {
+                messageBody = commonHeader +
+                    `*TOTAL PENGEMBALIAN DANA: ${formatRupiah(netRefund)}*\n\n` +
+                    `Mohon balas pesan ini dengan mencantumkan data berikut:\n` +
+                    `🏦 Nama E-Wallet/Bank: \n` +
+                    `💳 Nomor Rekening: \n` +
+                    `👤 Atas Nama: \n\n` +
+                    `Proses transfer dilakukan berkala. Terima kasih. 🙏`;
+            } else {
+                messageBody = commonHeader +
+                    `*TOTAL SALDO TERSISA: ${formatRupiah(netRefund)}*\n\n` +
+                    `💡 *SOLUSI PENGGANTIAN (REPLACE):*\n` +
+                    `Saldo Anda sebesar *${formatRupiah(netRefund)}* dapat dialihkan untuk:\n` +
+                    `1. Pembuatan Akun Baru (Reset durasi ulang), atau\n` +
+                    `2. Tukar tambah dengan Aplikasi Premium lain.\n\n` +
+                    `Silakan konfirmasi pilihan Kakak ya. Terima kasih. 🙏`;
+            }
+        }
+
+        document.getElementById('msgPreview').value = messageBody;
+        document.getElementById('result-area').style.display = 'block';
+        document.getElementById('result-area').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function copyText() {
+        const text = document.getElementById('msgPreview').value;
+        navigator.clipboard.writeText(text).then(() => { 
+            alert("Nota berhasil disalin ke clipboard!"); 
+        });
+    }
+
+    function sendWA() {
+        const text = document.getElementById('msgPreview').value;
+        const encodedText = encodeURIComponent(text);
+        let url = `https://wa.me/?text=${encodedText}`;
+        window.open(url, '_blank');
+    }
+</script>
+</body>
+</html>
