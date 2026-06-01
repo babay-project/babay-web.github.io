@@ -283,19 +283,15 @@
         const copyBtn = document.getElementById('copyBtn');
 
         // ====== Load secret from URL path ======
-        function loadSecretFromPath() {
-            let path = window.location.pathname;
-            // Remove leading/trailing slashes
-            path = path.replace(/^\/+|\/+$/g, '');
-            // If path has more than just "2fa", grab the last segment as secret
-            const parts = path.split('/');
-            const last = parts[parts.length - 1];
-            if (last && last !== '2fa' && last.length >= 8) {
-                secretInput.value = last;
-                return last;
-            }
-            return null;
-        }
+        function loadSecretFromQuery() {
+    const params = new URLSearchParams(window.location.search);
+    const key = params.get('key');
+    if (key && key.length >= 8) {
+        secretInput.value = key;
+        return key;
+    }
+    return null;
+}
 
         // ====== Start generating ======
         async function startGeneration(rawSecret) {
@@ -372,7 +368,7 @@
 
         // ====== Init: auto-load from URL ======
         (async function init() {
-            const pathSecret = loadSecretFromPath();
+           const pathSecret = loadSecretFromQuery();
             if (pathSecret) {
                 await startGeneration(pathSecret);
             }
