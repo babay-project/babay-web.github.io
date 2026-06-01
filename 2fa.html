@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2FA Key Extractor & TOTP Generator</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f0f1a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 40px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            border: 1px solid #2a2a4a;
+        }
+        h1 {
+            font-size: 1.5rem;
+            margin-bottom: 6px;
+            color: #00d4aa;
+            font-weight: 600;
+        }
+        .subtitle {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 24px;
+        }
+        label {
+            display: block;
+            font-size: 0.85rem;
+            color: #aaa;
+            margin-bottom: 6px;
+            margin-top: 16px;
+        }
+        input[type="text"], input[type="file"] {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #333;
+            background: #111122;
+            color: #fff;
+            font-size: 1rem;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 2px;
+        }
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #00d4aa;
+            box-shadow: 0 0 0 2px rgba(0,212,170,0.15);
+        }
+        .btn {
+            width: 100%;
+            padding: 14px;
+            background: #00d4aa;
+            color: #0f0f1a;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.2s;
+        }
+        .btn:hover { background: #00f0c0; transform: translateY(-1px); }
+        .btn:active { transform: scale(0.98); }
+
+        .output-card {
+            margin-top: 24px;
+            background: #111122;
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid #2a2a4a;
+            display: none;
+        }
+        .output-card.active { display: block; }
+        .code-display {
+            font-family: 'Courier New', monospace;
+            font-size: 2.2rem;
+            font-weight: 700;
+            text-align: center;
+            color: #00d4aa;
+            letter-spacing: 8px;
+            padding: 12px 0;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 0.85rem;
+            border-bottom: 1px solid #1e1e32;
+        }
+        .detail-row:last-child { border-bottom: none; }
+        .detail-row .label { color: #888; }
+        .detail-row .value { color: #ccc; font-family: 'Courier New', monospace; }
+        .progress-bar {
+            height: 4px;
+            background: #2a2a4a;
+            border-radius: 2px;
+            margin: 12px 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #00d4aa;
+            width: 100%;
+            transition: width 1s linear;
+        }
+        .tab-bar {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 16px;
+        }
+        .tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background: #111122;
+            border: 1px solid #2a2a4a;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: #888;
+            transition: all 0.2s;
+        }
+        .tab.active {
+            background: #00d4aa;
+            color: #0f0f1a;
+            font-weight: 600;
+            border-color: #00d4aa;
+        }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            color: #555;
+            font-size: 0.75rem;
+        }
+        .hidden-secret {
+            word-break: break-all;
+            color: #f0a030;
+        }
+        .copy-btn {
+            background: transparent;
+            border: 1px solid #333;
+            color: #aaa;
+            padding: 4px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+        .copy-btn:hover { border-color: #00d4aa; color: #00d4aa; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>2FA Secret Extractor & TOTP Generator</h1>
+        <p class="subtitle">Authorized Security Assessment Tool — Extract seed from QR or manual entry</p>
+
+        <!-- Tab Navigation -->
+        <div class="tab-bar">
+            <div class="tab active" data-tab="qr">QR Code</div>
+            <div class="tab" data-tab="manual">Manual Secret</div>
+        </div>
+
+        <!-- QR Tab -->
+        <div class="tab-content active" id="tab-qr">
+            <label>Upload QR Code Image (PNG/JPG) containing otpauth:// URI</label>
+            <input type="file" id="qrInput" accept="image/png,image/jpeg,image/gif">
+            <div style="margin-top:12px;">
+                <canvas id="qrCanvas" style="display:none; max-width:200px; border-radius:6px;"></canvas>
+            </div>
+            <div id="qrStatus" style="font-size:0.85rem;color:#888;margin-top:8px;"></div>
+        </div>
+
+        <!-- Manual Tab -->
+        <div class="tab-content" id="tab-manual">
+            <label>Secret Key (Base32)</label>
+            <input type="text" id="secretInput" placeholder="e.g. JBSWY3DPEHPK3PXP" style="letter-spacing:3px;">
+            <label>Issuer (optional)</label>
+            <input type="text" id="issuerInput" placeholder="e.g. GitHub">
+            <label>Account (optional)</label>
+            <input type="text" id="accountInput" placeholder="e.g. user@example.com">
+        </div>
+
+        <button class="btn" id="generateBtn">Generate TOTP Code</button>
+
+        <!-- Output -->
+        <div class="output-card" id="outputCard">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                <span style="font-size:0.85rem;color:#888;">Current TOTP</span>
+                <button class="copy-btn" id="copyCodeBtn">Copy</button>
+            </div>
+            <div class="code-display" id="totpDisplay">------</div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+
+            <div class="detail-row"><span class="label">Secret</span><span class="value hidden-secret" id="secretDisplay">-</span></div>
+            <div class="detail-row"><span class="label">Issuer</span><span class="value" id="issuerDisplay">-</span></div>
+            <div class="detail-row"><span class="label">Account</span><span class="value" id="accountDisplay">-</span></div>
+            <div class="detail-row"><span class="label">Algorithm</span><span class="value">SHA1</span></div>
+            <div class="detail-row"><span class="label">Digits</span><span class="value">6</span></div>
+            <div class="detail-row"><span class="label">Period</span><span class="value">30s</span></div>
+        </div>
+
+        <div class="footer">Authorized pentesting tool. Use only on systems you own or have permission to test.</div>
+    </div>
+
+    <script>
+        // ====== TOTP Engine (RFC 6238) ======
+        function hexToBytes(hex) {
+            const bytes = [];
+            for (let i = 0; i < hex.length; i += 2)
+                bytes.push(parseInt(hex.substr(i, 2), 16));
+            return bytes;
+        }
+
+        function base32ToBytes(b32) {
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+            let cleaned = b32.toUpperCase().replace(/[^A-Z2-7]/g, '');
+            let bits = '';
+            for (let c of cleaned) {
+                let val = alphabet.indexOf(c);
+                if (val === -1) continue;
+                bits += val.toString(2).padStart(5, '0');
+            }
+            const bytes = [];
+            for (let i = 0; i + 7 < bits.length; i += 8)
+                bytes.push(parseInt(bits.substr(i, 8), 2));
+            return bytes;
+        }
+
+        async function hmacSha1(key, msg) {
+            const keyBuf = new Uint8Array(key);
+            const msgBuf = new Uint8Array(msg);
+            const cryptoKey = await crypto.subtle.importKey('raw', keyBuf, { name: 'HMAC', hash: 'SHA-1' }, false, ['sign']);
+            const sig = await crypto.subtle.sign('HMAC', cryptoKey, msgBuf);
+            return new Uint8Array(sig);
+        }
+
+        function truncate(hs) {
+            const offset = hs[hs.length - 1] & 0xf;
+            const binary = ((hs[offset] & 0x7f) << 24) | (hs[offset + 1] << 16) | (hs[offset + 2] << 8) | hs[offset + 3];
+            return binary % 1000000;
+        }
+
+        async function generateTOTP(secretBytes, time = Math.floor(Date.now() / 1000), period = 30) {
+            const counter = Math.floor(time / period);
+            // Counter to 8-byte big-endian
+            const msg = new Uint8Array(8);
+            for (let i = 7; i >= 0; i--) {
+                msg[i] = counter & 0xff;
+                counter >>> 8;
+            }
+            // Re-derive counter properly
+            let cnt = Math.floor(time / period);
+            const msg2 = new Uint8Array(8);
+            for (let i = 7; i >= 0; i--) {
+                msg2[i] = cnt & 0xff;
+                cnt >>>= 8;
+            }
+            const hs = await hmacSha1(secretBytes, msg2);
+            const code = truncate(hs);
+            return String(code).padStart(6, '0');
+        }
+
+        // ====== QR Code Decoding via jsQR ======
+        function loadJsQR() {
+            return new Promise((resolve, reject) => {
+                if (typeof jsQR !== 'undefined') { resolve(); return; }
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js';
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
+
+        // ====== Parse otpauth:// URI ======
+        function parseOTPAuthURI(uri) {
+            try {
+                let u = new URL(uri);
+                if (u.protocol !== 'otpauth:' || u.hostname !== 'totp') return null;
+
+                // Path: /issuer or /issuer:account
+                let path = decodeURIComponent(u.pathname.replace(/^\//, ''));
+                let issuer = '', account = '';
+
+                if (u.searchParams.get('issuer')) {
+                    issuer = u.searchParams.get('issuer');
+                }
+
+                // Parse path
+                if (path.includes(':')) {
+                    let parts = path.split(':');
+                    if (!issuer) issuer = parts[0];
+                    account = parts.slice(1).join(':');
+                } else {
+                    if (!issuer) issuer = path;
+                    account = path;
+                }
+
+                let secret = u.searchParams.get('secret') || '';
+
+                return { secret, issuer, account };
+            } catch (e) {
+                return null;
+            }
+        }
+
+        // ====== Decode QR from image ======
+        async function decodeQRFromFile(file) {
+            const img = new Image();
+            const url = URL.createObjectURL(file);
+            return new Promise((resolve, reject) => {
+                img.onload = async () => {
+                    try {
+                        URL.revokeObjectURL(url);
+                        const canvas = document.getElementById('qrCanvas');
+                        canvas.width = img.width;
+                        canvas.height = img.height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0);
+                        canvas.style.display = 'block';
+                        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                        const code = jsQR(imageData.data, imageData.width, imageData.height);
+                        if (code && code.data) {
+                            resolve(code.data);
+                        } else {
+                            resolve(null);
+                        }
+                    } catch (e) {
+                        reject(e);
+                    }
+                };
+                img.onerror = reject;
+                img.src = url;
+            });
+        }
+
+        // ====== UI Logic ======
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                tabContents.forEach(tc => tc.classList.remove('active'));
+                document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        let currentSecretBytes = null;
+        let currentSecretStr = '';
+        let currentIssuer = '';
+        let currentAccount = '';
+        let totpInterval = null;
+
+        async function updateTOTP() {
+            if (!currentSecretBytes) return;
+            const code = await generateTOTP(currentSecretBytes);
+            document.getElementById('totpDisplay').textContent = code;
+
+            // Progress bar until next interval
+            const now = Math.floor(Date.now() / 1000);
+            const elapsed = now % 30;
+            const pct = (elapsed / 30) * 100;
+            document.getElementById('progressFill').style.width = (100 - pct) + '%';
+
+            document.getElementById('secretDisplay').textContent = currentSecretStr;
+            document.getElementById('issuerDisplay').textContent = currentIssuer || '-';
+            document.getElementById('accountDisplay').textContent = currentAccount || '-';
+        }
+
+        document.getElementById('generateBtn').addEventListener('click', async () => {
+            // Determine active tab
+            const activeTab = document.querySelector('.tab.active');
+            let secret = '';
+            let issuer = '';
+            let account = '';
+
+            if (activeTab.dataset.tab === 'manual') {
+                secret = document.getElementById('secretInput').value.trim().replace(/\s/g, '');
+                issuer = document.getElementById('issuerInput').value.trim();
+                account = document.getElementById('accountInput').value.trim();
+                if (!secret) {
+                    document.getElementById('qrStatus').textContent = 'Please enter a secret key.';
+                    return;
+                }
+                // Clean base32
+                secret = secret.toUpperCase().replace(/[^A-Z2-7]/g, '');
+                try {
+                    currentSecretBytes = base32ToBytes(secret);
+                } catch (e) {
+                    document.getElementById('qrStatus').textContent = 'Invalid Base32 secret.';
+                    return;
+                }
+                currentSecretStr = secret;
+                currentIssuer = issuer;
+                currentAccount = account;
+            } else {
+                // QR tab
+                const fileInput = document.getElementById('qrInput');
+                if (!fileInput.files || !fileInput.files[0]) {
+                    document.getElementById('qrStatus').textContent = 'Please select a QR code image.';
+                    return;
+                }
+                try {
+                    await loadJsQR();
+                    const data = await decodeQRFromFile(fileInput.files[0]);
+                    if (!data) {
+                        document.getElementById('qrStatus').textContent = 'No QR code found in image.';
+                        return;
+                    }
+                    const parsed = parseOTPAuthURI(data);
+                    if (!parsed || !parsed.secret) {
+                        document.getElementById('qrStatus').textContent = 'QR does not contain a valid otpauth://totp URI.';
+                        return;
+                    }
+                    secret = parsed.secret;
+                    issuer = parsed.issuer;
+                    account = parsed.account;
+                    currentSecretBytes = base32ToBytes(secret);
+                    currentSecretStr = secret;
+                    currentIssuer = issuer;
+                    currentAccount = account;
+                    document.getElementById('qrStatus').textContent = 'QR decoded successfully!';
+                } catch (e) {
+                    document.getElementById('qrStatus').textContent = 'Error decoding QR: ' + e.message;
+                    return;
+                }
+            }
+
+            // Show output card
+            document.getElementById('outputCard').classList.add('active');
+            if (totpInterval) clearInterval(totpInterval);
+            await updateTOTP();
+            totpInterval = setInterval(updateTOTP, 1000);
+        });
+
+        // Copy TOTP code
+        document.getElementById('copyCodeBtn').addEventListener('click', () => {
+            const code = document.getElementById('totpDisplay').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                document.getElementById('copyCodeBtn').textContent = 'Copied!';
+                setTimeout(() => { document.getElementById('copyCodeBtn').textContent = 'Copy'; }, 1500);
+            }).catch(() => {
+                // fallback
+                const ta = document.createElement('textarea');
+                ta.value = code;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                document.getElementById('copyCodeBtn').textContent = 'Copied!';
+                setTimeout(() => { document.getElementById('copyCodeBtn').textContent = 'Copy'; }, 1500);
+            });
+        });
+
+        console.log('2FA Secret Extractor & TOTP Generator loaded.');
+        console.log('Authorized pentesting use only.');
+    </script>
+</body>
+</html>
