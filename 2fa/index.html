@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Babayshop 2FA Code Generator</title>
+    <title>2FA Code Generator</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -40,7 +40,7 @@
             letter-spacing: 0.3px;
         }
         .secret-input-area {
-            margin-bottom: 20px;
+            margin-bottom: 14px;
         }
         .secret-input-area input {
             width: 100%;
@@ -66,21 +66,6 @@
             letter-spacing: 0;
             font-size: 0.8rem;
         }
-        .btn {
-            width: 100%;
-            padding: 14px;
-            background: #a855f7;
-            color: #fff;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-bottom: 8px;
-        }
-        .btn:hover { background: #9333ea; transform: translateY(-1px); }
-        .btn:active { transform: scale(0.97); }
         .code-box {
             background: #0b0b14;
             border-radius: 14px;
@@ -98,7 +83,8 @@
             color: #555;
             margin-bottom: 8px;
         }
-        .code-label .copy-btn {
+        .code-label .copy-btn,
+        .mini-copy-btn {
             background: transparent;
             border: 1px solid #222;
             color: #888;
@@ -108,8 +94,16 @@
             font-size: 0.7rem;
             transition: all 0.2s;
         }
-        .code-label .copy-btn:hover { border-color: #a855f7; color: #a855f7; }
-        .code-label .copy-btn.copied { border-color: #22c55e; color: #22c55e; }
+        .code-label .copy-btn:hover,
+        .mini-copy-btn:hover {
+            border-color: #a855f7;
+            color: #a855f7;
+        }
+        .code-label .copy-btn.copied,
+        .mini-copy-btn.copied {
+            border-color: #22c55e;
+            color: #22c55e;
+        }
         .code-digits {
             font-family: 'Courier New', monospace;
             font-size: 2.6rem;
@@ -118,6 +112,26 @@
             color: #a855f7;
             padding: 4px 0 8px;
             word-break: break-all;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.15s, opacity 0.15s;
+        }
+        .code-digits:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+        .code-digits:active {
+            transform: scale(0.98);
+        }
+        .copy-hint {
+            font-size: 0.68rem;
+            color: #444;
+            margin-top: -4px;
+            margin-bottom: 6px;
+            min-height: 14px;
+        }
+        .copy-hint.active {
+            color: #22c55e;
         }
         .secret-display {
             font-family: 'Courier New', monospace;
@@ -146,6 +160,38 @@
             background: #a855f7;
             width: 100%;
             transition: width 1s linear;
+        }
+        .alt-link-box {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #1a1a2a;
+            border-radius: 10px;
+            background: #10101a;
+            text-align: left;
+            display: none;
+        }
+        .alt-link-box.show { display: block; }
+        .alt-title {
+            color: #666;
+            font-size: 0.72rem;
+            margin-bottom: 6px;
+        }
+        .secret-link {
+            display: block;
+            color: #a855f7;
+            font-family: 'Courier New', monospace;
+            font-size: 0.68rem;
+            line-height: 1.35;
+            text-decoration: none;
+            word-break: break-all;
+            margin-bottom: 8px;
+        }
+        .secret-link:hover {
+            text-decoration: underline;
+        }
+        .mini-copy-btn {
+            width: 100%;
+            padding: 7px 10px;
         }
         .links {
             margin-top: 20px;
@@ -200,124 +246,240 @@
             <input type="text" id="secretInput" placeholder="Paste secret key here..." autocomplete="off" spellcheck="false">
         </div>
 
-        <button class="btn" id="generateBtn">Generate Code</button>
         <div class="error-msg" id="errorMsg">Invalid secret key</div>
 
         <div class="code-box" id="codeBox">
             <div class="code-label">
-                <span>Current Code</span>
+                <span>2FA Code :</span>
                 <button class="copy-btn" id="copyBtn">Copy</button>
             </div>
-            <div class="code-digits" id="codeDisplay">------</div>
+            <div class="code-digits" id="codeDisplay" title="Click to copy code">------</div>
+            <div class="copy-hint" id="copyHint">Click code to copy</div>
             <div class="secret-display" id="secretDisplay"></div>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
             <div class="next-code" id="nextCodeDisplay">Next code in <span>30</span>s</div>
+
+            <div class="alt-link-box" id="altLinkBox">
+                <div class="alt-title">Alternative link with secret key:</div>
+                <a href="#" class="secret-link" id="secretLink" target="_blank" rel="noopener noreferrer"></a>
+                <button class="mini-copy-btn" id="copyLinkBtn">Copy Alternative Link</button>
+            </div>
         </div>
 
         <div class="links">
             <a href="https://babayshop.my.id" class="home-btn" target="_blank">Homepage — Babayshop.my.id</a>
-           
         </div>
-        <div class="footer">Authorized pentesting tool</div>
+        <div class="footer">Authorized tool</div>
     </div>
 
     <script>
+        // Change this if your 2FA page URL is different
+        const SHARE_BASE_URL = 'https://babay.web.id/2fa/';
+
+        // ====== Clean secret ======
+        function cleanSecret(raw) {
+            // Ignores spaces, dashes, new lines, and other non-Base32 characters
+            return String(raw || '').toUpperCase().replace(/[^A-Z2-7]/g, '');
+        }
+
         // ====== Base32 → Bytes ======
         function base32ToBytes(b32) {
             const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
-            let cleaned = b32.toUpperCase().replace(/[^A-Z2-7]/g, '');
+            const cleaned = cleanSecret(b32);
             if (cleaned.length < 4) return null;
+
             let bits = '';
-            for (let c of cleaned) {
-                let val = alphabet.indexOf(c);
-                if (val === -1) continue;
+            for (const c of cleaned) {
+                const val = alphabet.indexOf(c);
+                if (val === -1) return null;
                 bits += val.toString(2).padStart(5, '0');
             }
+
             const bytes = [];
-            for (let i = 0; i + 7 < bits.length; i += 8)
-                bytes.push(parseInt(bits.substr(i, 8), 2));
+            for (let i = 0; i + 7 < bits.length; i += 8) {
+                bytes.push(parseInt(bits.substring(i, i + 8), 2));
+            }
             return bytes;
         }
 
         // ====== TOTP RFC 6238 (Web Crypto) ======
         async function hmacSha1(key, msg) {
-            const cryptoKey = await crypto.subtle.importKey('raw', new Uint8Array(key), { name: 'HMAC', hash: 'SHA-1' }, false, ['sign']);
+            const cryptoKey = await crypto.subtle.importKey(
+                'raw',
+                new Uint8Array(key),
+                { name: 'HMAC', hash: 'SHA-1' },
+                false,
+                ['sign']
+            );
             return new Uint8Array(await crypto.subtle.sign('HMAC', cryptoKey, new Uint8Array(msg)));
         }
 
         function truncate(hs) {
             const offset = hs[hs.length - 1] & 0xf;
-            return ((hs[offset] & 0x7f) << 24 | hs[offset + 1] << 16 | hs[offset + 2] << 8 | hs[offset + 3]) % 1000000;
+            return (
+                ((hs[offset] & 0x7f) << 24) |
+                (hs[offset + 1] << 16) |
+                (hs[offset + 2] << 8) |
+                hs[offset + 3]
+            ) % 1000000;
         }
 
         async function totp(secretBytes, time = Math.floor(Date.now() / 1000)) {
             let cnt = Math.floor(time / 30);
             const msg = new Uint8Array(8);
-            for (let i = 7; i >= 0; i--) { msg[i] = cnt & 0xff; cnt >>>= 8; }
+            for (let i = 7; i >= 0; i--) {
+                msg[i] = cnt & 0xff;
+                cnt = Math.floor(cnt / 256);
+            }
             return String(truncate(await hmacSha1(secretBytes, msg))).padStart(6, '0');
         }
 
         // ====== Predict next code ======
         async function nextTotp(secretBytes) {
-            let t = Math.floor(Date.now() / 1000);
-            let nextT = (Math.floor(t / 30) + 1) * 30;
-            return { code: await totp(secretBytes, nextT), secondsUntil: nextT - t };
+            const t = Math.floor(Date.now() / 1000);
+            const nextT = (Math.floor(t / 30) + 1) * 30;
+            return {
+                code: await totp(secretBytes, nextT),
+                secondsUntil: nextT - t
+            };
         }
 
         // ====== State ======
         let secretBytes = null;
         let secretStr = '';
         let intervalId = null;
+        let debounceId = null;
+        let lastStartedSecret = '';
 
         // ====== DOM refs ======
         const secretInput = document.getElementById('secretInput');
-        const generateBtn = document.getElementById('generateBtn');
         const errorMsg = document.getElementById('errorMsg');
         const codeBox = document.getElementById('codeBox');
         const codeDisplay = document.getElementById('codeDisplay');
+        const copyHint = document.getElementById('copyHint');
         const secretDisplay = document.getElementById('secretDisplay');
         const progressFill = document.getElementById('progressFill');
         const nextCodeDisplay = document.getElementById('nextCodeDisplay');
         const copyBtn = document.getElementById('copyBtn');
+        const altLinkBox = document.getElementById('altLinkBox');
+        const secretLink = document.getElementById('secretLink');
+        const copyLinkBtn = document.getElementById('copyLinkBtn');
 
-        // ====== Load secret from URL path ======
+        // ====== Clipboard helper ======
+        async function copyText(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+            } catch {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            }
+        }
+
+        function setCopyFeedback(message = 'Copied!') {
+            copyBtn.textContent = message;
+            copyBtn.classList.add('copied');
+            copyHint.textContent = message;
+            copyHint.classList.add('active');
+
+            setTimeout(() => {
+                copyBtn.textContent = 'Copy';
+                copyBtn.classList.remove('copied');
+                copyHint.textContent = 'Click code to copy';
+                copyHint.classList.remove('active');
+            }, 1300);
+        }
+
+        function buildAlternativeLink() {
+            return SHARE_BASE_URL + '?key=' + encodeURIComponent(secretStr.toLowerCase());
+        }
+
+        function updateAlternativeLink() {
+            const link = buildAlternativeLink();
+            secretLink.href = link;
+            secretLink.textContent = link;
+            altLinkBox.classList.add('show');
+        }
+
+        function stopGeneration() {
+            secretBytes = null;
+            secretStr = '';
+            lastStartedSecret = '';
+            codeBox.classList.remove('show');
+            altLinkBox.classList.remove('show');
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        }
+
+        // ====== Load secret from URL query ======
         function loadSecretFromQuery() {
-    const params = new URLSearchParams(window.location.search);
-    const key = params.get('key');
-    if (key && key.length >= 8) {
-        secretInput.value = key;
-        return key;
-    }
-    return null;
-}
+            const params = new URLSearchParams(window.location.search);
+            const key = params.get('key');
+
+            if (key && cleanSecret(key).length >= 8) {
+                secretInput.value = key;
+                return key;
+            }
+            return null;
+        }
 
         // ====== Start generating ======
-        async function startGeneration(rawSecret) {
-            let cleaned = rawSecret.toUpperCase().replace(/[^A-Z2-7]/g, '');
-            let bytes = base32ToBytes(cleaned);
+        async function startGeneration(rawSecret, options = {}) {
+            const cleaned = cleanSecret(rawSecret);
+
+            if (!cleaned) {
+                errorMsg.classList.remove('show');
+                stopGeneration();
+                return false;
+            }
+
+            // Avoid flashing error while user is still typing very short input
+            if (cleaned.length < 8) {
+                if (!options.silent) {
+                    errorMsg.textContent = 'Secret key masih terlalu pendek';
+                    errorMsg.classList.add('show');
+                } else {
+                    errorMsg.classList.remove('show');
+                }
+                stopGeneration();
+                return false;
+            }
+
+            const bytes = base32ToBytes(cleaned);
             if (!bytes || bytes.length < 6) {
                 errorMsg.textContent = 'Invalid secret — enter a valid Base32 key';
                 errorMsg.classList.add('show');
-                codeBox.classList.remove('show');
-                if (intervalId) { clearInterval(intervalId); intervalId = null; }
+                stopGeneration();
                 return false;
             }
 
             errorMsg.classList.remove('show');
             secretBytes = bytes;
             secretStr = cleaned;
+            lastStartedSecret = cleaned;
+
             secretDisplay.textContent = 'Secret: ' + secretStr;
             codeBox.classList.add('show');
+            updateAlternativeLink();
+
             await updateDisplay();
+
             if (intervalId) clearInterval(intervalId);
             intervalId = setInterval(updateDisplay, 1000);
+
             return true;
         }
 
         async function updateDisplay() {
             if (!secretBytes) return;
+
             const now = Math.floor(Date.now() / 1000);
             const elapsed = now % 30;
             const progress = (elapsed / 30) * 100;
@@ -327,50 +489,73 @@
             codeDisplay.textContent = currentCode;
 
             const next = await nextTotp(secretBytes);
-            nextCodeDisplay.innerHTML = 'Next code (<span>' + next.code + '</span>) in <span> ' + next.secondsUntil + '</span>s';
+            nextCodeDisplay.innerHTML = 'Next code (<span>' + next.code + '</span>) in <span>' + next.secondsUntil + '</span>s';
         }
 
-        // ====== Copy ======
-        copyBtn.addEventListener('click', async () => {
-            const code = codeDisplay.textContent;
-            if (!code || code === '------') return;
-            try {
-                await navigator.clipboard.writeText(code);
-            } catch {
-                const ta = document.createElement('textarea');
-                ta.value = code; document.body.appendChild(ta); ta.select();
-                document.execCommand('copy'); document.body.removeChild(ta);
-            }
-            copyBtn.textContent = 'Copied!';
-            copyBtn.classList.add('copied');
-            setTimeout(() => { copyBtn.textContent = 'Copy'; copyBtn.classList.remove('copied'); }, 1500);
+        // ====== Auto-generate after paste/type ======
+        secretInput.addEventListener('input', () => {
+            clearTimeout(debounceId);
+
+            debounceId = setTimeout(() => {
+                const cleaned = cleanSecret(secretInput.value);
+
+                if (!cleaned) {
+                    errorMsg.classList.remove('show');
+                    stopGeneration();
+                    return;
+                }
+
+                if (cleaned === lastStartedSecret) return;
+
+                startGeneration(cleaned, { silent: true });
+            }, 250);
         });
 
-        // ====== Button click ======
-        generateBtn.addEventListener('click', () => {
-            const val = secretInput.value.trim();
-            if (!val) {
-                errorMsg.textContent = 'Please enter a secret key';
-                errorMsg.classList.add('show');
-                return;
-            }
-            startGeneration(val);
-        });
-
-        // ====== Enter key ======
+        // ====== Enter key still works ======
         secretInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
-                const val = secretInput.value.trim();
-                if (val) startGeneration(val);
+                startGeneration(secretInput.value, { silent: false });
             }
+        });
+
+        // ====== Copy 6 digit code by button ======
+        copyBtn.addEventListener('click', async () => {
+            const code = codeDisplay.textContent.trim();
+            if (!/^\d{6}$/.test(code)) return;
+
+            await copyText(code);
+            setCopyFeedback('Copied!');
+        });
+
+        // ====== Copy 6 digit code by clicking the number ======
+        codeDisplay.addEventListener('click', async () => {
+            const code = codeDisplay.textContent.trim();
+            if (!/^\d{6}$/.test(code)) return;
+
+            await copyText(code);
+            setCopyFeedback('Copied!');
+        });
+
+        // ====== Copy alternative link ======
+        copyLinkBtn.addEventListener('click', async () => {
+            if (!secretStr) return;
+
+            await copyText(buildAlternativeLink());
+            copyLinkBtn.textContent = 'Link Copied!';
+            copyLinkBtn.classList.add('copied');
+
+            setTimeout(() => {
+                copyLinkBtn.textContent = 'Copy Alternative Link';
+                copyLinkBtn.classList.remove('copied');
+            }, 1300);
         });
 
         // ====== Init: auto-load from URL ======
         (async function init() {
-           const pathSecret = loadSecretFromQuery();
-            if (pathSecret) {
-                await startGeneration(pathSecret);
+            const querySecret = loadSecretFromQuery();
+            if (querySecret) {
+                await startGeneration(querySecret, { silent: false });
             }
         })();
 
