@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google AI Pro 1 Tahun - Tutorial Klaim Voucher</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0f0f0f;
+            color: #e8eaed;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header ala Google */
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 24px;
+            border-bottom: 1px solid #2a2a2a;
+            background: #171717;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 500;
+            letter-spacing: -0.5px;
+            color: #8ab4f8;
+        }
+
+        .logo span {
+            color: #e8eaed;
+            font-weight: 300;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .badge {
+            background: #1a73e8;
+            color: #fff;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        .user-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #8ab4f8;
+            color: #0f0f0f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Container utama */
+        .container {
+            max-width: 840px;
+            margin: 0 auto;
+            padding: 40px 24px 80px;
+            flex: 1;
+        }
+
+        /* Breadcrumb */
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #9aa0a6;
+            margin-bottom: 24px;
+        }
+
+        .breadcrumb a {
+            color: #8ab4f8;
+            text-decoration: none;
+        }
+
+        .breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .breadcrumb .sep {
+            color: #5f6368;
+        }
+
+        /* Judul */
+        .page-title {
+            margin-bottom: 32px;
+        }
+
+        .page-title h1 {
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
+            line-height: 1.3;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #9aa0a6;
+            font-size: 15px;
+        }
+
+        .page-title .highlight {
+            color: #fdd663;
+            font-weight: 600;
+        }
+
+        /* Step Card */
+        .step-card {
+            background: #171717;
+            border: 1px solid #2a2a2a;
+            border-radius: 16px;
+            padding: 24px 28px;
+            margin-bottom: 20px;
+            transition: border-color 0.2s ease;
+        }
+
+        .step-card:hover {
+            border-color: #3c4043;
+        }
+
+        .step-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 14px;
+        }
+
+        .step-number {
+            flex-shrink: 0;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #1a73e8;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .step-header h2 {
+            font-size: 18px;
+            font-weight: 600;
+            padding-top: 6px;
+        }
+
+        .step-content {
+            padding-left: 52px;
+        }
+
+        .step-content p {
+            margin-bottom: 10px;
+            color: #bdc1c6;
+            font-size: 15px;
+        }
+
+        .step-content ul, .step-content ol {
+            margin: 8px 0 12px 20px;
+            color: #bdc1c6;
+            font-size: 15px;
+        }
+
+        .step-content li {
+            margin-bottom: 6px;
+        }
+
+        .step-content a {
+            color: #8ab4f8;
+            text-decoration: none;
+        }
+
+        .step-content a:hover {
+            text-decoration: underline;
+        }
+
+        /* Kode box (untuk contoh format) */
+        .code-box {
+            background: #232323;
+            border: 1px solid #333;
+            border-radius: 10px;
+            padding: 14px 18px;
+            font-family: 'SF Mono', 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            color: #e8eaed;
+            margin: 12px 0;
+            overflow-x: auto;
+            word-break: break-all;
+            line-height: 1.7;
+        }
+
+        .code-box .label {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #9aa0a6;
+            margin-bottom: 8px;
+        }
+
+        .code-box .comment {
+            color: #5f6368;
+        }
+
+        .code-box .string {
+            color: #fdd663;
+        }
+
+        .code-box .accent {
+            color: #8ab4f8;
+        }
+
+        /* Tag info */
+        .tag {
+            display: inline-block;
+            background: #232323;
+            color: #9aa0a6;
+            font-size: 12px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            margin-right: 4px;
+        }
+
+        .tag-warning {
+            background: #3d2e00;
+            color: #fdd663;
+            border-color: #5c4800;
+        }
+
+        .tag-success {
+            background: #0d3a1a;
+            color: #81c995;
+            border-color: #1e6b33;
+        }
+
+        .tag-info {
+            background: #0d2b45;
+            color: #8ab4f8;
+            border-color: #1a4b73;
+        }
+
+        /* Alert box */
+        .alert {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin: 16px 0 0;
+            font-size: 14px;
+            border: 1px solid;
+        }
+
+        .alert-warning {
+            background: #3d2e00;
+            border-color: #5c4800;
+            color: #fdd663;
+        }
+
+        .alert-success {
+            background: #0d3a1a;
+            border-color: #1e6b33;
+            color: #81c995;
+        }
+
+        .alert-info {
+            background: #0d2b45;
+            border-color: #1a4b73;
+            color: #8ab4f8;
+        }
+
+        /* Divider */
+        .divider {
+            border: none;
+            border-top: 1px solid #2a2a2a;
+            margin: 32px 0;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 24px;
+            border-top: 1px solid #2a2a2a;
+            color: #5f6368;
+            font-size: 13px;
+            background: #0f0f0f;
+        }
+
+        .footer a {
+            color: #8ab4f8;
+            text-decoration: none;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .container {
+                padding: 24px 16px 60px;
+            }
+
+            .page-title h1 {
+                font-size: 24px;
+            }
+
+            .step-card {
+                padding: 18px 16px;
+            }
+
+            .step-content {
+                padding-left: 0;
+                margin-top: 8px;
+            }
+
+            .step-header {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .header {
+                padding: 12px 16px;
+            }
+
+            .badge {
+                font-size: 10px;
+                padding: 4px 10px;
+            }
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Copy button sederhana */
+        .copy-btn {
+            background: #2a2a2a;
+            border: none;
+            color: #bdc1c6;
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.2s;
+            margin-top: 8px;
+        }
+
+        .copy-btn:hover {
+            background: #3c4043;
+            color: #e8eaed;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">Google<span> AI Pro</span></div>
+        </div>
+        <div class="header-right">
+            <span class="badge">Voucher 1 Tahun</span>
+            <div class="user-avatar">B</div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+
+        <!-- Breadcrumb -->
+        <div class="breadcrumb">
+            <a href="https://babay.web.id">babay.web.id</a>
+            <span class="sep">›</span>
+            <span>gpro1tahun</span>
+        </div>
+
+        <!-- Page Title -->
+        <div class="page-title">
+            <h1>Google AI Pro 1 Tahun</h1>
+            <p>Panduan lengkap klaim voucher <span class="highlight">Google AI Pro 1 Tahun</span> — ikuti setiap langkah dengan teliti.</p>
+        </div>
+
+        <!-- ===================== LANGKAH 1 ===================== -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">1</div>
+                <h2>Syarat Akun Gmail</h2>
+            </div>
+            <div class="step-content">
+                <p>Pastikan akun Gmail kamu memenuhi syarat berikut agar <strong>eligible</strong> untuk klaim voucher:</p>
+                <ul>
+                    <li>Email <strong>tidak rewel</strong> saat login — tidak minta verifikasi SMS / notifikasi HP, dll.</li>
+                    <li>Hanya minta verifikasi <strong>kode 2FA</strong> yang diatur dari web authenticator (TOTP).</li>
+                </ul>
+                <div class="alert alert-warning" style="margin-top: 12px;">
+                    ⚠️ Jika akun kamu sering minta verifikasi HP/SMS, sebaiknya cari akun lain yang lebih clean.
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== LANGKAH 2 ===================== -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">2</div>
+                <h2>Aktifkan 2FA & Ambil Secret Key</h2>
+            </div>
+            <div class="step-content">
+                <p>Tonton tutorial ini sebagai panduan:</p>
+                <p>
+                    <span class="tag tag-info">YouTube</span>
+                    <a href="https://youtu.be/JcJzS4-jx8Y" target="_blank">youtu.be/JcJzS4-jx8Y</a>
+                </p>
+
+                <p style="margin-top: 14px;"><strong>Langkah-langkah:</strong></p>
+                <ol>
+                    <li>Buka halaman <a href="https://myaccount.google.com/two-step-verification/authenticator" target="_blank">Google Authenticator</a>.</li>
+                    <li>Setelah mendapatkan <strong>32 digit secret key</strong>, langsung paste di sini:<br>
+                        <a href="https://babay.web.id/2fa/" target="_blank" style="font-weight:600;">https://babay.web.id/2fa/</a>
+                    </li>
+                    <li>Copy <strong>6 digit kode</strong> yang muncul, masukkan ke Google Authenticator tadi untuk verifikasi.</li>
+                    <li>Copy <strong>"Alternative link with secret key"</strong> — ini yang akan kamu kirim ke seller.</li>
+                </ol>
+
+                <div class="alert alert-info" style="margin-top: 12px;">
+                    ℹ️ Simpan secret key dengan aman. Link alternative inilah yang digunakan seller untuk memproses voucher.
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== LANGKAH 3 ===================== -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">3</div>
+                <h2>Tutup / Hapus Family Google</h2>
+            </div>
+            <div class="step-content">
+                <p>Pastikan <strong>Google Family</strong> kamu dalam status tertutup / close / sudah dihapus.</p>
+                <p>
+                    <span class="tag tag-warning">Penting</span>
+                    <a href="https://g.co/YourFamily" target="_blank">https://g.co/YourFamily</a>
+                </p>
+                <p style="color:#fdd663; font-size:14px;">Jika masih terikat di Google Family, kamu <strong>tidak bisa</strong> klaim voucher ini.</p>
+            </div>
+        </div>
+
+        <!-- ===================== LANGKAH 4 ===================== -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">4</div>
+                <h2>Tutup Profil Pembayaran</h2>
+            </div>
+            <div class="step-content">
+                <p>Tutup / close / hapus profil pembayaran Google kamu:</p>
+                <p>
+                    <span class="tag tag-warning">Penting</span>
+                    <a href="https://payments.google.com/gp/w/home/settings" target="_blank">payments.google.com/gp/w/home/settings</a>
+                </p>
+
+                <!-- Referensi YT untuk step 3 & 4 -->
+                <p style="margin-top: 14px;">
+                    <span class="tag tag-info">YouTube</span>
+                    Tutorial untuk langkah 3 & 4 (dan juga step 2):
+                    <a href="https://youtu.be/thEGvpArArE" target="_blank">youtu.be/thEGvpArArE</a>
+                </p>
+
+                <div class="alert alert-warning" style="margin-top: 12px;">
+                    ⚠️ Pastikan profil pembayaran benar-benar closed, bukan hanya dihapus dari tampilan.
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== LANGKAH 5 ===================== -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">5</div>
+                <h2>Kirim Akun ke <strong style="color:#8ab4f8;">babay</strong></h2>
+            </div>
+            <div class="step-content">
+                <p>Setelah semua langkah di atas selesai, kirim akun dengan format berikut:</p>
+
+                <div class="code-box">
+                    <span class="label">Format Pengiriman</span>
+                    <span class="comment"># email---password---link_secret_key</span><br>
+                    <span class="string">bayusampurna@gmail.com</span>---<span class="accent">passworddisini</span>---<span class="string">https://babay.web.id/2fa/?key=nnc3tjd3uqurihy3ckjl2shyczhpgnnk</span>
+                </div>
+
+                <p>Contoh di atas bisa kamu copy dan edit sesuai data akunmu.</p>
+                <button class="copy-btn" onclick="copyFormat()">📋 Copy Format</button>
+
+                <div class="alert alert-success" style="margin-top: 14px;">
+                    ✅ Akun terkirim — tinggal tunggu proses dari seller.
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== LANGKAH 6 ===================== -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">6</div>
+                <h2>Setelah Voucher Diterima</h2>
+            </div>
+            <div class="step-content">
+                <p>Jika voucher sudah masuk, lakukan langkah berikut agar akun tetap aman:</p>
+                <ol>
+                    <li><strong>Log out</strong> device "<strong>Google Pixel 10</strong>" dari pengaturan akun Google.</li>
+                    <li><strong>Ubah kode 2FA</strong> — buat yang baru.</li>
+                    <li><strong>Ubah password</strong> akun Gmail.</li>
+                </ol>
+
+                <div class="alert alert-warning" style="margin-top: 12px;">
+                    ⏳ Lakukan perubahan <strong>secara bertahap</strong>, beri jeda waktu agar Google tidak mendeteksi aktivitas mencurigakan atau spam.
+                </div>
+
+                <p style="margin-top: 12px; color:#9aa0a6; font-size:14px;">
+                    💡 Jangan langsung ganti semua dalam 1 menit — tunggu beberapa jam atau sehari antar perubahan.
+                </p>
+            </div>
+        </div>
+
+
+        <!-- ===================== LANGKAH 7 ===================== -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">7</div>
+                <h2>Akses Link Klaim Voucher</h2>
+            </div>
+            <div class="step-content">
+                <p>Setelah akun kamu diproses dan voucher siap, kamu akan mendapatkan link seperti ini:</p>
+                <div class="code-box">
+                    <span class="label">Link Klaim Voucher</span>
+                    <span class="string">https://one.google.com/partner-eft-onboard/</span><span class="accent">XXXXXXXXXXXXXXXXXXXX</span>
+                </div>
+                <p>Klik link tersebut untuk memulai proses klaim.</p>
+                <div class="alert alert-info">
+                    ℹ️ Link ini bersifat <strong>unik & rahasia</strong> — jangan sebarkan ke orang lain.
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== LANGKAH 8 ===================== -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">8</div>
+                <h2>Mulai Uji Coba / Trial</h2>
+            </div>
+            <div class="step-content">
+                <p>Setelah halaman Google One terbuka:</p>
+                <ol>
+                    <li>Klik tombol <strong>"Mulai uji coba"</strong> atau <strong>"Start trial"</strong>.</li>
+                    <li>Halaman akan menampilkan detail paket <strong>Google AI Pro — 12 bulan trial / 1 tahun</strong>.</li>
+                </ol>
+                <div class="alert alert-success">
+                    ✅ Trial ini gratis selama 12 bulan penuh, tidak ada charge di awal.
+                </div>
+            </div>
+        </div>
+
+        <!-- ===================== LANGKAH 9 ===================== -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">9</div>
+                <h2>Pilih Jenis Pembayaran & Mulai</h2>
+            </div>
+            <div class="step-content">
+                <p>Langkah selanjutnya:</p>
+                <ol>
+                    <li>Pilih <strong>jenis pembayaran</strong> yang diminta (kartu kredit / debit).</li>
+                    <li>Google hanya memverifikasi metode pembayaran — <strong>tidak akan menagih</strong> selama masa trial.</li>
+                    <li>Klik <strong>"Mulai"</strong> atau <strong>"Start"</strong> untuk mengaktifkan langganan.</li>
+                </ol>
+                <div class="alert alert-warning">
+                    ⚠️ Pastikan metode pembayaran valid. Jika tidak punya kartu kredit, bisa gunakan virtual card atau e-wallet yang didukung.
+                </div>
+                <p style="margin-top:6px; color:#9aa0a6; font-size:14px;">Setelah ini, Google AI Pro 1 Tahun aktif di akun kamu.</p>
+            </div>
+        </div>
+
+        <!-- ===================== LANGKAH 10 ===================== -->
+        <div class="step-card">
+            <div class="step-header">
+                <div class="step-number">10</div>
+                <h2>Sharing ke 5 Orang (Google Family)</h2>
+            </div>
+            <div class="step-content">
+                <p>Paket Google AI Pro kamu bisa di-<em>share</em> ke maksimal <strong>5 anggota keluarga</strong>.</p>
+                <p>Caranya:</p>
+                <ol>
+                    <li>Buka halaman pembuatan family:<br>
+                        <a href="https://myaccount.google.com/family/create" target="_blank" style="font-weight:600;">https://myaccount.google.com/family/create</a>
+                    </li>
+                    <li>Di menu Family, akan muncul tulisan:<br>
+                        <em>"Paket Google AI Pro Anda mencakup fitur berbagi dengan keluarga. Anggota keluarga mendapatkan akses ke fitur AI dan penyimpanan tanpa biaya tambahan."</em>
+                    </li>
+                    <li>Klik tombol <strong>"Mulai berbagi"</strong> atau <strong>"Start sharing"</strong>.</li>
+                    <li>Masukkan email anggota keluarga yang ingin diundang (maksimal 5 orang).</li>
+                </ol>
+
+                <div class="alert alert-success">
+                    🎉 Setelah ini, seluruh anggota family bisa menikmati Google AI Pro secara bersamaan!
+                </div>
+
+                <p style="margin-top:12px; color:#9aa0a6; font-size:14px;">
+                    💡 Anggota keluarga tetap punya akses penyimpanan & fitur AI sendiri-sendiri — tanpa mengurangi kuota utama.
+                </p>
+            </div>
+        </div>
+
+        <hr class="divider" />
+
+    
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>
+            <a href="https://babay.web.id">babay.web.id</a> / 
+            <a href="https://babay.web.id/gpro1tahun">gpro1tahun</a> &mdash; 
+            Google AI Pro 1 Year Voucher Guide
+        </p>
+        <p style="margin-top:4px;">&copy; 2026 babay.web.id</p>
+    </footer>
+
+    <script>
+        function copyFormat() {
+            const text = 'bayusampurna@gmail.com---passworddisini---https://babay.web.id/2fa/?key=nnc3tjd3uqurihy3ckjl2shyczhpgnnk';
+            navigator.clipboard.writeText(text).catch(() => {
+                // fallback
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                ta.remove();
+            }).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = '✅ Copied!';
+                setTimeout(() => btn.textContent = '📋 Copy Format', 2000);
+            });
+        }
+    </script>
+
+</body>
+</html>
