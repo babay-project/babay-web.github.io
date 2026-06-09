@@ -140,6 +140,11 @@
             word-break: break-all;
             margin-top: 2px;
             padding: 4px 0;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .secret-display:hover {
+            color: #a855f7;
         }
         .next-code {
             font-size: 0.8rem;
@@ -255,7 +260,7 @@
             </div>
             <div class="code-digits" id="codeDisplay" title="Click to copy code">------</div>
             <div class="copy-hint" id="copyHint">Click code to copy</div>
-            <div class="secret-display" id="secretDisplay"></div>
+            <div class="secret-display" id="secretDisplay" title="Click to copy secret key"></div>
             <div class="progress-bar">
                 <div class="progress-fill" id="progressFill"></div>
             </div>
@@ -465,7 +470,8 @@
             secretStr = cleaned;
             lastStartedSecret = cleaned;
 
-            secretDisplay.textContent = 'Secret: ' + secretStr;
+            // UBAH: Format lowercase diterapkan di sini
+            secretDisplay.textContent = 'Secret: ' + secretStr.toLowerCase();
             codeBox.classList.add('show');
             updateAlternativeLink();
 
@@ -548,6 +554,24 @@
             setTimeout(() => {
                 copyLinkBtn.textContent = 'Copy Alternative Link';
                 copyLinkBtn.classList.remove('copied');
+            }, 1300);
+        });
+
+        // ====== Copy Secret Key by clicking the text ======
+        secretDisplay.addEventListener('click', async () => {
+            if (!secretStr) return;
+
+            // Salin ke clipboard dalam format huruf kecil
+            await copyText(secretStr.toLowerCase());
+
+            // Feedback visual (Teks berubah menjadi hijau sementara)
+            const originalText = secretDisplay.textContent;
+            secretDisplay.textContent = 'Secret key copied!';
+            secretDisplay.style.color = '#22c55e'; // Hijau sukses
+
+            setTimeout(() => {
+                secretDisplay.textContent = originalText;
+                secretDisplay.style.color = ''; // Reset warna
             }, 1300);
         });
 
