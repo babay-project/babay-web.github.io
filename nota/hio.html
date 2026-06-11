@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generator Email Aktivasi Google Gemini Jio</title>
+
+  <style>
+    :root {
+      --bg-start: #0a0e1a;
+      --bg-end: #0d1b3e;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.10);
+      --card-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+
+      --accent-blue: #4f8ef7;
+      --accent-cyan: #00d4ff;
+      --accent-purple: #a855f7;
+      --accent-gradient: linear-gradient(135deg, #4f8ef7, #a855f7);
+
+      --text-primary: #f0f4ff;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+
+      --input-bg: rgba(255, 255, 255, 0.06);
+      --input-border: rgba(255, 255, 255, 0.12);
+      --input-focus: rgba(79, 142, 247, 0.4);
+
+      --success: #10b981;
+      --error: #f87171;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background: linear-gradient(145deg, var(--bg-start) 0%, var(--bg-end) 60%, #1a0a2e 100%);
+      min-height: 100vh;
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 20px 16px 60px;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(79,142,247,0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(168,85,247,0.10) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(0,212,255,0.05) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-top: 12px;
+    }
+
+    .header-icon {
+      font-size: 2.5rem;
+      display: block;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 16px rgba(79,142,247,0.6));
+    }
+
+    .header h1 {
+      font-size: clamp(1.35rem, 4vw, 1.9rem);
+      font-weight: 800;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      max-width: 500px;
+      margin: 0 auto 14px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(79,142,247,0.12);
+      border: 1px solid rgba(79,142,247,0.25);
+      color: var(--accent-cyan);
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 99px;
+    }
+
+    .badge::before {
+      content: "✦";
+      font-size: 0.6rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--card-shadow);
+      padding: 28px 24px;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,212,255,0.3), transparent);
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      margin-bottom: 7px;
+    }
+
+    label .req {
+      color: var(--accent-purple);
+      margin-left: 2px;
+    }
+
+    input,
+    textarea {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.92rem;
+      padding: 12px 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    input:focus,
+    textarea:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px var(--input-focus);
+      background: rgba(255,255,255,0.08);
+    }
+
+    input.error,
+    textarea.error {
+      border-color: var(--error);
+      box-shadow: 0 0 0 3px rgba(248,113,113,0.2);
+    }
+
+    .error-msg {
+      font-size: 0.75rem;
+      color: var(--error);
+      margin-top: 5px;
+      display: none;
+    }
+
+    .error-msg.show {
+      display: block;
+    }
+
+    .hint {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+
+    .btn {
+      flex: 1;
+      min-width: 120px;
+      padding: 12px 18px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s, background 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      text-decoration: none;
+    }
+
+    .btn:active {
+      transform: scale(0.97);
+    }
+
+    .btn-primary {
+      background: var(--accent-gradient);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(79,142,247,0.35);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 28px rgba(79,142,247,0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(0,212,255,0.12);
+      border: 1px solid rgba(0,212,255,0.25);
+      color: var(--accent-cyan);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(0,212,255,0.2);
+    }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-secondary);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.1);
+      color: var(--text-primary);
+    }
+
+    #outputCard {
+      display: none;
+    }
+
+    #outputCard.show {
+      display: block;
+    }
+
+    .subject-box {
+      background: rgba(0,0,0,0.28);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-sm);
+      color: #d4e4ff;
+      padding: 13px 15px;
+      font-size: 0.86rem;
+      margin-bottom: 14px;
+      word-break: break-word;
+    }
+
+    #outputBox {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-sm);
+      color: #d4e4ff;
+      font-family: "Courier New", Consolas, monospace;
+      font-size: 0.82rem;
+      line-height: 1.7;
+      padding: 16px;
+      width: 100%;
+      resize: vertical;
+      min-height: 430px;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(16,185,129,0.95);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 10px 22px;
+      border-radius: 99px;
+      box-shadow: 0 4px 20px rgba(16,185,129,0.4);
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 999;
+      white-space: nowrap;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: 32px;
+    }
+
+    .footer span {
+      color: var(--accent-purple);
+    }
+
+    @media (max-width: 480px) {
+      body {
+        padding: 18px 13px 50px;
+      }
+
+      .card {
+        padding: 20px 16px;
+      }
+
+      .btn-row {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+
+      #outputBox {
+        min-height: 390px;
+        font-size: 0.78rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="wrapper">
+
+  <div class="header">
+    <span class="header-icon">✉️</span>
+    <h1>Generator Email Aktivasi Google Gemini Jio</h1>
+    <p>Buat email aktivasi paket Google Gemini / Google AI Pro 18 bulan untuk pembeli secara otomatis dan rapi.</p>
+    <span class="badge">Jio Offer • 18 Bulan • Siap Kirim Email</span>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📋 Data Email</div>
+
+    <div class="field">
+      <label for="emailTujuan">Email Tujuan <span class="req">*</span></label>
+      <input type="email" id="emailTujuan" placeholder="contoh@gmail.com" autocomplete="off" />
+      <div class="hint">Masukkan email pembeli yang akan menerima link aktivasi.</div>
+      <div class="error-msg" id="errEmailTujuan">Email tujuan tidak boleh kosong.</div>
+    </div>
+
+    <div class="field">
+      <label for="linkAktivasi">Link Aktivasi Paket <span class="req">*</span></label>
+      <textarea id="linkAktivasi" placeholder="Tempel link aktivasi Google One / Jio di sini..." style="min-height: 120px;"></textarea>
+      <div class="hint">Link aktivasi akan otomatis dimasukkan ke isi email.</div>
+      <div class="error-msg" id="errLinkAktivasi">Link aktivasi tidak boleh kosong.</div>
+    </div>
+
+    <div class="btn-row" style="margin-top: 24px;">
+      <button class="btn btn-primary" onclick="generateEmail()">✨ Generate Email</button>
+      <button class="btn btn-ghost" onclick="resetForm()">🔄 Reset</button>
+    </div>
+  </div>
+
+  <div class="card" id="outputCard">
+    <div class="card-title">📄 Hasil Email</div>
+
+    <label>Subjek Email</label>
+    <div class="subject-box" id="subjectBox"></div>
+
+    <label style="margin-top: 14px;">Isi Email</label>
+    <textarea id="outputBox" readonly></textarea>
+
+    <div class="btn-row" style="margin-top: 16px;">
+      <button class="btn btn-secondary" onclick="copySubject()">📌 Copy Subject</button>
+      <button class="btn btn-secondary" onclick="copyEmail()">📋 Copy Isi Email</button>
+      <a class="btn btn-primary" id="gmailBtn" href="#" target="_blank">📨 Buka Gmail Draft</a>
+    </div>
+  </div>
+
+  <div class="footer">
+    Dibuat untuk <span>BabayShop</span> • Generator Email Aktivasi Google Gemini Jio
+  </div>
+
+</div>
+
+<div id="toast">✅ Berhasil disalin!</div>
+
+<script>
+  const SUBJECT = "Google Gemini Offer: Free 18-Month Pro Plan for Jio Users";
+
+  function setError(fieldId, errId, show) {
+    const field = document.getElementById(fieldId);
+    const err = document.getElementById(errId);
+
+    if (show) {
+      field.classList.add("error");
+      err.classList.add("show");
+    } else {
+      field.classList.remove("error");
+      err.classList.remove("show");
+    }
+  }
+
+  function generateEmail() {
+    const emailTujuan = document.getElementById("emailTujuan").value.trim();
+    const linkAktivasi = document.getElementById("linkAktivasi").value.trim();
+
+    let valid = true;
+
+    setError("emailTujuan", "errEmailTujuan", !emailTujuan);
+    if (!emailTujuan) valid = false;
+
+    setError("linkAktivasi", "errLinkAktivasi", !linkAktivasi);
+    if (!linkAktivasi) valid = false;
+
+    if (!valid) return;
+
+    const emailBody =
+`Halo,
+
+Silakan aktifkan paket Google AI Pro / Google Gemini 18 bulan melalui link aktivasi yang sudah disediakan.
+
+⚠️ Pastikan Anda menggunakan profil atau akun Google yang benar sebelum melakukan aktivasi.
+Mohon periksa kembali akun Google yang sedang login agar paket tidak salah terklaim ke akun Google lain yang tidak diinginkan.
+
+━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 SEBELUM AKTIVASI
+
+Sebelum mengaktifkan paket, wajib membaca informasi dan ketentuan mengenai paket Jio terlebih dahulu.
+
+Saat muncul halaman keterangan masa aktif paket, mohon screenshot bagian yang menampilkan tulisan:
+
+"Your Google AI Pro plan will end on..."
+
+atau
+
+"Paket Google AI Pro Anda akan berakhir pada..."
+
+Setelah itu, kirim screenshot tersebut kepada admin penjual untuk pendataan serta pengaktifan garansi layanan.
+
+Jika screenshot sudah dikirim, silakan lanjutkan proses aktivasi paket sampai selesai.
+
+━━━━━━━━━━━━━━━━━━━━━━━
+
+🔗 LINK AKTIVASI PAKET
+
+${linkAktivasi}
+
+━━━━━━━━━━━━━━━━━━━━━━━
+
+📅 CARA CEK MASA AKTIF PAKET
+
+Jika ingin mengecek kembali sampai kapan paket berakhir, silakan buka:
+
+https://one.google.com/benefits/
+
+Lalu scroll ke bagian paling bawah pada menu:
+
+"Manfaat Mendatang"
+
+Biasanya akan muncul benefit seperti YouTube Premium Lite dengan keterangan tanggal tersedia sampai kapan.
+Tanggal tersebut bisa menjadi tanda masa aktif paket Google AI Pro / Google Gemini Anda.
+
+━━━━━━━━━━━━━━━━━━━━━━━
+
+📖 INFORMASI LENGKAP PAKET
+
+Semua penjelasan mengenai paket ini dapat dibaca di website berikut:
+
+https://babay.web.id/google
+
+━━━━━━━━━━━━━━━━━━━━━━━
+
+📌 CATATAN PENTING
+
+• Pastikan akun Google yang digunakan sudah benar sebelum aktivasi.
+• Link aktivasi hanya digunakan untuk proses klaim paket.
+• Jangan terburu-buru klik aktivasi sebelum memastikan akun Google yang aktif sudah benar.
+• Screenshot masa aktif paket wajib dikirim ke admin untuk pendataan garansi.
+• Simpan email ini agar link dan panduan aktivasi tidak hilang.
+
+Terima kasih sudah order di BabayShop 🙏
+
+Salam,
+BabayShop`;
+
+    document.getElementById("subjectBox").textContent = SUBJECT;
+    document.getElementById("outputBox").value = emailBody;
+    document.getElementById("outputCard").classList.add("show");
+
+    const gmailUrl =
+      "https://mail.google.com/mail/?view=cm&fs=1" +
+      "&to=" + encodeURIComponent(emailTujuan) +
+      "&su=" + encodeURIComponent(SUBJECT) +
+      "&body=" + encodeURIComponent(emailBody);
+
+    document.getElementById("gmailBtn").href = gmailUrl;
+
+    setTimeout(() => {
+      document.getElementById("outputCard").scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }, 100);
+  }
+
+  function copySubject() {
+    copyText(SUBJECT);
+  }
+
+  function copyEmail() {
+    const text = document.getElementById("outputBox").value;
+
+    if (!text) {
+      alert("Belum ada isi email yang bisa disalin.");
+      return;
+    }
+
+    copyText(text);
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(showToast).catch(() => {
+        fallbackCopy(text);
+      });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+
+  function fallbackCopy(text) {
+    const temp = document.createElement("textarea");
+    temp.value = text;
+    document.body.appendChild(temp);
+    temp.select();
+    temp.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    document.body.removeChild(temp);
+    showToast();
+  }
+
+  function showToast() {
+    const toast = document.getElementById("toast");
+    toast.classList.add("show");
+
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 2500);
+  }
+
+  function resetForm() {
+    document.getElementById("emailTujuan").value = "";
+    document.getElementById("linkAktivasi").value = "";
+    document.getElementById("subjectBox").textContent = "";
+    document.getElementById("outputBox").value = "";
+    document.getElementById("outputCard").classList.remove("show");
+    document.getElementById("gmailBtn").href = "#";
+
+    document.getElementById("emailTujuan").classList.remove("error");
+    document.getElementById("linkAktivasi").classList.remove("error");
+
+    document.querySelectorAll(".error-msg").forEach(el => el.classList.remove("show"));
+  }
+</script>
+
+</body>
+</html>
