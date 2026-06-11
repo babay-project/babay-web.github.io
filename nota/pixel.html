@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Generator Nota Google One AI Pro by Pixel</title>
+  <style>
+    /* ===== DESIGN TOKENS ===== */
+    :root {
+      --bg-start: #0a0e1a;
+      --bg-end: #0d1b3e;
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-border: rgba(255, 255, 255, 0.10);
+      --card-shadow: 0 8px 40px rgba(0, 0, 0, 0.4);
+
+      --accent-blue: #4f8ef7;
+      --accent-cyan: #00d4ff;
+      --accent-purple: #a855f7;
+      --accent-gradient: linear-gradient(135deg, #4f8ef7, #a855f7);
+      --accent-gradient-h: linear-gradient(135deg, #60a5fa, #c084fc);
+
+      --text-primary: #f0f4ff;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+
+      --input-bg: rgba(255, 255, 255, 0.06);
+      --input-border: rgba(255, 255, 255, 0.12);
+      --input-focus: rgba(79, 142, 247, 0.4);
+
+      --success: #10b981;
+      --error: #f87171;
+
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+
+      --font-display: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-display);
+      background: linear-gradient(145deg, var(--bg-start) 0%, var(--bg-end) 60%, #1a0a2e 100%);
+      min-height: 100vh;
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 20px 16px 60px;
+    }
+
+    /* Subtle background pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 20% 10%, rgba(79,142,247,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(168,85,247,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 30% at 50% 50%, rgba(0,212,255,0.04) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ===== LAYOUT WRAPPER ===== */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-top: 12px;
+    }
+
+    .header-icon {
+      font-size: 2.4rem;
+      display: block;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 0 16px rgba(79,142,247,0.6));
+    }
+
+    .header h1 {
+      font-size: clamp(1.3rem, 4vw, 1.75rem);
+      font-weight: 700;
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      max-width: 420px;
+      margin: 0 auto 14px;
+    }
+
+    /* Badge */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(79,142,247,0.12);
+      border: 1px solid rgba(79,142,247,0.25);
+      color: var(--accent-cyan);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      border-radius: 99px;
+    }
+
+    .badge::before { content: '✦'; font-size: 0.6rem; }
+
+    /* ===== GLASS CARD ===== */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: var(--card-shadow);
+      padding: 28px 24px;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(to right, rgba(0,212,255,0.3), transparent);
+    }
+
+    /* ===== FORM FIELDS ===== */
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 7px;
+    }
+
+    label .req { color: var(--accent-purple); margin-left: 2px; }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select,
+    textarea {
+      width: 100%;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: var(--radius-sm);
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 0.92rem;
+      padding: 11px 14px;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      -webkit-appearance: none;
+    }
+
+    input[type="text"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 0 3px var(--input-focus);
+      background: rgba(255,255,255,0.08);
+    }
+
+    input.error, select.error, textarea.error {
+      border-color: var(--error);
+      box-shadow: 0 0 0 3px rgba(248,113,113,0.2);
+    }
+
+    .error-msg {
+      font-size: 0.75rem;
+      color: var(--error);
+      margin-top: 5px;
+      display: none;
+    }
+
+    .error-msg.show { display: block; }
+
+    select option { background: #1a2540; color: var(--text-primary); }
+
+    /* Hint text below input */
+    .hint {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+
+    /* ===== REDEEM LINK SECTION (conditional) ===== */
+    #redeemSection {
+      display: none;
+      border-top: 1px solid var(--card-border);
+      padding-top: 18px;
+      margin-top: 4px;
+    }
+
+    #redeemSection.show { display: block; }
+
+    /* ===== BUTTONS ===== */
+    .btn-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .btn {
+      flex: 1;
+      min-width: 120px;
+      padding: 12px 18px;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s, opacity 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+    }
+
+    .btn:active { transform: scale(0.97); }
+
+    /* Primary – Generate */
+    .btn-primary {
+      background: var(--accent-gradient);
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(79,142,247,0.35);
+    }
+
+    .btn-primary:hover { box-shadow: 0 6px 28px rgba(79,142,247,0.5); }
+
+    /* Secondary – Copy */
+    .btn-secondary {
+      background: rgba(0,212,255,0.12);
+      border: 1px solid rgba(0,212,255,0.25);
+      color: var(--accent-cyan);
+    }
+
+    .btn-secondary:hover { background: rgba(0,212,255,0.2); }
+
+    /* Ghost – Reset */
+    .btn-ghost {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-secondary);
+    }
+
+    .btn-ghost:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
+
+    /* ===== OUTPUT TEXTAREA ===== */
+    #outputCard { display: none; }
+    #outputCard.show { display: block; }
+
+    #outputBox {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius-sm);
+      color: #d4e4ff;
+      font-family: 'Courier New', 'Consolas', monospace;
+      font-size: 0.82rem;
+      line-height: 1.7;
+      padding: 16px;
+      width: 100%;
+      resize: vertical;
+      min-height: 360px;
+      white-space: pre;
+      overflow-x: auto;
+    }
+
+    /* ===== TOAST ===== */
+    #toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: rgba(16,185,129,0.95);
+      color: #fff;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 10px 22px;
+      border-radius: 99px;
+      box-shadow: 0 4px 20px rgba(16,185,129,0.4);
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      z-index: 999;
+      white-space: nowrap;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      margin-top: 32px;
+    }
+
+    .footer span { color: var(--accent-purple); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 480px) {
+      .card { padding: 20px 16px; }
+      .btn-row { flex-direction: column; }
+      .btn { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== WRAPPER ===== -->
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="header-icon">📦</span>
+    <h1>Generator Nota Google One AI Pro by Pixel</h1>
+    <p>Buat nota layanan otomatis, rapi, dan siap kirim ke pembeli.</p>
+    <span class="badge">Pixel Voucher • 1 Tahun • Garansi 1 Bulan</span>
+  </div>
+
+  <!-- ===== FORM CARD ===== -->
+  <div class="card">
+    <div class="card-title">📋 Data Akun</div>
+
+    <!-- 1. Email akun Google -->
+    <div class="field">
+      <label for="emailAkun">Email Akun Google <span class="req">*</span></label>
+      <input type="email" id="emailAkun" placeholder="contoh@gmail.com" autocomplete="off" />
+      <div class="error-msg" id="errEmailAkun">Email akun tidak boleh kosong.</div>
+    </div>
+
+    <!-- 2. Password akun -->
+    <div class="field">
+      <label for="passwordAkun">Password Akun <span class="req">*</span></label>
+      <input type="text" id="passwordAkun" placeholder="Masukkan password akun" autocomplete="off" />
+      <div class="error-msg" id="errPassword">Password tidak boleh kosong.</div>
+    </div>
+
+    <!-- 3. Email pemulihan -->
+    <div class="field">
+      <label for="emailPemulihan">Email Pemulihan <span class="req">*</span></label>
+      <input type="email" id="emailPemulihan" placeholder="recovery@gmail.com" autocomplete="off" />
+      <div class="error-msg" id="errEmailPemulihan">Email pemulihan tidak boleh kosong.</div>
+    </div>
+
+    <!-- 4. Kode autentikator 32 digit -->
+    <div class="field">
+      <label for="kode2fa">Kode Autentikator 32 Digit <span class="req">*</span></label>
+      <input type="text" id="kode2fa" placeholder="qnavutpouxtzm5ahff3c7xokpsnnxjcf" maxlength="40" autocomplete="off" />
+      <div class="hint">Spasi akan dihapus otomatis. Contoh: qnavutpouxtzm5ahff3c7xokpsnnxjcf</div>
+      <div class="error-msg" id="errKode2fa">Kode autentikator tidak boleh kosong.</div>
+    </div>
+
+    <!-- 5. Status klaim voucher -->
+    <div class="field">
+      <label for="statusKlaim">Status Klaim Voucher Google AI Pro <span class="req">*</span></label>
+      <select id="statusKlaim" onchange="toggleRedeemSection()">
+        <option value="">-- Pilih Status --</option>
+        <option value="sudah">✅ Sudah Klaim</option>
+        <option value="belum">🎁 Belum Klaim</option>
+      </select>
+      <div class="error-msg" id="errStatus">Pilih status klaim voucher.</div>
+    </div>
+
+    <!-- 6. Redeem link (muncul jika Belum Klaim) -->
+    <div id="redeemSection">
+      <div class="field">
+        <label for="linkRedeem">Link Redeem Voucher <span class="req">*</span></label>
+        <input type="text" id="linkRedeem" placeholder="https://one.google.com/partner-eft-onboard/..." autocomplete="off" />
+        <div class="hint">Tempel link redeem voucher Google AI Pro di sini.</div>
+        <div class="error-msg" id="errRedeem">Link redeem tidak boleh kosong jika status Belum Klaim.</div>
+      </div>
+    </div>
+
+    <!-- 7. Tanggal aktif -->
+    <div class="field">
+      <label for="tanggalAktif">Tanggal Aktif / Tanggal Transaksi <span class="req">*</span></label>
+      <input type="text" id="tanggalAktif" placeholder="cth: 11 Juni 2025" autocomplete="off" />
+      <div class="hint">Masa aktif dan garansi dihitung otomatis dari tanggal ini.</div>
+      <div class="error-msg" id="errTanggal">Tanggal aktif tidak boleh kosong.</div>
+    </div>
+
+    <!-- ACTION BUTTONS -->
+    <div class="btn-row" style="margin-top: 24px;">
+      <button class="btn btn-primary" onclick="generateNota()">✨ Generate Nota</button>
+      <button class="btn btn-ghost" onclick="resetForm()">🔄 Reset Form</button>
+    </div>
+  </div>
+
+  <!-- ===== OUTPUT CARD ===== -->
+  <div class="card" id="outputCard">
+    <div class="card-title">📄 Hasil Nota</div>
+    <textarea id="outputBox" readonly></textarea>
+    <div class="btn-row" style="margin-top: 16px;">
+      <button class="btn btn-secondary" onclick="copyNota()">📋 Copy Hasil Nota</button>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    Dibuat dengan ❤️ untuk <span>BabayShop</span> &nbsp;•&nbsp; Google One AI Pro by Pixel
+  </div>
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div id="toast">✅ Nota berhasil disalin!</div>
+
+<!-- ===== JAVASCRIPT ===== -->
+<script>
+  // ─────────────────────────────────────────
+  // Toggle redeem section berdasarkan status klaim
+  // ─────────────────────────────────────────
+  function toggleRedeemSection() {
+    const status = document.getElementById('statusKlaim').value;
+    const section = document.getElementById('redeemSection');
+    if (status === 'belum') {
+      section.classList.add('show');
+    } else {
+      section.classList.remove('show');
+    }
+  }
+
+  // ─────────────────────────────────────────
+  // Helper: Tampilkan/sembunyikan error
+  // ─────────────────────────────────────────
+  function setError(fieldId, errId, show) {
+    const field = document.getElementById(fieldId);
+    const err   = document.getElementById(errId);
+    if (show) {
+      field.classList.add('error');
+      err.classList.add('show');
+    } else {
+      field.classList.remove('error');
+      err.classList.remove('show');
+    }
+  }
+
+  // ─────────────────────────────────────────
+  // Helper: Format tanggal + tambah bulan/tahun
+  // ─────────────────────────────────────────
+  function tambahDurasi(tanggalStr, bulan) {
+    // Coba parse tanggal Indonesia (e.g., "11 Juni 2025")
+    const bln = {
+      januari:1, februari:2, maret:3, april:4, mei:5, juni:6,
+      juli:7, agustus:8, september:9, oktober:10, november:11, desember:12
+    };
+    const parts = tanggalStr.trim().toLowerCase().split(/\s+/);
+    if (parts.length === 3) {
+      const tgl = parseInt(parts[0]);
+      const bln_idx = bln[parts[1]];
+      const thn = parseInt(parts[2]);
+      if (tgl && bln_idx && thn) {
+        const d = new Date(thn, bln_idx - 1 + bulan, tgl);
+        const namaBln = [
+          'Januari','Februari','Maret','April','Mei','Juni',
+          'Juli','Agustus','September','Oktober','November','Desember'
+        ];
+        return `${d.getDate()} ${namaBln[d.getMonth()]} ${d.getFullYear()}`;
+      }
+    }
+    // Fallback: kembalikan teks asli + catatan
+    return tanggalStr + (bulan === 12 ? ' + 1 Tahun' : ' + 1 Bulan');
+  }
+
+  // ─────────────────────────────────────────
+  // Generate Nota
+  // ─────────────────────────────────────────
+  function generateNota() {
+    // Ambil nilai input
+    const emailAkun     = document.getElementById('emailAkun').value.trim();
+    const passwordAkun  = document.getElementById('passwordAkun').value.trim();
+    const emailPemulihan = document.getElementById('emailPemulihan').value.trim();
+    let   kode2fa       = document.getElementById('kode2fa').value.replace(/\s+/g, ''); // hapus spasi otomatis
+    const statusKlaim   = document.getElementById('statusKlaim').value;
+    const linkRedeem    = document.getElementById('linkRedeem').value.trim();
+    const tanggalAktif  = document.getElementById('tanggalAktif').value.trim();
+
+    // ── Validasi ──
+    let valid = true;
+
+    setError('emailAkun', 'errEmailAkun', !emailAkun);
+    if (!emailAkun) valid = false;
+
+    setError('passwordAkun', 'errPassword', !passwordAkun);
+    if (!passwordAkun) valid = false;
+
+    setError('emailPemulihan', 'errEmailPemulihan', !emailPemulihan);
+    if (!emailPemulihan) valid = false;
+
+    setError('kode2fa', 'errKode2fa', !kode2fa);
+    if (!kode2fa) valid = false;
+
+    setError('statusKlaim', 'errStatus', !statusKlaim);
+    if (!statusKlaim) valid = false;
+
+    if (statusKlaim === 'belum') {
+      setError('linkRedeem', 'errRedeem', !linkRedeem);
+      if (!linkRedeem) valid = false;
+    }
+
+    setError('tanggalAktif', 'errTanggal', !tanggalAktif);
+    if (!tanggalAktif) valid = false;
+
+    if (!valid) return;
+
+    // ── Hitung tanggal ──
+    const tanggalMasaAktif = tambahDurasi(tanggalAktif, 12); // +1 tahun
+    const tanggalGaransi   = tambahDurasi(tanggalAktif, 1);  // +1 bulan
+
+    // ── Generate link 2FA ──
+    const link2FA = `https://babay.web.id/2fa/?key=${kode2fa}`;
+
+    // ── Susun nota berdasarkan status ──
+    let nota = '';
+
+    nota += `📦 Akun Google One AI Pro 1 Tahun by Pixel\n`;
+    nota += `⏳ Masa Aktif: s/d ${tanggalMasaAktif}\n`;
+    nota += `🛡️ Garansi: 1 Bulan (s/d ${tanggalGaransi})\n`;
+    nota += `--------------------\n\n`;
+
+    nota += `📧 Detail Login:\n`;
+    nota += `Email: ${emailAkun}\n`;
+    nota += `Password: ${passwordAkun}\n`;
+    nota += `Email Pemulihan: ${emailPemulihan}\n\n`;
+
+    nota += `🔐 Kode Autentikator:\n`;
+    nota += `Akses kode 2FA di web berikut:\n`;
+    nota += `${link2FA}\n\n`;
+
+    // ── Bagian kondisional ──
+    if (statusKlaim === 'belum') {
+      // Belum klaim: tampilkan link redeem + tutorial
+      nota += `🎁 Link Redeem Voucher:\n`;
+      nota += `${linkRedeem}\n\n`;
+
+      nota += `📌 Tutorial Klaim Voucher Google AI Pro:\n\n`;
+      nota += `1. Tambahkan metode pembayaran terlebih dahulu di Google Play Store:\n`;
+      nota += `   https://play.google.com/store/paymentmethods?hl=id\n`;
+      nota += `2. Bisa menggunakan DANA, GoPay, kartu, atau metode pembayaran lain yang tersedia.\n`;
+      nota += `3. Pastikan saldo minimal sekitar Rp10.000 untuk pancingan/verifikasi metode pembayaran.\n`;
+      nota += `4. Saldo tersebut hanya untuk verifikasi dan biasanya bisa direfund sesuai sistem Google/Play Store.\n`;
+      nota += `5. Setelah metode pembayaran berhasil ditambahkan, klik link redeem voucher di atas.\n`;
+      nota += `6. Ikuti instruksi sampai proses klaim Google AI Pro berhasil aktif.\n\n`;
+    } else {
+      // Sudah klaim: tampilkan status konfirmasi
+      nota += `✅ Status Voucher:\n`;
+      nota += `Voucher Google AI Pro sudah diklaim dan akun sudah siap digunakan.\n\n`;
+    }
+
+    // ── Sharing Family (selalu tampil) ──
+    nota += `👨‍👩‍👧 Sharing Family Google One:\n`;
+    nota += `Untuk sharing Google One AI Pro, bisa aktifkan family melalui:\n`;
+    nota += `https://g.co/yourfamily\n\n`;
+
+    // ── Catatan penting (selalu tampil) ──
+    nota += `📌 Catatan Penting:\n\n`;
+    nota += `• Simpan data login dengan aman.\n`;
+    nota += `• Jangan terlalu sering login/logout di banyak perangkat agar akun tetap aman.\n`;
+    nota += `• Jika diminta kode autentikator, gunakan link 2FA yang sudah diberikan.\n`;
+    nota += `• Garansi berlaku 1 bulan untuk kendala layanan dari sisi paket.\n`;
+    nota += `• Garansi tidak berlaku jika akun diubah sendiri, keluar family sendiri, melanggar kebijakan Google, atau kesalahan penggunaan dari pembeli.\n\n`;
+
+    nota += `Terima kasih sudah order di BabayShop 🙏`;
+
+    // ── Tampilkan output ──
+    const outputBox  = document.getElementById('outputBox');
+    const outputCard = document.getElementById('outputCard');
+    outputBox.value  = nota;
+    outputCard.classList.add('show');
+
+    // Scroll ke output
+    setTimeout(() => {
+      outputCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+
+  // ─────────────────────────────────────────
+  // Copy ke clipboard + toast
+  // ─────────────────────────────────────────
+  function copyNota() {
+    const outputBox = document.getElementById('outputBox');
+    const text = outputBox.value;
+    if (!text) return;
+
+    // Gunakan Clipboard API modern, fallback ke execCommand
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(showToast).catch(() => fallbackCopy(outputBox));
+    } else {
+      fallbackCopy(outputBox);
+    }
+  }
+
+  function fallbackCopy(el) {
+    el.select();
+    el.setSelectionRange(0, 99999);
+    document.execCommand('copy');
+    showToast();
+  }
+
+  function showToast() {
+    const toast = document.getElementById('toast');
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2800);
+  }
+
+  // ─────────────────────────────────────────
+  // Helper: format tanggal hari ini
+  // ─────────────────────────────────────────
+  function getTanggalHariIni() {
+    const namaBln = [
+      'Januari','Februari','Maret','April','Mei','Juni',
+      'Juli','Agustus','September','Oktober','November','Desember'
+    ];
+    const now = new Date();
+    return `${now.getDate()} ${namaBln[now.getMonth()]} ${now.getFullYear()}`;
+  }
+
+  // Auto-fill tanggal saat halaman dibuka
+  window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('tanggalAktif').value = getTanggalHariIni();
+  });
+
+  // ─────────────────────────────────────────
+  // Reset form
+  // ─────────────────────────────────────────
+  function resetForm() {
+    // Reset semua input kecuali tanggal
+    ['emailAkun','passwordAkun','emailPemulihan','kode2fa','linkRedeem'].forEach(id => {
+      document.getElementById(id).value = '';
+      document.getElementById(id).classList.remove('error');
+    });
+    // Tanggal di-reset ke hari ini (bukan dikosongkan)
+    document.getElementById('tanggalAktif').value = getTanggalHariIni();
+    document.getElementById('tanggalAktif').classList.remove('error');
+
+    document.getElementById('statusKlaim').value = '';
+    document.getElementById('statusKlaim').classList.remove('error');
+
+    // Sembunyikan error messages
+    document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('show'));
+
+    // Sembunyikan redeem section
+    document.getElementById('redeemSection').classList.remove('show');
+
+    // Sembunyikan output
+    document.getElementById('outputCard').classList.remove('show');
+    document.getElementById('outputBox').value = '';
+  }
+</script>
+
+</body>
+</html>
