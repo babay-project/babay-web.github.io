@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Giveaway Google AI Pro 18 Bulan - BabayShop</title>
+  <style>
+    :root{
+      --blue:#1a73e8;
+      --red:#ea4335;
+      --yellow:#fbbc04;
+      --green:#34a853;
+      --text:#202124;
+      --muted:#5f6368;
+      --border:#dadce0;
+      --bg:#fff;
+      --soft:#f8fafd;
+    }
+
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+      font-family:"Google Sans","Segoe UI",Roboto,Arial,sans-serif;
+    }
+
+    body{
+      min-height:100vh;
+      background:var(--bg);
+      color:var(--text);
+      padding:22px 14px 50px;
+    }
+
+    .wrapper{
+      max-width:980px;
+      margin:auto;
+      text-align:center;
+    }
+
+    .logo{
+      font-size:36px;
+      font-weight:700;
+      margin-top:20px;
+      margin-bottom:12px;
+      letter-spacing:-1px;
+    }
+
+    .logo span:nth-child(1){color:var(--blue)}
+    .logo span:nth-child(2){color:var(--red)}
+    .logo span:nth-child(3){color:var(--yellow)}
+    .logo span:nth-child(4){color:var(--blue)}
+    .logo span:nth-child(5){color:var(--green)}
+    .logo span:nth-child(6){color:var(--red)}
+
+    h1{
+      font-size:clamp(30px,6vw,56px);
+      line-height:1.08;
+      font-weight:500;
+      letter-spacing:-1.6px;
+      margin-bottom:14px;
+    }
+
+    .subtitle{
+      color:var(--muted);
+      font-size:17px;
+      max-width:680px;
+      margin:0 auto 24px;
+      line-height:1.6;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      border:1px solid var(--border);
+      background:#fff;
+      border-radius:999px;
+      padding:8px 16px;
+      color:var(--muted);
+      font-size:14px;
+      margin-bottom:28px;
+      box-shadow:0 1px 3px rgba(60,64,67,.12);
+    }
+
+    .main-card{
+      border:1px solid var(--border);
+      border-radius:28px;
+      background:#fff;
+      padding:30px;
+      box-shadow:0 1px 3px rgba(60,64,67,.12),0 6px 20px rgba(60,64,67,.08);
+      margin-bottom:24px;
+    }
+
+    .main-card h2{
+      font-size:24px;
+      font-weight:500;
+      margin-bottom:8px;
+    }
+
+    .main-card p{
+      color:var(--muted);
+      font-size:15px;
+    }
+
+    .gift-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:18px;
+      margin-top:28px;
+    }
+
+    .gift-link{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    .gift{
+      min-height:220px;
+      border:1px solid var(--border);
+      border-radius:24px;
+      background:linear-gradient(180deg,#fff,#f8fafd);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      transition:.22s ease;
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .gift:hover{
+      transform:translateY(-5px);
+      box-shadow:0 8px 24px rgba(60,64,67,.18);
+      border-color:#c7d7f7;
+    }
+
+    .gift::before{
+      content:"";
+      position:absolute;
+      width:160px;
+      height:160px;
+      border-radius:50%;
+      background:rgba(26,115,232,.08);
+      top:-70px;
+      right:-70px;
+    }
+
+    .gift-icon{
+      font-size:74px;
+      display:block;
+      animation:randomGift 2.4s infinite ease-in-out;
+      transform-origin:center;
+      filter:drop-shadow(0 6px 10px rgba(60,64,67,.18));
+      position:relative;
+      z-index:2;
+    }
+
+    .gift-link:nth-child(1) .gift-icon{animation-delay:0s}
+    .gift-link:nth-child(2) .gift-icon{animation-delay:.35s}
+    .gift-link:nth-child(3) .gift-icon{animation-delay:.7s}
+
+    @keyframes randomGift{
+      0%{transform:rotate(0deg) translateX(0) scale(1)}
+      15%{transform:rotate(14deg) translateX(6px) scale(1.06)}
+      30%{transform:rotate(-10deg) translateY(-5px) scale(.98)}
+      45%{transform:rotate(18deg) translateX(-5px) scale(1.08)}
+      60%{transform:rotate(-16deg) translateY(5px) scale(1.02)}
+      80%{transform:rotate(9deg) translateX(3px) scale(1.05)}
+      100%{transform:rotate(0deg) translateX(0) scale(1)}
+    }
+
+    .gift-title{
+      margin-top:14px;
+      font-size:18px;
+      font-weight:500;
+      position:relative;
+      z-index:2;
+    }
+
+    .gift-desc{
+      margin-top:5px;
+      font-size:14px;
+      color:var(--muted);
+      padding:0 14px;
+      position:relative;
+      z-index:2;
+    }
+
+    .dots{
+      display:flex;
+      justify-content:center;
+      gap:7px;
+      margin-top:24px;
+    }
+
+    .dot{
+      width:9px;
+      height:9px;
+      border-radius:999px;
+      animation:bounce 1.2s infinite ease-in-out;
+    }
+
+    .dot:nth-child(1){background:var(--blue)}
+    .dot:nth-child(2){background:var(--red);animation-delay:.1s}
+    .dot:nth-child(3){background:var(--yellow);animation-delay:.2s}
+    .dot:nth-child(4){background:var(--green);animation-delay:.3s}
+
+    @keyframes bounce{
+      0%,100%{transform:translateY(0);opacity:.7}
+      50%{transform:translateY(-7px);opacity:1}
+    }
+
+    .tutorial{
+      text-align:left;
+      border:1px solid var(--border);
+      border-radius:24px;
+      background:var(--soft);
+      padding:24px;
+      margin-top:24px;
+    }
+
+    .tutorial h3{
+      font-size:22px;
+      font-weight:500;
+      margin-bottom:10px;
+    }
+
+    .tutorial p{
+      color:var(--muted);
+      font-size:15px;
+      margin-bottom:16px;
+      line-height:1.6;
+    }
+
+    .steps{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:18px;
+      margin-bottom:16px;
+    }
+
+    .steps ol{
+      padding-left:22px;
+      color:var(--muted);
+      line-height:1.8;
+      font-size:15px;
+    }
+
+    .steps b{
+      color:var(--text);
+    }
+
+    .tutorial-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .tutorial-box{
+      background:#fff;
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:18px;
+      transition:.2s;
+    }
+
+    .tutorial-box:hover{
+      box-shadow:0 6px 18px rgba(60,64,67,.13);
+      transform:translateY(-3px);
+    }
+
+    .tutorial-box b{
+      display:block;
+      font-size:16px;
+      margin-bottom:7px;
+    }
+
+    .tutorial-box span{
+      display:block;
+      color:var(--muted);
+      font-size:14px;
+      margin-bottom:14px;
+      line-height:1.5;
+    }
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      text-decoration:none;
+      border-radius:999px;
+      padding:11px 17px;
+      font-size:14px;
+      font-weight:500;
+      transition:.2s;
+      border:1px solid transparent;
+    }
+
+    .btn-blue{
+      background:var(--blue);
+      color:#fff;
+    }
+
+    .btn-blue:hover{
+      background:#1765cc;
+    }
+
+    .btn-outline{
+      color:var(--blue);
+      border-color:var(--border);
+      background:#fff;
+    }
+
+    .btn-outline:hover{
+      background:#f1f6ff;
+      border-color:#c6dafc;
+    }
+
+    .note-card{
+      margin-top:22px;
+      border:1px solid #fde293;
+      background:#fff8e1;
+      color:#5f4700;
+      border-radius:20px;
+      padding:18px;
+      text-align:left;
+      font-size:14px;
+      line-height:1.6;
+    }
+
+    .order{
+      margin-top:24px;
+      padding:26px;
+      border-radius:24px;
+      background:linear-gradient(135deg,#e8f0fe,#f3e8ff);
+      border:1px solid #d8e2ff;
+    }
+
+    .order h3{
+      font-size:22px;
+      font-weight:500;
+      margin-bottom:8px;
+    }
+
+    .order p{
+      color:var(--muted);
+      margin-bottom:16px;
+    }
+
+    .footer{
+      color:var(--muted);
+      font-size:13px;
+      margin-top:26px;
+    }
+
+    @media(max-width:760px){
+      .main-card{padding:22px 16px}
+      .gift-grid,.tutorial-grid{grid-template-columns:1fr}
+      .gift{min-height:170px}
+      .gift-icon{font-size:64px}
+      h1{letter-spacing:-1px}
+    }
+  </style>
+</head>
+
+<body>
+  <main class="wrapper">
+
+    <div class="logo">
+      <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+    </div>
+
+    <h1>Google AI Pro 18 Bulan Gratis</h1>
+
+    <p class="subtitle">
+      Giveaway link offer Google Gemini / Google AI Pro 18 bulan dari provider Jio dan BabayShop.
+      Pilih salah satu kado di bawah ini untuk klaim langsung.
+    </p>
+
+    <div class="badge">
+      🎁 Jio Offer • Google AI Pro • 18 Bulan
+    </div>
+
+    <section class="main-card">
+      <h2>Pilih salah satu kado</h2>
+      <p>Semua kado berisi link offer. Klik kado dan pastikan akun Google yang sedang login sudah benar sebelum klaim.</p>
+
+      <div class="gift-grid">
+        <a class="gift-link" target="_blank" href="https://one.google.com/activate-plan/subscription/new/AQCpiIESduDOfd-4YtBXixKBP1eMNrXLxcSZamQUNoLsjNNSWLr9lhxhAu-Xzf4k6N2GtxBEt5t3sUHcjwQGW6QmwrYw2tvQbhxeGw7tKog6XzjNyQCTaWH6xtJJGBoXVgE8PGcYKVteilMXeq-bZ_3DN_vLTys_mOa5Dx83HL-WxjJb9WnBXaJ19AyCdEK7nWf9qwr_8RA1A3lR-ADKZX4T4AWfHQKN18B48A6kGxj1BT8TM_PG2mHxyUY_ueLB0tqh8SqKhMnH_10o6A==?pli=1&g1_landing_page=5">
+          <div class="gift">
+            <span class="gift-icon">🎁</span>
+            <div class="gift-title">Kado 1</div>
+            <div class="gift-desc">Klik untuk klaim offer Gemini 18 bulan</div>
+          </div>
+        </a>
+
+        <a class="gift-link" target="_blank" href="https://one.google.com/activate-plan/subscription/new/AQCpiIESzj0MoSS7nE-XJqUIqnrlc6ljepyEFchKkVRKblFl4AR2H8g5FseHwcBVboJIp2AQ-sRSoJOxhhuDMDTYJvQuPXi_2eCiBtneZiWHc8Al-pLG11Q-WcZLC5uuA-pxJ78KphGetzQC9sbf1jiRP45siGnEr8qo3r8oexeW1j69ovPuPBKdbkWReY50cjJQKAyCtMY8f7jyRXXEZzNz0Eov0JuoGEkwcZdCclg6vMHTuOaBDPOKyWdmbi2OgE-9Q9lDaEuDGsp1MA==?pli=1&g1_landing_page=5">
+          <div class="gift">
+            <span class="gift-icon">🎁</span>
+            <div class="gift-title">Kado 2</div>
+            <div class="gift-desc">Klik untuk buka link aktivasi paket</div>
+          </div>
+        </a>
+
+        <a class="gift-link" target="_blank" href="https://one.google.com/activate-plan/subscription/new/AQCpiIGpCv9vOZJglmxhBOV37oQ2dOUQAw0bUo6gugvhWauQloBVDB6optM63p2K00gduXrHlpId8zis50p7okcHyLHZST02OeSmmtb1YaF-4CObTtIp_0KRa-QYm8Z_o0oQjqe8tXnI10mO6P-a5gDVH-6dp-EpVpbqtR88paLeNvrniUObxbncje4390F5BFKQYMELsLz1QaPKQTsVCP5YRYgbIExGn1EX89PbLLCkdxswApycw5c6MTCY_3rzf6oq8p6ZxOrgieuT-w==?pli=1&g1_landing_page=5">
+          <div class="gift">
+            <span class="gift-icon">🎁</span>
+            <div class="gift-title">Kado 3</div>
+            <div class="gift-desc">Klik dan coba klaim sekarang</div>
+          </div>
+        </a>
+      </div>
+
+      <div class="dots">
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+        <span class="dot"></span>
+      </div>
+
+      <div class="note-card">
+        <b>Catatan:</b> SIAPA CEPAT DIA DAPAT !!! Jika gagal klaim,berarti offer sudah digunakan.
+      </div>
+    </section>
+
+
+      <div class="tutorial-grid">
+        <div class="tutorial-box">
+          <b>💻 Cara Klaim Jio di Laptop</b>
+          <span>Panduan untuk klaim offer Gemini / Google AI Pro lewat browser laptop atau komputer.</span>
+          <a class="btn btn-blue" target="_blank" href="https://www.youtube.com/watch?v=s4DwRnyxmI0">
+            Tonton Tutorial Laptop
+          </a>
+        </div>
+
+        <div class="tutorial-box">
+          <b>📱 Cara Klaim Jio di HP</b>
+          <span>Panduan singkat untuk klaim offer melalui browser atau aplikasi di handphone.</span>
+          <a class="btn btn-outline" target="_blank" href="https://youtube.com/shorts/H6O03BAnETg?si=FKNZBsIHJ_aBncdb">
+            Tonton Tutorial HP
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="order">
+      <h3>Belum Berhasil Klaim?</h3>
+      <p>Kalau link giveaway tidak bisa digunakan, kamu tetap bisa order paket Google AI Pro.</p>
+      <a class="btn btn-blue" target="_blank" href="https://babay.web.id/google">
+        Cek Info Selengkapnya
+      </a>
+    </section>
+
+    <div class="footer">
+      © BabayShop • Giveaway Google Gemini 18 Bulan by Jio Provider
+    </div>
+
+  </main>
+</body>
+</html>
