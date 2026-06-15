@@ -6,7 +6,7 @@
   <title>Google AI Pro 12 & 18 Bulan - BabayShop</title>
   <meta name="description" content="Google AI Pro BabayShop via Voucher Jio, Voucher Pixel + Gmail admin, dan Invite Email. Paket 12 bulan & 18 bulan, stok terbatas, bergaransi." />
   <meta name="robots" content="index, follow" />
-  <link rel="canonical" href="https://babayshop.my.id/google-ai-pro/" />
+  <link rel="canonical" href="https://babayshop.app/google-ai-pro/" />
   <meta name="theme-color" content="#4f46e5" />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
 
@@ -283,26 +283,11 @@
     .modal-prog-fill{height:100%;background:linear-gradient(90deg,#f59e0b,#ef4444);width:0%;transition:width .3s;border-radius:999px}
     .modal-pct{font-size:13px;color:var(--muted);margin-bottom:20px;font-weight:600}
 
-    /* ══ BOTTOM PAKET POPUP ══ */
-    .bottom-pkg-ov{position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.85);backdrop-filter:blur(10px);display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .35s}
-    .bottom-pkg-ov.active{opacity:1;pointer-events:all}
-    .bottom-pkg-box{background:#0f1020;border:1px solid var(--border-b);border-radius:28px 28px 0 0;padding:28px 28px 32px;width:100%;max-width:900px;transform:translateY(100%);transition:transform .4s cubic-bezier(.22,1,.36,1)}
-    .bottom-pkg-ov.active .bottom-pkg-box{transform:translateY(0)}
-    .bpb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
-    .bpb-title{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.04em}
-    .bpb-close{width:36px;height:36px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid var(--border);color:var(--muted);font-size:18px;cursor:pointer;display:grid;place-items:center;transition:all .2s}
-    .bpb-close:hover{background:rgba(255,255,255,.14);color:#fff}
-    .bpb-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-    .bpb-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:8px;transition:all .2s}
-    .bpb-card:hover{border-color:rgba(99,102,241,.4);background:rgba(99,102,241,.07)}
-    .bpb-name{font-size:15px;font-weight:800;line-height:1.2}
-    .bpb-dur{font-size:12px;color:var(--muted);font-weight:600}
-    .bpb-price{font-family:'Space Grotesk',sans-serif;font-size:28px;font-weight:800;letter-spacing:-.05em;color:#fff}
-    .bpb-old{font-size:13px;color:var(--dim);text-decoration:line-through}
-    .bpb-save{font-size:12px;font-weight:700;color:#86efac;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.2);padding:3px 9px;border-radius:999px;display:inline-block;margin-bottom:4px}
-    .bpb-note{font-size:12px;color:var(--muted);line-height:1.5;flex:1}
-    .bpb-btn-row{margin-top:auto}
-    .bpb-sub{margin-top:14px;font-size:13px;color:var(--muted);text-align:center;line-height:1.6}
+    /* ══ TOMBOL BALIK KE PAKET ══ */
+    .back-paket-btn{position:fixed;left:50%;bottom:22px;transform:translate(-50%,120px);z-index:120;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 22px;border-radius:999px;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff;font-weight:800;font-size:14px;box-shadow:0 18px 45px rgba(99,102,241,.45);opacity:0;pointer-events:none;transition:all .28s ease;border:1px solid rgba(255,255,255,.18)}
+    .back-paket-btn.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+    .back-paket-btn:hover{transform:translate(-50%,-3px);box-shadow:0 22px 55px rgba(99,102,241,.58)}
+
 
     @media(max-width:1040px){
       .hero-inner,.info-grid,.contact-grid{grid-template-columns:1fr}
@@ -312,7 +297,6 @@
       .features{grid-template-columns:repeat(2,1fr)}
       .nav-links{display:none}
       .footer-grid{grid-template-columns:1fr 1fr}
-      .bpb-grid{grid-template-columns:repeat(2,1fr)}
     }
     @media(max-width:700px){
       .hero{padding:44px 0 28px}
@@ -323,14 +307,11 @@
       .fab-wa,.fab-site{display:none}
       .mobile-bar{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:90;gap:8px;padding:10px 14px;background:rgba(10,11,20,.95);border-top:1px solid var(--border);backdrop-filter:blur(20px)}
       .mobile-bar a{flex:1;font-size:13px;box-shadow:none;padding:12px 10px}
+      .back-paket-btn{bottom:78px;font-size:13px;padding:12px 18px}
       footer{padding-bottom:80px}
       .step-arrow{display:none}
-      .bpb-grid{grid-template-columns:1fr 1fr}
-      .bottom-pkg-box{padding:20px 16px 28px;border-radius:22px 22px 0 0}
-      .bpb-price{font-size:22px}
     }
     @media(max-width:480px){
-      .bpb-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -350,83 +331,6 @@
     <div class="modal-pct" id="modal-pct-txt">Progress baca: 0%</div>
     <div class="modal-prog"><div class="modal-prog-fill" id="modal-fill"></div></div>
     <button class="btn btn-amber btn-pill" style="width:100%;margin-top:14px" onclick="closeWarnModal()">Oke, lanjut baca 👇</button>
-  </div>
-</div>
-
-<!-- BOTTOM PAKET POPUP -->
-<div class="bottom-pkg-ov" id="bottom-pkg" role="dialog" aria-modal="true">
-  <div class="bottom-pkg-box">
-    <div class="bpb-header">
-      <div class="bpb-title">🎉 Pilih Paket Google AI Pro</div>
-      <button class="bpb-close" onclick="closeBottomPkg()" aria-label="Tutup">✕</button>
-    </div>
-    <div class="bpb-grid">
-      <!-- A -->
-      <div class="bpb-card">
-        <div style="display:flex;align-items:center;gap:8px">
-          <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#6366f1,#8b5cf6);display:grid;place-items:center;font-weight:900;color:#fff;font-size:14px">A</div>
-          <div>
-            <div class="bpb-name">Voucher Jio</div>
-            <div class="bpb-dur">👑 Head · 18 Bulan</div>
-          </div>
-        </div>
-        <div><span class="bpb-old">Rp150.000</span> <span class="bpb-save">Hemat 10RB</span></div>
-        <div class="bpb-price">140RB</div>
-        <div class="bpb-note">Akun jadi Head/pengelola. Garansi 3 bulan.</div>
-        <div class="bpb-btn-row">
-          <a class="btn btn-wa btn-block btn-sm" href="https://wa.me/6281523984574?text=Halo%20admin%20Babay%2C%20saya%20mau%20membeli%20Paket%20A%20-%20Voucher%20Jio%2018%20Bulan%20harga%20Rp140.000%20(diskon).%20Saya%20sudah%20membaca%20dan%20memahami%20penjelasan%20di%20website%20BabayShop.%20Apakah%20masih%20ready%3F" target="_blank" rel="noopener">💬 Beli Paket A</a>
-        </div>
-      </div>
-      <!-- B -->
-      <div class="bpb-card">
-        <div style="display:flex;align-items:center;gap:8px">
-          <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#0891b2,#22d3ee);display:grid;place-items:center;font-weight:900;color:#fff;font-size:14px">B</div>
-          <div>
-            <div class="bpb-name">Invite Email</div>
-            <div class="bpb-dur">👥 Member · 18 Bulan</div>
-          </div>
-        </div>
-        <div><span class="bpb-old">Rp50.000</span> <span class="bpb-save">Hemat 5RB</span></div>
-        <div class="bpb-price">45RB</div>
-        <div class="bpb-note">Pakai email pribadi. Garansi 3 bulan.</div>
-        <div class="bpb-btn-row">
-          <a class="btn btn-wa btn-block btn-sm" href="https://wa.me/6281523984574?text=Halo%20admin%20Babay%2C%20saya%20mau%20membeli%20Paket%20B%20-%20Invite%20Email%2018%20Bulan%20harga%20Rp45.000%20(diskon).%20Saya%20sudah%20membaca%20dan%20memahami%20penjelasan%20di%20website%20BabayShop.%20Apakah%20masih%20ready%3F" target="_blank" rel="noopener">💬 Beli Paket B</a>
-        </div>
-      </div>
-      <!-- C -->
-      <div class="bpb-card">
-        <div style="display:flex;align-items:center;gap:8px">
-          <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#be185d,#ec4899);display:grid;place-items:center;font-weight:900;color:#fff;font-size:14px">C</div>
-          <div>
-            <div class="bpb-name">Pixel + Gmail Admin</div>
-            <div class="bpb-dur">👑 Head · 12 Bulan</div>
-          </div>
-        </div>
-        <div><span class="bpb-old">Rp120.000</span> <span class="bpb-save">Hemat 15RB</span></div>
-        <div class="bpb-price">105RB</div>
-        <div class="bpb-note">Include Gmail old 2018–22. Garansi 1 bulan.</div>
-        <div class="bpb-btn-row">
-          <a class="btn btn-wa btn-block btn-sm" href="https://wa.me/6281523984574?text=Halo%20admin%20Babay%2C%20saya%20mau%20membeli%20Paket%20C%20-%20Pixel%2012%20Bulan%20%2B%20Gmail%20Admin%20harga%20Rp105.000%20(diskon).%20Saya%20sudah%20membaca%20dan%20memahami%20penjelasan%20di%20website%20BabayShop.%20Apakah%20masih%20ready%3F" target="_blank" rel="noopener">💬 Beli Paket C</a>
-        </div>
-      </div>
-      <!-- D -->
-      <div class="bpb-card">
-        <div style="display:flex;align-items:center;gap:8px">
-          <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,#15803d,#22c55e);display:grid;place-items:center;font-weight:900;color:#fff;font-size:14px">D</div>
-          <div>
-            <div class="bpb-name">Invite Email</div>
-            <div class="bpb-dur">👥 Member · 12 Bulan</div>
-          </div>
-        </div>
-        <div><span class="bpb-old">Rp40.000</span> <span class="bpb-save">Hemat 5RB</span></div>
-        <div class="bpb-price">35RB</div>
-        <div class="bpb-note">Paling hemat. Garansi 1 bulan.</div>
-        <div class="bpb-btn-row">
-          <a class="btn btn-wa btn-block btn-sm" href="https://wa.me/6281523984574?text=Halo%20admin%20Babay%2C%20saya%20mau%20membeli%20Paket%20D%20-%20Invite%20Email%2012%20Bulan%20harga%20Rp35.000%20(diskon).%20Saya%20sudah%20membaca%20dan%20memahami%20penjelasan%20di%20website%20BabayShop.%20Apakah%20masih%20ready%3F" target="_blank" rel="noopener">💬 Beli Paket D</a>
-        </div>
-      </div>
-    </div>
-    <div class="bpb-sub">Semua tombol beli sudah menyertakan keterangan bahwa kamu sudah membaca penjelasan website BabayShop.</div>
   </div>
 </div>
 
@@ -455,7 +359,6 @@
       <a href="#garansi">Garansi</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a class="btn btn-primary btn-pill btn-sm" href="#paket" onclick="triggerModal(event)">💎 Lihat Paket</a>
   </div>
 </header>
 
@@ -469,9 +372,8 @@
       <h1><span class="g-text">Google</span><span class="ai-text">AI Pro</span></h1>
       <p class="hero-lead">Gemini Pro, Antigravity Plan Pro, 1.000+ AI Credits, storage cloud jumbo — untuk kerja, belajar, coding, riset, dan konten.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary btn-pill btn-lg" href="#paket" onclick="triggerModal(event)">💎 Lihat Paket & Harga</a>
-        <a class="btn btn-ghost btn-pill" href="https://youtu.be/j1EfO8NGXvI" target="_blank" rel="noopener">▶ Tutorial Jio</a>
-        <a class="btn btn-wa btn-pill" href="https://wa.me/6281523984574?text=Halo%20admin%20Babay%2C%20mau%20tanya%20Google%20AI%20Pro.%20Ready%3F" target="_blank" rel="noopener">💬 Tanya Admin</a>
+        <a class="btn btn-ghost btn-pill" href="https://youtu.be/j1EfO8NGXvI" target="_blank" rel="noopener">▶ Tutorial Klaim Voucher</a>
+        <a class="btn btn-wa btn-pill" href="https://babayshop.app/" target="_blank" rel="noopener">🛒 Buka BabayShop App</a>
       </div>
       <div class="hero-stats">
         <div class="stat-card"><b>12/18</b><span>Bulan aktif</span></div>
@@ -577,7 +479,7 @@
     <div class="section-head fade-up">
       <div class="section-label">💎 Pilih Paket</div>
       <h2 class="section-title">Paket Google AI Pro</h2>
-      <p class="section-sub">Tombol beli langsung buka WhatsApp dengan format otomatis. Pastikan kamu sudah baca seluruh halaman ini sebelum order ya.</p>
+      <p class="section-sub">Daftar paket ditampilkan tanpa harga. Untuk harga terbaru, checkout, dan info order silakan buka WebApps BabayShop.</p>
     </div>
     <div class="packages fade-up">
 
@@ -591,8 +493,7 @@
         </div>
         <div class="pkg-body">
           <div class="price-block">
-            <div class="price-old">Rp150.000</div>
-            <div class="price-new"><strong>140RB</strong><span>/ paket</span><span class="discount-tag">Hemat 10RB</span></div>
+            <a class="btn btn-outline btn-block" href="https://babayshop.app/" target="_blank" rel="noopener">💸 Cek harga & checkout di WebApps</a>
           </div>
           <div class="pkg-note">Cocok untuk akun utama yang siap menerima perubahan paket.</div>
           <ul class="pkg-list">
@@ -605,7 +506,7 @@
             <li><span class="c">✓</span><span>Garansi layanan 3 bulan.</span></li>
           </ul>
           <div class="pkg-actions">
-            <a class="btn btn-wa btn-block" href="https://wa.me/6281523984574?text=Halo%20admin%20Babay%2C%20saya%20mau%20membeli%20Paket%20A%20-%20Voucher%20Jio%2018%20Bulan%20harga%20Rp140.000%20(diskon).%20Saya%20sudah%20membaca%20dan%20memahami%20penjelasan%20di%20website%20BabayShop.%20Apakah%20masih%20ready%3F" target="_blank" rel="noopener">💬 Beli Paket A</a>
+            <a class="btn btn-wa btn-block" href="https://babayshop.app/" target="_blank" rel="noopener">🛒 Cek Paket A</a>
             <a class="pkg-link" href="https://youtu.be/j1EfO8NGXvI" target="_blank" rel="noopener">Lihat tutorial klaim Jio →</a>
           </div>
         </div>
@@ -620,8 +521,7 @@
         </div>
         <div class="pkg-body">
           <div class="price-block">
-            <div class="price-old">Rp50.000</div>
-            <div class="price-new"><strong>45RB</strong><span>/ slot</span><span class="discount-tag">Hemat 5RB</span></div>
+            <a class="btn btn-outline btn-block" href="https://babayshop.app/" target="_blank" rel="noopener">💸 Cek harga & checkout di WebApps</a>
           </div>
           <div class="pkg-note">Pakai email Google pribadi kamu sebagai member.</div>
           <ul class="pkg-list">
@@ -634,7 +534,7 @@
             <li><span class="c">✓</span><span>Garansi layanan 3 bulan.</span></li>
           </ul>
           <div class="pkg-actions">
-            <a class="btn btn-wa btn-block" href="https://wa.me/6281523984574?text=Halo%20admin%20Babay%2C%20saya%20mau%20membeli%20Paket%20B%20-%20Invite%20Email%2018%20Bulan%20harga%20Rp45.000%20(diskon).%20Saya%20sudah%20membaca%20dan%20memahami%20penjelasan%20di%20website%20BabayShop.%20Apakah%20masih%20ready%3F" target="_blank" rel="noopener">💬 Beli Paket B</a>
+            <a class="btn btn-wa btn-block" href="https://babayshop.app/" target="_blank" rel="noopener">🛒 Cek Paket B</a>
           </div>
         </div>
       </article>
@@ -649,8 +549,7 @@
         </div>
         <div class="pkg-body">
           <div class="price-block">
-            <div class="price-old">Rp120.000</div>
-            <div class="price-new"><strong>105RB</strong><span>/ paket</span><span class="discount-tag">Hemat 15RB</span></div>
+            <a class="btn btn-outline btn-block" href="https://babayshop.app/" target="_blank" rel="noopener">💸 Cek harga & checkout di WebApps</a>
           </div>
           <div class="pkg-note">Sudah termasuk akun Gmail dari admin, old & strong 2018–2022.</div>
           <ul class="pkg-list">
@@ -663,7 +562,7 @@
             <li><span class="c">✓</span><span>Garansi layanan 1 bulan.</span></li>
           </ul>
           <div class="pkg-actions">
-            <a class="btn btn-wa btn-block" href="https://wa.me/6281523984574?text=Halo%20admin%20Babay%2C%20saya%20mau%20membeli%20Paket%20C%20-%20Pixel%2012%20Bulan%20%2B%20Gmail%20Admin%20harga%20Rp105.000%20(diskon).%20Saya%20sudah%20membaca%20dan%20memahami%20penjelasan%20di%20website%20BabayShop.%20Apakah%20masih%20ready%3F" target="_blank" rel="noopener">💬 Beli Paket C</a>
+            <a class="btn btn-wa btn-block" href="https://babayshop.app/" target="_blank" rel="noopener">🛒 Cek Paket C</a>
             <a class="pkg-link" href="https://babay.web.id/pixel.html" target="_blank" rel="noopener">Baca diskusi Pixel →</a>
           </div>
         </div>
@@ -678,8 +577,7 @@
         </div>
         <div class="pkg-body">
           <div class="price-block">
-            <div class="price-old">Rp40.000</div>
-            <div class="price-new"><strong>35RB</strong><span>/ slot</span><span class="discount-tag">Hemat 5RB</span></div>
+            <a class="btn btn-outline btn-block" href="https://babayshop.app/" target="_blank" rel="noopener">💸 Cek harga & checkout di WebApps</a>
           </div>
           <div class="pkg-note">Paling hemat untuk pemakaian personal ringan.</div>
           <ul class="pkg-list">
@@ -692,7 +590,7 @@
             <li><span class="c">✓</span><span>Garansi layanan 1 bulan.</span></li>
           </ul>
           <div class="pkg-actions">
-            <a class="btn btn-wa btn-block" href="https://wa.me/6281523984574?text=Halo%20admin%20Babay%2C%20saya%20mau%20membeli%20Paket%20D%20-%20Invite%20Email%2012%20Bulan%20harga%20Rp35.000%20(diskon).%20Saya%20sudah%20membaca%20dan%20memahami%20penjelasan%20di%20website%20BabayShop.%20Apakah%20masih%20ready%3F" target="_blank" rel="noopener">💬 Beli Paket D</a>
+            <a class="btn btn-wa btn-block" href="https://babayshop.app/" target="_blank" rel="noopener">🛒 Cek Paket D</a>
           </div>
         </div>
       </article>
@@ -811,8 +709,8 @@
       </div>
       <div class="step">
         <div class="step-num">3</div>
-        <h3>Klik Tombol Beli</h3>
-        <p>WhatsApp otomatis terbuka dengan format paket, harga, dan keterangan sudah baca website.</p>
+        <h3>Klik WebApps</h3>
+        <p>WebApps BabayShop terbuka untuk melihat harga terbaru, stok, dan checkout.</p>
         <span class="step-arrow">›</span>
       </div>
       <div class="step">
@@ -890,13 +788,13 @@
           <div class="warranty-detail">
             <div class="warranty-box">
               <h4>Rincian Paket Jio Head / Voucher 18 Bulan</h4>
-              <p>Harga <b style="color:#fff">Rp140.000</b>. Terdiri dari biaya kerja sama penyedia link Jio, biaya jasa aktivasi, pendampingan proses, serta bantuan prosedur layanan.</p>
+              <p>Biaya paket mengikuti harga terbaru yang tersedia di WebApps BabayShop. Komponen layanan mencakup kerja sama penyedia link Jio, jasa aktivasi, pendampingan proses, serta bantuan prosedur layanan.</p>
               <ul class="warranty-list">
                 <li><b>30%</b> adalah biaya layanan dan jasa yang sudah berjalan, tidak dapat dikembalikan.</li>
                 <li><b>70%</b> adalah nilai paket yang dapat dihitung untuk garansi refund proporsional.</li>
                 <li>Nilai refund dihitung berdasarkan sisa durasi paket yang belum terpakai.</li>
               </ul>
-              <div class="formula"><b>Rumus refund Jio:</b><br>70% dari harga paket ÷ 18 bulan × sisa bulan aktif yang belum terpakai.</div>
+              <div class="formula"><b>Rumus refund Jio:</b><br>Nilai garansi dihitung proporsional sesuai ketentuan layanan, durasi aktif, dan harga paket yang berlaku di WebApps saat transaksi.</div>
             </div>
             <div class="warranty-box">
               <h4>Ketentuan Paket Google Pixel Head (Paket C)</h4>
@@ -909,7 +807,7 @@
             </div>
             <div class="warranty-box">
               <h4>Ketentuan Paket Invite (Paket B & D)</h4>
-              <p>Garansi diberikan sebesar <b style="color:#fff">70%</b> dari harga paket, dengan perhitungan prorata berdasarkan sisa durasi yang belum digunakan.</p>
+              <p>Garansi mengikuti nilai paket yang berlaku saat transaksi, dengan perhitungan prorata berdasarkan sisa durasi yang belum digunakan.</p>
               <ul class="warranty-list">
                 <li>30% adalah biaya layanan, proses invite, pengecekan, dan jasa yang sudah berjalan.</li>
                 <li>Refund hanya berlaku jika masalah berasal dari paket yang tidak Pro lagi / backfree, bukan kesalahan penggunaan pembeli.</li>
@@ -934,17 +832,16 @@
     </div>
     <div class="contact-grid fade-up">
       <div class="contact-info">
-        <h3>Admin fast response 💬</h3>
+        <h3>Order resmi via WebApps 🛒</h3>
         <ul class="contact-list">
-          <li><b>WhatsApp</b><span>0815-2398-4574</span></li>
-          <li><b>Website</b><span>babayshop.my.id</span></li>
+          <li><b>WebApps</b><span>babayshop.app</span></li>
           <li><b>Instagram</b><span>@babay.27</span></li>
           <li><b>Facebook</b><span>Bayu Rizky Sampurna</span></li>
         </ul>
-        <div class="trust-note">Boleh cek identitas dan jejak digital Bayu Rizky Sampurna dulu lewat Google, Facebook, Instagram, atau WhatsApp. BabayShop melayani dengan jujur, transparan, dan anti tipu-tipu.</div>
+        <div class="trust-note">Semua pembelian dan pengecekan paket wajib melalui BabayShop App agar informasi paket, stok, dan ketentuan terbaru lebih rapi dan terpusat.</div>
         <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:18px">
-          <a class="btn btn-wa btn-pill" href="https://wa.me/6281523984574?text=Halo%20admin%20Babay%2C%20saya%20mau%20tanya%20Google%20AI%20Pro.%20Apakah%20masih%20ready%3F" target="_blank" rel="noopener">💬 Chat WhatsApp</a>
-          <a class="btn btn-ghost btn-pill btn-sm" href="https://babayshop.my.id" target="_blank" rel="noopener">🛒 Website</a>
+          <a class="btn btn-wa btn-pill" href="https://babayshop.app/" target="_blank" rel="noopener">🛒 Buka BabayShop App</a>
+          <a class="btn btn-ghost btn-pill btn-sm" href="https://babayshop.app/" target="_blank" rel="noopener">🌐 Website</a>
           <a class="btn btn-ghost btn-pill btn-sm" href="https://instagram.com/babay.27" target="_blank" rel="noopener">Instagram</a>
         </div>
       </div>
@@ -953,8 +850,8 @@
         <p style="color:var(--muted);line-height:1.7">Boleh tanya-tanya dulu sebelum order. Admin BabayShop siap bantu menjelaskan perbedaan paket, cara klaim, dan kondisi akun yang diperlukan.</p>
         <p style="color:var(--muted);line-height:1.7">Kamu juga bisa cek YouTube BabayShop untuk tutorial klaim Jio step by step sebelum memutuskan beli.</p>
         <div style="display:grid;gap:10px;margin-top:16px">
-          <a class="btn btn-wa btn-block btn-pill" href="https://wa.me/6281523984574?text=Halo%20admin%20Babay%2C%20saya%20mau%20tanya%20dulu%20soal%20Google%20AI%20Pro.%20Boleh%3F" target="_blank" rel="noopener">💬 Tanya sebelum beli</a>
-          <a class="btn btn-ghost btn-block btn-pill" href="https://youtu.be/j1EfO8NGXvI" target="_blank" rel="noopener">▶ Tonton tutorial Jio</a>
+          <a class="btn btn-wa btn-block btn-pill" href="https://babayshop.app/" target="_blank" rel="noopener">🛒 Cek paket di BabayShop App</a>
+          <a class="btn btn-ghost btn-block btn-pill" href="https://youtu.be/j1EfO8NGXvI" target="_blank" rel="noopener">▶ Tonton tutorial Klaim voucher</a>
         </div>
       </div>
     </div>
@@ -971,7 +868,7 @@
           <p>Order hanya melalui BabayShop. Pastikan kamu sudah membaca penjelasan paket, risiko, dan perbedaan Head vs Invite sebelum transaksi.</p>
           <div class="cta-actions">
             <a class="btn btn-ghost btn-pill" href="#paket">Lihat Paket</a>
-            <a class="btn btn-wa btn-pill" href="https://wa.me/6281523984574?text=Halo%20admin%20Babay%2C%20saya%20mau%20order%20Google%20AI%20Pro.%20Saya%20sudah%20membaca%20dan%20memahami%20penjelasan%20di%20website%20BabayShop.%20Apakah%20stok%20masih%20ready%3F" target="_blank" rel="noopener">Chat WhatsApp</a>
+            <a class="btn btn-wa btn-pill" href="https://babayshop.app/" target="_blank" rel="noopener">Buka BabayShop App</a>
           </div>
         </div>
       </div>
@@ -991,8 +888,7 @@
       <div>
         <b>Link BabayShop</b>
         <ul class="footer-links">
-          <li><a href="https://babayshop.my.id">babayshop.my.id</a></li>
-          <li><a href="https://wa.me/6281523984574" target="_blank" rel="noopener">WhatsApp Babay</a></li>
+          <li><a href="https://babayshop.app/" target="_blank" rel="noopener">BabayShop App</a></li>
           <li><a href="https://www.facebook.com/BayuRizkySampurna/" target="_blank" rel="noopener">Facebook Bayu</a></li>
           <li><a href="https://instagram.com/babay.27" target="_blank" rel="noopener">Instagram @babay.27</a></li>
           <li><a href="https://youtu.be/j1EfO8NGXvI" target="_blank" rel="noopener">Tutorial Klaim Jio</a></li>
@@ -1007,16 +903,15 @@
         </ul>
       </div>
     </div>
-    <div class="footer-copy" id="footer-anchor">© 2025 BabayShop · Bayu Rizky Sampurna · babayshop.my.id</div>
+    <div class="footer-copy" id="footer-anchor">© 2025 BabayShop · Bayu Rizky Sampurna · babayshop.app</div>
   </div>
 </footer>
 
-<a class="fab-site" href="https://babayshop.my.id" target="_blank" rel="noopener" aria-label="BabayShop">🛒</a>
-<a class="fab-wa" href="https://wa.me/6281523984574?text=Halo%20admin%20Babay%2C%20saya%20mau%20tanya%20Google%20AI%20Pro.%20Apakah%20masih%20ready%3F" target="_blank" rel="noopener" aria-label="WhatsApp">💬</a>
+<a class="back-paket-btn" id="back-paket-btn" href="#paket">↑ Balik ke Pilih Paket</a>
 
 <div class="mobile-bar">
   <a class="btn btn-ghost btn-pill" href="#paket" style="flex:1;font-size:13px;padding:11px 8px">Lihat Paket</a>
-  <a class="btn btn-wa btn-pill" href="https://wa.me/6281523984574?text=Halo%20admin%20Babay%2C%20saya%20mau%20tanya%20Google%20AI%20Pro.%20Apakah%20masih%20ready%3F" target="_blank" rel="noopener" style="flex:1;font-size:13px;padding:11px 8px">WhatsApp</a>
+  <a class="btn btn-wa btn-pill" href="https://babayshop.app/" target="_blank" rel="noopener" style="flex:1;font-size:13px;padding:11px 8px">BabayShop App</a>
 </div>
 
 <script>
@@ -1025,7 +920,7 @@
   const fill = document.getElementById('modal-fill');
   const pctTxt = document.getElementById('modal-pct-txt');
   let hasScrolledEnough = false;
-  let bottomPkgShown = false;
+  const backPaketBtn = document.getElementById('back-paket-btn');
 
   function getPct() {
     const max = document.body.scrollHeight - window.innerHeight;
@@ -1038,11 +933,9 @@
     if (fill) fill.style.width = pct + '%';
     if (pctTxt) pctTxt.textContent = 'Progress baca: ' + Math.round(pct) + '%';
     if (pct >= 80) hasScrolledEnough = true;
-
-    // show bottom popup when near end of page (90%)
-    if (pct >= 90 && !bottomPkgShown) {
-      bottomPkgShown = true;
-      setTimeout(openBottomPkg, 600);
+    if (backPaketBtn) {
+      if (pct >= 90) backPaketBtn.classList.add('show');
+      else backPaketBtn.classList.remove('show');
     }
   }, { passive: true });
 
@@ -1061,17 +954,6 @@
     if (e.target === this) closeWarnModal();
   });
 
-  // BOTTOM PKG POPUP
-  function openBottomPkg() {
-    document.getElementById('bottom-pkg').classList.add('active');
-  }
-  function closeBottomPkg() {
-    document.getElementById('bottom-pkg').classList.remove('active');
-  }
-  document.getElementById('bottom-pkg').addEventListener('click', function(e) {
-    if (e.target === this) closeBottomPkg();
-  });
-
   // FADE UP
   const fadeEls = document.querySelectorAll('.fade-up');
   const obs = new IntersectionObserver(entries => {
@@ -1081,7 +963,7 @@
 </script>
 
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Product","name":"Google AI Pro BabayShop","description":"Paket Google AI Pro BabayShop: Voucher Jio 18 Bulan, Voucher Pixel 12 Bulan + Gmail admin, dan Invite Email. Termasuk akses Antigravity Plan Pro dan 1.000+ AI Flow Credits.","brand":{"@type":"Brand","name":"BabayShop"},"offers":[{"@type":"Offer","name":"Paket A - Voucher Jio 18 Bulan","price":"140000","priceCurrency":"IDR","availability":"https://schema.org/LimitedAvailability"},{"@type":"Offer","name":"Paket B - Invite Email 18 Bulan","price":"45000","priceCurrency":"IDR","availability":"https://schema.org/LimitedAvailability"},{"@type":"Offer","name":"Paket C - Voucher Pixel 12 Bulan + Gmail Admin","price":"105000","priceCurrency":"IDR","availability":"https://schema.org/LimitedAvailability"},{"@type":"Offer","name":"Paket D - Invite Email 12 Bulan","price":"35000","priceCurrency":"IDR","availability":"https://schema.org/LimitedAvailability"}]}
+{"@context":"https://schema.org","@type":"Product","name":"Google AI Pro BabayShop","description":"Paket Google AI Pro BabayShop: Voucher Jio 18 Bulan, Voucher Pixel 12 Bulan + Gmail admin, dan Invite Email. Termasuk akses Antigravity Plan Pro dan 1.000+ AI Flow Credits.","brand":{"@type":"Brand","name":"BabayShop"}}
 </script>
 </body>
 </html>
