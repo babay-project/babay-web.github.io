@@ -132,6 +132,85 @@
             font-weight: 600;
         }
 
+        /* ========== OPSI INSTAN CARD (lebih kecil) ========== */
+        .instant-mini {
+            background: #171717;
+            border: 1px solid #2a2a2a;
+            border-left: 4px solid #81c995;
+            border-radius: 12px;
+            padding: 16px 20px;
+            margin-bottom: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .instant-mini-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .instant-mini-left .icon {
+            font-size: 22px;
+        }
+
+        .instant-mini-left .info h3 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #e8eaed;
+        }
+
+        .instant-mini-left .info p {
+            font-size: 13px;
+            color: #9aa0a6;
+        }
+
+        .instant-mini-left .info p strong {
+            color: #81c995;
+        }
+
+        .instant-mini .btn-instant-mini {
+            display: inline-block;
+            background: #81c995;
+            color: #0d2e0d;
+            font-weight: 600;
+            font-size: 13px;
+            padding: 8px 18px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            border: none;
+            cursor: pointer;
+        }
+
+        .instant-mini .btn-instant-mini:hover {
+            background: #a8dab5;
+            transform: translateY(-1px);
+        }
+
+        /* ========== DIVIDER DENGAN TEKS ========== */
+        .divider-text {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 36px 0 32px;
+            color: #5f6368;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .divider-text::before,
+        .divider-text::after {
+            content: '';
+            flex: 1;
+            border-top: 1px solid #2a2a2a;
+        }
+
         /* CTA BOT */
         .cta-bot-card {
             background: linear-gradient(145deg, #1a3a5c, #0d2b45);
@@ -376,6 +455,12 @@
             border-color: #2a5a8c;
         }
 
+        .tag-instant {
+            background: #0d3a1a;
+            color: #81c995;
+            border-color: #1e6b33;
+        }
+
         .alert {
             padding: 16px 20px;
             border-radius: 12px;
@@ -408,6 +493,12 @@
             color: #aecbfa;
         }
 
+        .alert-instant {
+            background: #0d3a1a;
+            border-color: #2a6b3a;
+            color: #a8dab5;
+        }
+
         .divider {
             border: none;
             border-top: 1px solid #2a2a2a;
@@ -428,7 +519,6 @@
             text-decoration: none;
         }
 
-        /* Bot link button kecil inline */
         .btn-bot-inline {
             display: inline-block;
             background: #8ab4f8;
@@ -447,14 +537,13 @@
             background: #aecbfa;
         }
 
-        /* Pulse animation for CTA */
         @keyframes pulse-border {
             0% { box-shadow: 0 0 0 0 rgba(138, 180, 248, 0.4); }
             70% { box-shadow: 0 0 0 15px rgba(138, 180, 248, 0); }
             100% { box-shadow: 0 0 0 0 rgba(138, 180, 248, 0); }
         }
 
-        .pulse {
+        .pulse-blue {
             animation: pulse-border 2s infinite;
         }
 
@@ -501,6 +590,16 @@
             .btn-bot {
                 font-size: 16px;
                 padding: 14px 32px;
+            }
+
+            .instant-mini {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .instant-mini .btn-instant-mini {
+                align-self: flex-start;
             }
         }
 
@@ -556,8 +655,22 @@
             <p>Panduan lengkap klaim voucher <span class="highlight">Google AI Pro 1 Tahun</span> — ikuti setiap langkah dengan teliti.</p>
         </div>
 
+        <!-- ===================== OPSI INSTAN MINI ===================== -->
+        <div class="instant-mini">
+            <div class="instant-mini-left">
+                <span class="icon">⚡</span>
+                <div class="info">
+                    <h3>Mau langsung jadi? 🚀</h3>
+                    <p>Akun Gmail + Google AI Pro aktif — <strong>mulai Rp35.000</strong> &nbsp;|&nbsp; Ada paket 18 bulan voucher JIO (klaim pakai akun sendiri)</p>
+                </div>
+            </div>
+            <a href="https://babay.web.id/google" target="_blank" class="btn-instant-mini">
+                Cek Harga Lengkap →
+            </a>
+        </div>
+
         <!-- ===================== CTA BOT UTAMA ===================== -->
-        <div class="cta-bot-card pulse" id="join-bot">
+        <div class="cta-bot-card pulse-blue" id="join-bot">
             <div class="bot-icon">🤖</div>
             <h2>Gabung ke Bot Google Pro Dulu!</h2>
             <p>
@@ -578,9 +691,9 @@
             </p>
         </div>
 
-        <!-- ===================== TUTORIAL (dimulai dari sini) ===================== -->
+        <!-- ===================== TUTORIAL ===================== -->
         <div id="tutorial">
-            <!-- ===================== LANGKAH 1 ===================== -->
+            <!-- Langkah 1 -->
             <div class="step-card">
                 <div class="step-header">
                     <div class="step-number">1</div>
@@ -601,7 +714,7 @@
             </div>
         </div>
 
-        <!-- ===================== LANGKAH 2 ===================== -->
+        <!-- Langkah 2 -->
         <div class="step-card">
             <div class="step-header">
                 <div class="step-number">2</div>
@@ -619,7 +732,7 @@
             </div>
         </div>
 
-        <!-- ===================== LANGKAH 3 ===================== -->
+        <!-- Langkah 3 -->
         <div class="step-card">
             <div class="step-header">
                 <div class="step-number">3</div>
@@ -649,7 +762,7 @@
             </div>
         </div>
 
-        <!-- ===================== LANGKAH 4 ===================== -->
+        <!-- Langkah 4 -->
         <div class="step-card">
             <div class="step-header">
                 <div class="step-number">4</div>
@@ -665,7 +778,7 @@
             </div>
         </div>
 
-        <!-- ===================== LANGKAH 5 ===================== -->
+        <!-- Langkah 5 -->
         <div class="step-card">
             <div class="step-header">
                 <div class="step-number">5</div>
@@ -690,7 +803,7 @@
             </div>
         </div>
 
-        <!-- ===================== LANGKAH 6 ===================== -->
+        <!-- Langkah 6 -->
         <div class="step-card">
             <div class="step-header">
                 <div class="step-number">6</div>
@@ -720,7 +833,7 @@
             </div>
         </div>
 
-        <!-- ===================== LANGKAH 7 ===================== -->
+        <!-- Langkah 7 -->
         <div class="step-card">
             <div class="step-header">
                 <div class="step-number">7</div>
@@ -744,7 +857,7 @@
             </div>
         </div>
 
-        <!-- ===================== LANGKAH 8 ===================== -->
+        <!-- Langkah 8 -->
         <div class="step-card">
             <div class="step-header">
                 <div class="step-number">8</div>
@@ -763,7 +876,7 @@
             </div>
         </div>
 
-        <!-- ===================== LANGKAH 9 ===================== -->
+        <!-- Langkah 9 -->
         <div class="step-card">
             <div class="step-header">
                 <div class="step-number">9</div>
@@ -781,7 +894,7 @@
             </div>
         </div>
 
-        <!-- ===================== LANGKAH 10 ===================== -->
+        <!-- Langkah 10 -->
         <div class="step-card">
             <div class="step-header">
                 <div class="step-number">10</div>
@@ -801,7 +914,7 @@
             </div>
         </div>
 
-        <!-- ===================== LANGKAH 11 ===================== -->
+        <!-- Langkah 11 -->
         <div class="step-card">
             <div class="step-header">
                 <div class="step-number">11</div>
@@ -842,6 +955,24 @@
                 🚀 Gabung ke Bot Google Pro Sekarang
             </a>
         </div>
+
+
+                <!-- ===================== OPSI INSTAN BAWAH ===================== -->
+        <hr class="divider" />
+
+        <div style="text-align:center; margin: 32px 0 16px; background: #171717; border: 1px solid #2a2a2a; border-radius: 16px; padding: 28px 24px;">
+            <div style="font-size:36px; margin-bottom: 8px;">⚡</div>
+            <h2 style="font-size:22px; font-weight:600; margin-bottom: 8px; color:#81c995;">Mau yang Instan?</h2>
+            <p style="color:#9aa0a6; margin-bottom: 16px;">Akun Google AI Pro siap pakai — mulai Rp35.000 aja!</p>
+            <a href="https://babay.web.id/google" target="_blank" class="btn-instant" style="display:inline-block;">
+                🛒 Cek babay.web.id/google
+            </a>
+            <p style="color:#5f6368; font-size:13px; margin-top: 12px;">1 tahun, 18 bulan, atau kombinasi — tinggal pilih</p>
+        </div>
+
+        <hr class="divider" />
+
+    </div>
 
         <hr class="divider" />
 
