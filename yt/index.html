@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nota Generator YouTube Premium Family</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .yt-bg {
+      background:
+        radial-gradient(circle at top left, rgba(255, 0, 0, 0.38), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.12), transparent 30%),
+        linear-gradient(135deg, #050505 0%, #111111 45%, #1a0000 100%);
+    }
+
+    .glass {
+      background: rgba(15, 15, 15, 0.84);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(18px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.65s ease-out forwards;
+    }
+
+    .youtube-logo {
+      width: 82px;
+      height: 58px;
+      background: #ff0033;
+      border-radius: 18px;
+      position: relative;
+      box-shadow: 0 0 35px rgba(255, 0, 51, 0.45);
+    }
+
+    .youtube-logo::after {
+      content: "";
+      position: absolute;
+      left: 33px;
+      top: 18px;
+      width: 0;
+      height: 0;
+      border-left: 20px solid white;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+    }
+
+    textarea::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    textarea::-webkit-scrollbar-thumb {
+      background: #dc2626;
+      border-radius: 999px;
+    }
+
+    textarea::-webkit-scrollbar-track {
+      background: #111827;
+    }
+  </style>
+</head>
+
+<body class="yt-bg text-white min-h-screen">
+  <main class="min-h-screen w-full flex items-center justify-center p-4 md:p-8">
+    <section class="w-full max-w-3xl glass border border-white/10 shadow-2xl rounded-3xl p-5 md:p-9 fade-in-up">
+
+      <div class="flex flex-col items-center text-center mb-8">
+        <div class="youtube-logo mb-5"></div>
+
+        <p class="inline-flex items-center gap-2 rounded-full border border-red-500/40 bg-red-500/10 px-4 py-1 text-xs md:text-sm font-semibold text-red-100 mb-4">
+          Nota Generator Otomatis
+        </p>
+
+        <h1 class="text-3xl md:text-5xl font-black tracking-tight">
+          YouTube Premium Family
+        </h1>
+
+        <p class="text-gray-300 mt-3 text-sm md:text-base max-w-xl">
+          Generator nota invite YouTube Premium Family 1 bulan dengan estimasi layanan 23-28 hari sesuai kekuatan email admin.
+        </p>
+      </div>
+
+      <form id="notaForm" class="space-y-5">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-gray-200">Nomor Order</label>
+            <input
+              type="text"
+              id="nomorOrder"
+              readonly
+              class="w-full bg-black/45 border border-white/10 text-gray-200 rounded-xl px-4 py-3 outline-none cursor-not-allowed"
+              placeholder="YT-FAM-tglbulantahun-jam"
+            />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-gray-200">Tanggal Invite</label>
+            <input
+              type="text"
+              id="tglInviteDisplay"
+              readonly
+              class="w-full bg-black/45 border border-white/10 text-gray-200 rounded-xl px-4 py-3 outline-none cursor-not-allowed"
+            />
+          </div>
+        </div>
+
+        <div>
+          <label class="block mb-2 text-sm font-semibold text-gray-200">Email Customer</label>
+          <input
+            type="email"
+            id="emailCustomer"
+            required
+            class="w-full bg-black/45 border border-white/10 text-white rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            placeholder="customer@gmail.com"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-2 text-sm font-semibold text-gray-200">Email Admin yang Invite</label>
+          <input
+            type="email"
+            id="emailAdmin"
+            required
+            class="w-full bg-black/45 border border-white/10 text-white rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            placeholder="admin@gmail.com"
+          />
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-gray-200">Jenis Customer</label>
+            <select
+              id="jenisCustomer"
+              class="w-full bg-black/45 border border-white/10 text-white rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            >
+              <option value="baru">Email Baru</option>
+              <option value="perpanjang">Perpanjang / Sudah Habis</option>
+              <option value="lengkap">Tampilkan Semua Ketentuan</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-gray-200">Estimasi Durasi</label>
+            <input
+              type="text"
+              id="durasiDisplay"
+              readonly
+              value="23-28 Hari"
+              class="w-full bg-black/45 border border-white/10 text-gray-200 rounded-xl px-4 py-3 outline-none cursor-not-allowed"
+            />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-semibold text-gray-200">Harga</label>
+            <select
+              id="harga"
+              class="w-full bg-black/45 border border-white/10 text-white rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
+            >
+              <option value="13000">Rp13.000</option>
+              <option value="14000">Rp14.000</option>
+              <option value="15000">Rp15.000</option>
+              <option value="range">Rp13.000 - Rp15.000</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+            <div>
+              <p class="text-gray-400">Estimasi layanan habis</p>
+              <p id="estimasiPreview" class="text-white font-bold mt-1">-</p>
+            </div>
+
+            <div>
+              <p class="text-gray-400">Keterangan durasi</p>
+              <p class="text-white font-bold mt-1">Estimasi 23-28 hari sesuai kekuatan email admin</p>
+            </div>
+          </div>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full rounded-xl bg-red-600 hover:bg-red-700 text-white font-black px-5 py-3 transition shadow-lg shadow-red-600/25"
+        >
+          Generate Nota
+        </button>
+      </form>
+
+      <div id="outputSection" class="mt-9 hidden">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 mb-4">
+          <div>
+            <h2 class="text-2xl font-black">Hasil Nota</h2>
+            <p class="text-gray-400 text-sm">Nota bisa diedit manual sebelum dikirim ke customer.</p>
+          </div>
+
+          <div class="flex gap-3">
+            <button
+              id="editButton"
+              class="rounded-lg bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2 text-sm transition"
+            >
+              Edit Nota
+            </button>
+
+            <button
+              id="copyButton"
+              class="rounded-lg bg-green-600 hover:bg-green-700 text-white font-bold px-4 py-2 text-sm transition"
+            >
+              Salin Nota
+            </button>
+          </div>
+        </div>
+
+        <textarea
+          id="notaOutput"
+          rows="38"
+          readonly
+          class="w-full bg-black/70 border border-white/10 text-gray-100 text-sm rounded-2xl p-4 font-mono outline-none focus:ring-2 focus:ring-red-500"
+        ></textarea>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('notaForm');
+
+      const nomorOrderInput = document.getElementById('nomorOrder');
+      const tglInviteDisplay = document.getElementById('tglInviteDisplay');
+
+      const emailCustomerInput = document.getElementById('emailCustomer');
+      const emailAdminInput = document.getElementById('emailAdmin');
+      const jenisCustomerInput = document.getElementById('jenisCustomer');
+      const hargaInput = document.getElementById('harga');
+
+      const estimasiPreview = document.getElementById('estimasiPreview');
+
+      const outputSection = document.getElementById('outputSection');
+      const notaOutput = document.getElementById('notaOutput');
+      const copyButton = document.getElementById('copyButton');
+      const editButton = document.getElementById('editButton');
+
+      let now = new Date();
+
+      function formatTanggal(date) {
+        return date.toLocaleDateString('id-ID', {
+          weekday: 'long',
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric'
+        });
+      }
+
+      function formatJam(date) {
+        return date.toLocaleTimeString('id-ID', {
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+      }
+
+      function formatRupiah(number) {
+        return new Intl.NumberFormat('id-ID', {
+          style: 'currency',
+          currency: 'IDR',
+          maximumFractionDigits: 0
+        }).format(number);
+      }
+
+      function addDays(date, days) {
+        const result = new Date(date);
+        result.setDate(result.getDate() + Number(days));
+        return result;
+      }
+
+      function generateOrderNumber() {
+        const d = String(now.getDate()).padStart(2, '0');
+        const m = String(now.getMonth() + 1).padStart(2, '0');
+        const y = now.getFullYear();
+
+        const h = String(now.getHours()).padStart(2, '0');
+        const min = String(now.getMinutes()).padStart(2, '0');
+
+        return `YT-FAM-${d}${m}${y}-${h}${min}`;
+      }
+
+      function getHargaText() {
+        const harga = hargaInput.value;
+
+        if (harga === 'range') {
+          return 'Rp13.000 - Rp15.000';
+        }
+
+        return formatRupiah(Number(harga));
+      }
+
+      function updateTanggalDanOrder() {
+        now = new Date();
+
+        nomorOrderInput.value = generateOrderNumber();
+        tglInviteDisplay.value = `${formatTanggal(now)} - ${formatJam(now)} WIB`;
+      }
+
+      function updateEstimasiPreview() {
+        const tglHabisAwal = addDays(now, 23);
+        const tglHabisAkhir = addDays(now, 28);
+
+        estimasiPreview.textContent = `${formatTanggal(tglHabisAwal)} - ${formatTanggal(tglHabisAkhir)}`;
+      }
+
+      function getKetentuanBaru() {
+        return `KETENTUAN UNTUK EMAIL BARU:
+1. Silakan cek inbox email customer.
+2. Cari email undangan dari Google Family.
+3. Jika email undangan sudah masuk, silakan klik ACC / Join Family.
+4. Jika tidak menemukan email undangan, bisa akses manual melalui:
+   https://g.co/yourfamily
+5. Setelah berhasil join ke grup family, benefit YouTube Premium akan aktif otomatis.
+6. Bonus Google One / Google Pro 200GB-5TB bisa didapatkan jika benefit tambahan tersedia pada family tersebut.
+7. Bonus tidak selalu muncul di semua akun, jadi sifatnya tidak wajib dan mengikuti kondisi benefit dari family.`;
+      }
+
+      function getKetentuanPerpanjang() {
+        return `KETENTUAN UNTUK EMAIL PERPANJANG / SUDAH HABIS WAKTU GARANSI:
+1. Jangan pernah keluar dari grup family sebelum ada instruksi dari admin.
+2. Jika customer keluar sendiri tanpa pemberitahuan atau tanpa instruksi admin, maka garansi otomatis hangus.
+3. Email yang keluar dari family bisa terkena sanksi dari Google selama 12 bulan dan tidak bisa join ke family lain.
+4. Jika admin sudah menginstruksikan untuk keluar dari grup family, silakan cek email.
+5. Biasanya akan ada email dari Google bahwa grup family sudah tidak tersedia.
+6. Setelah itu, silakan keluar dari grup family lama sesuai arahan admin.
+7. Jika sudah berhasil keluar dari grup family lama, email bisa diproses kembali untuk perpanjang YouTube Premium Family.`;
+      }
+
+      function getJenisLabel(value) {
+        if (value === 'baru') return 'Email Baru';
+        if (value === 'perpanjang') return 'Perpanjang / Sudah Habis';
+        return 'Lengkap';
+      }
+
+      function generateNota() {
+        updateTanggalDanOrder();
+        updateEstimasiPreview();
+
+        const nomorOrder = nomorOrderInput.value.trim();
+        const emailCustomer = emailCustomerInput.value.trim();
+        const emailAdmin = emailAdminInput.value.trim();
+        const jenisCustomer = jenisCustomerInput.value;
+
+        const tglInvite = formatTanggal(now);
+        const jamInvite = formatJam(now);
+
+        const tglHabisAwal = addDays(now, 23);
+        const tglHabisAkhir = addDays(now, 28);
+        const estimasiHabisText = `${formatTanggal(tglHabisAwal)} - ${formatTanggal(tglHabisAkhir)}`;
+
+        let ketentuanText = '';
+
+        if (jenisCustomer === 'baru') {
+          ketentuanText = getKetentuanBaru();
+        } else if (jenisCustomer === 'perpanjang') {
+          ketentuanText = getKetentuanPerpanjang();
+        } else {
+          ketentuanText = `${getKetentuanBaru()}
+
+────────────────────────────
+${getKetentuanPerpanjang()}`;
+        }
+
+        return `NOTA YOUTUBE PREMIUM FAMILY 1 BULAN
+
+────────────────────────────
+DETAIL ORDER
+Nomor Order              : ${nomorOrder}
+Tanggal Invite           : ${tglInvite}
+Jam Invite               : ${jamInvite} WIB
+Email Customer           : ${emailCustomer}
+Email Admin yang Invite  : ${emailAdmin}
+Jenis Customer           : ${getJenisLabel(jenisCustomer)}
+Estimasi Durasi Layanan  : 23-28 Hari
+Estimasi Layanan Habis   : ${estimasiHabisText}
+Harga                    : ${getHargaText()}
+
+────────────────────────────
+DETAIL LAYANAN
+Produk                   : YouTube Premium Family
+Masa Aktif Estimasi      : 23-28 hari dari tanggal invite
+Sistem                   : Join Google Family
+Status Benefit           : Aktif setelah berhasil join family
+Keterangan Durasi        : Estimasi 23-28 hari, mengikuti kekuatan email admin yang mengundang.
+
+────────────────────────────
+CARA JOIN FAMILY
+1. Cek email customer yang didaftarkan.
+2. Cari email undangan dari Google Family.
+3. Klik tombol ACC / Join Family pada email tersebut.
+4. Jika email undangan belum terlihat, cek folder Inbox, Updates, Promotion, Spam, atau akses:
+   https://g.co/yourfamily
+5. Setelah berhasil join family, buka aplikasi YouTube.
+6. Pastikan login menggunakan email customer yang sama.
+7. Benefit YouTube Premium akan aktif setelah email berhasil masuk ke family.
+
+────────────────────────────
+${ketentuanText}
+
+────────────────────────────
+CATATAN PENTING
+1. Membeli berarti customer sudah memahami dan menyetujui ketentuan layanan.
+2. Masa aktif mengikuti estimasi layanan yang tertera di nota.
+3. Jangan mengubah pengaturan family tanpa arahan admin.
+4. Jika ada kendala, segera hubungi admin dengan mengirimkan screenshot bukti kendala.
+5. Garansi tidak berlaku jika customer keluar family sendiri, salah menggunakan email, atau melanggar ketentuan Google Family.
+6. Bonus Google One / Google Pro 200GB-5TB tidak dijanjikan pasti, karena mengikuti kondisi benefit pada family.
+
+────────────────────────────
+Terima kasih sudah order di BabayShop.
+Silakan simpan nota ini sebagai bukti transaksi layanan.`;
+      }
+
+      updateTanggalDanOrder();
+      updateEstimasiPreview();
+
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        notaOutput.value = generateNota();
+        notaOutput.readOnly = true;
+        editButton.textContent = 'Edit Nota';
+        outputSection.classList.remove('hidden');
+
+        setTimeout(() => {
+          outputSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }, 100);
+      });
+
+      copyButton.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(notaOutput.value);
+          copyButton.textContent = 'Berhasil Disalin!';
+        } catch (err) {
+          notaOutput.select();
+          document.execCommand('copy');
+          copyButton.textContent = 'Berhasil Disalin!';
+        }
+
+        setTimeout(() => {
+          copyButton.textContent = 'Salin Nota';
+        }, 1800);
+      });
+
+      editButton.addEventListener('click', () => {
+        notaOutput.readOnly = false;
+        notaOutput.focus();
+        editButton.textContent = 'Mode Edit Aktif';
+      });
+    });
+  </script>
+</body>
+</html>
