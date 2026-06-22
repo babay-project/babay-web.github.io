@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -567,13 +568,7 @@
       <div class="top-pill"><span></span> BabayShop Tools</div>
       <div class="header-icon">📦</div>
       <h1>Generator Nota <span class="fade">Google AI Pro Pixel</span></h1>
-      <p>Buat nota akun Google One AI Pro by Pixel yang rapi, lengkap, dan siap copy ke pembeli. Tampilan sudah dibuat ringan dengan grid white-black.</p>
-      <div class="badge-row">
-        <span class="badge">Pixel Voucher</span>
-        <span class="badge">1 Tahun</span>
-        <span class="badge">Garansi 1 Bulan</span>
-        <span class="badge">Nota Ringkas</span>
-      </div>
+
     </header>
 
     <main class="layout">
@@ -619,10 +614,10 @@
 
             <div id="redeemSection">
               <div class="field">
-                <label for="linkRedeem">Link Redeem Voucher <span style="color:var(--muted);font-size:12px">opsional</span></label>
+                <label for="linkRedeem">Link Redeem Voucher <span class="req">*</span></label>
                 <input type="text" id="linkRedeem" placeholder="https://one.google.com/partner-eft-onboard/..." autocomplete="off" />
-                <div class="hint">Boleh dikosongkan jika link redeem belum mau dicantumkan di nota.</div>
-                <div class="error-msg" id="errRedeem">Link redeem tidak valid.</div>
+                <div class="hint">Wajib diisi jika status klaim voucher masih belum. Sistem akan menolak generate jika link kosong.</div>
+                <div class="error-msg" id="errRedeem">Link redeem wajib diisi jika status klaim masih belum.</div>
               </div>
             </div>
 
@@ -654,24 +649,19 @@
         <section class="card info-card">
           <div class="card-inner">
             <div class="mini-title">Mode Direct</div>
-            <p class="mini-desc">Tempel 5 baris data akun, lalu klik generate. Urutan wajib: email, password, email pemulihan, kode 32 digit, status klaim.</p>
+            <p class="mini-desc">Tempel data akun cepat. Format 5 baris untuk status sudah, dan 6 baris untuk status belum karena link redeem wajib dilampirkan.</p>
             <textarea id="directInput" class="direct-box" placeholder="email@gmail.com
 passwordakun
 recovery@gmail.com
 kode32digit2fa
-sudah"></textarea>
-            <div class="direct-note">Status klaim boleh ditulis <b>sudah</b> atau <b>belum</b>. Jika status <b>belum</b> dan link redeem kosong, nota akan menulis bahwa link redeem belum dicantumkan.</div>
+belum
+https://one.google.com/partner-eft-onboard/..."></textarea>
+            <div class="direct-note">Status klaim boleh ditulis <b>sudah</b> atau <b>belum</b>. Jika status <b>belum</b>, baris ke-6 wajib berisi link redeem. Kalau link kosong, sistem akan menolak generate.</div>
             <div class="btn-row">
               <button class="btn btn-primary btn-mini" type="button" onclick="generateFromDirect()">⚡ Generate Direct</button>
               <button class="btn btn-ghost btn-mini" type="button" onclick="fillFormFromDirect()">↳ Isi Form</button>
             </div>
-            <div class="direct-example">Contoh:
-email@gmail.com
-Password123
-pemulihan@gmail.com
-qnavutpouxtzm5ahff3c7xokpsnnxjcf
-sudah</div>
-          </div>
+           
         </section>
       </aside>
     </main>
@@ -745,8 +735,10 @@ sudah</div>
       setError('emailPemulihan', 'errEmailPemulihan', !emailPemulihan); if (!emailPemulihan) valid = false;
       setError('kode2fa', 'errKode2fa', !kode2fa); if (!kode2fa) valid = false;
       setError('statusKlaim', 'errStatus', !statusKlaim); if (!statusKlaim) valid = false;
-      // Link redeem dibuat opsional agar Mode Direct 5 baris tetap bisa langsung generate.
-      setError('linkRedeem', 'errRedeem', false);
+      // Link redeem wajib jika status klaim masih belum.
+      const redeemRequired = statusKlaim === 'belum';
+      setError('linkRedeem', 'errRedeem', redeemRequired && !linkRedeem);
+      if (redeemRequired && !linkRedeem) valid = false;
       setError('tanggalAktif', 'errTanggal', !tanggalAktif); if (!tanggalAktif) valid = false;
       if (!valid) return;
 
@@ -771,7 +763,7 @@ sudah</div>
 
       if (statusKlaim === 'belum') {
         nota += `🎁 Link Redeem Voucher:\n`;
-        nota += `${linkRedeem || 'Link redeem belum dicantumkan / menyusul dari admin.'}\n\n`;
+        nota += `${linkRedeem}\n\n`;
         nota += `📌 Tutorial Klaim Voucher Google AI Pro:\n\n`;
         nota += `1. Tambahkan metode pembayaran terlebih dahulu di Google Play Store:\n`;
         nota += `   https://play.google.com/store/paymentmethods?hl=id\n`;
@@ -854,7 +846,7 @@ sudah</div>
         .filter(Boolean);
 
       if (lines.length < 5) {
-        alert('Mode Direct butuh 5 baris:\n1. email\n2. password\n3. email pemulihan\n4. kode 32 digit\n5. sudah/belum');
+        alert('Mode Direct butuh minimal 5 baris:\n1. email\n2. password\n3. email pemulihan\n4. kode 32 digit\n5. sudah/belum\n\nJika status belum, tambahkan baris ke-6 berisi link redeem.');
         return null;
       }
 
@@ -868,12 +860,19 @@ sudah</div>
         return null;
       }
 
+      const linkRedeem = lines[5] ? lines[5].trim() : '';
+      if (status === 'belum' && !linkRedeem) {
+        alert('Status masih belum klaim. Baris ke-6 wajib diisi link redeem voucher.\n\nFormat:\nemail\npassword\nemail pemulihan\nkode 32 digit\nbelum\nlink redeem');
+        return null;
+      }
+
       return {
         emailAkun: lines[0],
         passwordAkun: lines[1],
         emailPemulihan: lines[2],
         kode2fa: lines[3].replace(/\s+/g, ''),
-        statusKlaim: status
+        statusKlaim: status,
+        linkRedeem: linkRedeem
       };
     }
 
@@ -886,7 +885,7 @@ sudah</div>
       document.getElementById('emailPemulihan').value = data.emailPemulihan;
       document.getElementById('kode2fa').value = data.kode2fa;
       document.getElementById('statusKlaim').value = data.statusKlaim;
-      document.getElementById('linkRedeem').value = '';
+      document.getElementById('linkRedeem').value = data.linkRedeem || '';
       toggleRedeemSection();
 
       document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('show'));
@@ -920,5 +919,6 @@ sudah</div>
       document.getElementById('tanggalAktif').value = getTanggalHariIni();
     });
   </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
