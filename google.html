@@ -1148,23 +1148,6 @@
       background: var(--bg-card);
     }
 
-    .pkg-ribbon {
-      position: absolute;
-      right: 14px;
-      top: 14px;
-      z-index: 5;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-      color: #fff;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.25);
-    }
-    .ribbon-indigo { background: linear-gradient(135deg, var(--indigo), var(--violet)); }
-    .ribbon-red { background: linear-gradient(135deg, #ef4444, #b91c1c); }
-    .ribbon-pink { background: linear-gradient(135deg, var(--pink), var(--violet)); }
-    .ribbon-green { background: linear-gradient(135deg, #10b981, #059669); }
 
     .pkg-header {
       padding: 24px;
@@ -2323,6 +2306,232 @@
       max-width: 380px;
     }
 
+
+    /* Payment Method Switcher under QRIS */
+    .payment-switch-box {
+      width: 100%;
+      margin: 0 0 18px;
+      text-align: left;
+      position: relative;
+    }
+    .payment-method-toggle {
+      width: 100%;
+      border: 1px solid rgba(99, 102, 241, 0.28);
+      border-radius: 14px;
+      padding: 13px 14px;
+      background: rgba(99, 102, 241, 0.08);
+      color: #fff;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      transition: all 0.2s;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.16);
+    }
+    .payment-method-toggle:hover,
+    .payment-method-toggle.active {
+      background: rgba(99, 102, 241, 0.13);
+      border-color: rgba(99, 102, 241, 0.48);
+    }
+    .payment-method-toggle-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      line-height: 1.25;
+    }
+    .payment-method-toggle-text strong {
+      font-size: 13px;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+    }
+    .payment-method-toggle-text span {
+      color: var(--muted);
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+    .payment-method-chevron {
+      color: #c7d2fe;
+      transition: transform 0.2s;
+      flex-shrink: 0;
+    }
+    .payment-method-toggle.active .payment-method-chevron {
+      transform: rotate(180deg);
+    }
+    .payment-method-list {
+      display: none;
+      grid-template-columns: 1fr;
+      gap: 6px;
+      margin-top: 8px;
+      padding: 8px;
+      background: rgba(255, 255, 255, 0.025);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+    .payment-method-list.active {
+      display: grid;
+      animation: paymentDrop 0.18s ease-out;
+    }
+    @keyframes paymentDrop {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .payment-method-btn {
+      width: 100%;
+      border: 1px solid transparent;
+      border-radius: 10px;
+      padding: 10px 12px;
+      min-height: 40px;
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--muted);
+      font-family: inherit;
+      font-size: 12.5px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+    .payment-method-btn::after {
+      content: "Pilih";
+      color: var(--dim);
+      font-size: 10.5px;
+      font-weight: 800;
+    }
+    .payment-method-btn:hover {
+      background: rgba(255, 255, 255, 0.055);
+      border-color: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+    .payment-method-btn.active {
+      background: rgba(99, 102, 241, 0.14);
+      border-color: rgba(99, 102, 241, 0.4);
+      color: #fff;
+    }
+    .payment-method-btn.active::after {
+      content: "Aktif";
+      color: #a5b4fc;
+    }
+    .selected-payment-card {
+      width: 100%;
+      display: none;
+      background: linear-gradient(135deg, rgba(20, 22, 45, 0.72), rgba(9, 11, 20, 0.94));
+      border: 1px solid rgba(99, 102, 241, 0.25);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 16px;
+      box-shadow: 0 10px 36px rgba(0,0,0,0.35);
+      text-align: left;
+    }
+    .selected-payment-card.active { display: block; }
+    .selected-payment-kicker {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      color: #a5b4fc;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .selected-payment-kicker small {
+      color: var(--green);
+      background: rgba(52, 168, 83, 0.08);
+      border: 1px solid rgba(52, 168, 83, 0.16);
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 10.5px;
+      letter-spacing: 0;
+      text-transform: none;
+    }
+    .selected-payment-name {
+      font-family: var(--font-title);
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+    .selected-payment-owner {
+      font-size: 12.5px;
+      color: var(--muted);
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+    .selected-payment-owner strong { color: #fff; }
+    .selected-payment-number-box {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.025);
+      border: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 10px;
+    }
+    .selected-payment-number-box label {
+      display: block;
+      color: var(--dim);
+      font-size: 10.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 3px;
+    }
+    .selected-payment-number-box strong {
+      display: block;
+      font-family: var(--font-mono);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 800;
+      word-break: break-all;
+    }
+    .btn-copy-payment {
+      border: 0;
+      border-radius: 10px;
+      padding: 9px 12px;
+      background: rgba(99, 102, 241, 0.14);
+      color: #c7d2fe;
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-copy-payment:hover { background: var(--indigo); color: #fff; }
+    .selected-payment-code {
+      color: var(--amber);
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+    .selected-payment-note {
+      width: 100%;
+      margin: -4px 0 18px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(251, 191, 36, 0.06);
+      border: 1px solid rgba(251, 191, 36, 0.16);
+      color: #fef3c7;
+      font-size: 12px;
+      line-height: 1.5;
+      text-align: left;
+    }
+    .payment-method-hidden-field { display: none !important; }
+    @media (max-width: 420px) {
+      .selected-payment-number-box { grid-template-columns: 1fr; }
+      .btn-copy-payment { width: 100%; }
+    }
+
     /* Step 3: Verifying Loader Styles */
     .verifying-box {
       display: flex;
@@ -2904,7 +3113,6 @@
         <div class="packages-grid">
           <!-- Paket A: Jio 18 Bulan -->
           <article class="pkg-card clay clay--interactive spotlight reveal-on-scroll" data-cat="head">
-            <div class="pkg-ribbon ribbon-indigo">BEST SELLER</div>
             <div class="pkg-header">
               <div class="pkg-code code-indigo">A</div>
               <div class="pkg-title-group">
@@ -2942,9 +3150,8 @@
             </div>
           </article>
 
-          <!-- Paket B: Invite Email 18 Bulan (SOLD OUT) -->
+          <!-- Paket B: Invite Email 18 Bulan -->
           <article class="pkg-card clay spotlight soldout-card reveal-on-scroll" data-cat="invite">
-            <div class="pkg-ribbon ribbon-red">SOLD OUT</div>
             <div class="pkg-header">
               <div class="pkg-code code-gray">B</div>
               <div class="pkg-title-group">
@@ -2981,7 +3188,6 @@
 
           <!-- Paket C: Pixel 12 Bulan + Gmail -->
           <article class="pkg-card clay clay--interactive spotlight reveal-on-scroll" data-cat="head">
-            <div class="pkg-ribbon ribbon-pink">INCLUDE GMAIL</div>
             <div class="pkg-header">
               <div class="pkg-code code-pink">C</div>
               <div class="pkg-title-group">
@@ -3021,7 +3227,6 @@
 
           <!-- Paket D: Invite Email 12 Bulan -->
           <article class="pkg-card clay clay--interactive spotlight reveal-on-scroll" data-cat="invite">
-            <div class="pkg-ribbon ribbon-green">HEMAT</div>
             <div class="pkg-header">
               <div class="pkg-code code-green">D</div>
               <div class="pkg-title-group">
@@ -3482,7 +3687,7 @@
               <strong id="checkoutPriceText">Rp0</strong>
             </div>
 
-            <button class="btn btn-primary btn-block btn-lg" type="submit" id="btnGoToPayment">Lanjut ke Pembayaran QRIS</button>
+            <button class="btn btn-primary btn-block btn-lg" type="submit" id="btnGoToPayment">Lanjut ke Pembayaran</button>
           </form>
         </div>
 
@@ -3498,10 +3703,56 @@
             </div>
 
             <!-- QR Code Container -->
-            <div class="qris-qrcode-wrapper">
+            <div class="qris-qrcode-wrapper" id="qrisQrWrapper">
               <div class="qris-qrcode-glow"></div>
               <img src="https://i.ibb.co.com/h1B6VFfg/QRIS.png" alt="QRIS BabayShop" class="qris-qrcode-img" style="width: 170px; height: 170px; object-fit: contain; display: block; position: relative; z-index: 5; margin-inline: auto; background: white;">
             </div>
+
+            <!-- Selected non-QRIS payment detail replaces QRIS image when chosen -->
+            <div class="selected-payment-card" id="selectedPaymentCard" aria-live="polite">
+              <div class="selected-payment-kicker">
+                <span>Metode Pembayaran Terpilih</span>
+                <small>Bisa dicopy</small>
+              </div>
+              <h3 class="selected-payment-name" id="selectedPaymentName">SeaBank</h3>
+              <p class="selected-payment-owner">
+                Semua rekening/akun atas nama: <strong id="selectedPaymentOwner">BAYU RIZKY SAMPURNA</strong>
+              </p>
+              <div class="selected-payment-number-box">
+                <div>
+                  <label id="selectedPaymentNumberLabel">Nomor Rekening</label>
+                  <strong id="selectedPaymentNumber">901375940437</strong>
+                </div>
+                <button class="btn-copy-payment" id="btnCopyPaymentNumber" type="button">Copy</button>
+              </div>
+              <p class="selected-payment-code" id="selectedPaymentCode">Kode Bank: 535</p>
+            </div>
+
+            <!-- Payment Method Switcher directly under QRIS image -->
+            <div class="payment-switch-box" id="paymentSwitchBox">
+              <button class="payment-method-toggle" id="btnTogglePaymentMethods" type="button" aria-expanded="false" aria-controls="paymentMethodList">
+                <span class="payment-method-toggle-text">
+                  <strong>Ganti metode pembayaran</strong>
+                  <span id="paymentMethodCurrent">Metode aktif: QRIS</span>
+                </span>
+                <svg class="payment-method-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+              <div class="payment-method-list" id="paymentMethodList">
+                <button class="payment-method-btn active" type="button" data-pay="QRIS">QRIS</button>
+                <button class="payment-method-btn" type="button" data-pay="GoPay">GoPay</button>
+                <button class="payment-method-btn" type="button" data-pay="DANA">DANA</button>
+                <button class="payment-method-btn" type="button" data-pay="ShopeePay">ShopeePay</button>
+                <button class="payment-method-btn" type="button" data-pay="LinkAja">LinkAja</button>
+                <button class="payment-method-btn" type="button" data-pay="Mandiri">Mandiri</button>
+                <button class="payment-method-btn" type="button" data-pay="BSI">BSI</button>
+                <button class="payment-method-btn" type="button" data-pay="Bank Jago">Bank Jago</button>
+                <button class="payment-method-btn" type="button" data-pay="SeaBank">SeaBank</button>
+              </div>
+            </div>
+
+            <p class="selected-payment-note" id="paymentMethodNote">Default pembayaran memakai QRIS. Jika pilih metode lain, gambar QRIS akan disembunyikan dan nomor tujuan akan muncul untuk dicopy.</p>
 
             <div class="qris-details-card">
               <div class="qris-row">
@@ -3517,7 +3768,7 @@
                 <span id="qrisBasePriceText">Rp0</span>
               </div>
               <div class="qris-row">
-                <span>Kode Unik Transfer:</span>
+                <span>Kode Unik:</span>
                 <span style="color: var(--amber); font-weight: 700;" id="qrisUniqueCodeText">+Rp0</span>
               </div>
               <div class="qris-row" style="border-top: 1px dashed rgba(255,255,255,0.1); padding-top: 10px; margin-top: 4px;">
@@ -3526,35 +3777,22 @@
               </div>
             </div>
 
-            <!-- Payment Method Selection -->
-            <div class="form-group" style="width: 100%; margin-bottom: 22px; text-align: left;">
-              <label for="paymentMethod" style="color: var(--muted); font-size: 12.5px; font-weight: 600; margin-bottom: 8px; display: block;">Dibayar Melalui Aplikasi / Bank Apa? <span style="color: var(--red);">*</span></label>
-              <select id="paymentMethod" style="width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--r-md); background: rgba(255, 255, 255, 0.03); color: #fff; font-family: inherit; font-size: 14px; transition: border-color 0.2s;">
-                <option value="" disabled selected>-- Pilih Aplikasi / Bank Transfer --</option>
-                <option value="DANA">DANA</option>
-                <option value="LinkAja">LinkAja</option>
-                <option value="GoPay">GoPay</option>
-                <option value="OVO">OVO</option>
-                <option value="ShopeePay">ShopeePay</option>
-                <option value="BCA">BCA</option>
-                <option value="Mandiri">Mandiri</option>
-                <option value="BRI">BRI</option>
-                <option value="BNI">BNI</option>
-                <option value="Lainnya">Aplikasi/Bank Lain (Tulis Manual)</option>
-              </select>
-              <input type="text" id="paymentMethodManual" placeholder="Contoh: SeaBank, Blu, Bank Jago" style="width: 100%; margin-top: 8px; display: none; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--r-md); background: rgba(255, 255, 255, 0.03); color: #fff; font-family: inherit; font-size: 14px;">
-              <span id="errorPaymentMethod" style="color: #f87171; font-size: 12px; margin-top: 4px; display: none;">Silakan pilih atau isi metode pembayaran Anda.</span>
+            <!-- Hidden field used by WhatsApp confirmation script -->
+            <div class="form-group payment-method-hidden-field" aria-hidden="true">
+              <input type="hidden" id="paymentMethod" value="QRIS">
+              <input type="hidden" id="paymentMethodManual" value="">
+              <span id="errorPaymentMethod" style="display: none;">Silakan pilih metode pembayaran Anda.</span>
             </div>
 
             <p class="qris-instruction-text" style="color: #fca5a5; font-weight: 700; margin-bottom: 20px;">
-              ⚠️ PENTING: Wajib transfer tepat sesuai nominal hingga 3 digit terakhir untuk memudahkan verifikasi manual oleh Admin Babay. Siapkan screenshot bukti transfer sebagai jaga-jaga.
+              ⚠️ transfer sesuai nominal hingga 3 digit terakhir untuk memudahkan verifikasi oleh Admin.
             </p>
 
             <button class="btn btn-wa btn-block btn-lg" id="btnSimulatePayment" type="button">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 4px;">
                 <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.513 2.262 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.734-1.458L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.42 9.864-9.856.002-2.634-1.02-5.11-2.88-6.973C16.596 1.91 14.12 1.88 11.48 1.88c-5.438 0-9.863 4.422-9.867 9.858-.001 1.763.468 3.483 1.359 4.996L1.928 22.1l5.719-1.5c-1.492-.9-2.26-1.45-1.001-.446z"/>
               </svg>
-              Saya Sudah Bayar (Konfirmasi di WA)
+              Konfirmasi Pembayaran (Whatsapp)
             </button>
           </div>
         </div>
@@ -3631,10 +3869,54 @@
       const paymentMethod = document.getElementById('paymentMethod');
       const paymentMethodManual = document.getElementById('paymentMethodManual');
       const errorPaymentMethod = document.getElementById('errorPaymentMethod');
+      const qrisQrWrapper = document.getElementById('qrisQrWrapper');
+      const selectedPaymentCard = document.getElementById('selectedPaymentCard');
+      const selectedPaymentName = document.getElementById('selectedPaymentName');
+      const selectedPaymentOwner = document.getElementById('selectedPaymentOwner');
+      const selectedPaymentNumber = document.getElementById('selectedPaymentNumber');
+      const selectedPaymentNumberLabel = document.getElementById('selectedPaymentNumberLabel');
+      const selectedPaymentCode = document.getElementById('selectedPaymentCode');
+      const btnCopyPaymentNumber = document.getElementById('btnCopyPaymentNumber');
+      const paymentMethodNote = document.getElementById('paymentMethodNote');
+      const btnTogglePaymentMethods = document.getElementById('btnTogglePaymentMethods');
+      const paymentMethodList = document.getElementById('paymentMethodList');
+      const paymentMethodCurrent = document.getElementById('paymentMethodCurrent');
+      const paymentSwitchBox = document.getElementById('paymentSwitchBox');
+      const paymentMethodButtons = document.querySelectorAll('.payment-method-btn');
 
       let currentPackage = null;
       let qrisCountdownInterval = null;
       let currentUniqueCode = 0;
+      let selectedPaymentKey = 'QRIS';
+
+      /* ==========================================================================
+         SECTION EDIT HARGA PAKET
+         Cukup ubah angka di bawah ini jika ingin update harga.
+         hargaLama  = harga coret di kartu produk
+         hargaPromo = harga aktif / nominal paket sebelum kode unik
+         ========================================================================== */
+      const PAKET_HARGA = {
+        A: { hargaLama: 130000, hargaPromo: 100000 },
+        B: { hargaLama: 50000, hargaPromo: 40000 },
+        C: { hargaLama: 130000, hargaPromo: 90000 },
+        D: { hargaLama: 40000, hargaPromo: 35000 }
+      };
+
+      /* ==========================================================================
+         SECTION EDIT REKENING / E-WALLET
+         Cukup ubah nomor/kode di bawah ini jika rekening berubah.
+         ========================================================================== */
+      const PAYMENT_ACCOUNTS = {
+        QRIS: { label: 'QRIS', type: 'QRIS', name: 'QRIS BabayShop', owner: 'BAYU RIZKY SAMPURNA', number: 'Scan QRIS BabayShop', code: '', copyable: false },
+        GoPay: { label: 'GoPay', type: 'E-Wallet', name: 'GoPay', owner: 'BAYU RIZKY SAMPURNA', number: '088215993544', code: '', copyable: true },
+        DANA: { label: 'DANA', type: 'E-Wallet', name: 'DANA', owner: 'BAYU RIZKY SAMPURNA', number: '088215993544', code: '', copyable: true },
+        ShopeePay: { label: 'ShopeePay', type: 'E-Wallet', name: 'ShopeePay', owner: 'BAYU RIZKY SAMPURNA', number: '088215993544', code: '', copyable: true },
+        LinkAja: { label: 'LinkAja', type: 'E-Wallet', name: 'LinkAja', owner: 'BAYU RIZKY SAMPURNA', number: '088215993544', code: '', copyable: true },
+        Mandiri: { label: 'Bank Mandiri', type: 'Transfer Bank', name: 'Bank Mandiri', owner: 'BAYU RIZKY SAMPURNA', number: '1120020438110', code: 'Kode Bank: 008', copyable: true },
+        BSI: { label: 'BSI / Bank Syariah Indonesia', type: 'Transfer Bank', name: 'BSI / Bank Syariah Indonesia', owner: 'BAYU RIZKY SAMPURNA', number: '7183942225', code: 'Kode Bank: 451', copyable: true },
+        'Bank Jago': { label: 'Bank Jago', type: 'Transfer Bank', name: 'Bank Jago', owner: 'BAYU RIZKY SAMPURNA', number: '100645331871', code: 'Kode Bank: 542', copyable: true },
+        SeaBank: { label: 'SeaBank', type: 'Transfer Bank', name: 'SeaBank', owner: 'BAYU RIZKY SAMPURNA', number: '901375940437', code: 'Kode Bank: 535', copyable: true }
+      };
 
       /* ==========================================================================
          SCROLL PROGRESS & FLOATING BUTTONS
@@ -3799,6 +4081,99 @@
         }).format(number);
       }
 
+      function applyPaketHarga() {
+        document.querySelectorAll('.pkg-card').forEach(card => {
+          const packageCode = card.querySelector('.pkg-code')?.textContent.trim();
+          const harga = PAKET_HARGA[packageCode];
+          if (!harga) return;
+
+          const oldPriceEl = card.querySelector('.price-old');
+          const newPriceEl = card.querySelector('.price-new strong');
+          const buyBtn = card.querySelector('.btn-buy');
+
+          if (oldPriceEl) oldPriceEl.textContent = formatRupiah(harga.hargaLama);
+          if (newPriceEl) newPriceEl.textContent = formatRupiah(harga.hargaPromo);
+          if (buyBtn) buyBtn.setAttribute('data-price', String(harga.hargaPromo));
+        });
+      }
+      applyPaketHarga();
+
+      function togglePaymentMethodList(forceState) {
+        const shouldOpen = typeof forceState === 'boolean' ? forceState : !paymentMethodList.classList.contains('active');
+        paymentMethodList.classList.toggle('active', shouldOpen);
+        btnTogglePaymentMethods.classList.toggle('active', shouldOpen);
+        btnTogglePaymentMethods.setAttribute('aria-expanded', String(shouldOpen));
+      }
+
+      function setPaymentMethod(methodKey) {
+        const account = PAYMENT_ACCOUNTS[methodKey] || PAYMENT_ACCOUNTS.QRIS;
+        selectedPaymentKey = methodKey in PAYMENT_ACCOUNTS ? methodKey : 'QRIS';
+        paymentMethod.value = account.label;
+        paymentMethodCurrent.textContent = `Metode aktif: ${account.label}`;
+        if (paymentMethodManual) paymentMethodManual.value = '';
+        if (errorPaymentMethod) errorPaymentMethod.style.display = 'none';
+
+        paymentMethodButtons.forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-pay') === selectedPaymentKey);
+        });
+
+        if (selectedPaymentKey === 'QRIS') {
+          qrisQrWrapper.style.display = 'block';
+          selectedPaymentCard.classList.remove('active');
+          paymentMethodNote.textContent = 'Default pembayaran memakai QRIS. Jika pilih metode lain, gambar QRIS akan disembunyikan dan nomor tujuan akan muncul untuk dicopy.';
+          return;
+        }
+
+        qrisQrWrapper.style.display = 'none';
+        selectedPaymentCard.classList.add('active');
+        selectedPaymentName.textContent = account.name;
+        selectedPaymentOwner.textContent = account.owner;
+        selectedPaymentNumber.textContent = account.number;
+        selectedPaymentNumberLabel.textContent = account.type === 'E-Wallet' ? 'Nomor E-Wallet' : 'Nomor Rekening';
+        selectedPaymentCode.textContent = account.code || 'Gunakan nomor tujuan di atas.';
+        paymentMethodNote.textContent = `Transfer ke ${account.label} atas nama ${account.owner}. Setelah transfer, klik konfirmasi WhatsApp dan lampirkan screenshot bukti pembayaran.`;
+      }
+
+      btnTogglePaymentMethods.addEventListener('click', () => {
+        togglePaymentMethodList();
+      });
+
+      paymentMethodButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          setPaymentMethod(btn.getAttribute('data-pay'));
+          togglePaymentMethodList(false);
+        });
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!checkoutModal.classList.contains('active')) return;
+        if (paymentSwitchBox && !paymentSwitchBox.contains(e.target)) {
+          togglePaymentMethodList(false);
+        }
+      });
+
+      btnCopyPaymentNumber.addEventListener('click', async () => {
+        const account = PAYMENT_ACCOUNTS[selectedPaymentKey];
+        if (!account || !account.copyable) return;
+
+        try {
+          await navigator.clipboard.writeText(account.number);
+          btnCopyPaymentNumber.textContent = 'Tercopy';
+        } catch (err) {
+          const tempInput = document.createElement('input');
+          tempInput.value = account.number;
+          document.body.appendChild(tempInput);
+          tempInput.select();
+          document.execCommand('copy');
+          document.body.removeChild(tempInput);
+          btnCopyPaymentNumber.textContent = 'Tercopy';
+        }
+
+        setTimeout(() => {
+          btnCopyPaymentNumber.textContent = 'Copy';
+        }, 1200);
+      });
+
       // Open Checkout Modal
       const buyBtns = document.querySelectorAll('.btn-buy');
       buyBtns.forEach(btn => {
@@ -3828,13 +4203,9 @@
             inputEmail.value = '';
           }
 
-          // Reset payment method selector
-          paymentMethod.value = '';
-          paymentMethodManual.value = '';
-          paymentMethodManual.style.display = 'none';
-          errorPaymentMethod.style.display = 'none';
-          paymentMethod.style.borderColor = 'var(--border)';
-          if (paymentMethodManual) paymentMethodManual.style.borderColor = 'var(--border)';
+          // Reset payment method to QRIS by default
+          setPaymentMethod('QRIS');
+          togglePaymentMethodList(false);
 
           // Reset form states
           checkAgree.checked = true;
@@ -3930,6 +4301,7 @@
         qrisTotalPriceText.textContent = formatRupiah(totalPrice);
 
         // Show Payment Step
+        setPaymentMethod('QRIS');
         showCheckoutStep(stepPay);
 
         // Setup 5 minute countdown timer
@@ -3957,25 +4329,8 @@
 
       // Redirect to WhatsApp Admin Babay on clicking confirmation button (Step 2 -> Step 3 / WA Redirect)
       btnSimulatePayment.addEventListener('click', () => {
-        // Validate payment method selection
-        let payMethodVal = paymentMethod.value;
-        if (!payMethodVal) {
-          errorPaymentMethod.style.display = 'block';
-          paymentMethod.style.borderColor = 'rgba(239, 68, 68, 0.5)';
-          paymentMethod.focus();
-          return;
-        }
-
-        if (payMethodVal === 'Lainnya') {
-          const manualVal = paymentMethodManual.value.trim();
-          if (!manualVal) {
-            errorPaymentMethod.style.display = 'block';
-            paymentMethodManual.style.borderColor = 'rgba(239, 68, 68, 0.5)';
-            paymentMethodManual.focus();
-            return;
-          }
-          payMethodVal = manualVal;
-        }
+        const account = PAYMENT_ACCOUNTS[selectedPaymentKey] || PAYMENT_ACCOUNTS.QRIS;
+        const payMethodVal = account.label;
 
         clearInterval(qrisCountdownInterval);
 
@@ -3989,9 +4344,22 @@
 
         const emailVal = inputEmail.value.trim() || 'Kosong (Paket Pixel Admin - Gmail disediakan admin)';
         const totalPayment = currentPackage.price + currentUniqueCode;
+        const paymentDestination = selectedPaymentKey === 'QRIS'
+          ? 'QRIS BabayShop'
+          : `${account.name} - ${account.number} a.n ${account.owner}${account.code ? ` (${account.code})` : ''}`;
 
         // Build WA message
-        const message = `Halo Admin Babay, saya sudah transfer via QRIS.\n\nFormat Konfirmasi Pembelian:\n- Tanggal Pembelian: ${formattedDate}\n- Paket AI Pro: ${currentPackage.name}\n- Email Aktivasi: ${emailVal}\n- Nominal Transfer: ${formatRupiah(totalPayment)} (Wajib sesuai 3 digit unik terakhir)\n- Sumber Transfer: ${payMethodVal}\n\nBerikut saya lampirkan bukti screenshot transfer pembayaran. Mohon dicek & diproses ya, terima kasih!`;
+        const message = `Halo Admin Babay, saya sudah transfer via ${payMethodVal}.
+
+Format Konfirmasi Pembelian:
+- Tanggal Pembelian: ${formattedDate}
+- Paket AI Pro: ${currentPackage.name}
+- Email Aktivasi: ${emailVal}
+- Nominal Transfer: ${formatRupiah(totalPayment)} 
+- Metode Pembayaran: ${payMethodVal}
+- Tujuan Pembayaran: ${paymentDestination}
+
+Berikut saya lampirkan bukti screenshot transfer pembayaran. Mohon dicek & diproses ya, terima kasih!`;
         
         const waUrl = `https://wa.me/6281523984574?text=${encodeURIComponent(message)}`;
         
@@ -4005,22 +4373,13 @@
         showCheckoutStep(stepSuccess);
       });
 
-      // Toggle custom payment method input
+      // Hidden payment fields are updated automatically by payment method buttons
       paymentMethod.addEventListener('change', () => {
-        if (paymentMethod.value === 'Lainnya') {
-          paymentMethodManual.style.display = 'block';
-          paymentMethodManual.focus();
-        } else {
-          paymentMethodManual.style.display = 'none';
-          paymentMethodManual.value = '';
-        }
-        errorPaymentMethod.style.display = 'none';
-        paymentMethod.style.borderColor = 'var(--border)';
+        if (errorPaymentMethod) errorPaymentMethod.style.display = 'none';
       });
 
       paymentMethodManual.addEventListener('input', () => {
-        errorPaymentMethod.style.display = 'none';
-        paymentMethodManual.style.borderColor = 'var(--border)';
+        if (errorPaymentMethod) errorPaymentMethod.style.display = 'none';
       });
 
       // Toggle detailed warranty ketentuan
