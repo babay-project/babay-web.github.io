@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -449,6 +450,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    .email-box,
     .subject-box,
     .output-box {
       width: 100%;
@@ -458,6 +460,7 @@
       color: #e9e7ff;
     }
 
+    .email-box,
     .subject-box {
       padding: 13px 15px;
       word-break: break-word;
@@ -477,7 +480,7 @@
 
     .result__actions {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 10px;
       margin-top: 16px;
     }
@@ -575,18 +578,9 @@
   <main class="page">
     <!-- HEADER -->
     <header class="hero">
-      <div class="hero__logo" aria-hidden="true">✉️</div>
-
-      <div class="hero__eyebrow">Jio Offer • 18 Bulan • Email Generator</div>
-
       <h1 class="hero__title">
         Generator Email Aktivasi <span>Google AI Pro Jio</span>
       </h1>
-
-      <p class="hero__desc">
-        Masukkan email customer dan link aktivasi, lalu sistem akan membuat isi email yang rapi,
-        siap disalin, atau langsung dibuka sebagai draft Gmail.
-      </p>
     </header>
 
     <!-- FORM INPUT -->
@@ -655,6 +649,11 @@
       </div>
 
       <div class="field">
+        <label class="field__label">Email Tujuan</label>
+        <div class="email-box" id="emailTujuanBox"></div>
+      </div>
+
+      <div class="field">
         <label class="field__label">Subjek Email</label>
         <div class="subject-box" id="subjectBox"></div>
       </div>
@@ -665,6 +664,10 @@
       </div>
 
       <div class="result__actions">
+        <button class="btn btn--accent" type="button" onclick="copyEmailTujuan()">
+          📧 Copy Email Tujuan
+        </button>
+
         <button class="btn btn--accent" type="button" onclick="copySubject()">
           📌 Copy Subject
         </button>
@@ -811,6 +814,7 @@ Terima kasih sudah order di ${CONFIG.storeName} 🙏`;
 
       const emailBody = buildEmailBody(linkAktivasi);
 
+      getEl("emailTujuanBox").textContent = emailTujuan;
       getEl("subjectBox").textContent = CONFIG.subject;
       getEl("outputBox").value = emailBody;
       getEl("outputCard").classList.add("is-show");
@@ -834,6 +838,17 @@ Terima kasih sudah order di ${CONFIG.storeName} 🙏`;
     /* ============================================================
        COPY BUTTON
        ============================================================ */
+    function copyEmailTujuan() {
+      const emailTujuan = getEl("emailTujuanBox").textContent.trim();
+
+      if (!emailTujuan) {
+        alert("Belum ada email tujuan yang bisa disalin.");
+        return;
+      }
+
+      copyText(emailTujuan);
+    }
+
     function copySubject() {
       copyText(CONFIG.subject);
     }
@@ -885,6 +900,7 @@ Terima kasih sudah order di ${CONFIG.storeName} 🙏`;
     function resetForm() {
       getEl("emailTujuan").value = "";
       getEl("linkAktivasi").value = "";
+      getEl("emailTujuanBox").textContent = "";
       getEl("subjectBox").textContent = "";
       getEl("outputBox").value = "";
       getEl("gmailBtn").href = "#";
@@ -894,5 +910,6 @@ Terima kasih sudah order di ${CONFIG.storeName} 🙏`;
       setFieldError("linkAktivasi", "errLinkAktivasi", false);
     }
   </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
