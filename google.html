@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -5866,33 +5864,49 @@
         clearInterval(qrisCountdownInterval);
 
         const dateObj = new Date();
+        const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        const dayName = dayNames[dateObj.getDay()];
         const day = String(dateObj.getDate()).padStart(2, '0');
-        const month = String(dateObj.getMonth() + 1).padStart(2, '0');
+        const monthName = monthNames[dateObj.getMonth()];
         const year = dateObj.getFullYear();
         const hours = String(dateObj.getHours()).padStart(2, '0');
         const minutes = String(dateObj.getMinutes()).padStart(2, '0');
-        const formattedDate = `${day}-${month}-${year} pukul ${hours}:${minutes}`;
+        const seconds = String(dateObj.getSeconds()).padStart(2, '0');
+        const formattedDate = `${dayName}, ${day} ${monthName} ${year}, pukul ${hours}:${minutes}:${seconds}`;
 
         const emailVal = inputEmail.value.trim() || 'Kosong (Paket Pixel Admin - Gmail disediakan admin)';
         const totalPayment = currentPackage.price + currentUniqueCode;
+        const formatWaRupiah = (number) => formatRupiah(number).replace(/^Rp/, 'Rp ');
+        const garansiText = {
+          A: 'Garansi sampai klaim voucher 1x24 jam',
+          C: 'Garansi layanan 1 bulan',
+          D: 'Garansi layanan 1 bulan'
+        }[currentPackage.id] || 'Mengikuti ketentuan garansi di website';
+        const paymentTitle = selectedPaymentKey === 'QRIS'
+          ? 'Pembayaran QRIS Manual:'
+          : `Pembayaran Manual via ${account.label}:`;
         const paymentDestination = selectedPaymentKey === 'QRIS'
-          ? 'QRIS BabayShop'
-          : `${account.name} - ${account.number} a.n ${account.owner}${account.code ? ` (${account.code})` : ''}`;
+          ? 'Merchant: BAYU RIZKY SAMPURNA - DIGITAL & KREATIF'
+          : `Tujuan: ${account.name} - ${account.number}\nAtas Nama: ${account.owner}${account.code ? `\n${account.code}` : ''}`;
 
         // Build WA message
         const message = `Halo Admin Babay, saya sudah transfer via ${payMethodVal}.
 
-Format Konfirmasi Pembelian:
-- Tanggal Pembelian: ${formattedDate}
-- Paket AI Pro: ${currentPackage.name}
-- Jumlah: ${currentPackage.qty} item
-- Harga Paket/Bulk: ${formatRupiah(currentPackage.price)}
-- Email Aktivasi: ${emailVal}
-- Nominal Transfer: ${formatRupiah(totalPayment)} 
-- Metode Pembayaran: ${payMethodVal}
-- Tujuan Pembayaran: ${paymentDestination}
+- ${formattedDate}
+- ID: ${qrisTxId.textContent}
+- Email: ${emailVal}
+- Paket ${currentPackage.id} - ${currentPackage.name}
+- Jumlah Pembelian: ${currentPackage.qty}
+- Nominal Transfer: ${formatWaRupiah(totalPayment)}
+- ${garansiText}
 
-Berikut saya lampirkan bukti screenshot transfer pembayaran. Mohon dicek & diproses ya, terima kasih!`;
+"Saya sudah membaca dan menyetujui ketentuan paket, risiko, syarat, dan garansi di website."
+
+${paymentTitle}
+${paymentDestination}
+
+Berikut saya lampirkan bukti screenshot transfer pembayaran. Mohon dicek dan diproses ya kak Babay, terima kasih.`;
         
         const waUrl = `https://wa.me/6281523984574?text=${encodeURIComponent(message)}`;
         
