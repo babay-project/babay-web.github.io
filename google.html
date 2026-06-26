@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -1325,6 +1326,123 @@
     .pkg-tutorial-link:hover {
       color: var(--indigo);
     }
+
+
+
+    /* ==========================================================================
+       BULK PROMO CLIP & QUANTITY CHECKOUT
+       ========================================================================== */
+    .bulk-promo-clip {
+      position: relative;
+      margin: -2px 0 16px;
+      padding: 14px 14px 13px;
+      border-radius: 16px;
+      border: 1px solid rgba(251, 191, 36, 0.24);
+      background: linear-gradient(135deg, rgba(251, 191, 36, 0.09), rgba(99, 102, 241, 0.055));
+      overflow: hidden;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.06);
+    }
+    .bulk-promo-clip::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.08) 45%, transparent 60%);
+      transform: translateX(-100%);
+      animation: bulkShine 3.2s infinite;
+      pointer-events: none;
+    }
+    @keyframes bulkShine {
+      0%, 38% { transform: translateX(-110%); }
+      70%, 100% { transform: translateX(110%); }
+    }
+    .bulk-promo-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      color: #07080f;
+      background: linear-gradient(135deg, #fbbf24, #fde68a);
+      font-size: 10.5px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+    .bulk-promo-line {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+    .bulk-promo-line strong {
+      font-family: var(--font-title);
+      font-size: 20px;
+      color: #fef3c7;
+      letter-spacing: -0.03em;
+      white-space: nowrap;
+    }
+    .bulk-promo-note {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 11.5px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+    .btn-bulk {
+      background: linear-gradient(135deg, #f59e0b, #fbbf24);
+      color: #09090f;
+      box-shadow: 0 6px 20px rgba(251, 191, 36, 0.16), inset 0 1px 0 rgba(255,255,255,0.28);
+    }
+    .btn-bulk:hover {
+      box-shadow: 0 12px 30px rgba(251, 191, 36, 0.28);
+    }
+    .qty-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+    .qty-option {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 8px;
+      background: rgba(255,255,255,0.02);
+      color: var(--muted);
+      font-family: inherit;
+      font-weight: 900;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .qty-option small {
+      display: block;
+      margin-top: 2px;
+      color: var(--dim);
+      font-size: 10.5px;
+      font-weight: 800;
+    }
+    .qty-option:hover, .qty-option.active {
+      color: #fff;
+      border-color: rgba(251, 191, 36, 0.45);
+      background: rgba(251, 191, 36, 0.09);
+    }
+    .bulk-save-row {
+      display: none;
+      margin-top: -2px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(52,168,83,0.18);
+      background: rgba(52,168,83,0.06);
+      color: #bbf7d0;
+      font-size: 12px;
+      font-weight: 800;
+      line-height: 1.45;
+    }
+    .bulk-save-row.active { display: block; }
 
     /* ==========================================================================
        SOURCE OF VOUCHERS SECTION
@@ -2856,6 +2974,1380 @@
       opacity: 1;
       transform: translateY(0);
     }
+
+
+    /* ==========================================================================
+       MOBILE COMPACT UI OVERRIDE
+       Versi ini membuat tampilan HP lebih padat tanpa mengubah tampilan desktop.
+       ========================================================================== */
+    @media (max-width: 700px) {
+      :root {
+        --r-lg: 18px;
+        --r-md: 11px;
+      }
+
+      .wrap {
+        width: min(100% - 24px, 1160px);
+      }
+
+      section {
+        padding: 42px 0;
+      }
+
+      .section-head {
+        margin-bottom: 24px;
+      }
+
+      .section-label,
+      .badge {
+        font-size: 11.5px;
+        padding: 5px 11px;
+        margin-bottom: 12px;
+      }
+
+      .section-title {
+        font-size: clamp(24px, 7vw, 30px);
+        line-height: 1.14;
+        margin-bottom: 8px;
+      }
+
+      .section-sub {
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .divider {
+        margin: 0;
+      }
+
+      .topbar {
+        font-size: 11px;
+        padding: 6px 0;
+      }
+
+      .nav-inner {
+        padding: 10px 0;
+      }
+
+      .brand {
+        font-size: 18px;
+        gap: 8px;
+      }
+
+      .brand-mark {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        font-size: 17px;
+      }
+
+      .nav-right .btn {
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+
+      .hero {
+        padding: 36px 0 28px;
+      }
+
+      .hero-inner {
+        gap: 22px;
+      }
+
+      .hero-title {
+        font-size: clamp(38px, 13vw, 48px);
+        line-height: .94;
+        margin-bottom: 14px;
+      }
+
+      .hero-lead {
+        font-size: 14px;
+        line-height: 1.55;
+        margin-bottom: 18px;
+      }
+
+      .hero-actions {
+        gap: 8px;
+        margin-bottom: 18px;
+      }
+
+      .hero-actions .btn {
+        flex: 1 1 150px;
+      }
+
+      .hero-stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        max-width: 100%;
+      }
+
+      .stat-card {
+        padding: 12px 8px;
+        border-radius: 12px;
+      }
+
+      .stat-card dt {
+        font-size: 21px;
+        margin-bottom: 1px;
+      }
+
+      .stat-card dd {
+        font-size: 10px;
+        letter-spacing: .04em;
+      }
+
+      .brands-bar {
+        padding: 18px 0;
+      }
+
+      .brands-label {
+        font-size: 10px;
+        margin-bottom: 10px;
+      }
+
+      .brands-track {
+        gap: 24px;
+        animation-duration: 20s;
+      }
+
+      .blogo {
+        font-size: 12px;
+        gap: 7px;
+      }
+
+      .benefit-grid {
+        gap: 12px;
+      }
+
+      .benefit-card {
+        padding: 18px;
+      }
+
+      .benefit-icon {
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
+        font-size: 17px;
+        margin-bottom: 14px;
+      }
+
+      .benefit-card h3 {
+        font-size: 17px;
+        margin-bottom: 6px;
+      }
+
+      .benefit-card p {
+        font-size: 12.5px;
+        line-height: 1.5;
+      }
+
+      .highlight-box,
+      .warn-box,
+      .info-card,
+      .warranty-card,
+      .step-card {
+        padding: 20px;
+      }
+
+      .highlight-header {
+        margin-bottom: 10px;
+      }
+
+      .highlight-box h3,
+      .warn-box h3,
+      .info-card h3 {
+        font-size: 19px;
+      }
+
+      .highlight-box p,
+      .warn-box p,
+      .info-card p {
+        font-size: 12.8px !important;
+        line-height: 1.5 !important;
+      }
+
+      .hb-grid,
+      .info-grid,
+      .warranty-grid {
+        gap: 12px;
+      }
+
+      .hb-item {
+        padding: 15px;
+        gap: 10px;
+      }
+
+      .hb-icon-wrapper {
+        font-size: 21px;
+      }
+
+      .hb-body h4 {
+        font-size: 15px;
+        margin-bottom: 4px;
+      }
+
+      .hb-body p {
+        font-size: 12px !important;
+      }
+
+      .catalog-filters {
+        gap: 7px;
+        margin-top: 16px;
+      }
+
+      .filter-chip {
+        padding: 7px 12px;
+        font-size: 12px;
+      }
+
+      .packages-grid {
+        gap: 12px;
+      }
+
+      .pkg-card {
+        border-radius: 17px;
+      }
+
+      .pkg-card:hover {
+        transform: none;
+      }
+
+      .pkg-header {
+        padding: 15px;
+        gap: 10px;
+      }
+
+      .pkg-code {
+        width: 32px;
+        height: 32px;
+        border-radius: 9px;
+        font-size: 14px;
+      }
+
+      .pkg-title-group h3 {
+        font-size: 14.5px;
+      }
+
+      .pkg-role {
+        font-size: 10.5px;
+      }
+
+      .pkg-body {
+        padding: 15px;
+      }
+
+      .price-row {
+        margin-bottom: 10px;
+      }
+
+      .price-old {
+        font-size: 12px;
+      }
+
+      .price-new strong {
+        font-size: 22px;
+      }
+
+      .price-unit,
+      .discount-tag {
+        font-size: 10.5px;
+      }
+
+      .pkg-tagline {
+        padding: 8px 10px;
+        font-size: 12px;
+        margin-bottom: 12px;
+      }
+
+      .bulk-promo-clip {
+        padding: 10px 11px;
+        margin: 0 0 12px;
+        border-radius: 13px;
+      }
+
+      .bulk-promo-kicker {
+        font-size: 10px;
+        margin-bottom: 4px;
+      }
+
+      .bulk-promo-line span {
+        font-size: 12px;
+      }
+
+      .bulk-promo-line strong {
+        font-size: 18px;
+      }
+
+      .bulk-promo-note {
+        font-size: 10.8px;
+        line-height: 1.35;
+      }
+
+      .pkg-features {
+        gap: 6px;
+        margin-bottom: 14px;
+      }
+
+      .pkg-features li {
+        gap: 7px;
+        font-size: 11.6px;
+        line-height: 1.35;
+      }
+
+      .pkg-stock-status {
+        font-size: 11px;
+        margin-bottom: 10px;
+      }
+
+      .pkg-actions {
+        gap: 8px;
+      }
+
+      .pkg-tutorial-link {
+        font-size: 11.5px;
+      }
+
+      .btn {
+        padding: 10px 15px;
+        font-size: 12.5px;
+        border-radius: 11px;
+      }
+
+      .btn-lg {
+        padding: 12px 18px;
+        font-size: 13.5px;
+      }
+
+      .btn-sm {
+        padding: 7px 12px;
+        font-size: 11.5px;
+      }
+
+      .comparison-table {
+        min-width: 520px;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 12px 14px;
+        font-size: 12px;
+      }
+
+      #btnToggleWarranty {
+        padding: 11px 18px !important;
+        font-size: 12px;
+      }
+
+      .warranty-card-header {
+        gap: 9px;
+      }
+
+      .warranty-card-header h3 {
+        font-size: 15px;
+      }
+
+      .warranty-card-body {
+        gap: 9px;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .w-meta {
+        padding: 8px 10px;
+        font-size: 11.5px;
+      }
+
+      .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .step-card {
+        padding: 16px;
+      }
+
+      .step-number {
+        width: 30px;
+        height: 30px;
+        border-radius: 9px;
+        font-size: 13px;
+        margin-bottom: 11px;
+      }
+
+      .step-card h3 {
+        font-size: 14px;
+        margin-bottom: 5px;
+      }
+
+      .step-card p {
+        font-size: 11.5px;
+        line-height: 1.4;
+      }
+
+      .faq-container {
+        gap: 8px;
+      }
+
+      .faq-item summary {
+        padding: 14px 16px;
+        font-size: 13px;
+      }
+
+      .faq-item summary::after {
+        width: 22px;
+        height: 22px;
+        font-size: 14px;
+      }
+
+      .faq-content {
+        padding: 0 16px 14px;
+        font-size: 12.5px;
+        line-height: 1.5;
+      }
+
+      .section-cta {
+        padding: 28px 0 44px;
+      }
+
+      .cta-box {
+        padding: 26px 16px;
+      }
+
+      .cta-box h2 {
+        font-size: 24px;
+      }
+
+      .cta-box p {
+        font-size: 13px;
+        margin-bottom: 18px;
+      }
+
+      .footer {
+        padding: 34px 0 88px;
+      }
+
+      .footer-grid {
+        gap: 22px;
+        margin-bottom: 24px;
+      }
+
+      .footer-info p,
+      .footer-links a,
+      .footer-copy p {
+        font-size: 12px;
+      }
+
+      .modal-checkout {
+        max-width: 95vw;
+        max-height: calc(100vh - 18px);
+        border-radius: 18px;
+      }
+
+      .modal-checkout-header {
+        padding: 15px 18px;
+      }
+
+      .checkout-title-group h2 {
+        font-size: 16px;
+      }
+
+      .checkout-subtitle {
+        font-size: 11.5px;
+      }
+
+      .modal-checkout-body {
+        padding: 18px;
+      }
+
+      .checkout-step-desc,
+      .form-checkbox label,
+      .qris-instruction-text {
+        font-size: 12px !important;
+      }
+
+      .form-group input {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+
+      .checkout-summary-bar {
+        padding: 11px 13px;
+      }
+
+      .checkout-summary-bar strong {
+        font-size: 16px;
+      }
+
+      .qris-qrcode-wrapper {
+        padding: 12px;
+        margin-bottom: 16px;
+      }
+
+      .qris-qrcode-img {
+        width: 145px !important;
+        height: 145px !important;
+      }
+
+      .qris-details-card,
+      .selected-payment-card {
+        padding: 13px 14px;
+      }
+
+      .qris-row {
+        font-size: 12px;
+      }
+
+      .qris-price {
+        font-size: 16px !important;
+      }
+
+      .payment-method-toggle {
+        padding: 11px 12px;
+      }
+
+      .payment-method-btn {
+        min-height: 36px;
+        padding: 9px 10px;
+        font-size: 11.5px;
+      }
+
+      .mobile-bottom-bar {
+        padding: 8px 10px;
+        gap: 8px;
+      }
+
+      .mobile-bottom-bar a {
+        padding: 10px 8px;
+        font-size: 12px;
+      }
+
+      .back-paket-btn {
+        bottom: 72px;
+        padding: 10px 16px;
+        font-size: 12px;
+      }
+    }
+
+    @media (max-width: 390px) {
+      .wrap {
+        width: min(100% - 18px, 1160px);
+      }
+
+      section {
+        padding: 34px 0;
+      }
+
+      .hero-title {
+        font-size: 36px;
+      }
+
+      .hero-lead {
+        font-size: 13px;
+      }
+
+      .hero-stats {
+        gap: 6px;
+      }
+
+      .stat-card dt {
+        font-size: 18px;
+      }
+
+      .packages-grid,
+      .benefit-grid,
+      .hb-grid,
+      .steps-grid {
+        gap: 8px;
+      }
+
+      .pkg-header,
+      .pkg-body,
+      .benefit-card,
+      .step-card {
+        padding: 13px;
+      }
+
+      .pkg-features li {
+        font-size: 11.2px;
+      }
+
+      .steps-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+  
+
+    /* ==========================================================================
+       MOBILE ULTRA COMPACT OVERRIDE - BabayShop
+       Tujuan: mengurangi tinggi halaman mobile tanpa mengubah tampilan desktop.
+       ========================================================================== */
+    @media (max-width: 700px) {
+      .wrap {
+        width: min(100% - 24px, 1160px);
+      }
+
+      section {
+        padding: 26px 0;
+      }
+
+      .section-head {
+        margin-bottom: 22px;
+      }
+
+      .section-label,
+      .badge {
+        font-size: 11px;
+        padding: 4px 10px;
+        margin-bottom: 10px;
+      }
+
+      .section-title {
+        font-size: 24px;
+        line-height: 1.12;
+        margin-bottom: 8px;
+      }
+
+      .section-sub {
+        font-size: 12.8px;
+        line-height: 1.45;
+        max-width: 100%;
+      }
+
+      .topbar {
+        display: none;
+      }
+
+      .nav-inner {
+        padding: 9px 0;
+      }
+
+      .nav.scrolled .nav-inner {
+        padding: 8px 0;
+      }
+
+      .brand {
+        font-size: 18px;
+        gap: 8px;
+      }
+
+      .brand-mark {
+        width: 31px;
+        height: 31px;
+        border-radius: 10px;
+        font-size: 16px;
+      }
+
+      .nav-right .btn {
+        padding: 8px 12px;
+        font-size: 12px;
+      }
+
+      .hero {
+        padding: 28px 0 18px;
+      }
+
+      .hero-inner {
+        gap: 18px;
+      }
+
+      .hero-title {
+        font-size: clamp(34px, 11vw, 42px);
+        line-height: .9;
+        margin-bottom: 12px;
+      }
+
+      .hero-lead {
+        font-size: 13.4px;
+        line-height: 1.5;
+        margin-bottom: 16px;
+      }
+
+      .hero-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .hero-actions .btn {
+        width: 100%;
+        padding: 10px 10px;
+        font-size: 12px;
+      }
+
+      .hero-stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 7px;
+        max-width: 100%;
+      }
+
+      .stat-card {
+        padding: 9px 6px;
+        border-radius: 12px;
+      }
+
+      .stat-card dt {
+        font-size: 20px;
+        margin-bottom: 0;
+      }
+
+      .stat-card dd {
+        font-size: 9px;
+        letter-spacing: .03em;
+      }
+
+      .brands-bar {
+        padding: 16px 0;
+      }
+
+      .brands-label {
+        font-size: 9.5px;
+        margin-bottom: 10px;
+      }
+
+      .brands-track {
+        gap: 24px;
+      }
+
+      .blogo {
+        font-size: 12px;
+        gap: 7px;
+      }
+
+      .blogo-dot {
+        width: 6px;
+        height: 6px;
+      }
+
+      .benefit-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        margin-bottom: 14px;
+      }
+
+      .benefit-card {
+        padding: 14px;
+        border-radius: 16px;
+      }
+
+      .benefit-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 10px;
+        font-size: 15px;
+        margin-bottom: 10px;
+      }
+
+      .benefit-card h3 {
+        font-size: 14.5px;
+        margin-bottom: 5px;
+      }
+
+      .benefit-card p {
+        font-size: 11.3px;
+        line-height: 1.42;
+      }
+
+      .highlight-box {
+        padding: 16px;
+        border-radius: 16px;
+      }
+
+      .highlight-header {
+        margin-bottom: 8px;
+      }
+
+      .sparkle-icon {
+        font-size: 18px;
+      }
+
+      .highlight-box h3 {
+        font-size: 17px;
+      }
+
+      .highlight-box p {
+        font-size: 12px;
+        line-height: 1.45;
+        margin-bottom: 12px;
+      }
+
+      .hb-grid {
+        gap: 10px;
+        margin-bottom: 12px;
+      }
+
+      .hb-item {
+        padding: 13px;
+        gap: 10px;
+        border-radius: 14px;
+      }
+
+      .hb-icon-wrapper {
+        font-size: 18px;
+      }
+
+      .hb-body h4 {
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+
+      .hb-body p {
+        font-size: 11.2px;
+        line-height: 1.42;
+      }
+
+      .benefit-tags,
+      .credit-compare {
+        gap: 5px;
+        margin-top: 8px;
+      }
+
+      .b-tag,
+      .credit-pill {
+        font-size: 10px;
+        padding: 3px 8px;
+      }
+
+      .catalog-filters {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 7px;
+        margin-top: 14px;
+      }
+
+      .filter-chip {
+        width: 100%;
+        padding: 7px 6px;
+        font-size: 11px;
+        text-align: center;
+      }
+
+      .packages-grid {
+        grid-template-columns: 1fr;
+        gap: 11px;
+      }
+
+      .pkg-card {
+        border-radius: 16px;
+      }
+
+      .pkg-card:hover {
+        transform: none;
+      }
+
+      .pkg-header {
+        padding: 12px 14px;
+        gap: 10px;
+      }
+
+      .pkg-code {
+        width: 31px;
+        height: 31px;
+        border-radius: 9px;
+        font-size: 13px;
+      }
+
+      .pkg-title-group h3 {
+        font-size: 14.5px;
+      }
+
+      .pkg-role {
+        font-size: 10px;
+        margin-top: 0;
+      }
+
+      .pkg-body {
+        padding: 13px 14px 14px;
+      }
+
+      .price-row {
+        margin-bottom: 8px;
+      }
+
+      .price-old {
+        font-size: 11px;
+        margin-bottom: 0;
+      }
+
+      .price-new strong {
+        font-size: 22px;
+      }
+
+      .price-unit,
+      .discount-tag {
+        font-size: 10.5px;
+      }
+
+      .discount-tag {
+        padding: 1px 7px;
+        margin-left: 4px;
+      }
+
+      .pkg-tagline {
+        font-size: 11.5px;
+        line-height: 1.35;
+        padding: 8px 10px;
+        margin-bottom: 10px;
+        border-radius: 12px;
+      }
+
+      .pkg-features {
+        gap: 6px;
+        margin-bottom: 12px;
+      }
+
+      .pkg-features li {
+        font-size: 11.4px;
+        line-height: 1.32;
+        gap: 7px;
+      }
+
+      .pkg-stock-status {
+        font-size: 11px;
+        margin-bottom: 10px;
+      }
+
+      .pkg-actions {
+        gap: 7px;
+      }
+
+      .pkg-actions .btn,
+      .btn-block {
+        min-height: 40px;
+        padding: 10px 12px;
+        font-size: 12.5px;
+        border-radius: 12px;
+      }
+
+      .pkg-tutorial-link {
+        font-size: 11px;
+      }
+
+      .bulk-promo-box,
+      .bulk-clip,
+      .pkg-bulk-promo,
+      .promo-bulk-box {
+        padding: 9px 10px !important;
+        margin: 8px 0 10px !important;
+        border-radius: 12px !important;
+      }
+
+      .bulk-promo-box *,
+      .bulk-clip *,
+      .pkg-bulk-promo *,
+      .promo-bulk-box * {
+        font-size: 11px !important;
+        line-height: 1.25 !important;
+      }
+
+      .info-grid {
+        gap: 10px;
+      }
+
+      .info-card {
+        padding: 17px;
+        border-radius: 16px;
+      }
+
+      .info-card-header {
+        margin-bottom: 8px;
+      }
+
+      .info-card-badge {
+        font-size: 9.8px;
+      }
+
+      .info-card h3 {
+        font-size: 18px;
+      }
+
+      .info-card p {
+        font-size: 12px;
+        line-height: 1.45;
+        margin-bottom: 10px;
+      }
+
+      .soft-box {
+        padding: 12px;
+        margin-top: 8px;
+      }
+
+      .table-container {
+        border-radius: 16px;
+      }
+
+      .comparison-table {
+        min-width: 520px;
+      }
+
+      .comparison-table th,
+      .comparison-table td {
+        padding: 12px 14px;
+        font-size: 12px;
+        line-height: 1.42;
+      }
+
+      .warn-box {
+        padding: 18px 18px 18px 20px;
+        border-radius: 16px;
+        margin-bottom: 16px !important;
+      }
+
+      .warn-header {
+        gap: 8px;
+        margin-bottom: 10px;
+      }
+
+      .warn-icon {
+        font-size: 20px;
+      }
+
+      .warn-box h3 {
+        font-size: 17px;
+      }
+
+      .warn-box p {
+        font-size: 12px !important;
+        line-height: 1.45 !important;
+        margin-bottom: 8px !important;
+      }
+
+      #btnToggleWarranty {
+        padding: 10px 16px !important;
+        font-size: 12px !important;
+      }
+
+      .warranty-grid {
+        gap: 10px;
+        margin-top: 16px;
+      }
+
+      .warranty-card {
+        padding: 15px;
+        border-radius: 16px;
+        gap: 10px;
+      }
+
+      .warranty-card-header {
+        gap: 8px;
+      }
+
+      .w-num {
+        width: 24px;
+        height: 24px;
+        border-radius: 7px;
+        font-size: 11px;
+      }
+
+      .warranty-card-header h3 {
+        font-size: 14.5px;
+      }
+
+      .warranty-card-body {
+        gap: 8px;
+        font-size: 11.8px;
+        line-height: 1.45;
+      }
+
+      .w-meta {
+        padding: 8px 10px;
+        font-size: 11.5px;
+      }
+
+      .w-formula-box {
+        padding: 9px;
+      }
+
+      .formula-title,
+      .formula-code,
+      .w-note {
+        font-size: 10.8px;
+      }
+
+      .steps-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 9px;
+      }
+
+      .step-card {
+        padding: 14px;
+        border-radius: 16px;
+      }
+
+      .step-number {
+        width: 30px;
+        height: 30px;
+        border-radius: 9px;
+        font-size: 13px;
+        margin-bottom: 10px;
+      }
+
+      .step-card h3 {
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+
+      .step-card p {
+        font-size: 11.5px;
+        line-height: 1.38;
+      }
+
+      .faq-container {
+        gap: 8px;
+      }
+
+      .faq-item {
+        border-radius: 13px;
+      }
+
+      .faq-item summary {
+        padding: 13px 14px;
+        font-size: 12.8px;
+        gap: 10px;
+      }
+
+      .faq-item summary::after {
+        width: 22px;
+        height: 22px;
+        font-size: 14px;
+      }
+
+      .faq-content {
+        padding: 0 14px 13px;
+        font-size: 11.8px;
+        line-height: 1.45;
+      }
+
+      .section-cta {
+        padding: 22px 0 36px;
+      }
+
+      .cta-box {
+        padding: 24px 16px;
+        border-radius: 16px;
+      }
+
+      .cta-box h2 {
+        font-size: 22px;
+        margin-bottom: 8px;
+      }
+
+      .cta-box p {
+        font-size: 12.5px;
+        line-height: 1.45;
+        margin-bottom: 18px;
+      }
+
+      .cta-actions-group {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .cta-actions-group .btn {
+        padding: 10px 10px;
+        font-size: 11.5px;
+        width: 100%;
+      }
+
+      .footer {
+        padding: 28px 0 78px;
+      }
+
+      .footer-grid {
+        gap: 18px;
+        margin-bottom: 22px;
+      }
+
+      .footer-info p,
+      .footer-links a,
+      .footer-copy p {
+        font-size: 11.8px;
+        line-height: 1.45;
+      }
+
+      .footer-col b {
+        font-size: 13px;
+        margin-bottom: 9px;
+      }
+
+      .footer-links {
+        gap: 6px;
+      }
+
+      .footer-copy {
+        padding-top: 16px;
+      }
+
+      .modal-checkout {
+        max-height: calc(100vh - 20px);
+        border-radius: 18px;
+      }
+
+      .modal-checkout-header {
+        padding: 14px 18px;
+      }
+
+      .checkout-title-group h2 {
+        font-size: 15.5px;
+      }
+
+      .checkout-subtitle {
+        font-size: 11px;
+      }
+
+      .modal-checkout-body {
+        padding: 16px;
+      }
+
+      .checkout-step-desc,
+      .form-checkbox label,
+      .qris-instruction-text,
+      .payment-method-note {
+        font-size: 11.8px !important;
+        line-height: 1.45;
+      }
+
+      .checkout-form {
+        gap: 12px;
+      }
+
+      .form-group label {
+        font-size: 12px;
+      }
+
+      .form-group input {
+        padding: 10px 12px;
+        font-size: 12px;
+        border-radius: 12px;
+      }
+
+      .checkout-summary-bar {
+        padding: 11px 13px;
+        margin-block: 4px 6px;
+      }
+
+      .checkout-summary-bar span {
+        font-size: 12px;
+      }
+
+      .checkout-summary-bar strong {
+        font-size: 16px;
+      }
+
+      .qris-timer-row {
+        margin-bottom: 12px;
+        font-size: 11.8px;
+      }
+
+      .qris-qrcode-wrapper {
+        padding: 10px;
+        border-radius: 14px;
+        margin-bottom: 14px;
+      }
+
+      .qris-qrcode-img {
+        width: 138px !important;
+        height: 138px !important;
+      }
+
+      .payment-method-toggle {
+        padding: 10px 12px;
+        border-radius: 12px;
+      }
+
+      .payment-method-toggle-text strong {
+        font-size: 11.8px;
+      }
+
+      .payment-method-toggle-text span {
+        font-size: 10.5px;
+      }
+
+      .payment-method-list {
+        max-height: 190px;
+        overflow-y: auto;
+      }
+
+      .payment-method-btn {
+        min-height: 34px;
+        padding: 8px 10px;
+        font-size: 11.5px;
+      }
+
+      .selected-payment-card {
+        padding: 13px;
+        border-radius: 14px;
+        margin-bottom: 12px;
+      }
+
+      .selected-payment-name {
+        font-size: 17px;
+      }
+
+      .selected-payment-owner,
+      .selected-payment-code,
+      .selected-payment-note {
+        font-size: 11px;
+      }
+
+      .selected-payment-number-box {
+        padding: 10px;
+      }
+
+      .selected-payment-number-box strong {
+        font-size: 13px;
+      }
+
+      .qris-details-card {
+        padding: 12px 14px;
+        margin-bottom: 12px;
+        border-radius: 12px;
+      }
+
+      .qris-row {
+        font-size: 11.5px;
+        padding-block: 4px;
+      }
+
+      .qris-price {
+        font-size: 15px !important;
+      }
+
+      .mobile-bottom-bar {
+        padding: 8px 10px;
+        gap: 8px;
+      }
+
+      .mobile-bottom-bar a {
+        padding: 10px 8px;
+        font-size: 12px;
+        min-height: 40px;
+      }
+
+      .back-paket-btn {
+        display: none;
+      }
+
+      .reveal-on-scroll {
+        transform: translateY(12px);
+      }
+    }
+
+    @media (max-width: 380px) {
+      .wrap { width: min(100% - 18px, 1160px); }
+      section { padding: 22px 0; }
+      .section-title { font-size: 22px; }
+      .hero-title { font-size: 34px; }
+      .hero-actions,
+      .cta-actions-group { grid-template-columns: 1fr; }
+      .benefit-grid,
+      .steps-grid { grid-template-columns: 1fr; }
+      .catalog-filters { grid-template-columns: 1fr; }
+      .pkg-features li { font-size: 11px; }
+    }
+
   </style>
 </head>
 <body>
@@ -2937,7 +4429,7 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" style="color: #ea4335;">
                 <path d="M23.498 6.163a3.003 3.003 0 0 0-2.11-2.11C19.517 3.545 12 3.545 12 3.545s-7.516 0-9.387.507a3.003 3.003 0 0 0-2.11 2.11C0 8.033 0 12 0 12s0 3.967.502 5.837a3.003 3.003 0 0 0 2.11 2.11c1.871.507 9.386.507 9.386.507s7.517 0 9.387-.507a3.003 3.003 0 0 0 2.11-2.11C24 15.967 24 12 24 12s0-3.967-.502-5.837zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
               </svg>
-              Tutorial Jio
+              Tutorial Klaim Paket Jio
             </a>
           </div>
           <dl class="hero-stats fade-in-el">
@@ -3047,10 +4539,7 @@
             <p>Google Drive, Gmail, dan Google Photos dengan kuota besar. Kapasitas mengikuti jenis offer dan tipe akun.</p>
           </article>
 
-          <article class="benefit-card clay clay--interactive spotlight">
-            <div class="benefit-icon">✦</div>
-            <h3>Workspace & Tools</h3>
-            <p>Fitur Gemini di seluruh layanan Google yang didukung — Docs, Sheets, Slides, Gmail, dan lainnya.</p>
+          <article >
           </article>
         </div>
 
@@ -3069,8 +4558,6 @@
                 <h4>Antigravity Plan Pro</h4>
                 <p>Akses penuh ke Antigravity Plan Pro — platform AI yang hanya tersedia untuk pengguna Google AI Pro. Fitur lebih lengkap dibanding tier Free maupun Plus.</p>
                 <div class="benefit-tags">
-                  <span class="b-tag b-tag-indigo">✦ Pro Access</span>
-                  <span class="b-tag b-tag-pink">Eksklusif AI Pro</span>
                 </div>
               </div>
             </article>
@@ -3130,6 +4617,11 @@
                 </div>
               </div>
               <p class="pkg-tagline">Cocok untuk akun utama/pribadi karena hanya klaim</p>
+              <div class="bulk-promo-clip" data-bulk-clip="A">
+                <span class="bulk-promo-kicker">Promo Bulk</span>
+                <div class="bulk-promo-line"><span>Ambil 2 voucher</span><strong>Rp165.000</strong></div>
+                <span class="bulk-promo-note">Hemat sampai 33K. 3 voucher hanya 240K.</span>
+              </div>
               <ul class="pkg-features">
                 <li><span class="icon-chk text-green">✓</span><span>Klaim voucher Jio 18 bulan.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>Akun jadi Head / pengelola paket.</span></li>
@@ -3145,44 +4637,9 @@
               </div>
               <div class="pkg-actions">
                 <button class="btn btn-primary btn-block btn-buy" data-id="A" data-name="Voucher Jio 18 Bulan" data-price="100000" type="button">Beli Sekarang</button>
+                <button class="btn btn-bulk btn-block btn-bulk-order" data-id="A" data-name="Voucher Jio 18 Bulan" data-price="100000" data-bulk-qty="2" type="button">Pesan Bulk Hemat</button>
                 <a class="pkg-tutorial-link" href="https://youtu.be/j1EfO8NGXvI" target="_blank" rel="noopener">Lihat tutorial klaim Jio →</a>
                 <a class="pkg-tutorial-link" href="https://babay.web.id/jio" target="_blank" rel="noopener">Baca diskusi →</a>
-              </div>
-            </div>
-          </article>
-
-          <!-- Paket B: Invite Email 18 Bulan -->
-          <article class="pkg-card clay spotlight soldout-card reveal-on-scroll" data-cat="invite">
-            <div class="pkg-header">
-              <div class="pkg-code code-gray">B</div>
-              <div class="pkg-title-group">
-                <h3>Invite Email 18 Bulan</h3>
-                <span class="pkg-role">Member via Invite</span>
-              </div>
-            </div>
-            <div class="pkg-body">
-              <div class="price-row">
-                <span class="price-old">Rp50.000</span>
-                <div class="price-new">
-                  <strong class="text-strike">Rp40.000</strong>
-                  <span class="price-unit">/ slot</span>
-                  <span class="discount-tag text-red">Habis</span>
-                </div>
-              </div>
-              <p class="pkg-tagline">Pakai email Google pribadi kamu sebagai member.</p>
-              <ul class="pkg-features">
-                <li><span class="icon-chk text-red">✕</span><span>Durasi 18 bulan (Stok Habis).</span></li>
-                <li><span class="icon-chk text-red">✕</span><span>Pakai email pribadi milik pembeli.</span></li>
-                <li><span class="icon-chk text-red">✕</span><span>Akses Antigravity Plan Pro.</span></li>
-                <li><span class="icon-chk text-red">✕</span><span>1.000+ AI Flow Sharing.</span></li>
-                <li><span class="icon-chk text-red">✕</span><span>Akses murah tanpa jadi admin/head.</span></li>
-                <li><span class="icon-chk text-amber">!</span><span>Khusus akun belum pernah join family.</span></li>
-              </ul>
-              <div class="pkg-stock-status text-red">
-                <span>Stok: Habis</span>
-              </div>
-              <div class="pkg-actions">
-                <button class="btn btn-soldout btn-block" disabled aria-disabled="true" type="button">Stok Habis</button>
               </div>
             </div>
           </article>
@@ -3206,11 +4663,16 @@
                 </div>
               </div>
               <p class="pkg-tagline">Sudah termasuk akun Gmail dari admin, old & strong 2016–2022.</p>
+              <div class="bulk-promo-clip" data-bulk-clip="C">
+                <span class="bulk-promo-kicker">Bundle Admin</span>
+                <div class="bulk-promo-line"><span>Ambil 2 akun</span><strong>Rp155.000</strong></div>
+                <span class="bulk-promo-note">Lebih hemat untuk reseller/tim. 3 akun hanya 225K.</span>
+              </div>
               <ul class="pkg-features">
                 <li><span class="icon-chk text-green">✓</span><span>Voucher Pixel Google AI Pro 12 bulan.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>Tidak pakai akun pribadi pembeli.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>Bisa invite 5 member (termasuk akun pribadi kalian).</span></li>
-                <li><span class="icon-chk text-green">✓</span><span>Gmail old & strong tahun 2018–2022.</span></li>
+                <li><span class="icon-chk text-green">✓</span><span>Gmail old & strong tahun 2016–2022.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>Akses Antigravity Plan Pro.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>1.000+ AI Flow Credits.</span></li>
                 <li><span class="icon-chk text-pink">✓</span><span class="text-glow-pink">Garansi layanan 1 bulan.</span></li>
@@ -3221,6 +4683,7 @@
               </div>
               <div class="pkg-actions">
                 <button class="btn btn-primary btn-block btn-buy" data-id="C" data-name="Pixel 12 Bulan + Gmail Admin" data-price="90000" type="button">Beli Sekarang</button>
+                <button class="btn btn-bulk btn-block btn-bulk-order" data-id="C" data-name="Pixel 12 Bulan + Gmail Admin" data-price="90000" data-bulk-qty="2" type="button">Pesan Bulk Hemat</button>
                 <a class="pkg-tutorial-link" href="https://babay.web.id/pixel.html" target="_blank" rel="noopener">Baca diskusi →</a>
                 <a class="pkg-tutorial-link" href="https://babay.web.id/snk/pixel" target="_blank" rel="noopener">S&K Gmail Admin →</a>
               </div>
@@ -3246,6 +4709,11 @@
                 </div>
               </div>
               <p class="pkg-tagline">Paling hemat untuk pemakaian personal ringan.</p>
+              <div class="bulk-promo-clip" data-bulk-clip="D">
+                <span class="bulk-promo-kicker">Promo Slot</span>
+                <div class="bulk-promo-line"><span>Ambil 3 slot</span><strong>Rp95.000</strong></div>
+                <span class="bulk-promo-note">Cocok untuk keluarga/teman. 5 slot hanya 155K.</span>
+              </div>
               <ul class="pkg-features">
                 <li><span class="icon-chk text-green">✓</span><span>Durasi 12 bulan.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>Pakai email Google pribadi pembeli.</span></li>
@@ -3261,6 +4729,7 @@
               </div>
               <div class="pkg-actions">
                 <button class="btn btn-primary btn-block btn-buy" data-id="D" data-name="Invite Email 12 Bulan" data-price="35000" type="button">Beli Sekarang</button>
+                <button class="btn btn-bulk btn-block btn-bulk-order" data-id="D" data-name="Invite Email 12 Bulan" data-price="35000" data-bulk-qty="3" type="button">Pesan Bulk Hemat</button>
               </div>
             </div>
           </article>
@@ -3297,7 +4766,7 @@
               <h3>Voucher Pixel (Device Offer)</h3>
             </div>
             <p><strong>Voucher Pixel</strong> berasal dari promo trial Google AI Pro untuk perangkat Google Pixel tertentu. Offer muncul setelah device eligible dicek via Gemini atau Google One.</p>
-            <p>Untuk Paket C, pembeli tidak memakai akun pribadi. Sudah termasuk Gmail dari Babay old & strong 2018–2022.</p>
+            <p>Untuk Paket C, pembeli tidak memakai akun pribadi. Sudah termasuk Gmail dari Babay old & strong 2016–2022.</p>
             </div>
             <div class="soft-box">
               <p>Proses klaim, device eligible, dan risiko ada di halaman diskusi Pixel.</p>
@@ -3436,11 +4905,11 @@
             </div>
             <div class="warranty-card-body">
               <div class="w-meta">
-                <span>Penyediaan Akun: <strong>Gmail Old & Strong (2018–2022)</strong></span>
+                <span>Penyediaan Akun: <strong>Gmail Old & Strong (2016–2022)</strong></span>
                 <span>Masa Garansi: <strong class="text-green" style="color: var(--green);">1 Bulan</strong></span>
               </div>
               <p><strong>Cakupan Garansi Pixel</strong></p>
-              <p>Akun Google berasal dari admin BabayShop menggunakan Gmail old & strong (tahun 2018–2022).</p>
+              <p>Akun Google berasal dari admin BabayShop menggunakan Gmail old & strong (tahun 2016–2022).</p>
               <ul>
                 <li><strong>Garansi Backfree:</strong> Garansi HANYA berlaku jika paket mengalami backfree (kembali free) di dalam masa garansi.</li>
                 <li><strong>Pengecualian Mutlak:</strong> Jika terjadi problem penangguhan akun (suspended), dinonaktifkan, atau masalah keamanan lainnya setelah akun diterima pembeli, hal tersebut di luar tanggung jawab BabayShop.</li>
@@ -3539,7 +5008,7 @@
           <details class="faq-item">
             <summary>Paket C pakai akun pribadi pembeli atau akun admin?</summary>
             <div class="faq-content">
-              <p>Paket C memakai akun Gmail dari admin BabayShop langsung. Akun Gmail yang diberikan adalah akun old & strong tahun pembuatan 2018–2022, jadi pembeli tidak perlu memakai akun pribadi.</p>
+              <p>Paket C memakai akun Gmail dari admin BabayShop langsung. Akun Gmail yang diberikan adalah akun old & strong tahun pembuatan 2016–2022, jadi pembeli tidak perlu memakai akun pribadi.</p>
             </div>
           </details>
 
@@ -3610,7 +5079,7 @@
         </div>
       </div>
       <div class="footer-copy">
-        <p>© 2026 BabayShop · Pengiriman instan & Stok real-time otomatis 24 jam.</p>
+        <p>© 2026 BabayShop</p>
       </div>
     </div>
   </footer>
@@ -3678,6 +5147,18 @@
               <span class="form-error-msg" id="errorEmail">Masukkan email dengan format yang benar.</span>
               <small style="color: var(--muted); font-size: 11px; margin-top: 4px; display: block;" id="emailHelpNote">Wajib diisi untuk Paket Jio (A) & Invite (D). Kosongkan jika membeli Paket Pixel (C).</small>
             </div>
+
+            <div class="form-group" id="qtyGroup">
+              <label>Jumlah Pembelian</label>
+              <div class="qty-grid" id="qtyGrid">
+                <button class="qty-option active" type="button" data-qty="1">1<small>Satuan</small></button>
+                <button class="qty-option" type="button" data-qty="2">2<small>Bulk</small></button>
+                <button class="qty-option" type="button" data-qty="3">3<small>Hemat</small></button>
+                <button class="qty-option" type="button" data-qty="5">5<small>Reseller</small></button>
+              </div>
+            </div>
+
+            <div class="bulk-save-row" id="bulkSaveRow">Harga bulk aktif. Total tagihan sudah menyesuaikan promo jumlah pembelian.</div>
 
             <div class="form-checkbox">
               <input type="checkbox" id="checkAgree" checked required>
@@ -3863,6 +5344,9 @@
       const checkAgree = document.getElementById('checkAgree');
       const btnGoToPayment = document.getElementById('btnGoToPayment');
       const btnSimulatePayment = document.getElementById('btnSimulatePayment');
+      const qtyGroup = document.getElementById('qtyGroup');
+      const qtyButtons = document.querySelectorAll('.qty-option');
+      const bulkSaveRow = document.getElementById('bulkSaveRow');
       const btnDeliveryClose = document.getElementById('btnDeliveryClose');
       const emailRequiredStar = document.getElementById('emailRequiredStar');
       const emailHelpNote = document.getElementById('emailHelpNote');
@@ -3899,9 +5383,14 @@
          ========================================================================== */
       const PAKET_HARGA = {
         A: { hargaLama: 150000, hargaPromo: 99000 },
-        B: { hargaLama: 50000, hargaPromo: 40000 },
         C: { hargaLama: 130000, hargaPromo: 89000 },
         D: { hargaLama: 40000, hargaPromo: 35000 }
+      };
+
+      const BULK_HARGA = {
+        A: { 1: 99000, 2: 165000, 3: 240000, 5: 390000 },
+        C: { 1: 89000, 2: 155000, 3: 225000, 5: 360000 },
+        D: { 1: 35000, 2: 65000, 3: 95000, 5: 155000 }
       };
 
       /* ==========================================================================
@@ -4176,50 +5665,90 @@
         }, 1200);
       });
 
+      function getPackageTotal(packageId, qty) {
+        const table = BULK_HARGA[packageId];
+        if (table && table[qty]) return table[qty];
+        const base = PAKET_HARGA[packageId]?.hargaPromo || currentPackage?.unitPrice || 0;
+        return base * qty;
+      }
+
+      function updateCheckoutQuantity(qty) {
+        if (!currentPackage) return;
+        currentPackage.qty = qty;
+        currentPackage.price = getPackageTotal(currentPackage.id, qty);
+
+        qtyButtons.forEach(btn => btn.classList.toggle('active', Number(btn.getAttribute('data-qty')) === qty));
+        checkoutPriceText.textContent = formatRupiah(currentPackage.price);
+
+        const normalPrice = currentPackage.unitPrice * qty;
+        const saving = normalPrice - currentPackage.price;
+        if (saving > 0) {
+          bulkSaveRow.classList.add('active');
+          bulkSaveRow.textContent = `Promo bulk aktif: ${qty} item total ${formatRupiah(currentPackage.price)}. Hemat ${formatRupiah(saving)} dari harga satuan.`;
+        } else {
+          bulkSaveRow.classList.remove('active');
+          bulkSaveRow.textContent = 'Harga bulk aktif. Total tagihan sudah menyesuaikan promo jumlah pembelian.';
+        }
+      }
+
+      qtyButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+          updateCheckoutQuantity(Number(btn.getAttribute('data-qty')));
+        });
+      });
+
+      function openCheckoutFromButton(btn, defaultQty = 1) {
+        const id = btn.getAttribute('data-id');
+        const name = btn.getAttribute('data-name');
+        const unitPrice = PAKET_HARGA[id]?.hargaPromo || parseInt(btn.getAttribute('data-price'));
+
+        currentPackage = { id, name, unitPrice, qty: defaultQty, price: getPackageTotal(id, defaultQty) };
+
+        // Set checkout details
+        checkoutProdName.textContent = name;
+        checkoutPriceText.textContent = formatRupiah(currentPackage.price);
+
+        // Configure requirements based on package ID
+        if (id === 'C') {
+          emailRequiredStar.style.display = 'none';
+          emailHelpNote.innerHTML = '<strong style="color: var(--amber);">Khusus Paket Pixel Admin: KOSONGKAN SAJA</strong> (Gmail disediakan oleh Admin Babay).';
+          inputEmail.placeholder = 'Kosongkan saja (Akun disediakan Admin)';
+          inputEmail.disabled = true;
+          inputEmail.value = '';
+        } else {
+          emailRequiredStar.style.display = 'inline';
+          emailHelpNote.innerHTML = 'Masukkan alamat email Anda untuk menerima aktivasi/invite.';
+          inputEmail.placeholder = 'nama@gmail.com';
+          inputEmail.disabled = false;
+          inputEmail.value = '';
+        }
+
+        // Reset payment method to QRIS by default
+        setPaymentMethod('QRIS');
+        togglePaymentMethodList(false);
+        updateCheckoutQuantity(defaultQty);
+
+        // Reset form states
+        checkAgree.checked = true;
+        document.querySelectorAll('.form-group').forEach(grp => grp.classList.remove('error'));
+
+        // Show Input Step
+        showCheckoutStep(stepInput);
+
+        // Open Modal
+        checkoutModal.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Stop background scrolling
+      }
+
       // Open Checkout Modal
       const buyBtns = document.querySelectorAll('.btn-buy');
       buyBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-          const id = btn.getAttribute('data-id');
-          const name = btn.getAttribute('data-name');
-          const price = parseInt(btn.getAttribute('data-price'));
+        btn.addEventListener('click', () => openCheckoutFromButton(btn, 1));
+      });
 
-          currentPackage = { id, name, price };
-
-          // Set checkout details
-          checkoutProdName.textContent = name;
-          checkoutPriceText.textContent = formatRupiah(price);
-
-          // Configure requirements based on package ID
-          if (id === 'C') {
-            emailRequiredStar.style.display = 'none';
-            emailHelpNote.innerHTML = '<strong style="color: var(--amber);">Khusus Paket Pixel Admin: KOSONGKAN SAJA</strong> (Gmail disediakan oleh Admin Babay).';
-            inputEmail.placeholder = 'Kosongkan saja (Akun disediakan Admin)';
-            inputEmail.disabled = true;
-            inputEmail.value = '';
-          } else {
-            emailRequiredStar.style.display = 'inline';
-            emailHelpNote.innerHTML = 'Masukkan alamat email Anda untuk menerima aktivasi/invite.';
-            inputEmail.placeholder = 'nama@gmail.com';
-            inputEmail.disabled = false;
-            inputEmail.value = '';
-          }
-
-          // Reset payment method to QRIS by default
-          setPaymentMethod('QRIS');
-          togglePaymentMethodList(false);
-
-          // Reset form states
-          checkAgree.checked = true;
-          document.querySelectorAll('.form-group').forEach(grp => grp.classList.remove('error'));
-
-          // Show Input Step
-          showCheckoutStep(stepInput);
-
-          // Open Modal
-          checkoutModal.classList.add('active');
-          document.body.style.overflow = 'hidden'; // Stop background scrolling
-        });
+      const bulkBtns = document.querySelectorAll('.btn-bulk-order');
+      bulkBtns.forEach(btn => {
+        btn.addEventListener('click', () => openCheckoutFromButton(btn, Number(btn.getAttribute('data-bulk-qty')) || 2));
       });
 
       // Close Checkout Modal helper
@@ -4356,6 +5885,8 @@
 Format Konfirmasi Pembelian:
 - Tanggal Pembelian: ${formattedDate}
 - Paket AI Pro: ${currentPackage.name}
+- Jumlah: ${currentPackage.qty} item
+- Harga Paket/Bulk: ${formatRupiah(currentPackage.price)}
 - Email Aktivasi: ${emailVal}
 - Nominal Transfer: ${formatRupiah(totalPayment)} 
 - Metode Pembayaran: ${payMethodVal}
@@ -4420,6 +5951,7 @@ Berikut saya lampirkan bukti screenshot transfer pembayaran. Mohon dicek & dipro
       }, 100);
     });
   </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
