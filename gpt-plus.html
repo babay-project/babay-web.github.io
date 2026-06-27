@@ -108,6 +108,7 @@
         </div>
       </div>
 
+      <!-- UI Input Dinamis -->
       <div class="group hidden" id="customDurasiDiv">
         <label>Masukkan Durasi Custom (Hari)</label>
         <input type="number" id="inDurasiCustomVal" value="30" oninput="renderData()">
@@ -172,7 +173,7 @@
     function renderData() {
       const email = document.getElementById('inEmail').value || '...';
       const pass = document.getElementById('inPass').value || '...';
-      const secret2fa = document.getElementById('inSecret2FA').value || '...';
+      const secret2fa = document.getElementById('inSecret2FA').value.trim() || '...';
       const tglBeli = document.getElementById('inTgl').value;
             
       // Durasi Paket
@@ -197,6 +198,9 @@
       const tglFormatted = formatTanggal(tglBeli);
       const extraNote = document.getElementById('inNote').value;
 
+      // Generate Link 2FA otomatis menggunakan query string ?key=
+      let web2faLink = secret2fa !== '...' ? `https://babay.web.id/2fa/?key=${secret2fa}` : `https://babay.web.id/2fa/`;
+
       let text = `PESANAN CHATGPT PLUS BERHASIL\n` +
         `----------------------------------\n` +
         `Tgl Beli: ${tglFormatted}\n` +
@@ -208,9 +212,10 @@
         `SecretKey: ${secret2fa}\n` +
         `----------------------------------\n\n` +
         `S&K Akses Kode 2FA:\n` +
-        `1. Buka website https://babay.web.id/2fa/\n` +
-        `2. Tempel (paste) kode SecretKey 2FA yang telah diberikan pada kolom info yang tersedia.\n` +
-        `3. Contoh kode 2FA: UVCJA477H45IL3F7AHCKFYE5BWXNLJKF\n` +
+        `1. Buka website berikut untuk mengambil OTP:\n` +
+        `   ${web2faLink}\n` +
+        `2. Kode SecretKey 2FA Anda sudah otomatis terisi jika menggunakan link di atas.\n` +
+        `3. Contoh jika ingin memasukkan manual, buka webnya lalu tempel kodenya.\n` +
         `4. Setelah kode dimasukkan, sistem akan menampilkan kode verifikasi (OTP) yang dapat digunakan untuk login.\n` +
         `5. Kode OTP bersifat sementara dan akan berubah secara berkala.\n` +
         `6. Jaga kerahasiaan kode 2FA dan kode OTP untuk menghindari penyalahgunaan akses akunnya.\n\n` +
