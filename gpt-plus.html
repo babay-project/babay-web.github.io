@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>GPT Plus Generator Pro</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --space-bg: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
       --card-bg: rgba(255, 255, 255, 0.05);
-      --glass: rgba(255, 255, 255, 0.1);
       --accent: #7c4dff;
       --text: #e0e0e0;
       --border: rgba(255, 255, 255, 0.15);
@@ -91,7 +91,7 @@
 
     textarea.output-field {
       width: 100%;
-      height: 520px;
+      height: 620px;
       background: rgba(0,0,0,0.4);
       border: 1px solid var(--border);
       padding: 20px;
@@ -177,6 +177,7 @@
 
 <body>
   <div class="container">
+
     <div class="card">
       <h1>🚀 GPT Plus Generator</h1>
 
@@ -247,6 +248,7 @@
         <button class="btn btn-secondary" id="editBtn" onclick="toggleEdit()">Edit Nota</button>
       </div>
     </div>
+
   </div>
 
   <script>
@@ -335,29 +337,61 @@ SecretKey 2FA: ${secret2fa}
 Link 2FA: ${web2faLink}
 ----------------------------------
 
-⚠️ ATURAN DAN CARA LOGIN:
+⚠️ CARA LOGIN DAN CEK PAKET:
 
-Untuk penggunaan aplikasi Codex biasanya wajib diminta verifikasi nomor HP/WA. Gunakan nomor kalian sendiri. Hal tersebut di luar kuasa kami karena mengikuti kebijakan dari OpenAI.
+1. Login terlebih dahulu menggunakan Email dan Password yang sudah diberikan.
 
-• Login menggunakan Email dan Password langsung terlebih dahulu.
-• Untuk mendapatkan kode verifikasi login, masukkan kode 2FA ke situs:
-  ${web2faLink}
-• Jika menggunakan link di atas, Secret Key 2FA sudah otomatis terhubung.
-• Saran penggunaan maksimal 2 device/perangkat.
-• Dilarang mengubah Profile, Password, Billing, atau Plan akun agar tidak terjadi verifikasi ulang.
-• JANGAN menggunakan cookies/token secara berlebihan, termasuk untuk pecut AI.
-• JANGAN gunakan proxy/router yang dilarang oleh Official OpenAI.
+2. Jika saat login diminta kode verifikasi / OTP, ambil kode 2FA melalui link berikut:
+   ${web2faLink}
+
+3. Jika link 2FA belum otomatis terbuka dengan Secret Key, bisa masukkan manual Secret Key berikut:
+   ${secret2fa}
+
+4. Setelah berhasil masuk, silakan cek bagian pengaturan akun / penagihan terlebih dahulu untuk memastikan plan sudah aktif sebagai ChatGPT Plus / Pro sesuai paket yang dibeli.
+
+5. Jika plan sudah aktif, akun sudah bisa digunakan seperti biasa.
+
+----------------------------------
+
+⚠️ ATURAN PENGGUNAAN AKUN:
+
+• Gunakan akun secara wajar dan normal.
+
+• Jangan spam penggunaan fitur secara berlebihan dalam waktu dekat.
+
+• Untuk penggunaan aplikasi Codex, biasanya bisa diminta verifikasi nomor HP / WhatsApp. Silakan gunakan nomor kalian sendiri. Hal ini di luar kuasa kami karena mengikuti kebijakan OpenAI.
+
+• Penggunaan Codex juga wajib sewajarnya. Jangan dipakai sampai limit habis terus-menerus atau dipaksa berlebihan setiap hari.
+
+• Saran penggunaan maksimal 2 device / perangkat saja.
+
+• Dilarang mengubah Profile, Password, Billing, atau Plan akun agar tidak memicu verifikasi ulang.
+
+• Jangan menggunakan cookies / token secara berlebihan, termasuk untuk pecut AI atau tools sejenis.
+
+• Jangan gunakan proxy, router, atau jaringan yang dilarang oleh sistem Official OpenAI. Contoh: 9router dan sejenisnya.
+
+• Jangan menggunakan akun untuk tools pihak ketiga yang mengambil API, cookies, token, atau akses tidak resmi lainnya.
+
+----------------------------------
 
 🛡️ KETENTUAN GARANSI:
 
-• Paket Akun: ChatGPT Plus menggunakan Gmail/iCloud.
+• Paket Akun: ChatGPT Plus menggunakan Gmail / iCloud.
+
 • Metode pembayaran menggunakan method payment yang sah berdasarkan region akun dan dijamin aman.
+
 • ${garansiNote}
-• Garansi HANGUS apabila akun dipakai untuk aplikasi/tools pihak ketiga, seperti mengambil API.
-• Garansi HANGUS apabila akun digunakan di banyak perangkat melebihi batas.
-• Garansi HANGUS apabila akun dibagikan menggunakan cookies/token.
-• Penggunaan API, cookies/token, tools pihak ketiga, proxy/router terlarang, atau pemakaian berlebihan dapat melanggar kebijakan OpenAI dan berisiko akun diblokir/banned.
-• Apabila akun terkena kendala karena pelanggaran di atas, maka hal tersebut di luar garansi.`;
+
+• OpenAI memiliki sistem keamanan yang cukup ketat. Jadi gunakan akun sewajarnya agar akun tetap aman dan tidak terdeteksi aktivitas mencurigakan.
+
+• Garansi dari kami lebih mengarah ke kendala paket, seperti paket hilang, plan kembali ke Free, atau masalah paket yang bukan disebabkan oleh kesalahan pengguna.
+
+• Garansi HANGUS apabila akun digunakan secara berlebihan, spam, dipakai banyak perangkat, dibagikan ke orang lain, menggunakan cookies/token, API/tools pihak ketiga, proxy/router terlarang, atau mengubah pengaturan penting akun.
+
+• Jika akun terkena deactivated, banned, terkunci, atau bermasalah karena terdapat unsur kesalahan pengguna, maka hal tersebut berada di luar tanggung jawab kami sebagai penyedia.
+
+• Dengan membeli dan menggunakan akun ini, pembeli dianggap sudah membaca, memahami, dan menyetujui aturan penggunaan serta ketentuan garansi di atas.`;
 
       if (extraNote !== '') {
         text += `
@@ -413,6 +447,7 @@ ${extraNote}`;
       }
 
       btn.innerText = '✅ Tersalin!';
+
       setTimeout(() => {
         btn.innerText = 'Salin Pesan';
       }, 2000);
