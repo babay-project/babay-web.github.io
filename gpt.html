@@ -4,18 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Pengumuman Penting | BabayShop</title>
-  <meta name="description" content="BabayShop sedang tutup sementara untuk pemeliharaan sistem dan keperluan mendesak. Kami akan kembali dalam 1-2 hari." />
+  <meta name="description" content="BabayShop sedang tutup sementara untuk pemeliharaan sistem dan keperluan mendesak. Kami akan kembali secepatnya." />
   <meta name="robots" content="noindex, follow" />
-  <meta name="theme-color" content="#000000" />
+  <meta name="theme-color" content="#07080f" />
   
   <style>
     :root {
-      --bg: #000000;
-      --card: #161617;
-      --border: #333336;
-      --text: #f5f5f7;
-      --muted: #86868b;
+      --bg: #07080f;
+      --card: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-active: rgba(255, 255, 255, 0.18);
+      --text: #f5f7ff;
+      --muted: #98a2b8;
       --accent: #0071e3;
+      --glow: rgba(99, 102, 241, 0.15);
       --font-apple: "SF Pro Text", "SF Pro Icons", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
     }
 
@@ -31,191 +33,307 @@
       justify-content: space-between;
       align-items: center;
       padding: 40px 20px;
+      overflow-x: hidden;
+      position: relative;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Container Utama gaya Apple Typography */
+    /* ==========================================
+       BACKGROUND GRID & ORBS (DARI TEMA LAMA)
+       ========================================== */
+    .bg-grid, .bg-orbs { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .bg-grid { 
+      opacity: .04; 
+      background-size: 40px 40px; 
+      background-image: linear-gradient(to right, rgba(255,255,255,.55) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,.55) 1px, transparent 1px); 
+      mask-image: radial-gradient(circle at center, #000 30%, transparent 80%); 
+    }
+    .orb { position: absolute; border-radius: 999px; filter: blur(120px); opacity: .45; mix-blend-mode: screen; }
+    .orb.one { width: 500px; height: 500px; top: -100px; left: -100px; background: rgba(99,102,241,.3); animation: drift 15s ease-in-out infinite alternate; }
+    .orb.two { width: 550px; height: 550px; right: -150px; top: 15%; background: rgba(34,211,238,.2); animation: drift 20s ease-in-out infinite alternate-reverse; }
+    @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(50px, 40px) scale(1.1); } }
+
+    /* Container Utama */
     .container {
-      max-width: 640px;
+      max-width: 680px;
       width: 100%;
       text-align: center;
       margin: auto;
+      position: relative;
+      z-index: 10;
     }
 
     /* Language Switcher */
     .lang-switcher {
       display: inline-flex;
-      background: #2d2d2e;
+      background: rgba(255, 255, 255, 0.05);
       padding: 4px;
       border-radius: 999px;
-      margin-bottom: 40px;
+      margin-bottom: 30px;
       border: 1px solid var(--border);
+      backdrop-filter: blur(8px);
     }
 
     .lang-btn {
       background: transparent;
       border: none;
       color: var(--muted);
-      padding: 6px 16px;
+      padding: 6px 18px;
       font-size: 13px;
-      font-weight: 500;
+      font-weight: 600;
       border-radius: 999px;
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .lang-btn.active {
-      background: var(--text);
-      color: var(--bg);
-      font-weight: 600;
+      background: #ffffff;
+      color: #000000;
     }
 
     /* Logo / Icon */
     .logo-mark {
-      font-size: 48px;
-      margin-bottom: 24px;
+      font-size: 40px;
+      margin-bottom: 16px;
       display: inline-block;
-      background: linear-gradient(180deg, #fff 0%, #86868b 100%);
+      background: linear-gradient(180deg, #fff 0%, #98a2b8 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: pulseGlow 3s infinite alternate;
+    }
+    @keyframes pulseGlow { 0% { opacity: 0.7; } 100% { opacity: 1; filter: drop-shadow(0 0 8px rgba(255,255,255,0.3)); } }
+
+    /* Typography */
+    h1 {
+      font-size: clamp(30px, 5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 14px;
+      background: linear-gradient(135deg, #ffffff 40%, #cbd5e1 100%);
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
 
-    /* Typography */
-    h1 {
-      font-size: clamp(32px, 5vw, 42px);
-      font-weight: 700;
-      letter-spacing: -0.015em;
-      line-height: 1.1;
-      margin-bottom: 16px;
-      color: #ffffff;
+    .lead {
+      font-size: 17px;
+      line-height: 1.5;
+      font-weight: 400;
+      color: var(--muted);
+      margin-bottom: 30px;
     }
 
-    .lead {
-      font-size: 19px;
-      line-height: 1.4211;
-      font-weight: 400;
-      letter-spacing: -0.012em;
+    /* ==========================================
+       DIGITAL COUNTDOWN TIMER
+       ========================================== */
+    .countdown-box {
+      background: linear-gradient(145deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px 20px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+
+    .countdown-title {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: #38bdf8;
+      margin-bottom: 16px;
+    }
+
+    .timer-display {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .timer-segment {
+      min-width: 70px;
+    }
+
+    .timer-num {
+      font-family: system-ui, -apple-system, sans-serif;
+      font-size: clamp(32px, 6vw, 42px);
+      font-weight: 700;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 6px 10px;
+      border-radius: 12px;
+      display: block;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
+    }
+
+    .timer-label {
+      font-size: 11px;
       color: var(--muted);
-      margin-bottom: 40px;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-top: 6px;
+      display: block;
+      letter-spacing: 0.05em;
     }
 
     /* Card Details */
     .notice-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 30px;
       text-align: left;
-      margin-bottom: 30px;
+      backdrop-filter: blur(10px);
     }
 
     .notice-item {
-      margin-bottom: 20px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      padding-bottom: 20px;
     }
     .notice-item:last-child {
       margin-bottom: 0;
+      border-bottom: none;
+      padding-bottom: 0;
     }
 
     .notice-item h3 {
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--muted);
-      margin-bottom: 6px;
+      letter-spacing: 0.08em;
+      color: #93c5fd;
+      margin-bottom: 8px;
     }
 
     .notice-item p {
-      font-size: 16px;
-      line-height: 1.5;
-      color: var(--text);
+      font-size: 15px;
+      line-height: 1.6;
+      color: #e2e8f0;
     }
+
+    .highlight-red { color: #f87171; font-weight: 600; }
+    .highlight-amber { color: #fcd34d; font-weight: 600; }
 
     /* Footer */
     footer {
-      color: var(--muted);
+      color: rgba(152, 162, 184, 0.4);
       font-size: 12px;
       margin-top: 40px;
     }
 
-    /* Animasi Transisi Bahasa */
-    [data-lang] {
-      display: none;
-    }
-    [data-lang].visible {
-      display: block;
-    }
+    /* Language Show/Hide Toggle */
+    [data-lang] { display: none; }
+    [data-lang].visible { display: block; }
 
     @media (max-width: 480px) {
-      body { padding: 30px 16px; }
-      .notice-card { padding: 20px; border-radius: 14px; }
-      .lead { font-size: 17px; }
+      body { padding: 24px 14px; }
+      .notice-card { padding: 20px; border-radius: 16px; }
+      .countdown-box { padding: 20px 10px; }
+      .timer-segment { min-width: 58px; }
+      .lead { font-size: 15px; }
     }
   </style>
 </head>
 <body>
 
+  <!-- BACKGROUND EFFEK GRID & GLOWING ORBS -->
+  <div class="bg-orbs" aria-hidden="true"><div class="orb one"></div><div class="orb two"></div></div>
+  <div class="bg-grid" aria-hidden="true"></div>
+
   <div class="container">
+    <!-- Tombol Pilih Bahasa -->
     <div class="lang-switcher">
       <button class="lang-btn active" onclick="switchLang('id')">Indonesia</button>
       <button class="lang-btn" onclick="switchLang('en')">English</button>
     </div>
 
+    <!-- Icon -->
     <div class="logo-mark">✦</div>
 
-    <div id="content-id" data-lang="id" class="visible">
-      <h1>BabayShop Tutup Sementara</h1>
-      <p class="lead">Saat ini kami sedang tidak menerima orderan baru untuk sementara waktu.</p>
-      
-      <div class="notice-card">
-        <div class="notice-item">
-          <h3>Alasan Off</h3>
-          <p>Adanya kepentingan mendesak di luar yang tidak memungkinkan kami untuk melayani pembelian akun ChatGPT, Google AI Pro, maupun layanan lainnya saat ini.</p>
+    <!-- DIGITAL COUNTDOWN WIDGET -->
+    <div class="countdown-box">
+      <div class="countdown-title" id="timer-title">Estimasi Siap Beroperasi Kembali</div>
+      <div class="timer-display">
+        <div class="timer-segment">
+          <span class="timer-num" id="days">00</span>
+          <span class="timer-label" id="lbl-days">Hari</span>
         </div>
-        <div class="notice-item">
-          <h3>Estimasi Waktu</h3>
-          <p>Proses off sementara ini diperkirakan berlangsung selama <strong>1 sampai 2 hari</strong>.</p>
+        <div class="timer-segment">
+          <span class="timer-num" id="hours">00</span>
+          <span class="timer-label" id="lbl-hours">Jam</span>
         </div>
-        <div class="notice-item">
-          <h3>Kontak & Media Sosial</h3>
-          <p>Layanan WhatsApp dan Facebook saat ini <strong>dinonaktifkan sementara (tidak ada balasan)</strong>.</p>
+        <div class="timer-segment">
+          <span class="timer-num" id="minutes">00</span>
+          <span class="timer-label" id="lbl-min">Menit</span>
         </div>
-        <div class="notice-item">
-          <h3>Klaim Garansi & Dukungan</h3>
-          <p>Kami memohon maaf yang sebesar-besarnya. Untuk proses klaim garansi dan kendala lainnya mohon kesediaannya menunggu di hari ke-2 atau ke-3 setelah masa off selesai.</p>
-        </div>
-        <div class="notice-item">
-          <h3>Pembaruan Sistem</h3>
-          <p>Di samping itu, saat ini juga sedang dilakukan perbaikan sistem penjualan internal agar ke depannya memudahkan kalian dalam bertransaksi di BabayShop. Terima kasih atas pengertiannya.</p>
+        <div class="timer-segment">
+          <span class="timer-num" id="seconds">00</span>
+          <span class="timer-label" id="lbl-sec">Detik</span>
         </div>
       </div>
     </div>
 
-    <div id="content-en" data-lang="en">
-      <h1>BabayShop is Temporarily Closed</h1>
-      <p class="lead">We are currently not accepting any new orders at this moment.</p>
+    <!-- KONTEN BAHASA INDONESIA -->
+    <div id="content-id" data-lang="id" class="visible">
+      <h1>BabayShop Tutup Sementara</h1>
+      <p class="lead">Mohon maaf, saat ini kami tidak menerima orderan baru untuk sementara waktu.</p>
       
       <div class="notice-card">
         <div class="notice-item">
-          <h3>Reason</h3>
-          <p>Due to urgent personal matters, we are currently unable to process purchases for ChatGPT, Google AI Pro, or any other premium accounts.</p>
+          <h3>Alasan Penutupan</h3>
+          <p>Adanya kepentingan mendesak di luar yang tidak memungkinkan kami untuk tetap melayani pembelian akun ChatGPT, Google AI Pro, dan layanan lainnya saat ini.</p>
         </div>
         <div class="notice-item">
-          <h3>Estimated Time</h3>
-          <p>This temporary closure is expected to last for about <strong>1 to 2 days</strong>.</p>
+          <h3>Estimasi Waktu</h3>
+          <p>Layanan diperkirakan akan off selama <span class="highlight-amber">1 sampai 2 hari</span>. Kami menargetkan untuk aktif kembali paling lambat tanggal <span class="highlight-amber">05 Juli 2026 di pagi hari</span> (lebih cepat lebih baik).</p>
         </div>
         <div class="notice-item">
-          <h3>Social Media & Contacts</h3>
-          <p>Our official Facebook and WhatsApp channels are <strong>temporarily offline (no replies)</strong>.</p>
+          <h3>Status Kontak & Media Sosial</h3>
+          <p>Saluran komunikasi <span class="highlight-red">Facebook dan WhatsApp saat ini dinonaktifkan sementara</span>. Seluruh pesan masuk tidak akan mendapatkan balasan hingga operasional kembali dibuka.</p>
+        </div>
+        <div class="notice-item">
+          <h3>Klaim Garansi & Layanan Pelanggan</h3>
+          <p>Kami memohon maaf atas ketidaknyamanan ini. Untuk proses klaim garansi atau kendala akun lama, mohon pengertiannya untuk menunggu di <span class="highlight-amber">hari ke-2 atau ke-3</span> setelah masa off selesai.</p>
+        </div>
+        <div class="notice-item">
+          <h3>Pembaruan Sistem</h3>
+          <p>Di samping penutupan ini, kami juga sedang melakukan perbaikan dan peningkatan pada sistem penjualan internal agar proses transaksi di BabayShop kedepannya menjadi jauh lebih mudah, cepat, dan nyaman bagi Anda. Terima kasih.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- KONTEN BAHASA INGGRIS -->
+    <div id="content-en" data-lang="en">
+      <h1>BabayShop is Temporarily Closed</h1>
+      <p class="lead">We are currently not accepting new orders at this moment.</p>
+      
+      <div class="notice-card">
+        <div class="notice-item">
+          <h3>Reason for Closure</h3>
+          <p>Due to urgent external matters, we are currently unable to process purchases or manage accounts for ChatGPT, Google AI Pro, and other services.</p>
+        </div>
+        <div class="notice-item">
+          <h3>Estimated Resumption</h3>
+          <p>The system will remain offline for about <span class="highlight-amber">1 to 2 days</span>. We expect to begin accepting transactions again no later than <span class="highlight-amber">July 5th, 2026, in the morning</span> (earlier if possible).</p>
+        </div>
+        <div class="notice-item">
+          <h3>Contact & Social Media Status</h3>
+          <p>Our official <span class="highlight-red">Facebook and WhatsApp channels are currently disabled</span>. There will be no replies until our shop officially reopens.</p>
         </div>
         <div class="notice-item">
           <h3>Warranty Claims & Support</h3>
-          <p>We deeply apologize for this inconvenience. For any warranty claims or pending issues, please wait until the 2nd or 3rd day once we are fully operational again.</p>
+          <p>We deeply apologize for this situation. For any active warranty claims or support requests, please wait until the <span class="highlight-amber">2nd or 3rd day</span> after our maintenance period has fully ended.</p>
         </div>
         <div class="notice-item">
-          <h3>System Upgrades</h3>
-          <p>Behind the scenes, we are also upgrading our sales system to provide you with a much smoother and better purchase experience in the future. Thank you for your cooperation and understanding.</p>
+          <h3>System Improvements</h3>
+          <p>Behind the scenes, we are utilizing this time to perform system maintenance and upgrade our internal checkout process to offer you a seamless experience when we return. Thank you for your patience.</p>
         </div>
       </div>
     </div>
@@ -226,8 +344,51 @@
   </div>
 
   <script>
+    // Konfigurasi Target Waktu Hitung Mundur: 5 Juli 2026 pukul 06:00 AM Pagi
+    const targetDate = new Date("July 5, 2026 06:00:00").getTime();
+    let currentLang = 'id';
+
+    const timerTitles = {
+      id: "Estimasi Siap Beroperasi Kembali",
+      en: "Estimated Time Until Reopening"
+    };
+
+    const timerLabels = {
+      id: { d: "Hari", h: "Jam", m: "Menit", s: "Detik" },
+      en: { d: "Days", h: "Hours", m: "Mins", s: "Secs" }
+    };
+
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = targetDate - now;
+
+      if (distance < 0) {
+        document.getElementById("days").textContent = "00";
+        document.getElementById("hours").textContent = "00";
+        document.getElementById("minutes").textContent = "00";
+        document.getElementById("seconds").textContent = "00";
+        document.getElementById("timer-title").textContent = currentLang === 'id' ? "Sistem Sedang Bersiap Dibuka" : "System Reopening Shortly";
+        return;
+      }
+
+      const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+      document.getElementById("days").textContent = String(d).padStart(2, '0');
+      document.getElementById("hours").textContent = String(h).padStart(2, '0');
+      document.getElementById("minutes").textContent = String(m).padStart(2, '0');
+      document.getElementById("seconds").textContent = String(s).padStart(2, '0');
+    }
+
+    // Jalankan timer setiap detik
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // Fungsi Ganti Bahasa & Update Label Widget Timer
     function switchLang(lang) {
-      // Atur tombol aktif
+      currentLang = lang;
       const buttons = document.querySelectorAll('.lang-btn');
       buttons.forEach(btn => btn.classList.remove('active'));
       
@@ -237,7 +398,14 @@
         buttons[1].classList.add('active');
       }
 
-      // Tampilkan konten yang sesuai
+      // Perbarui Teks Label di Widget Timer
+      document.getElementById("timer-title").textContent = timerTitles[lang];
+      document.getElementById("lbl-days").textContent = timerLabels[lang].d;
+      document.getElementById("lbl-hours").textContent = timerLabels[lang].h;
+      document.getElementById("lbl-min").textContent = timerLabels[lang].m;
+      document.getElementById("lbl-sec").textContent = timerLabels[lang].s;
+
+      // Toggle visibilitas konten utama
       const contents = document.querySelectorAll('[data-lang]');
       contents.forEach(content => {
         if(content.getAttribute('data-lang') === lang) {
@@ -246,6 +414,8 @@
           content.classList.remove('visible');
         }
       });
+      
+      updateCountdown();
     }
   </script>
 </body>
