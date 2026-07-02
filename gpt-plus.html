@@ -14,7 +14,12 @@
       --text: #e0e0e0;
       --border: rgba(255, 255, 255, 0.15);
     }
-    * { box-sizing: border-box; font-family: 'Inter', sans-serif; }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
     body {
       background: var(--space-bg);
       background-attachment: fixed;
@@ -25,7 +30,12 @@
       justify-content: center;
       min-height: 100vh;
     }
-    .container { width: 100%; max-width: 500px; }
+
+    .container {
+      width: 100%;
+      max-width: 500px;
+    }
+
     .card {
       background: var(--card-bg);
       backdrop-filter: blur(15px);
@@ -35,10 +45,32 @@
       margin-bottom: 20px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.3);
     }
-    h1 { font-size: 22px; margin: 0 0 20px 0; color: #fff; text-align: center; text-shadow: 0 0 10px rgba(124, 77, 255, 0.5); }
-    .group { margin-bottom: 15px; }
-    label { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #a5a5a5; margin-bottom: 6px; font-weight: 700; }
-    input, select, textarea.input-field {
+
+    h1 {
+      font-size: 22px;
+      margin: 0 0 20px 0;
+      color: #fff;
+      text-align: center;
+      text-shadow: 0 0 10px rgba(124, 77, 255, 0.5);
+    }
+
+    .group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #a5a5a5;
+      margin-bottom: 6px;
+      font-weight: 700;
+    }
+
+    input,
+    select,
+    textarea.input-field {
       width: 100%;
       background: rgba(0,0,0,0.2);
       border: 1px solid var(--border);
@@ -48,10 +80,18 @@
       font-size: 14px;
       transition: 0.3s;
     }
-    input:focus, select:focus, textarea.input-field:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 10px rgba(124, 77, 255, 0.3); }
+
+    input:focus,
+    select:focus,
+    textarea.input-field:focus {
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 10px rgba(124, 77, 255, 0.3);
+    }
+
     textarea.output-field {
       width: 100%;
-      height: 480px;
+      height: 520px;
       background: rgba(0,0,0,0.4);
       border: 1px solid var(--border);
       padding: 20px;
@@ -62,6 +102,12 @@
       resize: vertical;
       line-height: 1.6;
     }
+
+    textarea.output-field[readonly] {
+      opacity: 0.92;
+      cursor: default;
+    }
+
     .btn {
       width: 100%;
       padding: 14px;
@@ -74,80 +120,138 @@
       transition: 0.3s;
       margin-top: 10px;
     }
-    .btn:hover { background: #651fff; box-shadow: 0 0 15px rgba(124, 77, 255, 0.5); }
-    .hidden { display: none; }
-    .row { display: flex; gap: 10px; }
-    .row .group { flex: 1; }
+
+    .btn:hover {
+      background: #651fff;
+      box-shadow: 0 0 15px rgba(124, 77, 255, 0.5);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .row .group {
+      flex: 1;
+    }
+
+    .action-row {
+      display: flex;
+      gap: 10px;
+    }
+
+    .action-row .btn {
+      flex: 1;
+    }
+
+    .info-mini {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #bdbdbd;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      .row,
+      .action-row {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
   </style>
 </head>
+
 <body>
   <div class="container">
     <div class="card">
       <h1>🚀 GPT Plus Generator</h1>
-            
+
       <div class="group">
         <label>Tanggal Pembelian</label>
-        <input type="date" id="inTgl" oninput="renderData()">
+        <input type="date" id="inTgl">
       </div>
 
       <div class="row">
         <div class="group">
           <label>Durasi Paket</label>
-          <select id="inDurasiSelect" onchange="toggleDurasiCustom(); renderData();">
+          <select id="inDurasiSelect" onchange="toggleDurasiCustom();">
             <option value="30">1 Bulan (30 Hari)</option>
             <option value="90">3 Bulan (90 Hari)</option>
             <option value="custom">Custom (Hari)</option>
           </select>
         </div>
+
         <div class="group">
           <label>Tipe Garansi</label>
-          <select id="inGaransiType" onchange="toggleGaransiUI(); renderData();">
+          <select id="inGaransiType" onchange="toggleGaransiUI();">
             <option value="login">Garansi Login (1x24 JAM)</option>
             <option value="hari">Garansi Hari</option>
           </select>
         </div>
       </div>
 
-      <!-- UI Input Dinamis -->
       <div class="group hidden" id="customDurasiDiv">
         <label>Masukkan Durasi Custom (Hari)</label>
-        <input type="number" id="inDurasiCustomVal" value="30" oninput="renderData()">
+        <input type="number" id="inDurasiCustomVal" value="30">
       </div>
 
       <div class="group hidden" id="garansiHariDiv">
         <label>Berapa Hari Garansi?</label>
-        <input type="number" id="inGaransiDay" value="30" oninput="renderData()">
+        <input type="number" id="inGaransiDay" value="30">
       </div>
 
       <div class="group">
         <label>Email Akun</label>
-        <input type="text" id="inEmail" placeholder="user@mail.com" oninput="renderData()">
+        <input type="text" id="inEmail" placeholder="user@mail.com">
       </div>
 
       <div class="group">
         <label>Password</label>
-        <input type="text" id="inPass" placeholder="••••••••" oninput="renderData()">
+        <input type="text" id="inPass" placeholder="••••••••">
       </div>
 
       <div class="group">
         <label>Secret Key 2FA</label>
-        <input type="text" id="inSecret2FA" placeholder="Contoh: UVCJA477H45IL3F7..." oninput="renderData()">
+        <input type="text" id="inSecret2FA" placeholder="Contoh: UVCJA477H45IL3F7...">
       </div>
 
       <div class="group">
         <label>Deskripsi Tambahan (Opsional)</label>
-        <textarea id="inNote" class="input-field" style="height: 60px;" placeholder="Contoh: Bonus Shared Akun" oninput="renderData()"></textarea>
+        <textarea id="inNote" class="input-field" style="height: 60px;" placeholder="Contoh: Bonus Shared Akun"></textarea>
       </div>
+
+      <button class="btn" onclick="generateNota()">Generate Nota</button>
+      <div class="info-mini">Nota tidak akan tampil sebelum tombol Generate Nota diklik.</div>
     </div>
 
-    <div class="card">
-      <label>Nota Hasil (Bisa Diedit Manual)</label>
-      <textarea id="output" class="output-field"></textarea>
-      <button class="btn" onclick="copyText()">Salin Pesan</button>
+    <div class="card hidden" id="resultCard">
+      <label>Nota Hasil</label>
+      <textarea id="output" class="output-field" readonly></textarea>
+
+      <div class="action-row">
+        <button class="btn" id="copyBtn" onclick="copyText()">Salin Pesan</button>
+        <button class="btn btn-secondary" id="editBtn" onclick="toggleEdit()">Edit Nota</button>
+      </div>
     </div>
   </div>
 
   <script>
+    let isEditMode = false;
+
     function toggleDurasiCustom() {
       const durasiType = document.getElementById('inDurasiSelect').value;
       document.getElementById('customDurasiDiv').classList.toggle('hidden', durasiType !== 'custom');
@@ -160,92 +264,161 @@
 
     function formatTanggal(tanggal) {
       if (!tanggal) return '-';
-      return new Date(tanggal).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+      return new Date(tanggal).toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
     }
 
     function hitungTanggal(tanggal, durasi) {
       if (!tanggal || durasi <= 0) return 'Tdk Ada';
+
       const date = new Date(tanggal);
       date.setDate(date.getDate() + parseInt(durasi));
-      return date.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+
+      return date.toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
     }
 
-    function renderData() {
+    function generateNota() {
       const email = document.getElementById('inEmail').value || '...';
       const pass = document.getElementById('inPass').value || '...';
       const secret2fa = document.getElementById('inSecret2FA').value.trim() || '...';
       const tglBeli = document.getElementById('inTgl').value;
-            
-      // Durasi Paket
-      const durasiSelect = document.getElementById('inDurasiSelect').value;
-      let durasiPaket = (durasiSelect === 'custom') ? document.getElementById('inDurasiCustomVal').value : durasiSelect;
-      let labelDurasiTeks = (durasiSelect === '30') ? "1 Bulan" : (durasiSelect === '90' ? "3 Bulan" : durasiPaket + " Hari");
 
-      // Garansi
+      const durasiSelect = document.getElementById('inDurasiSelect').value;
+      let durasiPaket = durasiSelect === 'custom'
+        ? document.getElementById('inDurasiCustomVal').value
+        : durasiSelect;
+
+      let labelDurasiTeks = durasiSelect === '30'
+        ? '1 Bulan'
+        : durasiSelect === '90'
+          ? '3 Bulan'
+          : durasiPaket + ' Hari';
+
       const garansiType = document.getElementById('inGaransiType').value;
-      let garansiTeks = "";
-      let garansiNote = "Sesuai Deskripsi Garansi 1*24 JAM.";
+      let garansiTeks = '';
+      let garansiNote = 'Sesuai deskripsi garansi login 1x24 jam.';
 
       if (garansiType === 'login') {
-        garansiTeks = "Garansi Login 1*24 JAM";
+        garansiTeks = 'Garansi Login 1x24 Jam';
       } else {
         const gDay = document.getElementById('inGaransiDay').value || 0;
         const expG = hitungTanggal(tglBeli, gDay);
         garansiTeks = `${gDay} Hari (s/d ${expG})`;
-        garansiNote = `Sesuai Deskripsi Garansi Full ${gDay} Hari.`;
-      }            
-
-      const tglFormatted = formatTanggal(tglBeli);
-      const extraNote = document.getElementById('inNote').value;
-
-      // Generate Link 2FA otomatis menggunakan query string ?key=
-      let web2faLink = secret2fa !== '...' ? `https://babay.web.id/2fa/?key=${secret2fa}` : `https://babay.web.id/2fa/`;
-
-      let text = `PESANAN CHATGPT PLUS BERHASIL\n` +
-        `----------------------------------\n` +
-        `Tgl Beli: ${tglFormatted}\n` +
-        `Durasi  : ${labelDurasiTeks}\n` +
-        `Garansi : ${garansiTeks}\n` +
-        `----------------------------------\n` +
-        `Email   : ${email}\n` +
-        `Password: ${pass}\n` +
-        `SecretKey: ${secret2fa}\n` +
-        `----------------------------------\n\n` +
-        `S&K Akses Kode 2FA:\n` +
-        `1. Buka website berikut untuk mengambil OTP:\n` +
-        `   ${web2faLink}\n` +
-        `2. Kode SecretKey 2FA Anda sudah otomatis terisi jika menggunakan link di atas.\n` +
-        `3. Contoh jika ingin memasukkan manual, buka webnya lalu tempel kodenya.\n` +
-        `4. Setelah kode dimasukkan, web akan menampilkan kode (OTP) yg dapat digunakan untuk login.\n` +
-        `5. Kode OTP bersifat sementara dan akan berubah secara berkala.\n` +
-        `6. Jaga kerahasiaan kode 2FA untuk menghindari penyalahgunaan akses akunnya.\n\n` +
-        `Cara Akses CHAT GPT:\n` +
-        `• LOGIN DENGAN EMAIL DAN PASSWORD DULU\n` +
-        `• MAKSIMAL 2 DEVICE SAJA\n` +
-        `• SILAHKAN GANTI PASSWORD DI PENGATURAN\n` +
-        `• JANGAN PAKAI 9ROUTER KALAU BISA APALAGI CODEX SECARA BERLEBIHAN\n\n` +
-        `INFO KLAIM GARANSI:\n` +
-        `${garansiNote}\n` +
-        `Dilarang keras mengubah Profile/Billing/Plan agar garansi tetap aktif.`;
-
-      if (extraNote.trim() !== "") {
-        text += `\n\nCATATAN TAMBAHAN:\n${extraNote}`;
+        garansiNote = `Sesuai deskripsi garansi full ${gDay} hari.`;
       }
 
-      document.getElementById('output').value = text;
+      const tglFormatted = formatTanggal(tglBeli);
+      const extraNote = document.getElementById('inNote').value.trim();
+
+      let web2faLink = secret2fa !== '...'
+        ? `https://babay.web.id/2fa/?key=${encodeURIComponent(secret2fa)}`
+        : `https://babay.web.id/2fa/`;
+
+      let text =
+`PESANAN CHATGPT PLUS BERHASIL
+----------------------------------
+Tgl Beli: ${tglFormatted}
+Durasi  : ${labelDurasiTeks}
+Garansi : ${garansiTeks}
+----------------------------------
+Email   : ${email}
+Password: ${pass}
+SecretKey 2FA: ${secret2fa}
+Link 2FA: ${web2faLink}
+----------------------------------
+
+⚠️ ATURAN DAN CARA LOGIN:
+
+Untuk penggunaan aplikasi Codex biasanya wajib diminta verifikasi nomor HP/WA. Gunakan nomor kalian sendiri. Hal tersebut di luar kuasa kami karena mengikuti kebijakan dari OpenAI.
+
+• Login menggunakan Email dan Password langsung terlebih dahulu.
+• Untuk mendapatkan kode verifikasi login, masukkan kode 2FA ke situs:
+  ${web2faLink}
+• Jika menggunakan link di atas, Secret Key 2FA sudah otomatis terhubung.
+• Saran penggunaan maksimal 2 device/perangkat.
+• Dilarang mengubah Profile, Password, Billing, atau Plan akun agar tidak terjadi verifikasi ulang.
+• JANGAN menggunakan cookies/token secara berlebihan, termasuk untuk pecut AI.
+• JANGAN gunakan proxy/router yang dilarang oleh Official OpenAI.
+
+🛡️ KETENTUAN GARANSI:
+
+• Paket Akun: ChatGPT Plus menggunakan Gmail/iCloud.
+• Metode pembayaran menggunakan method payment yang sah berdasarkan region akun dan dijamin aman.
+• ${garansiNote}
+• Garansi HANGUS apabila akun dipakai untuk aplikasi/tools pihak ketiga, seperti mengambil API.
+• Garansi HANGUS apabila akun digunakan di banyak perangkat melebihi batas.
+• Garansi HANGUS apabila akun dibagikan menggunakan cookies/token.
+• Penggunaan API, cookies/token, tools pihak ketiga, proxy/router terlarang, atau pemakaian berlebihan dapat melanggar kebijakan OpenAI dan berisiko akun diblokir/banned.
+• Apabila akun terkena kendala karena pelanggaran di atas, maka hal tersebut di luar garansi.`;
+
+      if (extraNote !== '') {
+        text += `
+
+CATATAN TAMBAHAN:
+${extraNote}`;
+      }
+
+      const output = document.getElementById('output');
+      const resultCard = document.getElementById('resultCard');
+      const editBtn = document.getElementById('editBtn');
+
+      output.value = text;
+      output.setAttribute('readonly', true);
+      resultCard.classList.remove('hidden');
+
+      isEditMode = false;
+      editBtn.innerText = 'Edit Nota';
+
+      resultCard.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      });
+    }
+
+    function toggleEdit() {
+      const output = document.getElementById('output');
+      const editBtn = document.getElementById('editBtn');
+
+      isEditMode = !isEditMode;
+
+      if (isEditMode) {
+        output.removeAttribute('readonly');
+        output.focus();
+        editBtn.innerText = 'Selesai Edit';
+      } else {
+        output.setAttribute('readonly', true);
+        editBtn.innerText = 'Edit Nota';
+      }
     }
 
     function copyText() {
-      const output = document.getElementById("output");
+      const output = document.getElementById('output');
+      const btn = document.getElementById('copyBtn');
+
       output.select();
-      document.execCommand("copy");
-      const btn = document.querySelector('.btn');
-      btn.innerText = "✅ Tersalin!";
-      setTimeout(() => { btn.innerText = "Salin Pesan"; }, 2000);
+      output.setSelectionRange(0, 99999);
+
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(output.value);
+      } else {
+        document.execCommand('copy');
+      }
+
+      btn.innerText = '✅ Tersalin!';
+      setTimeout(() => {
+        btn.innerText = 'Salin Pesan';
+      }, 2000);
     }
 
     document.getElementById('inTgl').valueAsDate = new Date();
-    renderData();
   </script>
 </body>
 </html>
