@@ -211,62 +211,79 @@
       <p class="note">BabayShop Gateway • Auto Redirect System</p>
     </div>
   </div>
+<script>
+const REDIRECT_DELAY_SECONDS = 3;
+const WORKER_URL = "https://telegram-rotate.bayu73732.workers.dev/";
 
-  <script>
-    const ROTATE_MINUTES = 5;
-    const REDIRECT_DELAY_SECONDS = 3;
+const activeStatus = document.getElementById("activeStatus");
+const countdownText = document.getElementById("countdownText");
+const progressBar = document.getElementById("progressBar");
+const mainButton = document.getElementById("mainButton");
+const backupButton = document.getElementById("backupButton");
 
-    const TELEGRAM_LINKS = [
-      "https://t.me/freexzteam_bot?start=inv_8044528559"
-    ];
+async function init() {
+    try {
+        const response = await fetch(WORKER_URL, {
+            cache: "no-store"
+        });
 
-    const activeStatus = document.getElementById("activeStatus");
-    const countdownText = document.getElementById("countdownText");
-    const progressBar = document.getElementById("progressBar");
-    const mainButton = document.getElementById("mainButton");
-    const backupButton = document.getElementById("backupButton");
+        if (!response.ok) throw new Error("Worker Error");
 
-    function getActiveIndex() {
-      const minute = Math.floor(Date.now() / 60000);
-      const bucket = Math.floor(minute / ROTATE_MINUTES);
-      return bucket % TELEGRAM_LINKS.length;
-    }
+        const data = await response.json();
 
-    function getActiveLink() {
-      return TELEGRAM_LINKS[getActiveIndex()];
-    }
+        mainButton.href = data.url;
 
-    function getBackupLink() {
-      return TELEGRAM_LINKS[getActiveIndex() === 0 ? 1 : 0];
-    }
-
-    function setupLinks() {
-      const activeIndex = getActiveIndex();
-      mainButton.href = getActiveLink();
-      backupButton.href = getBackupLink();
-      activeStatus.textContent = "Link " + (activeIndex + 1) + " aktif";
-    }
-
-    function startCountdown() {
-      let timeLeft = REDIRECT_DELAY_SECONDS;
-      countdownText.textContent = timeLeft;
-
-      const timer = setInterval(() => {
-        timeLeft--;
-        progressBar.style.width = ((REDIRECT_DELAY_SECONDS - timeLeft) / REDIRECT_DELAY_SECONDS) * 100 + "%";
-
-        if (timeLeft <= 0) {
-          clearInterval(timer);
-          countdownText.textContent = "GO";
-          window.location.href = getActiveLink();
-        } else {
-          countdownText.textContent = timeLeft;
+        if (backupButton) {
+            backupButton.href = data.url;
         }
-      }, 1000);
-    }
 
-    setupLinks();
-    startCountdown();
-  </script>
+        activeStatus.textContent = "Link " + data.index + " aktif";
+
+        let timeLeft = REDIRECT_DELAY_SECONDS;
+
+        countdownText.textContent = timeLeft;
+
+        progressBar.style.width = "0%";
+
+        const timer = setInterval(() => {
+
+            timeLeft--;
+
+            progressBar.style.width =
+                ((REDIRECT_DELAY_SECONDS - timeLeft) / REDIRECT_DELAY_SECONDS) * 100 + "%";
+
+            if (timeLeft <= 0) {
+
+                clearInterval(timer);
+
+                countdownText.textContent = "GO";
+
+                window.location.href = data.url;
+
+            } else {
+
+                countdownText.textContent = timeLeft;
+
+            }
+
+        }, 1000);
+
+    } catch (err) {
+
+        console.error(err);
+
+        activeStatus.textContent = "Worker Offline";
+
+        countdownText.textContent = "-";
+
+        if (backupButton) {
+            backupButton.style.display = "none";
+        }
+    }
+}
+
+init();
+</script>
+ 
 </body>
 </html>
