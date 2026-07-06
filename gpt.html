@@ -35,6 +35,83 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 
   <style>
+/* ===== Country Selector ===== */
+#countryPopup{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.85);
+    backdrop-filter:blur(10px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:999999;
+}
+
+.country-box{
+    width:min(470px,92%);
+    background:#111827;
+    border:1px solid rgba(255,255,255,.1);
+    border-radius:24px;
+    padding:30px;
+    text-align:center;
+    color:#fff;
+    animation:popup .35s ease;
+}
+
+@keyframes popup{
+    from{
+        opacity:0;
+        transform:translateY(20px) scale(.96);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+.country-box h2{
+    font-size:28px;
+    margin-bottom:10px;
+}
+
+.country-box p{
+    color:#a1a1aa;
+    line-height:1.6;
+    margin-bottom:25px;
+}
+
+.country-btn{
+    width:100%;
+    border:none;
+    border-radius:16px;
+    padding:18px;
+    margin:10px 0;
+    cursor:pointer;
+    font-size:17px;
+    font-weight:700;
+    transition:.2s;
+}
+
+.country-btn:hover{
+    transform:translateY(-2px);
+}
+
+.country-id{
+    background:linear-gradient(135deg,#16a34a,#22c55e);
+    color:#fff;
+}
+
+.country-en{
+    background:linear-gradient(135deg,#2563eb,#06b6d4);
+    color:#fff;
+}
+
+.country-note{
+    margin-top:18px;
+    font-size:13px;
+    color:#71717a;
+}
+    
     :root {
       --bg: #07080f; --bg2: #0b0e18;
       --card: rgba(255,255,255,.035); --card2: rgba(255,255,255,.055);
@@ -362,6 +439,42 @@
   </style>
 </head>
 <body>
+
+  <!-- Country & Currency Popup -->
+<div id="countryPopup">
+    <div class="country-box">
+
+        <h2>🌍 Select Language</h2>
+
+        <p>
+            Please choose your language and payment currency.
+        </p>
+
+        <button class="country-btn country-id" onclick="chooseIndonesia()">
+            🇮🇩 Bahasa Indonesia<br>
+            <small>Pembayaran Rupiah (IDR)</small>
+        </button>
+
+        <button class="country-btn country-en" onclick="chooseGlobal()">
+            🌐 English (International)<br>
+            <small>Payment in USD</small>
+        </button>
+
+        <div class="country-note">
+            Your selection will determine the language and payment currency.
+        </div>
+
+    </div>
+</div>
+  
+  
+  
+  
+  
+  
+  
+  
+  
   <div id="scrollBar" aria-hidden="true"></div>
   <div class="bg-orbs" aria-hidden="true"><div class="orb one"></div><div class="orb two"></div><div class="orb three"></div></div>
   <div class="bg-grid" aria-hidden="true"></div>
@@ -1182,5 +1295,30 @@
       });
     });
   </script>
+
+<script>
+function chooseIndonesia(){
+    localStorage.setItem("babay_region","id");
+    document.getElementById("countryPopup").style.display="none";
+}
+
+function chooseGlobal(){
+    localStorage.setItem("babay_region","global");
+    window.location.href="https://babay.web.id/chatgpt-global";
+}
+
+window.addEventListener("load",function(){
+
+    const region=localStorage.getItem("babay_region");
+
+    if(region==="id"){
+        document.getElementById("countryPopup").style.display="none";
+    }else if(region==="global"){
+        window.location.href="https://babay.web.id/chatgpt-global";
+    }
+
+});
+</script>
+  
 </body>
 </html>
