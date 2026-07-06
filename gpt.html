@@ -35,81 +35,95 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
 
   <style>
-/* ===== Country Selector ===== */
 #countryPopup{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.85);
-    backdrop-filter:blur(10px);
+    background:rgba(5,7,15,.88);
+    backdrop-filter:blur(18px);
     display:flex;
-    align-items:center;
     justify-content:center;
+    align-items:center;
     z-index:999999;
 }
 
 .country-box{
-    width:min(470px,92%);
-    background:#111827;
-    border:1px solid rgba(255,255,255,.1);
-    border-radius:24px;
-    padding:30px;
+    width:min(560px,92%);
+    padding:35px;
+    border-radius:30px;
+    background:linear-gradient(180deg,#111827,#090d18);
+    border:1px solid rgba(255,255,255,.08);
+    box-shadow:
+        0 40px 80px rgba(0,0,0,.5),
+        inset 0 1px rgba(255,255,255,.08);
+}
+
+.country-title{
     text-align:center;
+    font-size:34px;
+    font-weight:800;
     color:#fff;
-    animation:popup .35s ease;
-}
-
-@keyframes popup{
-    from{
-        opacity:0;
-        transform:translateY(20px) scale(.96);
-    }
-    to{
-        opacity:1;
-        transform:translateY(0) scale(1);
-    }
-}
-
-.country-box h2{
-    font-size:28px;
     margin-bottom:10px;
 }
 
-.country-box p{
-    color:#a1a1aa;
-    line-height:1.6;
-    margin-bottom:25px;
+.country-desc{
+    text-align:center;
+    color:#9ca3af;
+    line-height:1.7;
+    margin-bottom:28px;
 }
 
-.country-btn{
-    width:100%;
-    border:none;
-    border-radius:16px;
-    padding:18px;
-    margin:10px 0;
+.country-option{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:22px;
+    border-radius:22px;
     cursor:pointer;
-    font-size:17px;
+    margin-bottom:16px;
+    transition:.25s;
+    border:1px solid rgba(255,255,255,.08);
+    background:rgba(255,255,255,.03);
+}
+
+.country-option:hover{
+    transform:translateY(-5px);
+    border-color:#22d3ee;
+    background:rgba(34,211,238,.08);
+    box-shadow:0 20px 45px rgba(34,211,238,.15);
+}
+
+.country-left{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+.flag{
+    width:62px;
+    height:62px;
+    border-radius:18px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:32px;
+    background:rgba(255,255,255,.06);
+}
+
+.country-name{
+    color:white;
+    font-size:20px;
     font-weight:700;
-    transition:.2s;
 }
 
-.country-btn:hover{
-    transform:translateY(-2px);
+.country-sub{
+    color:#9ca3af;
+    margin-top:5px;
+    font-size:14px;
 }
 
-.country-id{
-    background:linear-gradient(135deg,#16a34a,#22c55e);
-    color:#fff;
-}
-
-.country-en{
-    background:linear-gradient(135deg,#2563eb,#06b6d4);
-    color:#fff;
-}
-
-.country-note{
-    margin-top:18px;
-    font-size:13px;
-    color:#71717a;
+.arrow{
+    font-size:28px;
+    color:#22d3ee;
 }
     
     :root {
@@ -1296,29 +1310,85 @@
     });
   </script>
 
-<script>
-function chooseIndonesia(){
-    localStorage.setItem("babay_region","id");
-    document.getElementById("countryPopup").style.display="none";
-}
 
-function chooseGlobal(){
-    localStorage.setItem("babay_region","global");
-    window.location.href="https://babay.web.id/chatgpt-global";
-}
 
-window.addEventListener("load",function(){
 
-    const region=localStorage.getItem("babay_region");
+<div id="countryPopup">
 
-    if(region==="id"){
-        document.getElementById("countryPopup").style.display="none";
-    }else if(region==="global"){
-        window.location.href="https://babay.web.id/chatgpt-global";
-    }
+<div class="country-box">
 
-});
-</script>
+<div class="country-title">
+🌍 Welcome
+</div>
+
+<div class="country-desc">
+Choose your language and payment currency.
+</div>
+
+<div class="country-option" onclick="chooseIndonesia()">
+
+<div class="country-left">
+
+<div class="flag">
+🇮🇩
+</div>
+
+<div>
+<div class="country-name">
+Indonesia
+</div>
+
+<div class="country-sub">
+Bahasa Indonesia • IDR
+</div>
+</div>
+
+</div>
+
+<div class="arrow">
+→
+</div>
+
+</div>
+
+<div class="country-option" onclick="chooseGlobal()">
+
+<div class="country-left">
+
+<div class="flag">
+🌍
+</div>
+
+<div>
+<div class="country-name">
+International
+</div>
+
+<div class="country-sub">
+English • USD
+</div>
+</div>
+
+</div>
+
+<div class="arrow">
+→
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+
+
+
+
+
+  
   
 </body>
 </html>
