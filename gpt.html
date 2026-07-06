@@ -1311,83 +1311,52 @@
   </script>
 
 
+<script>
+document.addEventListener("DOMContentLoaded", () => {
 
+    const popup = document.getElementById("countryPopup");
+    const btnID = document.getElementById("btnIndonesia");
+    const btnGlobal = document.getElementById("btnGlobal");
 
-<div id="countryPopup">
+    // Jika elemen tidak ada, hentikan
+    if (!popup || !btnID || !btnGlobal) return;
 
-<div class="country-box">
+    // Cek pilihan sebelumnya
+    const region = localStorage.getItem("babay_region");
 
-<div class="country-title">
-🌍 Welcome
-</div>
+    if(region === "id"){
+        popup.style.display = "none";
+    }
 
-<div class="country-desc">
-Choose your language and payment currency.
-</div>
+    if(region === "global"){
+        window.location.replace("https://babay.web.id/chatgpt-global");
+        return;
+    }
 
-<div class="country-option" onclick="chooseIndonesia()">
+    // Indonesia
+    btnID.addEventListener("click", function(){
 
-<div class="country-left">
+        localStorage.setItem("babay_region","id");
 
-<div class="flag">
-🇮🇩
-</div>
+        popup.style.opacity="0";
 
-<div>
-<div class="country-name">
-Indonesia
-</div>
+        setTimeout(function(){
+            popup.style.display="none";
+        },250);
 
-<div class="country-sub">
-Bahasa Indonesia • IDR
-</div>
-</div>
+    });
 
-</div>
+    // Global
+    btnGlobal.addEventListener("click", function(){
 
-<div class="arrow">
-→
-</div>
+        localStorage.setItem("babay_region","global");
 
-</div>
+        window.location.replace("https://babay.web.id/chatgpt-global");
 
-<div class="country-option" onclick="chooseGlobal()">
+    });
 
-<div class="country-left">
-
-<div class="flag">
-🌍
-</div>
-
-<div>
-<div class="country-name">
-International
-</div>
-
-<div class="country-sub">
-English • USD
-</div>
-</div>
-
-</div>
-
-<div class="arrow">
-→
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-
-
-
-
-
-
-
+});
+</script>
   
   
 </body>
