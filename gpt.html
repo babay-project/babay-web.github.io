@@ -1310,53 +1310,6 @@
     });
   </script>
 
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-    const popup = document.getElementById("countryPopup");
-    const btnID = document.getElementById("btnIndonesia");
-    const btnGlobal = document.getElementById("btnGlobal");
-
-    // Jika elemen tidak ada, hentikan
-    if (!popup || !btnID || !btnGlobal) return;
-
-    // Cek pilihan sebelumnya
-    const region = localStorage.getItem("babay_region");
-
-    if(region === "id"){
-        popup.style.display = "none";
-    }
-
-    if(region === "global"){
-        window.location.replace("https://babay.web.id/chatgpt-global");
-        return;
-    }
-
-    // Indonesia
-    btnID.addEventListener("click", function(){
-
-        localStorage.setItem("babay_region","id");
-
-        popup.style.opacity="0";
-
-        setTimeout(function(){
-            popup.style.display="none";
-        },250);
-
-    });
-
-    // Global
-    btnGlobal.addEventListener("click", function(){
-
-        localStorage.setItem("babay_region","global");
-
-        window.location.replace("https://babay.web.id/chatgpt-global");
-
-    });
-
-});
-</script>
   
   
 </body>
