@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,12 +85,13 @@
 
     .translate-box { display: inline-flex; align-items: center; gap: 8px; min-height: 34px; padding: 4px 10px; border-radius: 999px; border: 1px solid var(--border); background: rgba(255,255,255,.035); color: #e5e7eb; font-size: 12px; font-weight: 600; }
     .translate-box span { color: var(--muted); }
-    #google_translate_element { max-width: 170px; overflow: hidden; }
-    #google_translate_element select { max-width: 150px; border: 0; border-radius: 999px; padding: 5px 8px; background: rgba(255,255,255,.08); color: #fff; outline: 0; font: inherit; font-size: 12px; }
-    #google_translate_element select option { color: #111827; }
+    .translate-box select { max-width: 172px; border: 0; border-radius: 999px; padding: 6px 28px 6px 10px; background: rgba(255,255,255,.08); color: #fff; outline: 0; font: inherit; font-size: 12px; cursor: pointer; appearance: auto; }
+    .translate-box select option { color: #111827; background: #fff; }
+    #google_translate_element { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; opacity: 0; pointer-events: none; }
     .goog-te-gadget { color: transparent !important; font-size: 0 !important; }
     .goog-logo-link, .goog-te-gadget span { display: none !important; }
     body > .skiptranslate { display: none !important; }
+    body { top: 0 !important; }
     body { top: 0 !important; }
     .nav-toggle { display: none; background: transparent; border: 0; color: #fff; cursor: pointer; }
     .mobile-drawer { display: none; border-top: 1px solid var(--border); background: #0a0c14; padding: 10px 20px 18px; }
@@ -334,8 +336,8 @@
       .topbar { display: none; }
       section { padding: 36px 0; }
       .nav-inner { padding: 10px 0; }
-      .translate-box { padding: 4px 7px; max-width: 145px; }
-      #google_translate_element select { max-width: 112px; }
+      .translate-box { padding: 4px 7px; max-width: 160px; }
+      .translate-box select { max-width: 124px; }
       .brand { font-size: 18px; }
       .brand-mark { width: 32px; height: 32px; border-radius: 11px; }
       .hero { padding: 34px 0 25px; }
@@ -391,7 +393,36 @@
         <a href="#faq">FAQ</a>
       </nav>
       <div class="nav-right">
-        <div class="translate-box" title="Translate this page"><span>🌐</span><div id="google_translate_element"></div></div>
+        <label class="translate-box" title="Translate this page">
+          <span>🌐</span>
+          <select id="languageSelect" aria-label="Translate this page">
+            <option value="en">English</option>
+            <option value="id">Indonesian</option>
+            <option value="ms">Malay</option>
+            <option value="es">Spanish</option>
+            <option value="fr">French</option>
+            <option value="de">German</option>
+            <option value="it">Italian</option>
+            <option value="pt">Portuguese</option>
+            <option value="nl">Dutch</option>
+            <option value="pl">Polish</option>
+            <option value="tr">Turkish</option>
+            <option value="ru">Russian</option>
+            <option value="uk">Ukrainian</option>
+            <option value="ar">Arabic</option>
+            <option value="hi">Hindi</option>
+            <option value="bn">Bengali</option>
+            <option value="zh-CN">Chinese Simplified</option>
+            <option value="zh-TW">Chinese Traditional</option>
+            <option value="ja">Japanese</option>
+            <option value="ko">Korean</option>
+            <option value="th">Thai</option>
+            <option value="vi">Vietnamese</option>
+            <option value="fil">Filipino</option>
+            <option value="fa">Persian</option>
+          </select>
+        </label>
+        <div id="google_translate_element" aria-hidden="true"></div>
         <a class="btn btn-primary btn-sm btn-pill" href="#katalog">View Packages</a>
         <button class="nav-toggle" id="navToggle" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
       </div>
@@ -1226,13 +1257,63 @@
   </script>
 
   <script>
+    const TRANSLATE_LANGUAGES = 'af,sq,am,ar,hy,az,eu,be,bn,bs,bg,ca,ceb,zh-CN,zh-TW,co,hr,cs,da,nl,en,eo,et,fi,fr,fy,gl,ka,de,el,gu,ht,ha,haw,he,hi,hmn,hu,is,ig,id,ga,it,ja,jv,kn,kk,km,ko,ku,ky,lo,la,lv,lt,lb,mk,mg,ms,ml,mt,mi,mr,mn,my,ne,no,ny,ps,fa,pl,pt,pa,ro,ru,sm,gd,sr,st,sn,sd,si,sk,sl,so,es,su,sw,sv,tg,ta,te,th,tr,uk,ur,uz,vi,cy,xh,yi,yo,zu,fil';
+
+    function setTranslateCookie(lang) {
+      const value = lang === 'en' ? '' : `/en/${lang}`;
+      const expires = lang === 'en' ? 'Thu, 01 Jan 1970 00:00:00 GMT' : 'Fri, 31 Dec 9999 23:59:59 GMT';
+      const hostParts = location.hostname.split('.');
+      const cookieBase = `googtrans=${value}; expires=${expires}; path=/; SameSite=Lax`;
+      document.cookie = cookieBase;
+      if (location.hostname && location.hostname !== 'localhost') {
+        document.cookie = `${cookieBase}; domain=.${location.hostname}`;
+        if (hostParts.length >= 2) {
+          const rootDomain = hostParts.slice(-2).join('.');
+          document.cookie = `${cookieBase}; domain=.${rootDomain}`;
+        }
+      }
+    }
+
+    function getCurrentTranslateLang() {
+      const match = document.cookie.match(/(?:^|; )googtrans=([^;]+)/);
+      if (!match) return 'en';
+      const value = decodeURIComponent(match[1]);
+      const lang = value.split('/').filter(Boolean).pop();
+      return lang || 'en';
+    }
+
+    function applyTranslateLanguage(lang) {
+      setTranslateCookie(lang);
+      const combo = document.querySelector('.goog-te-combo');
+      if (combo && lang !== 'en') {
+        combo.value = lang;
+        combo.dispatchEvent(new Event('change'));
+        return;
+      }
+      location.reload();
+    }
+
+    function setupCustomTranslate() {
+      const select = document.getElementById('languageSelect');
+      if (!select) return;
+      const current = getCurrentTranslateLang();
+      if ([...select.options].some(option => option.value === current)) select.value = current;
+      if (select.dataset.ready === '1') return;
+      select.dataset.ready = '1';
+      select.addEventListener('change', () => applyTranslateLanguage(select.value));
+    }
+
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
         pageLanguage: 'en',
+        includedLanguages: TRANSLATE_LANGUAGES,
         autoDisplay: false,
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE
       }, 'google_translate_element');
+      setupCustomTranslate();
     }
+
+    document.addEventListener('DOMContentLoaded', setupCustomTranslate);
   </script>
   <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
