@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -803,13 +804,12 @@
                 <input type="text" class="qty-input" id="qtyInput" value="1" readonly>
                 <button type="button" class="qty-btn" id="qtyPlus">+</button>
               </div>
-              <span class="hint">Buy 2 for 5% off, buy 3 for 10%, buy 4 for 15%, maximum 5 packages for 20% off.</span>
+              <span class="hint">You can order multiple packages. The total is calculated from the unit price multiplied by the quantity.</span>
             </div>
             <label class="check-row"><input id="agree" type="checkbox" checked required><span>I have read the package details, login guide, usage rules, warranty, risks/terms, and understand that ordering means I agree.</span></label>
             <div class="summary">
               <div class="summary-row"><span>Package</span><strong id="summaryName">-</strong></div>
               <div class="summary-row"><span>Quantity</span><strong id="summaryQty">1x</strong></div>
-              <div class="summary-row"><span>Bulk Discount</span><strong id="summaryDisc">$0.00</strong></div>
               <div class="summary-row"><span>Total Bill</span><strong id="summaryPrice">$0.00</strong></div>
             </div>
             <button class="btn btn-primary btn-block btn-lg" type="submit">Continue to Payment</button>
@@ -834,9 +834,8 @@
               <div class="pay-row"><span>Merchant</span><strong>BabayShop International</strong></div>
               <div class="pay-row"><span>Transaction ID</span><strong id="txId">TX-000000</strong></div>
               <div class="pay-row"><span>Order Quantity</span><strong id="payQty">1x</strong></div>
-              <div class="pay-row"><span>Normal Total</span><strong id="basePrice">$0.00</strong></div>
-              <div class="pay-row"><span>Discount</span><strong id="payDisc">$0.00</strong></div>
-              <div class="pay-row"><span>Total After Discount</span><strong id="finalBasePrice">$0.00</strong></div>
+              <div class="pay-row"><span>Unit Price</span><strong id="unitPrice">$0.00</strong></div>
+              <div class="pay-row"><span>Order Total</span><strong id="orderTotal">$0.00</strong></div>
               <div class="pay-row"><span>Payment Currency</span><strong id="uniqueCode">USD</strong></div>
               <div class="pay-row"><span>Total Transfer</span><strong class="total" id="totalPrice">$0.00</strong></div>
             </div>
@@ -1017,7 +1016,6 @@
       
       const summaryName = $('#summaryName');
       const summaryQty = $('#summaryQty');
-      const summaryDisc = $('#summaryDisc');
       const summaryPrice = $('#summaryPrice');
       
       const qtyMinus = $('#qtyMinus');
@@ -1028,9 +1026,8 @@
       const txId = $('#txId');
       
       const payQty = $('#payQty');
-      const basePrice = $('#basePrice');
-      const payDisc = $('#payDisc');
-      const finalBasePrice = $('#finalBasePrice');
+      const unitPrice = $('#unitPrice');
+      const orderTotal = $('#orderTotal');
       const uniqueCode = $('#uniqueCode');
       const totalPrice = $('#totalPrice');
       
@@ -1054,9 +1051,7 @@
       let qty = 1;
       let unique = 0;
       let total = 0;
-      let currentDiscAmt = 0;
-      let currentFinalBase = 0;
-      let currentDiscPct = 0;
+      let currentOrderTotal = 0;
       let lastWaLink = '#';
 
       function updateSummary() {
@@ -1064,13 +1059,9 @@
         qtyInput.value = qty;
         summaryQty.textContent = qty + 'x';
         
-        let base = currentProduct.price * qty;
-        currentDiscPct = (qty - 1) * 5; 
-        currentDiscAmt = Math.round(base * (currentDiscPct / 100) * 100) / 100;
-        currentFinalBase = Math.round((base - currentDiscAmt) * 100) / 100;
-
-        summaryDisc.textContent = currentDiscAmt > 0 ? `-${rupiah(currentDiscAmt)} (${currentDiscPct}%)` : '$0';
-        summaryPrice.textContent = rupiah(currentFinalBase);
+        const base = currentProduct.price * qty;
+        currentOrderTotal = Math.round(base * 100) / 100;
+        summaryPrice.textContent = rupiah(currentOrderTotal);
       }
 
       qtyMinus.addEventListener('click', () => {
@@ -1125,13 +1116,12 @@
         if (!currentProduct || !validate()) return;
         
         unique = 0;
-        total = currentFinalBase;
+        total = currentOrderTotal;
         
         txId.textContent = `INTL-${Date.now().toString().slice(-8)}`;
         payQty.textContent = qty + 'x';
-        basePrice.textContent = rupiah(currentProduct.price * qty);
-        payDisc.textContent = currentDiscAmt > 0 ? `-${rupiah(currentDiscAmt)} (${currentDiscPct}%)` : '$0';
-        finalBasePrice.textContent = rupiah(currentFinalBase);
+        unitPrice.textContent = rupiah(currentProduct.price);
+        orderTotal.textContent = rupiah(currentOrderTotal);
         uniqueCode.textContent = 'USD';
         totalPrice.textContent = rupiah(total);
         
@@ -1205,8 +1195,7 @@
           `Method/Channel: ${currentProduct.method}\n` +
           `Unit Price: ${rupiah(currentProduct.price)}\n` +
           `Quantity: ${qty}x\n` +
-          `Discount: ${currentDiscAmt > 0 ? '-' + rupiah(currentDiscAmt) + ' (' + currentDiscPct + '%)' : '$0'}\n` +
-          `Price After Discount: ${rupiah(currentFinalBase)}\n` +
+          `Order Total: ${rupiah(currentOrderTotal)}\n` +
           `Currency: USD\n` +
           `Total Transfer: ${rupiah(total)}\n` +
           `Warranty: ${currentProduct.warranty}\n` +
@@ -1286,5 +1275,6 @@
     document.addEventListener('DOMContentLoaded', setupCustomTranslate);
   </script>
   <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
