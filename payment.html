@@ -318,14 +318,14 @@
   .other-payments summary::-webkit-details-marker{display:none}
   .other-payments .other-content{margin-top:16px}
 
-  /* Animasi maju-mundur ringan agar tombol lebih mudah terlihat */
-  @keyframes paymentButtonNudge{
-    0%,100%{transform:translateX(0)}
-    35%{transform:translateX(4px)}
-    65%{transform:translateX(-2px)}
+  /* Animasi zoom in–zoom out ringan agar tombol lebih mudah terlihat */
+  @keyframes paymentButtonZoom{
+    0%,100%{transform:scale(1)}
+    50%{transform:scale(1.025)}
   }
   .other-payments:not([open]) > summary{
-    animation:paymentButtonNudge 2.4s ease-in-out infinite;
+    animation:paymentButtonZoom 1.8s ease-in-out infinite;
+    transform-origin:center;
     will-change:transform;
   }
   .other-payments > summary:hover,
