@@ -198,6 +198,8 @@
     .price { margin-bottom: 12px; }
     .price strong { font-family: var(--font-title); font-size: 28px; letter-spacing: -.045em; }
     .price span { color: var(--muted); font-size: 12px; font-weight: 600; }
+    .old-price { display: inline-block; margin-right: 7px; color: #98a2b8; font-size: 15px; font-weight: 600; text-decoration: line-through; text-decoration-thickness: 2px; }
+    .pkg.hidden-soldout, tr.hidden-soldout { display: none !important; }
     .badge-mini { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 999px; background: rgba(34,197,94,.09); border: 1px solid rgba(34,197,94,.22); color: #bbf7d0; font-size: 10.5px; font-weight: 600; margin-left: 5px; }
 
     .stock.sold-out { color: #fca5a5; }
@@ -487,11 +489,12 @@
             <button class="filter-chip active" data-filter="all" type="button">All</button>
             <button class="filter-chip" data-filter="plus" type="button">Plus Private</button>
             <button class="filter-chip" data-filter="reseller" type="button">Reseller Package</button>
+            <button class="filter-chip" id="toggleSoldOut" type="button" aria-pressed="false">Show Sold-Out Products</button>
           </div>
         </div>
 
         <div class="packages">
-          <article class="pkg featured reveal" data-cat="plus">
+          <article class="pkg featured reveal soldout-product" data-cat="plus">
             <div class="pkg-head"><div class="pkg-code">A</div><div><h3>AI Chat GPT Plus 1 Month Private</h3><span class="pkg-role">India Channel (UPI)</span></div></div>
             <div class="pkg-body">
               <div class="price"><strong>$3.50</strong><span> / package</span><span class="badge-mini">Private</span></div>
@@ -508,7 +511,28 @@
             </div>
           </article>
 
-          <article class="pkg reveal" data-cat="plus">
+          <article class="pkg reveal" data-cat="plus" data-product="PLUS_BRAZIL_BZ">
+            <div class="pkg-head"><div class="pkg-code">BZ</div><div><h3>Chat GPT Plus 1 Month Private</h3><span class="pkg-role">Brazil Channel (PIX)</span></div></div>
+            <div class="pkg-body">
+              <div class="price"><strong>$3.80</strong><span> / package</span><span class="badge-mini">Ready</span></div>
+              <p class="tagline">Brazil channel (PIX), private account, 1-hour login warranty, and phone verification included for Codex.</p>
+              <ul class="features">
+                <li><span class="chk">✓</span><span>Private access and private GPT account.</span></li>
+                <li><span class="chk">✓</span><span>Includes a Microsoft email account + GPT account.</span></li>
+                <li><span class="chk">✓</span><span>You may change the account password.</span></li>
+                <li><span class="chk">✓</span><span>1-hour warranty for login access.</span></li>
+                <li><span class="chk">✓</span><span>Phone number verification included for Codex.</span></li>
+                <li><span class="warn">!</span><span>Maximum duration is 1 month; full duration is not guaranteed.</span></li>
+              </ul>
+              <div class="stock"><span class="stock-dot"></span>Ready</div>
+              <div class="pkg-actions">
+                <button class="btn btn-primary btn-block btn-buy" data-id="PLUS_BRAZIL_BZ" type="button">CHECKOUT!</button>
+                <a class="btn btn-ghost btn-block" href="https://babayshop.id/gpt/redeem-acc" target="_blank" rel="noopener">Claim & Password Tutorial</a>
+              </div>
+            </div>
+          </article>
+
+          <article class="pkg reveal soldout-product" data-cat="plus">
             <div class="pkg-head"><div class="pkg-code">B1</div><div><h3>AI Chat GPT Plus 1 Month Private</h3><span class="pkg-role">Europe Channel (SEPA)</span></div></div>
             <div class="pkg-body">
               <div class="price"><strong>$4.50</strong><span> / package</span><span class="badge-mini">Middle</span></div>
@@ -525,7 +549,7 @@
             </div>
           </article>
 
-          <article class="pkg reveal" data-cat="plus" id="b2">
+          <article class="pkg reveal soldout-product" data-cat="plus" id="b2">
             <div class="pkg-head"><div class="pkg-code">B2</div><div><h3>GPT Plus Using Buyer Email</h3><span class="pkg-role">Poland / Netherlands Payment Method</span></div></div>
             <div class="pkg-body">
               <div class="price"><strong>$4</strong><span> / package</span><span class="badge-mini">Buyer Email</span></div>
@@ -543,19 +567,19 @@
           </article>
 
           <article class="pkg reveal" data-cat="plus">
-            <div class="pkg-head"><div class="pkg-code">C</div><div><h3>AI Chat GPT Plus 1 Month Private</h3><span class="pkg-role">VISA Channel</span></div></div>
+            <div class="pkg-head"><div class="pkg-code">C</div><div><h3>AI Chat GPT Plus 1 Month Private</h3><span class="pkg-role">VCC VISA / Mastercard Channel</span></div></div>
             <div class="pkg-body">
-              <div class="price"><strong>$5.50</strong><span> / package</span><span class="badge-mini">Strong</span></div>
-              <p class="tagline">VISA channel, 5-day warranty, private account, and Codex.</p>
+              <div class="price"><strong>$6</strong><span> / package</span><span class="badge-mini">10-Day Warranty</span></div>
+              <p class="tagline">VCC VISA / Mastercard channel, 10-day warranty, private account, and Codex.</p>
               <ul class="features">
                 <li><span class="chk">✓</span><span>Private access and private account.</span></li>
-                <li><span class="chk">✓</span><span>5-day warranty.</span></li>
+                <li><span class="chk">✓</span><span>10-day warranty.</span></li>
                 <li><span class="chk">✓</span><span>Codex included according to package availability.</span></li>
                 <li><span class="chk">✓</span><span>1-month duration: 25–28 days.</span></li>
                 <li><span class="warn">!</span><span>Stock and processing follow supplier channel availability.</span></li>
               </ul>
-              <div class="stock"><span class="stock-dot"></span>(Pre Order)</div>
-              <div class="pkg-actions"><button class="btn btn-primary btn-block btn-buy" data-id="PLUS_APPLE" type="button">CHECKOUT!</button><a class="btn btn-ghost btn-block" href="https://chatgpt.com/plans/plus/" target="_blank" rel="noopener">Official Plus Info</a></div>
+              <div class="stock preorder"><span class="stock-dot"></span>Pre Order</div>
+              <div class="pkg-actions"><button class="btn btn-primary btn-block btn-buy" data-id="PLUS_VCC" type="button">CHECKOUT!</button><a class="btn btn-ghost btn-block" href="https://chatgpt.com/plans/plus/" target="_blank" rel="noopener">Official Plus Info</a></div>
             </div>
           </article>
 
@@ -618,6 +642,8 @@
             <ul>
               <li><strong>1-month duration:</strong> counted as 25–28 days.</li>
               <li><strong>Benefits and access:</strong> follow method, stock, account limits, channel, region, and OpenAI policy.</li>
+              <li><strong>BZ Brazil Package:</strong> private Microsoft email + GPT account, price $3.80, 1-hour login warranty, password can be changed, and phone verification is included for Codex. Maximum duration is 1 month and full duration is not guaranteed.</li>
+              <li><strong>BZ tutorial:</strong> <a href="https://babayshop.id/gpt/redeem-acc" target="_blank" rel="noopener">Claim account & change password</a>.</li>
               <li><strong>B2 Buyer Email Package:</strong> GPT Plus using the buyer’s email, 2-day warranty, Poland / Netherlands payment method, price $4.</li>
               <li><strong>Official link:</strong> <a href="https://chatgpt.com/plans/plus/" target="_blank" rel="noopener">ChatGPT Plus</a>.</li>
               <li><strong>Reseller Package:</strong> contains method/channel information from makers and suppliers. Buyers must understand risks, stock, and channel terms.</li>
@@ -628,10 +654,11 @@
             <table>
               <thead><tr><th>Package</th><th>Price</th><th>Warranty</th><th>Notes</th></tr></thead>
               <tbody>
-                <tr><td>Plus Private (India / UPI Channel)</td><td>$3.50</td><td>24 Hours</td><td>Sold Out (waiting for latest method update).</td></tr>
-                <tr><td>B1 Plus Private (Europe / SEPA Channel)</td><td>$4.50</td><td>3 Days</td><td>Sold Out (waiting for latest method update).</td></tr>
-                <tr><td>B2 GPT Plus Using Buyer Email</td><td>$4</td><td>2 Days</td><td>Sold Out (waiting for latest method update). Poland / Netherlands payment method, using the buyer’s own email.</td></tr>
-                <tr><td>Plus Private (VISA Channel)</td><td>$5.50</td><td>5 Days</td><td>Private account, Codex. Status: Pre Order.</td></tr>
+                <tr class="soldout-row"><td>Plus Private (India / UPI Channel)</td><td>$3.50</td><td>24 Hours</td><td>Sold Out (waiting for latest method update).</td></tr>
+                <tr><td>BZ Plus Private (Brazil / PIX Channel)</td><td>$3.80</td><td>1 Hour (Login)</td><td>Ready. Microsoft email + GPT account, password can be changed, phone verification included for Codex. Full duration is not guaranteed.</td></tr>
+                <tr class="soldout-row"><td>B1 Plus Private (Europe / SEPA Channel)</td><td>$4.50</td><td>3 Days</td><td>Sold Out (waiting for latest method update).</td></tr>
+                <tr class="soldout-row"><td>B2 GPT Plus Using Buyer Email</td><td>$4</td><td>2 Days</td><td>Sold Out (waiting for latest method update). Poland / Netherlands payment method, using the buyer’s own email.</td></tr>
+                <tr><td>Plus Private (VCC VISA / Mastercard Channel)</td><td>$6</td><td>10 Days</td><td>Private account and Codex. Status: Pre Order.</td></tr>
                 <tr><td>Reseller Package</td><td>$10</td><td>Channel info</td><td>GPT Plus and other method/channel information from makers and suppliers.</td></tr>
               </tbody>
             </table>
@@ -693,7 +720,7 @@
             <ul class="term-list">
               <li>ChatGPT Plus account packages may use Gmail / iCloud depending on stock and admin processing.</li>
               <li>Package processing uses a payment method based on the account region and supplier channel terms.</li>
-              <li>Warranty duration follows the selected package description: India 24 hours, B1 Europe 3 days, B2 Buyer Email 2 days, and VISA 5 days.</li>
+              <li>Warranty duration follows the selected package description: India 24 hours, BZ Brazil 1 hour for login, B1 Europe 3 days, B2 Buyer Email 2 days, and VCC VISA / Mastercard 10 days.</li>
               <li>Warranty covers package issues such as the plan disappearing, returning to Free, or other package problems not caused by user error.</li>
               <li class="warn-item">Warranty is void if the account is overused, spammed, used on too many devices, shared with others, used with cookies/tokens, API/third-party tools, prohibited proxies/routers, or if important account settings are changed.</li>
               <li class="warn-item">If the account is deactivated, banned, locked, or problematic due to user error, it is outside the provider’s responsibility.</li>
@@ -740,7 +767,8 @@
           <h2 class="section-title">Frequently asked questions</h2>
         </div>
         <div class="faq reveal">
-          <details open><summary>What is the difference between India, B1 Europe, B2 Buyer Email, and VISA packages?</summary><div class="faq-content">The core Plus functionality is generally the same, but service type and warranty differ. India UPI, B1 Europe SEPA, and B2 Buyer Email are currently sold out while waiting for the latest method update, and VISA has 5-day warranty.</div></details>
+          <details open><summary>What is the difference between India, BZ Brazil, B1 Europe, B2 Buyer Email, and VCC packages?</summary><div class="faq-content">The core Plus functionality is generally the same, but the service type and warranty differ. BZ Brazil is ready at $3.80 with a 1-hour login warranty, a Microsoft email + GPT account, and phone verification for Codex. India UPI, B1 Europe SEPA, and B2 Buyer Email are currently sold out, while the VCC VISA / Mastercard package is pre order with a 10-day warranty.</div></details>
+          <details><summary>What is included in the BZ Brazil package?</summary><div class="faq-content">BZ is a private ChatGPT Plus package through the Brazil PIX channel for $3.80. It includes a Microsoft email account and GPT account, allows password changes, includes phone verification for Codex, and has a 1-hour login warranty. Maximum duration is 1 month, but full duration is not guaranteed. Tutorial: <a href="https://babayshop.id/gpt/redeem-acc" target="_blank" rel="noopener">claim account & change password</a>.</div></details>
           <details><summary>What is the B2 GPT Plus Buyer Email package?</summary><div class="faq-content">B2 is a 1-month GPT Plus package using the buyer’s own email, priced at $4, with 2-day warranty and Poland / Netherlands payment method. Current status: Sold Out (waiting for latest method update).</div></details>
           <details><summary>What is the Reseller Package?</summary><div class="faq-content">The Reseller Package contains GPT Plus and other method/channel information directly from makers and suppliers. Price is $10, suitable for people who want to start reselling GPT with lower channel cost.</div></details>
           <details><summary>When can the warranty be void?</summary><div class="faq-content">Warranty can be void if the account is overused, spammed, used on too many devices, shared with others, used with cookies/tokens, API/third-party tools, prohibited proxies/routers, or if profile, password, billing, or plan settings are changed.</div></details>
@@ -878,6 +906,17 @@
           note: 'Sold Out (waiting for latest method update). India Channel (UPI).',
           soldOut: true
         },
+        PLUS_BRAZIL_BZ: {
+          code: 'BZ',
+          name: 'Chat GPT Plus 1 Month Private',
+          method: 'Brazil Channel (PIX)',
+          price: 3.8,
+          warranty: '1-Hour Login Warranty',
+          duration: 'Maximum 1 Month (Full Duration Not Guaranteed)',
+          desc: 'Private Microsoft email + GPT account, password can be changed, phone verification included for Codex.',
+          emailRequired: false,
+          note: 'Ready. Claim & password tutorial: https://babayshop.id/gpt/redeem-acc'
+        },
         PLUS_EUROPE_B1: {
           code: 'B1',
           name: 'AI Chat GPT Plus 1 Month Private',
@@ -903,16 +942,16 @@
           note: 'Sold Out (waiting for latest method update). Uses the buyer’s email. Poland / Netherlands payment method. 2-day warranty.',
           soldOut: true
         },
-        PLUS_APPLE: {
+        PLUS_VCC: {
           code: 'C',
           name: 'AI Chat GPT Plus 1 Month Private',
-          method: 'VISA Channel',
-          price: 5.5,
-          warranty: '5-Day Warranty',
+          method: 'VCC VISA / Mastercard Channel',
+          price: 6,
+          warranty: '10-Day Warranty',
           duration: '1 Month (25–28 Days)',
-          desc: '5-Day Warranty, Private access, private account, Codex.',
+          desc: '10-Day Warranty, private access, private account, and Codex.',
           emailRequired: false,
-          note: 'VISA Channel.'
+          note: 'Pre Order. VCC VISA / Mastercard Channel.'
         },
         RESELLER: {
           code: 'E',
@@ -990,18 +1029,40 @@
       }, { threshold: .12 });
       reveals.forEach(el => revealObs.observe(el));
 
-      const filterChips = $$('.filter-chip');
+      const categoryChips = $$('.filter-chip[data-filter]');
+      const toggleSoldOut = $('#toggleSoldOut');
       const packages = $$('.pkg');
-      filterChips.forEach(chip => {
+      const soldOutRows = $$('.soldout-row');
+      let activeFilter = 'all';
+      let showSoldOut = false;
+
+      function applyCatalogVisibility() {
+        packages.forEach(pkg => {
+          const categoryMatch = activeFilter === 'all' || pkg.dataset.cat === activeFilter;
+          const hiddenByStock = pkg.classList.contains('soldout-product') && !showSoldOut;
+          pkg.style.display = categoryMatch && !hiddenByStock ? 'flex' : 'none';
+        });
+        soldOutRows.forEach(row => row.classList.toggle('hidden-soldout', !showSoldOut));
+        toggleSoldOut.textContent = showSoldOut ? 'Hide Sold-Out Products' : 'Show Sold-Out Products';
+        toggleSoldOut.setAttribute('aria-pressed', String(showSoldOut));
+        toggleSoldOut.classList.toggle('active', showSoldOut);
+      }
+
+      categoryChips.forEach(chip => {
         chip.addEventListener('click', () => {
-          filterChips.forEach(c => c.classList.remove('active'));
+          categoryChips.forEach(c => c.classList.remove('active'));
           chip.classList.add('active');
-          const f = chip.dataset.filter;
-          packages.forEach(pkg => {
-            pkg.style.display = (f === 'all' || pkg.dataset.cat === f) ? 'flex' : 'none';
-          });
+          activeFilter = chip.dataset.filter;
+          applyCatalogVisibility();
         });
       });
+
+      toggleSoldOut.addEventListener('click', () => {
+        showSoldOut = !showSoldOut;
+        applyCatalogVisibility();
+      });
+
+      applyCatalogVisibility();
 
       const checkoutModal = $('#checkoutModal');
       const modalClose = $('#modalClose');
