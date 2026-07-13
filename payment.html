@@ -299,24 +299,93 @@
     margin-bottom: 0;
   }
   
-  /* Gambar QRIS Diperbesar */
+  /* Gambar QRIS dibuat lebih ringkas */
   .qris-img{
-    width:100%;
-    max-width:420px;
+    width:88%;
+    max-width:340px;
     border-radius:16px;
     border:1px solid var(--dcL-stroke);
     display:block;
-    margin:14px auto;
+    margin:12px auto 8px;
     background:#fff;
-    padding:12px;
+    padding:10px;
     box-shadow:0 4px 14px rgba(0,0,0,0.04);
   }
   
   /* Details/Accordion style */
-  .other-payments{margin-top:8px;margin-bottom:16px}
+  .other-payments{margin-top:4px;margin-bottom:16px}
   .other-payments summary{list-style:none;cursor:pointer}
   .other-payments summary::-webkit-details-marker{display:none}
   .other-payments .other-content{margin-top:16px}
+
+  /* Animasi maju-mundur ringan agar tombol lebih mudah terlihat */
+  @keyframes paymentButtonNudge{
+    0%,100%{transform:translateX(0)}
+    35%{transform:translateX(4px)}
+    65%{transform:translateX(-2px)}
+  }
+  .other-payments:not([open]) > summary{
+    animation:paymentButtonNudge 2.4s ease-in-out infinite;
+    will-change:transform;
+  }
+  .other-payments > summary:hover,
+  .other-payments > summary:focus-visible{
+    animation-play-state:paused;
+  }
+  .other-payments[open] > summary{
+    animation:none;
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    .other-payments:not([open]) > summary{animation:none}
+  }
+
+  /* Tombol pembayaran alternatif dibuat lebih mencolok */
+  .other-payment-btn{
+    min-height:72px;
+    flex-direction:column;
+    gap:6px;
+    padding:14px 18px;
+    line-height:1.25;
+    text-align:center;
+    color:#fff;
+    border:1px solid rgba(255,255,255,.28);
+    background:linear-gradient(135deg,#5865f2 0%,#7c3aed 55%,#ec4899 100%);
+    box-shadow:0 10px 24px rgba(88,101,242,.30);
+  }
+  .other-payment-btn:hover{
+    color:#fff;
+    border-color:rgba(255,255,255,.5);
+    box-shadow:0 14px 30px rgba(124,58,237,.38);
+    transform:translateY(-2px);
+  }
+  .other-payment-title{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    font-size:15px;
+    font-weight:800;
+  }
+  .other-payment-icon{
+    display:grid;
+    place-items:center;
+    width:28px;
+    height:28px;
+    border-radius:999px;
+    background:rgba(255,255,255,.18);
+  }
+  .other-payment-btn small{
+    font-size:10.5px;
+    font-weight:500;
+    opacity:.92;
+  }
+  .other-payment-arrow{
+    transition:transform .25s ease;
+  }
+  .other-payments[open] .other-payment-arrow{
+    transform:rotate(180deg);
+  }
   
   /* Theme toggle */
   .theme-switch{
@@ -356,6 +425,17 @@
   html[data-dc]:not(.light) .pay-item img.logo{ border-color:var(--dc-stroke) }
   html[data-dc]:not(.light) .qris-instruction { background:var(--dc-surface); border-color:var(--dc-primary) }
   html[data-dc]:not(.light) .qris-instruction ol { color:var(--dc-muted) }
+  html[data-dc]:not(.light) .other-payment-btn{
+    color:#fff;
+    border-color:rgba(255,255,255,.22);
+    background:linear-gradient(135deg,#5865f2 0%,#7c3aed 55%,#db2777 100%);
+    box-shadow:0 12px 28px rgba(0,0,0,.30);
+  }
+  html[data-dc]:not(.light) .other-payment-btn:hover{
+    color:#fff;
+    border-color:rgba(255,255,255,.45);
+    box-shadow:0 16px 34px rgba(0,0,0,.38);
+  }
   html[data-dc]:not(.light) .theme-switch{ background:rgba(43,45,49,.9); border-color:var(--dc-stroke) }
   html[data-dc]:not(.light) .toast{ background:#fff; color:#000; border-color:#fff }
 </style>
@@ -393,12 +473,15 @@
 
     <details class="other-payments">
       <summary>
-        <span class="btn btn-secondary btn-full" style="flex-direction:column;gap:5px;line-height:1.3;text-align:center;">
-          <span style="display:flex;align-items:center;justify-content:center;gap:8px;">
+        <span class="btn btn-full other-payment-btn">
+          <span class="other-payment-title">
+            <span class="other-payment-icon" aria-hidden="true">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h2"/></svg>
+            </span>
             Pilih Pembayaran Lainnya
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+            <svg class="other-payment-arrow" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
           </span>
-          <small style="font-size:10.5px;font-weight:500;opacity:.8;">Jika QRIS mengalami kendala atau ingin menggunakan metode pembayaran lain</small>
+          <small>Jika QRIS mengalami kendala atau ingin menggunakan metode pembayaran lain</small>
         </span>
       </summary>
       
