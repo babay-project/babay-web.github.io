@@ -3,193 +3,433 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GPT Plus Generator Pro</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <title>GPT Plus Bulk Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --space-bg: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-      --card-bg: rgba(255, 255, 255, 0.05);
-      --accent: #7c4dff;
-      --text: #e0e0e0;
-      --border: rgba(255, 255, 255, 0.15);
+      --bg: #08090b;
+      --bg-soft: #0f1115;
+      --card: #15171c;
+      --card-2: #1b1e24;
+      --field: #0d0f13;
+      --text: #f4f4f5;
+      --muted: #9ca3af;
+      --border: #2c3038;
+      --border-light: #3a3f49;
+      --accent: #e5e7eb;
+      --accent-text: #101114;
+      --danger: #f87171;
+      --success: #4ade80;
+      --warning-bg: rgba(248, 113, 113, 0.10);
+      --success-bg: rgba(74, 222, 128, 0.10);
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
     }
 
     * {
       box-sizing: border-box;
-      font-family: 'Inter', sans-serif;
+    }
+
+    html {
+      color-scheme: dark;
     }
 
     body {
-      background: var(--space-bg);
+      margin: 0;
+      min-height: 100vh;
+      padding: 28px 16px 60px;
+      background:
+        radial-gradient(circle at top, rgba(255,255,255,0.055), transparent 36%),
+        linear-gradient(145deg, #050607 0%, #0b0d10 48%, #111318 100%);
       background-attachment: fixed;
       color: var(--text);
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      min-height: 100vh;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
     }
 
     .container {
-      width: 100%;
-      max-width: 500px;
+      width: min(100%, 760px);
+      margin: 0 auto;
     }
 
-    .card {
-      background: var(--card-bg);
-      backdrop-filter: blur(15px);
+    .header {
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+      padding: 7px 11px;
       border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 25px;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.035);
+      color: #c4c8d0;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
     }
 
     h1 {
-      font-size: 22px;
-      margin: 0 0 20px 0;
-      color: #fff;
-      text-align: center;
-      text-shadow: 0 0 10px rgba(124, 77, 255, 0.5);
+      margin: 0;
+      font-size: clamp(25px, 5vw, 36px);
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+    }
+
+    .subtitle {
+      max-width: 620px;
+      margin: 11px auto 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.65;
+    }
+
+    .card {
+      margin-bottom: 18px;
+      padding: 24px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      background: linear-gradient(160deg, rgba(28,31,37,.98), rgba(16,18,22,.98));
+      box-shadow: var(--shadow);
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .card-title h2 {
+      margin: 0;
+      font-size: 16px;
+      letter-spacing: -0.01em;
+    }
+
+    .count-badge {
+      padding: 7px 10px;
+      border: 1px solid var(--border-light);
+      border-radius: 999px;
+      background: rgba(255,255,255,.045);
+      color: #d1d5db;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
     }
 
     .group {
       margin-bottom: 15px;
     }
 
+    .grid-2 .group {
+      margin-bottom: 0;
+    }
+
     label {
       display: block;
+      margin-bottom: 7px;
+      color: #b8bdc7;
       font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
       text-transform: uppercase;
-      letter-spacing: 1px;
-      color: #a5a5a5;
-      margin-bottom: 6px;
-      font-weight: 700;
+    }
+
+    input,
+    select,
+    textarea.input-field,
+    textarea.output-field {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      outline: none;
+      background: var(--field);
+      color: var(--text);
+      transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
     }
 
     input,
     select,
     textarea.input-field {
-      width: 100%;
-      background: rgba(0,0,0,0.2);
-      border: 1px solid var(--border);
-      padding: 12px;
-      border-radius: 12px;
-      color: #fff;
+      padding: 12px 13px;
       font-size: 14px;
-      transition: 0.3s;
     }
 
     input:focus,
     select:focus,
-    textarea.input-field:focus {
-      border-color: var(--accent);
-      outline: none;
-      box-shadow: 0 0 10px rgba(124, 77, 255, 0.3);
+    textarea.input-field:focus,
+    textarea.output-field:focus {
+      border-color: #707784;
+      box-shadow: 0 0 0 3px rgba(255,255,255,.07);
+      background: #101217;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #626875;
+    }
+
+    select {
+      cursor: pointer;
+    }
+
+    textarea.input-field {
+      min-height: 84px;
+      resize: vertical;
+      line-height: 1.55;
+    }
+
+    #inBulkAccounts {
+      min-height: 230px;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 13px;
+      white-space: pre;
     }
 
     textarea.output-field {
-      width: 100%;
-      height: 620px;
-      background: rgba(0,0,0,0.4);
-      border: 1px solid var(--border);
-      padding: 20px;
-      border-radius: 15px;
-      color: #fff;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 13px;
+      min-height: 650px;
+      padding: 18px;
       resize: vertical;
-      line-height: 1.6;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 13px;
+      line-height: 1.58;
+      white-space: pre;
     }
 
     textarea.output-field[readonly] {
-      opacity: 0.92;
       cursor: default;
+      color: #f4f4f5;
+    }
+
+    .mode-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 18px;
+      padding: 6px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #0d0f13;
+    }
+
+    .mode-btn {
+      border: 0;
+      border-radius: 10px;
+      padding: 11px 12px;
+      cursor: pointer;
+      background: transparent;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      transition: .2s ease;
+    }
+
+    .mode-btn.active {
+      background: #e5e7eb;
+      color: #111318;
+      box-shadow: 0 6px 18px rgba(0,0,0,.28);
+    }
+
+    .helper {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .format-box {
+      margin: 10px 0 0;
+      padding: 12px 13px;
+      overflow-x: auto;
+      border: 1px dashed #414650;
+      border-radius: 12px;
+      background: #0b0d10;
+      color: #d6d8dc;
+      font-family: "Courier New", Courier, monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      white-space: nowrap;
+    }
+
+    .status-box {
+      display: none;
+      margin: 13px 0 0;
+      padding: 11px 12px;
+      border-radius: 11px;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .status-box.show {
+      display: block;
+    }
+
+    .status-box.error {
+      border: 1px solid rgba(248,113,113,.35);
+      background: var(--warning-bg);
+      color: #fecaca;
+    }
+
+    .status-box.success {
+      border: 1px solid rgba(74,222,128,.30);
+      background: var(--success-bg);
+      color: #bbf7d0;
     }
 
     .btn {
       width: 100%;
-      padding: 14px;
+      margin-top: 15px;
+      padding: 14px 16px;
+      border: 1px solid transparent;
       border-radius: 12px;
-      border: none;
       cursor: pointer;
-      font-weight: 600;
       background: var(--accent);
-      color: white;
-      transition: 0.3s;
-      margin-top: 10px;
+      color: var(--accent-text);
+      font-weight: 800;
+      transition: transform .18s ease, filter .18s ease, box-shadow .18s ease;
     }
 
     .btn:hover {
-      background: #651fff;
-      box-shadow: 0 0 15px rgba(124, 77, 255, 0.5);
+      filter: brightness(1.07);
+      box-shadow: 0 10px 28px rgba(0,0,0,.38);
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0) scale(.99);
     }
 
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.12);
-      border: 1px solid var(--border);
+      border-color: var(--border-light);
+      background: #20232a;
+      color: #f3f4f6;
     }
 
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.2);
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .row {
-      display: flex;
-      gap: 10px;
-    }
-
-    .row .group {
-      flex: 1;
+    .btn-danger-soft {
+      border-color: rgba(248,113,113,.25);
+      background: rgba(248,113,113,.08);
+      color: #fecaca;
     }
 
     .action-row {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1.2fr 1fr 1fr;
       gap: 10px;
     }
 
     .action-row .btn {
-      flex: 1;
+      margin-top: 12px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .divider {
+      height: 1px;
+      margin: 19px 0;
+      background: var(--border);
     }
 
     .info-mini {
-      font-size: 12px;
-      line-height: 1.5;
-      color: #bdbdbd;
       margin-top: 10px;
+      color: #858b96;
+      font-size: 11px;
+      line-height: 1.5;
       text-align: center;
     }
 
-    @media (max-width: 480px) {
-      .row,
+    @media (max-width: 650px) {
+      body {
+        padding: 18px 10px 42px;
+      }
+
+      .card {
+        padding: 18px;
+        border-radius: 16px;
+      }
+
+      .grid-2,
       .action-row {
-        flex-direction: column;
+        grid-template-columns: 1fr;
+      }
+
+      .grid-2 {
+        gap: 15px;
+      }
+
+      .action-row {
         gap: 0;
+      }
+
+      textarea.output-field {
+        min-height: 560px;
       }
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
+  <main class="container">
+    <header class="header">
+      <div class="eyebrow">BabayShop Tools</div>
+      <h1>GPT Plus Generator</h1>
+      <p class="subtitle">Buat nota satu akun atau ratusan akun sekaligus. Input bulk otomatis menerima format dengan atau tanpa spasi di sekitar tanda pemisah.</p>
+    </header>
 
-    <div class="card">
-      <h1>🚀 GPT Plus Generator</h1>
-
-      <div class="group">
-        <label>Tanggal Pembelian</label>
-        <input type="date" id="inTgl">
+    <section class="card">
+      <div class="card-title">
+        <h2>Informasi Pesanan</h2>
+        <span class="count-badge" id="accountCountBadge">1 akun</span>
       </div>
 
-      <div class="row">
+      <div class="grid-2">
         <div class="group">
-          <label>Durasi Paket</label>
-          <select id="inDurasiSelect" onchange="toggleDurasiCustom();">
+          <label for="inTgl">Tanggal Pembelian</label>
+          <input type="date" id="inTgl">
+        </div>
+
+        <div class="group">
+          <label for="inMethod">Metode Pembayaran</label>
+          <select id="inMethod" onchange="toggleCustomMethod()">
+            <option value="VCC">VCC</option>
+            <option value="PIX">PIX</option>
+            <option value="UPI">UPI</option>
+            <option value="SEPA / BLIK">SEPA / BLIK</option>
+            <option value="APPLE PAY">Apple Pay</option>
+            <option value="custom">Custom</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="group hidden" id="customMethodDiv" style="margin-top:15px;">
+        <label for="inMethodCustom">Nama Metode Custom</label>
+        <input type="text" id="inMethodCustom" placeholder="Contoh: VISA / Mastercard">
+      </div>
+
+      <div class="grid-2" style="margin-top:15px;">
+        <div class="group">
+          <label for="inDurasiSelect">Durasi Paket</label>
+          <select id="inDurasiSelect" onchange="toggleDurasiCustom()">
             <option value="30">1 Bulan (30 Hari)</option>
             <option value="90">3 Bulan (90 Hari)</option>
             <option value="custom">Custom (Hari)</option>
@@ -197,62 +437,106 @@
         </div>
 
         <div class="group">
-          <label>Tipe Garansi</label>
-          <select id="inGaransiType" onchange="toggleGaransiUI();">
-            <option value="login">Garansi Login (1x24 JAM)</option>
-            <option value="hari">Garansi Hari</option>
+          <label for="inGaransiType">Tipe Garansi</label>
+          <select id="inGaransiType" onchange="toggleGaransiUI()">
+            <option value="login">Garansi Login (1x24 Jam)</option>
+            <option value="hari" selected>Garansi Hari</option>
           </select>
         </div>
       </div>
 
-      <div class="group hidden" id="customDurasiDiv">
-        <label>Masukkan Durasi Custom (Hari)</label>
-        <input type="number" id="inDurasiCustomVal" value="30">
+      <div class="grid-2" style="margin-top:15px;">
+        <div class="group hidden" id="customDurasiDiv">
+          <label for="inDurasiCustomVal">Durasi Custom (Hari)</label>
+          <input type="number" id="inDurasiCustomVal" min="1" value="30">
+        </div>
+
+        <div class="group" id="garansiHariDiv">
+          <label for="inGaransiDay">Jumlah Hari Garansi</label>
+          <input type="number" id="inGaransiDay" min="1" value="7">
+        </div>
       </div>
 
-      <div class="group hidden" id="garansiHariDiv">
-        <label>Berapa Hari Garansi?</label>
-        <input type="number" id="inGaransiDay" value="30">
+      <div class="divider"></div>
+
+      <div class="mode-switch" aria-label="Pilihan mode input akun">
+        <button type="button" class="mode-btn active" id="singleModeBtn" onclick="setInputMode('single')">Satu Akun</button>
+        <button type="button" class="mode-btn" id="bulkModeBtn" onclick="setInputMode('bulk')">Bulk Akun</button>
+      </div>
+
+      <div id="singleInputSection">
+        <div class="group">
+          <label for="inEmail">Email Akun</label>
+          <input type="text" id="inEmail" placeholder="user@mail.com">
+        </div>
+
+        <div class="group">
+          <label for="inPass">Password</label>
+          <input type="text" id="inPass" placeholder="Password akun">
+        </div>
+
+        <div class="group">
+          <label for="inSecret2FA">Secret Key 2FA</label>
+          <input type="text" id="inSecret2FA" placeholder="Contoh: KSGKNC2YOPBJLLBELLSD4CGLGHYSM4E4">
+        </div>
+      </div>
+
+      <div id="bulkInputSection" class="hidden">
+        <div class="group">
+          <label for="inBulkAccounts">Daftar Akun Bulk — Satu Akun per Baris</label>
+          <textarea id="inBulkAccounts" class="input-field" oninput="updateBulkCount()" spellcheck="false" placeholder="email|password|32digitkode&#10;email | password | 32digitkode"></textarea>
+          <div class="format-box">email|password|32digitkode</div>
+          <p class="helper">Boleh memakai spasi, misalnya: <strong>email | password | kode</strong>. Baris kosong akan dilewati otomatis.</p>
+          <div id="bulkStatus" class="status-box"></div>
+        </div>
       </div>
 
       <div class="group">
-        <label>Email Akun</label>
-        <input type="text" id="inEmail" placeholder="user@mail.com">
+        <label for="inNote">Deskripsi Tambahan (Opsional)</label>
+        <textarea id="inNote" class="input-field" placeholder="Contoh: Bonus Shared Akun"></textarea>
       </div>
 
-      <div class="group">
-        <label>Password</label>
-        <input type="text" id="inPass" placeholder="••••••••">
+      <button type="button" class="btn" onclick="generateNota()">Generate Nota</button>
+      <div class="info-mini">Data diproses langsung di browser dan tidak dikirim ke server melalui halaman ini.</div>
+    </section>
+
+    <section class="card hidden" id="resultCard">
+      <div class="card-title">
+        <h2>Nota Hasil</h2>
+        <span class="count-badge" id="resultCountBadge">1 akun</span>
       </div>
 
-      <div class="group">
-        <label>Secret Key 2FA</label>
-        <input type="text" id="inSecret2FA" placeholder="Contoh: UVCJA477H45IL3F7...">
-      </div>
-
-      <div class="group">
-        <label>Deskripsi Tambahan (Opsional)</label>
-        <textarea id="inNote" class="input-field" style="height: 60px;" placeholder="Contoh: Bonus Shared Akun"></textarea>
-      </div>
-
-      <button class="btn" onclick="generateNota()">Generate Nota</button>
-      <div class="info-mini">Nota tidak akan tampil sebelum tombol Generate Nota diklik.</div>
-    </div>
-
-    <div class="card hidden" id="resultCard">
-      <label>Nota Hasil</label>
-      <textarea id="output" class="output-field" readonly></textarea>
+      <textarea id="output" class="output-field" readonly spellcheck="false"></textarea>
 
       <div class="action-row">
-        <button class="btn" id="copyBtn" onclick="copyText()">Salin Pesan</button>
-        <button class="btn btn-secondary" id="editBtn" onclick="toggleEdit()">Edit Nota</button>
+        <button type="button" class="btn" id="copyBtn" onclick="copyText()">Salin Pesan</button>
+        <button type="button" class="btn btn-secondary" id="editBtn" onclick="toggleEdit()">Edit Nota</button>
+        <button type="button" class="btn btn-danger-soft" onclick="resetForm()">Reset</button>
       </div>
-    </div>
-
-  </div>
+    </section>
+  </main>
 
   <script>
     let isEditMode = false;
+    let inputMode = 'single';
+
+    function setInputMode(mode) {
+      inputMode = mode;
+
+      const isBulk = mode === 'bulk';
+      document.getElementById('singleInputSection').classList.toggle('hidden', isBulk);
+      document.getElementById('bulkInputSection').classList.toggle('hidden', !isBulk);
+      document.getElementById('singleModeBtn').classList.toggle('active', !isBulk);
+      document.getElementById('bulkModeBtn').classList.toggle('active', isBulk);
+
+      if (isBulk) {
+        updateBulkCount();
+        setTimeout(() => document.getElementById('inBulkAccounts').focus(), 50);
+      } else {
+        document.getElementById('accountCountBadge').textContent = '1 akun';
+        clearBulkStatus();
+      }
+    }
 
     function toggleDurasiCustom() {
       const durasiType = document.getElementById('inDurasiSelect').value;
@@ -260,26 +544,24 @@
     }
 
     function toggleGaransiUI() {
-      const gType = document.getElementById('inGaransiType').value;
-      document.getElementById('garansiHariDiv').classList.toggle('hidden', gType !== 'hari');
+      const garansiType = document.getElementById('inGaransiType').value;
+      document.getElementById('garansiHariDiv').classList.toggle('hidden', garansiType !== 'hari');
     }
 
-    function formatTanggal(tanggal) {
-      if (!tanggal) return '-';
-
-      return new Date(tanggal).toLocaleDateString('id-ID', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-      });
+    function toggleCustomMethod() {
+      const method = document.getElementById('inMethod').value;
+      document.getElementById('customMethodDiv').classList.toggle('hidden', method !== 'custom');
     }
 
-    function hitungTanggal(tanggal, durasi) {
-      if (!tanggal || durasi <= 0) return 'Tdk Ada';
+    function parseLocalDate(dateString) {
+      if (!dateString) return null;
+      const parts = dateString.split('-').map(Number);
+      if (parts.length !== 3 || parts.some(Number.isNaN)) return null;
+      return new Date(parts[0], parts[1] - 1, parts[2]);
+    }
 
-      const date = new Date(tanggal);
-      date.setDate(date.getDate() + parseInt(durasi));
-
+    function formatDateObject(date) {
+      if (!(date instanceof Date) || Number.isNaN(date.getTime())) return '-';
       return date.toLocaleDateString('id-ID', {
         day: 'numeric',
         month: 'long',
@@ -287,22 +569,147 @@
       });
     }
 
+    function formatTanggal(dateString) {
+      return formatDateObject(parseLocalDate(dateString));
+    }
+
+    function hitungTanggal(dateString, durasi) {
+      const date = parseLocalDate(dateString);
+      const days = Number.parseInt(durasi, 10);
+      if (!date || !Number.isFinite(days) || days <= 0) return 'Tdk Ada';
+      date.setDate(date.getDate() + days);
+      return formatDateObject(date);
+    }
+
+    function getNonEmptyBulkLines() {
+      return document.getElementById('inBulkAccounts').value
+        .split(/\r?\n/)
+        .map(line => line.trim())
+        .filter(Boolean);
+    }
+
+    function updateBulkCount() {
+      if (inputMode !== 'bulk') return;
+      const count = getNonEmptyBulkLines().length;
+      document.getElementById('accountCountBadge').textContent = `${count} akun`;
+      clearBulkStatus();
+    }
+
+    function parseBulkAccounts() {
+      const lines = getNonEmptyBulkLines();
+      const accounts = [];
+      const errors = [];
+
+      lines.forEach((line, index) => {
+        const parts = line.split('|').map(part => part.trim());
+        const lineNumber = index + 1;
+
+        if (parts.length !== 3) {
+          errors.push(`Baris ${lineNumber}: harus berisi tepat 3 bagian (email|password|kode).`);
+          return;
+        }
+
+        const [email, password, rawSecret] = parts;
+        const secret = rawSecret.replace(/\s+/g, '');
+
+        if (!email || !password || !secret) {
+          errors.push(`Baris ${lineNumber}: email, password, atau kode masih kosong.`);
+          return;
+        }
+
+        if (!email.includes('@')) {
+          errors.push(`Baris ${lineNumber}: format email tidak valid.`);
+          return;
+        }
+
+        accounts.push({ email, password, secret });
+      });
+
+      return { lines, accounts, errors };
+    }
+
+    function showBulkStatus(message, type) {
+      const box = document.getElementById('bulkStatus');
+      box.textContent = message;
+      box.className = `status-box show ${type}`;
+    }
+
+    function clearBulkStatus() {
+      const box = document.getElementById('bulkStatus');
+      box.textContent = '';
+      box.className = 'status-box';
+    }
+
+    function getAccounts() {
+      if (inputMode === 'bulk') {
+        const result = parseBulkAccounts();
+
+        if (result.lines.length < 2) {
+          showBulkStatus('Mode bulk membutuhkan minimal 2 akun. Tambahkan akun pada baris berikutnya.', 'error');
+          return null;
+        }
+
+        if (result.errors.length > 0) {
+          const preview = result.errors.slice(0, 8).join(' ');
+          const remaining = result.errors.length > 8 ? ` Masih ada ${result.errors.length - 8} kesalahan lainnya.` : '';
+          showBulkStatus(preview + remaining, 'error');
+          return null;
+        }
+
+        showBulkStatus(`${result.accounts.length} akun berhasil dibaca dan siap dibuatkan nota.`, 'success');
+        return result.accounts;
+      }
+
+      const email = document.getElementById('inEmail').value.trim();
+      const password = document.getElementById('inPass').value.trim();
+      const secret = document.getElementById('inSecret2FA').value.replace(/\s+/g, '');
+
+      if (!email || !password || !secret) {
+        alert('Lengkapi Email, Password, dan Secret Key 2FA terlebih dahulu.');
+        return null;
+      }
+
+      return [{ email, password, secret }];
+    }
+
+    function getMethodLabel() {
+      const method = document.getElementById('inMethod').value;
+      if (method !== 'custom') return method;
+      return document.getElementById('inMethodCustom').value.trim() || 'Custom';
+    }
+
+    function buildAccountBlocks(accounts) {
+      return accounts.map((account, index) => {
+        const mfaLink = `https://babay.web.id/2fa/?key=${encodeURIComponent(account.secret)}`;
+        return `#Akun_${index + 1}\nEmail   : ${account.email}\nPassword: ${account.password}\nLink MFA: ${mfaLink}\n----------------------------------`;
+      }).join('\n');
+    }
+
     function generateNota() {
-      const email = document.getElementById('inEmail').value || '...';
-      const pass = document.getElementById('inPass').value || '...';
-      const secret2fa = document.getElementById('inSecret2FA').value.trim() || '...';
+      const accounts = getAccounts();
+      if (!accounts) return;
+
       const tglBeli = document.getElementById('inTgl').value;
+      if (!tglBeli) {
+        alert('Pilih tanggal pembelian terlebih dahulu.');
+        return;
+      }
 
       const durasiSelect = document.getElementById('inDurasiSelect').value;
-      let durasiPaket = durasiSelect === 'custom'
-        ? document.getElementById('inDurasiCustomVal').value
-        : durasiSelect;
+      const durasiPaket = durasiSelect === 'custom'
+        ? Number.parseInt(document.getElementById('inDurasiCustomVal').value, 10)
+        : Number.parseInt(durasiSelect, 10);
 
-      let labelDurasiTeks = durasiSelect === '30'
+      if (!Number.isFinite(durasiPaket) || durasiPaket <= 0) {
+        alert('Durasi paket harus lebih dari 0 hari.');
+        return;
+      }
+
+      const labelDurasiTeks = durasiSelect === '30'
         ? '1 Bulan'
         : durasiSelect === '90'
           ? '3 Bulan'
-          : durasiPaket + ' Hari';
+          : `${durasiPaket} Hari`;
 
       const garansiType = document.getElementById('inGaransiType').value;
       let garansiTeks = '';
@@ -311,35 +718,37 @@
       if (garansiType === 'login') {
         garansiTeks = 'Garansi Login 1x24 Jam';
       } else {
-        const gDay = document.getElementById('inGaransiDay').value || 0;
-        const expG = hitungTanggal(tglBeli, gDay);
-        garansiTeks = `${gDay} Hari (s/d ${expG})`;
-        garansiNote = `Sesuai deskripsi garansi full ${gDay} hari.`;
+        const garansiDays = Number.parseInt(document.getElementById('inGaransiDay').value, 10);
+        if (!Number.isFinite(garansiDays) || garansiDays <= 0) {
+          alert('Jumlah hari garansi harus lebih dari 0.');
+          return;
+        }
+
+        const garansiBerakhir = hitungTanggal(tglBeli, garansiDays);
+        garansiTeks = `${garansiDays} Hari (s/d ${garansiBerakhir})`;
+        garansiNote = `Sesuai deskripsi garansi full ${garansiDays} hari.`;
       }
 
       const tglFormatted = formatTanggal(tglBeli);
+      const method = getMethodLabel();
+      const accountBlocks = buildAccountBlocks(accounts);
       const extraNote = document.getElementById('inNote').value.trim();
-
-      let web2faLink = secret2fa !== '...'
-        ? `https://babay.web.id/2fa/?key=${encodeURIComponent(secret2fa)}`
-        : `https://babay.web.id/2fa/`;
 
       let text =
 `PESANAN CHATGPT PLUS BERHASIL
 ----------------------------------
 Tgl Beli: ${tglFormatted}
 Durasi  : ${labelDurasiTeks}
+Methode : ${method}
+
 Garansi : ${garansiTeks}
 ----------------------------------
-Email   : ${email}
-Password: ${pass}
-Link MFA: ${web2faLink}
-----------------------------------
+${accountBlocks}
 
 ⚠️ CARA LOGIN DAN CEK PAKET:
 
 1. Login terlebih dahulu menggunakan Email dan Password yang sudah diberikan.
-2. Jika saat login diminta kode verifikasi / OTP, ambil kode MFA melalui link diatas.
+2. Jika saat login diminta kode verifikasi / OTP, ambil kode MFA melalui link di atas sesuai akun yang digunakan.
 3. Setelah berhasil masuk, silakan cek bagian pengaturan akun / penagihan terlebih dahulu untuk memastikan plan sudah aktif sebagai ChatGPT Plus / Pro sesuai paket yang dibeli.
 4. Jika plan sudah aktif, akun sudah bisa digunakan seperti biasa.
 ----------------------------------
@@ -349,29 +758,27 @@ Link MFA: ${web2faLink}
 • Jangan spam penggunaan fitur secara berlebihan dalam waktu dekat.
 • Untuk penggunaan aplikasi Codex, biasanya bisa diminta verifikasi nomor HP / WhatsApp. Silakan gunakan nomor kalian sendiri. Hal ini di luar kuasa kami karena mengikuti kebijakan OpenAI.
 • Penggunaan Codex juga sewajarnya. Jangan dipakai sampai limit habis terus-menerus atau dipaksa berlebihan setiap hari.
-• Saran penggunaan maksimal 3 device / perangkat saja (Dengan Penggunakan secara berkala).
-• Dilarang mengubah Profile, Password, Billing, atau Plan akun agar tidak memicu verifikasi ulang.
-• Jangan menggunakan cookies / token secara berlebihan, termasuk untuk pecut AI atau tools sejenis.
-• Jangan gunakan proxy, router, atau jaringan yang dilarang oleh sistem Official OpenAI. Contoh: 9router dan sejenisnya.
-• Jangan menggunakan akun untuk tools pihak ketiga yang mengambil API, cookies, token, atau akses tidak resmi lainnya.
+• Saran penggunaan maksimal 3 device / perangkat saja (dengan penggunaan secara berkala).
+• kasih waktu 3-6 jam kedepean untuk mengubah data & Profile.
+• Dilarang mengubah data Billing, atau Plan akun agar tidak memicu verifikasi ulang
+• Dilarang menggunakan cookies / token secara berlebihan.
+• Dilarang gunakan proxy, router, atau jaringan yang dilarang oleh sistem resmi OpenAI. Contoh: 9router dan sejenisnya.
+• Dilarang menggunakan akun untuk tools pihak ketiga yang mengambil API, cookies, token, atau akses tidak resmi lainnya.
 ----------------------------------
 
 🛡️ KETENTUAN GARANSI:
-• ${garansiNote}(lebih dari itu, akun sepenuhnya di handle oleh pembeli)
-• Metode pembayaran menggunakan method payment yang sah berdasarkan region akun.
-• OpenAI memiliki sistem keamanan yang ketat. Jadi gunakan akun sewajarnya agar akun tetap aman dan tidak terdeteksi aktivitas mencurigakan.
+• ${garansiNote} Lebih dari itu diluar tanggung jawab kami.
+• Metode pembayaran menggunakan method payment yang valid berdasarkan region akun.
+• OpenAI memiliki sistem keamanan yang ketat. Jadi jangan melanggar, agar akun tetap aman dan tidak terdeteksi aktivitas mencurigakan.
 • Garansi dari kami lebih mengarah ke kendala paket, seperti paket hilang, plan kembali ke Free, atau masalah paket yang bukan disebabkan oleh kesalahan pengguna.
-• Garansi Hangus apabila akun terdeteksi melakukan  penggunaan secara berlebihan, spam, dipakai banyak perangkat, dibagikan ke orang lain, menggunakan cookies/token, API/tools pihak ketiga, proxy/router terlarang, atau mengubah pengaturan.
-• Jika akun terkena deactivated, banned, terkunci, atau bermasalah karena terdapat unsur kesalahan pengguna, maka hal tersebut berada di luar tanggung jawab kami sebagai penyedia. 
+• Garansi hangus apabila akun terdeteksi digunakan secara berlebihan, spam, dipakai banyak perangkat, dibagikan ke orang lain, menggunakan cookies/token, API/tools pihak ketiga, proxy/router terlarang, atau mengubah pengaturan.
+• Jika akun terkena deactivated, banned, terkunci, atau bermasalah karena terdapat unsur kesalahan pengguna, maka hal tersebut berada di luar tanggung jawab kami sebagai penyedia.
 • Dengan membeli dan menggunakan akun ini, pembeli berarti sudah membaca, memahami, dan menyetujui aturan penggunaan serta ketentuannya.
-Terimakasih...
+Terima kasih...
 ----------------------------------`;
 
-      if (extraNote !== '') {
-        text += `
-
-CATATAN TAMBAHAN:
-${extraNote}`;
+      if (extraNote) {
+        text += `\n\nCATATAN TAMBAHAN:\n${extraNote}`;
       }
 
       const output = document.getElementById('output');
@@ -381,14 +788,13 @@ ${extraNote}`;
       output.value = text;
       output.setAttribute('readonly', true);
       resultCard.classList.remove('hidden');
+      document.getElementById('resultCountBadge').textContent = `${accounts.length} akun`;
+      document.getElementById('accountCountBadge').textContent = `${accounts.length} akun`;
 
       isEditMode = false;
-      editBtn.innerText = 'Edit Nota';
+      editBtn.textContent = 'Edit Nota';
 
-      resultCard.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
+      resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function toggleEdit() {
@@ -400,34 +806,61 @@ ${extraNote}`;
       if (isEditMode) {
         output.removeAttribute('readonly');
         output.focus();
-        editBtn.innerText = 'Selesai Edit';
+        editBtn.textContent = 'Selesai Edit';
       } else {
         output.setAttribute('readonly', true);
-        editBtn.innerText = 'Edit Nota';
+        editBtn.textContent = 'Edit Nota';
       }
     }
 
-    function copyText() {
+    async function copyText() {
       const output = document.getElementById('output');
       const btn = document.getElementById('copyBtn');
 
-      output.select();
-      output.setSelectionRange(0, 99999);
+      try {
+        if (navigator.clipboard && window.isSecureContext) {
+          await navigator.clipboard.writeText(output.value);
+        } else {
+          output.removeAttribute('readonly');
+          output.select();
+          output.setSelectionRange(0, output.value.length);
+          document.execCommand('copy');
+          if (!isEditMode) output.setAttribute('readonly', true);
+        }
 
-      if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(output.value);
-      } else {
-        document.execCommand('copy');
+        btn.textContent = '✅ Tersalin!';
+      } catch (error) {
+        btn.textContent = 'Gagal Menyalin';
       }
 
-      btn.innerText = '✅ Tersalin!';
-
       setTimeout(() => {
-        btn.innerText = 'Salin Pesan';
+        btn.textContent = 'Salin Pesan';
       }, 2000);
     }
 
-    document.getElementById('inTgl').valueAsDate = new Date();
+    function resetForm() {
+      document.getElementById('inEmail').value = '';
+      document.getElementById('inPass').value = '';
+      document.getElementById('inSecret2FA').value = '';
+      document.getElementById('inBulkAccounts').value = '';
+      document.getElementById('inNote').value = '';
+      document.getElementById('output').value = '';
+      document.getElementById('resultCard').classList.add('hidden');
+      document.getElementById('accountCountBadge').textContent = inputMode === 'bulk' ? '0 akun' : '1 akun';
+      clearBulkStatus();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function setToday() {
+      const now = new Date();
+      const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
+        .toISOString()
+        .slice(0, 10);
+      document.getElementById('inTgl').value = localDate;
+    }
+
+    setToday();
+    toggleGaransiUI();
   </script>
 </body>
 </html>
