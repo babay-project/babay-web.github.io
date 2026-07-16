@@ -1,9 +1,10 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GPT Plus Bulk Generator</title>
+  <title>GPT Plus Generator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -256,6 +257,60 @@
       line-height: 1.55;
     }
 
+    .account-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .account-item {
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: #0d0f13;
+    }
+
+    .account-item-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 13px;
+    }
+
+    .account-item-title {
+      color: #e5e7eb;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .remove-account-btn {
+      padding: 7px 10px;
+      border: 1px solid rgba(248,113,113,.28);
+      border-radius: 9px;
+      cursor: pointer;
+      background: rgba(248,113,113,.08);
+      color: #fecaca;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .account-fields {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 11px;
+    }
+
+    .account-fields .full-width {
+      grid-column: 1 / -1;
+    }
+
+    .add-account-btn {
+      margin-top: 12px;
+      border-color: var(--border-light);
+      background: #20232a;
+      color: #f3f4f6;
+    }
+
     .format-box {
       margin: 10px 0 0;
       padding: 12px 13px;
@@ -369,8 +424,13 @@
       }
 
       .grid-2,
-      .action-row {
+      .action-row,
+      .account-fields {
         grid-template-columns: 1fr;
+      }
+
+      .account-fields .full-width {
+        grid-column: auto;
       }
 
       .grid-2 {
@@ -393,7 +453,7 @@
     <header class="header">
       <div class="eyebrow">BabayShop Tools</div>
       <h1>GPT Plus Generator</h1>
-      <p class="subtitle">Buat nota satu akun atau ratusan akun sekaligus. Input bulk otomatis menerima format dengan atau tanpa spasi di sekitar tanda pemisah.</p>
+      <p class="subtitle">Pilih input format satu baris atau kolom terpisah. Keduanya bisa digunakan mulai dari 1 akun hingga ratusan akun.</p>
     </header>
 
     <section class="card">
@@ -459,37 +519,30 @@
 
       <div class="divider"></div>
 
-      <div class="mode-switch" aria-label="Pilihan mode input akun">
-        <button type="button" class="mode-btn active" id="singleModeBtn" onclick="setInputMode('single')">Satu Akun</button>
-        <button type="button" class="mode-btn" id="bulkModeBtn" onclick="setInputMode('bulk')">Bulk Akun</button>
+      <div class="mode-switch" aria-label="Pilihan jenis input akun">
+        <button type="button" class="mode-btn active" id="lineModeBtn" onclick="setInputMode('line')">Format 1 Garis</button>
+        <button type="button" class="mode-btn" id="columnModeBtn" onclick="setInputMode('columns')">Kolom Email & Password</button>
       </div>
 
-      <div id="singleInputSection">
+      <div id="lineInputSection">
         <div class="group">
-          <label for="inEmail">Email Akun</label>
-          <input type="text" id="inEmail" placeholder="user@mail.com">
-        </div>
-
-        <div class="group">
-          <label for="inPass">Password</label>
-          <input type="text" id="inPass" placeholder="Password akun">
-        </div>
-
-        <div class="group">
-          <label for="inSecret2FA">Secret Key 2FA</label>
-          <input type="text" id="inSecret2FA" placeholder="Contoh: KSGKNC2YOPBJLLBELLSD4CGLGHYSM4E4">
-        </div>
-      </div>
-
-      <div id="bulkInputSection" class="hidden">
-        <div class="group">
-          <label for="inBulkAccounts">Daftar Akun Bulk — Satu Akun per Baris</label>
-          <textarea id="inBulkAccounts" class="input-field" oninput="updateBulkCount()" spellcheck="false" placeholder="email|password|32digitkode&#10;email | password | 32digitkode"></textarea>
+          <label for="inBulkAccounts">Input Format 1 Garis — Satu Akun per Baris</label>
+          <textarea id="inBulkAccounts" class="input-field" oninput="updateAccountCount()" spellcheck="false" placeholder="email|password|32digitkode&#10;email | password | 32digitkode"></textarea>
           <div class="format-box">email|password|32digitkode</div>
-          <p class="helper">Boleh memakai spasi, misalnya: <strong>email | password | kode</strong>. Baris kosong akan dilewati otomatis.</p>
-          <div id="bulkStatus" class="status-box"></div>
+          <p class="helper">Bisa diisi 1 akun atau banyak akun. Spasi di sekitar tanda <strong>|</strong> diperbolehkan dan baris kosong akan dilewati.</p>
         </div>
       </div>
+
+      <div id="columnInputSection" class="hidden">
+        <div class="group">
+          <label>Input Menggunakan Kolom Terpisah</label>
+          <div id="accountList" class="account-list"></div>
+          <button type="button" class="btn add-account-btn" onclick="addAccountRow()">+ Tambah Akun</button>
+          <p class="helper">Isi Email, Password, dan kode 2FA pada kolom masing-masing. Tekan “Tambah Akun” untuk membuat akun berikutnya.</p>
+        </div>
+      </div>
+
+      <div id="bulkStatus" class="status-box"></div>
 
       <div class="group">
         <label for="inNote">Deskripsi Tambahan (Opsional)</label>
@@ -518,24 +571,86 @@
 
   <script>
     let isEditMode = false;
-    let inputMode = 'single';
+    let inputMode = 'line';
+    let accountRowCounter = 0;
 
     function setInputMode(mode) {
       inputMode = mode;
+      const useColumns = mode === 'columns';
 
-      const isBulk = mode === 'bulk';
-      document.getElementById('singleInputSection').classList.toggle('hidden', isBulk);
-      document.getElementById('bulkInputSection').classList.toggle('hidden', !isBulk);
-      document.getElementById('singleModeBtn').classList.toggle('active', !isBulk);
-      document.getElementById('bulkModeBtn').classList.toggle('active', isBulk);
+      document.getElementById('lineInputSection').classList.toggle('hidden', useColumns);
+      document.getElementById('columnInputSection').classList.toggle('hidden', !useColumns);
+      document.getElementById('lineModeBtn').classList.toggle('active', !useColumns);
+      document.getElementById('columnModeBtn').classList.toggle('active', useColumns);
 
-      if (isBulk) {
-        updateBulkCount();
-        setTimeout(() => document.getElementById('inBulkAccounts').focus(), 50);
-      } else {
-        document.getElementById('accountCountBadge').textContent = '1 akun';
-        clearBulkStatus();
+      if (useColumns && document.querySelectorAll('.account-item').length === 0) {
+        addAccountRow();
       }
+
+      clearBulkStatus();
+      updateAccountCount();
+    }
+
+    function createAccountRow(email = '', password = '', secret = '') {
+      accountRowCounter += 1;
+      const wrapper = document.createElement('div');
+      wrapper.className = 'account-item';
+      wrapper.dataset.rowId = String(accountRowCounter);
+      wrapper.innerHTML = `
+        <div class="account-item-head">
+          <span class="account-item-title">Akun #${document.querySelectorAll('.account-item').length + 1}</span>
+          <button type="button" class="remove-account-btn" onclick="removeAccountRow(this)">Hapus</button>
+        </div>
+        <div class="account-fields">
+          <div>
+            <label>Email</label>
+            <input type="email" class="column-email" value="${escapeHtml(email)}" placeholder="user@mail.com" oninput="updateAccountCount()">
+          </div>
+          <div>
+            <label>Password</label>
+            <input type="text" class="column-password" value="${escapeHtml(password)}" placeholder="Password akun" oninput="updateAccountCount()">
+          </div>
+          <div class="full-width">
+            <label>32 Digit Kode / Secret Key 2FA</label>
+            <input type="text" class="column-secret" value="${escapeHtml(secret)}" placeholder="Contoh: KSGKNC2YOPBJLLBELLSD4CGLGHYSM4E4" oninput="updateAccountCount()">
+          </div>
+        </div>`;
+      return wrapper;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+
+    function addAccountRow(email = '', password = '', secret = '') {
+      document.getElementById('accountList').appendChild(createAccountRow(email, password, secret));
+      renumberAccountRows();
+      updateAccountCount();
+    }
+
+    function removeAccountRow(button) {
+      const rows = document.querySelectorAll('.account-item');
+      if (rows.length <= 1) {
+        rows[0].querySelector('.column-email').value = '';
+        rows[0].querySelector('.column-password').value = '';
+        rows[0].querySelector('.column-secret').value = '';
+      } else {
+        button.closest('.account-item').remove();
+      }
+      renumberAccountRows();
+      clearBulkStatus();
+      updateAccountCount();
+    }
+
+    function renumberAccountRows() {
+      document.querySelectorAll('.account-item').forEach((row, index) => {
+        row.querySelector('.account-item-title').textContent = `Akun #${index + 1}`;
+      });
     }
 
     function toggleDurasiCustom() {
@@ -588,9 +703,20 @@
         .filter(Boolean);
     }
 
-    function updateBulkCount() {
-      if (inputMode !== 'bulk') return;
-      const count = getNonEmptyBulkLines().length;
+    function updateAccountCount() {
+      let count = 0;
+
+      if (inputMode === 'line') {
+        count = getNonEmptyBulkLines().length;
+      } else {
+        count = Array.from(document.querySelectorAll('.account-item')).filter(row => {
+          const email = row.querySelector('.column-email').value.trim();
+          const password = row.querySelector('.column-password').value.trim();
+          const secret = row.querySelector('.column-secret').value.trim();
+          return email || password || secret;
+        }).length;
+      }
+
       document.getElementById('accountCountBadge').textContent = `${count} akun`;
       clearBulkStatus();
     }
@@ -640,12 +766,41 @@
       box.className = 'status-box';
     }
 
+    function parseColumnAccounts() {
+      const rows = Array.from(document.querySelectorAll('.account-item'));
+      const accounts = [];
+      const errors = [];
+
+      rows.forEach((row, index) => {
+        const email = row.querySelector('.column-email').value.trim();
+        const password = row.querySelector('.column-password').value.trim();
+        const secret = row.querySelector('.column-secret').value.replace(/\s+/g, '');
+        const rowNumber = index + 1;
+
+        if (!email && !password && !secret) return;
+
+        if (!email || !password || !secret) {
+          errors.push(`Akun ${rowNumber}: Email, Password, dan kode harus diisi lengkap.`);
+          return;
+        }
+
+        if (!email.includes('@')) {
+          errors.push(`Akun ${rowNumber}: format email tidak valid.`);
+          return;
+        }
+
+        accounts.push({ email, password, secret });
+      });
+
+      return { accounts, errors };
+    }
+
     function getAccounts() {
-      if (inputMode === 'bulk') {
+      if (inputMode === 'line') {
         const result = parseBulkAccounts();
 
-        if (result.lines.length < 2) {
-          showBulkStatus('Mode bulk membutuhkan minimal 2 akun. Tambahkan akun pada baris berikutnya.', 'error');
+        if (result.lines.length < 1) {
+          showBulkStatus('Masukkan minimal 1 akun menggunakan format email|password|kode.', 'error');
           return null;
         }
 
@@ -656,20 +811,26 @@
           return null;
         }
 
-        showBulkStatus(`${result.accounts.length} akun berhasil dibaca dan siap dibuatkan nota.`, 'success');
+        showBulkStatus(`${result.accounts.length} akun berhasil dibaca dari format satu garis.`, 'success');
         return result.accounts;
       }
 
-      const email = document.getElementById('inEmail').value.trim();
-      const password = document.getElementById('inPass').value.trim();
-      const secret = document.getElementById('inSecret2FA').value.replace(/\s+/g, '');
+      const result = parseColumnAccounts();
 
-      if (!email || !password || !secret) {
-        alert('Lengkapi Email, Password, dan Secret Key 2FA terlebih dahulu.');
+      if (result.accounts.length < 1 && result.errors.length < 1) {
+        showBulkStatus('Isi minimal 1 akun pada kolom Email, Password, dan kode 2FA.', 'error');
         return null;
       }
 
-      return [{ email, password, secret }];
+      if (result.errors.length > 0) {
+        const preview = result.errors.slice(0, 8).join(' ');
+        const remaining = result.errors.length > 8 ? ` Masih ada ${result.errors.length - 8} kesalahan lainnya.` : '';
+        showBulkStatus(preview + remaining, 'error');
+        return null;
+      }
+
+      showBulkStatus(`${result.accounts.length} akun berhasil dibaca dari kolom terpisah.`, 'success');
+      return result.accounts;
     }
 
     function getMethodLabel() {
@@ -839,14 +1000,13 @@ Terima kasih...
     }
 
     function resetForm() {
-      document.getElementById('inEmail').value = '';
-      document.getElementById('inPass').value = '';
-      document.getElementById('inSecret2FA').value = '';
       document.getElementById('inBulkAccounts').value = '';
+      document.getElementById('accountList').innerHTML = '';
+      addAccountRow();
       document.getElementById('inNote').value = '';
       document.getElementById('output').value = '';
       document.getElementById('resultCard').classList.add('hidden');
-      document.getElementById('accountCountBadge').textContent = inputMode === 'bulk' ? '0 akun' : '1 akun';
+      document.getElementById('accountCountBadge').textContent = '0 akun';
       clearBulkStatus();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -861,6 +1021,9 @@ Terima kasih...
 
     setToday();
     toggleGaransiUI();
+    addAccountRow();
+    setInputMode('line');
   </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
