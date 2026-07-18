@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -156,13 +158,15 @@
 
           <div>
             <label class="block mb-2 text-sm font-semibold text-gray-200">Estimasi Durasi</label>
-            <input
-              type="text"
-              id="durasiDisplay"
-              readonly
-              value="23-28 Hari"
-              class="w-full bg-black/45 border border-white/10 text-gray-200 rounded-xl px-4 py-3 outline-none cursor-not-allowed"
-            />
+            <div class="flex items-center gap-2">
+              <input type="number" id="durasiMulai" min="1" max="30" value="23" required aria-label="Durasi mulai"
+                class="w-full min-w-0 bg-black/45 border border-white/10 text-white rounded-xl px-3 py-3 outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500" />
+              <span class="text-gray-400">–</span>
+              <input type="number" id="durasiSampai" min="1" max="30" value="28" required aria-label="Durasi sampai"
+                class="w-full min-w-0 bg-black/45 border border-white/10 text-white rounded-xl px-3 py-3 outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500" />
+              <span class="text-sm text-gray-300">hari</span>
+            </div>
+            <p id="durasiError" class="hidden mt-2 text-xs text-red-400">Durasi akhir harus sama atau lebih besar dari durasi mulai (maks. 30 hari).</p>
           </div>
 
           <div>
@@ -278,6 +282,9 @@
       const emailAdminInput = document.getElementById('emailAdmin');
 
       const hargaInput = document.getElementById('harga');
+      const durasiMulaiInput = document.getElementById('durasiMulai');
+      const durasiSampaiInput = document.getElementById('durasiSampai');
+      const durasiError = document.getElementById('durasiError');
       const estimasiHabisDisplay = document.getElementById('estimasiHabisDisplay');
 
       const pakaiTutorInput = document.getElementById('pakaiTutor');
@@ -351,10 +358,32 @@
       }
 
       function getEstimasiHabisText() {
-        const tglHabisAwal = addDays(now, 23);
-        const tglHabisAkhir = addDays(now, 28);
+        const tglHabisAwal = addDays(now, getDurasiMulai());
+        const tglHabisAkhir = addDays(now, getDurasiSampai());
 
         return `${formatTanggal(tglHabisAwal)} - ${formatTanggal(tglHabisAkhir)}`;
+      }
+
+      function getDurasiMulai() {
+        return Math.min(30, Math.max(1, Number(durasiMulaiInput.value) || 1));
+      }
+
+      function getDurasiSampai() {
+        return Math.min(30, Math.max(1, Number(durasiSampaiInput.value) || 1));
+      }
+
+      function getDurasiText() {
+        const mulai = getDurasiMulai();
+        const sampai = getDurasiSampai();
+        return mulai === sampai ? `${mulai} hari` : `${mulai}-${sampai} hari`;
+      }
+
+      function validateDurasi() {
+        const valid = getDurasiMulai() <= getDurasiSampai();
+        durasiSampaiInput.setCustomValidity(valid ? '' : 'Durasi akhir harus sama atau lebih besar dari durasi mulai.');
+        durasiError.classList.toggle('hidden', valid);
+        if (valid) updateTanggalDanOrder();
+        return valid;
       }
 
       function updateTanggalDanOrder() {
@@ -378,11 +407,23 @@ Setelah join, buka YouTube pakai email yang sama.`;
       function getTutorPerpanjang() {
         return `
 
-⚠️ *Tutor Perpanjang:*
-Jangan keluar family sebelum ada instruksi admin.
-Jika admin minta keluar, cek email Google bahwa family sudah tidak tersedia, lalu keluar dari grup lama.
+🔄 *Tutor Perpanjang:*
+1. Tunggu hingga benefit YouTube Premium Family hilang dan admin mengabarkan bahwa family lama akan diganti.
+2. Setelah mendapat instruksi admin, cek Gmail. Biasanya akan ada email dari Google yang memberitahukan bahwa grup keluarga sudah tidak tersedia.
+3. Keluar dari family lama melalui https://g.co/yourfamily dan pastikan email sudah tidak tergabung di grup tersebut.
+4. Tunggu undangan untuk bergabung ke family baru.
+5. Buka email undangan Google Family, lalu pilih *Join/Accept*.
+6. Jika email undangan tidak ditemukan, buka https://g.co/yourfamily, pilih menu *Lihat undangan*, lalu terima undangan family baru.
+7. Setelah berhasil bergabung, buka YouTube menggunakan email yang sama dan periksa kembali benefit Premium.`;
+      }
 
-Jika keluar sendiri tanpa arahan, garansi hangus dan email bisa kena limit Google 12 bulan.`;
+      function getPeringatanTutor() {
+        return `
+
+⚠️ *PERINGATAN PENTING:*
+Jangan pernah keluar dari family sebelum ada instruksi dari admin.
+
+Jika keluar sendiri tanpa arahan admin, garansi akan hangus dan email berisiko terkena pembatasan Google sehingga tidak dapat bergabung ke grup keluarga lain hingga 12 bulan.`;
       }
 
       function getTutorText() {
@@ -393,15 +434,17 @@ Jika keluar sendiri tanpa arahan, garansi hangus dan email bisa kena limit Googl
           return '';
         }
 
+        let tutorText = '';
+
         if (jenisTutor === 'baru') {
-          return getTutorEmailBaru();
+          tutorText = getTutorEmailBaru();
+        } else if (jenisTutor === 'perpanjang') {
+          tutorText = getTutorPerpanjang();
+        } else {
+          tutorText = `${getTutorEmailBaru()}${getTutorPerpanjang()}`;
         }
 
-        if (jenisTutor === 'perpanjang') {
-          return getTutorPerpanjang();
-        }
-
-        return `${getTutorEmailBaru()}${getTutorPerpanjang()}`;
+        return `${tutorText}${getPeringatanTutor()}`;
       }
 
       function generateNota() {
@@ -424,7 +467,7 @@ Jika keluar sendiri tanpa arahan, garansi hangus dan email bisa kena limit Googl
 👤 *Admin Invite:* ${emailAdmin}
 
 📦 *Layanan:* YouTube Premium Family
-⏳ *Durasi:* Estimasi 23-28 hari
+⏳ *Durasi:* Estimasi ${getDurasiText()}
 📆 *Estimasi Habis:* ${estimasiHabisText}
 💰 *Harga:* ${getHargaText()}${tutorText}
 
@@ -441,9 +484,16 @@ Terima kasih sudah order di *BabayShop* 🙏`.trim();
       });
 
       hargaInput.addEventListener('change', updateTanggalDanOrder);
+      durasiMulaiInput.addEventListener('input', validateDurasi);
+      durasiSampaiInput.addEventListener('input', validateDurasi);
 
       form.addEventListener('submit', (e) => {
         e.preventDefault();
+
+        if (!validateDurasi()) {
+          durasiSampaiInput.reportValidity();
+          return;
+        }
 
         notaOutput.value = generateNota();
         notaOutput.readOnly = true;
