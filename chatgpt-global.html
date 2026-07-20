@@ -1,5 +1,3 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -450,7 +448,7 @@
     <section class="hero" id="home">
       <div class="wrap hero-inner">
         <div>
-          <span class="label"><span class="label-dot"></span>Ready Stock & Pre Order</span>
+          <span class="label"><span class="label-dot"></span>Available Products</span>
           <h1 class="hero-title">ChatGPT<br><span class="gradient-text">Plus / Reseller</span></h1>
           <p class="hero-lead">Choose the ChatGPT package that fits your needs: Plus Private from multiple channels, B2 GPT Plus using your own email, or the Reseller Package for method/channel information from makers and suppliers.</p>
           <div class="hero-actions">
@@ -486,15 +484,13 @@
           <h2 class="section-title">Choose your ChatGPT package</h2>
           <p class="section-sub">Pick the package you need. Full feature details are kept short here because they are available on the official ChatGPT plan pages.</p>
           <div class="filters">
-            <button class="filter-chip active" data-filter="all" type="button">All</button>
-            <button class="filter-chip" data-filter="plus" type="button">Plus Private</button>
-            <button class="filter-chip" data-filter="reseller" type="button">Reseller Package</button>
-            <button class="filter-chip" id="toggleSoldOut" type="button" aria-pressed="false">Show Sold-Out Products</button>
+            <button class="filter-chip active" data-filter="ready" type="button">Available Product</button>
+            <button class="filter-chip" data-filter="sold" type="button">Sold Out Product</button>
           </div>
         </div>
 
         <div class="packages">
-          <article class="pkg featured reveal soldout-product" data-cat="plus">
+          <article class="pkg featured reveal" data-product="PLUS_UPI">
             <div class="pkg-head"><div class="pkg-code">A</div><div><h3>AI Chat GPT Plus 1 Month Private</h3><span class="pkg-role">India Channel (UPI)</span></div></div>
             <div class="pkg-body">
               <div class="price"><strong>$3.50</strong><span> / package</span><span class="badge-mini">Private</span></div>
@@ -506,15 +502,15 @@
                 <li><span class="chk">✓</span><span>1-month duration: 25–28 days.</span></li>
                 <li><span class="warn">!</span><span>For full Plus features, check the official link below.</span></li>
               </ul>
-              <div class="stock sold-out"><span class="stock-dot"></span>Sold Out (waiting for latest method update)</div>
-              <div class="pkg-actions"><button class="btn btn-soldout btn-block" type="button" disabled aria-disabled="true">SOLD OUT</button><a class="btn btn-ghost btn-block" href="https://chatgpt.com/plans/plus/" target="_blank" rel="noopener">Official Plus Info</a></div>
+              <div class="stock"><span class="stock-dot"></span>Ready</div>
+              <div class="pkg-actions"><button class="btn btn-primary btn-block btn-buy" data-id="PLUS_UPI" type="button">CHECKOUT!</button><a class="btn btn-ghost btn-block" href="https://chatgpt.com/plans/plus/" target="_blank" rel="noopener">Official Plus Info</a></div>
             </div>
           </article>
 
-          <article class="pkg reveal" data-cat="plus" data-product="PLUS_BRAZIL_BZ">
+          <article class="pkg reveal" data-product="PLUS_BRAZIL_BZ">
             <div class="pkg-head"><div class="pkg-code">BZ</div><div><h3>Chat GPT Plus 1 Month Private</h3><span class="pkg-role">Brazil Channel (PIX)</span></div></div>
             <div class="pkg-body">
-              <div class="price"><strong>$3.80</strong><span> / package</span><span class="badge-mini">Ready</span></div>
+              <div class="price"><strong>$3.80</strong><span> / package</span><span class="badge-mini">Sold Out</span></div>
               <p class="tagline">Brazil channel (PIX), private account, 1-hour login warranty, and phone verification included for Codex.</p>
               <ul class="features">
                 <li><span class="chk">✓</span><span>Private access and private GPT account.</span></li>
@@ -524,7 +520,7 @@
                 <li><span class="chk">✓</span><span>Phone number verification included for Codex.</span></li>
                 <li><span class="warn">!</span><span>Maximum duration is 1 month; full duration is not guaranteed.</span></li>
               </ul>
-              <div class="stock"><span class="stock-dot"></span>Ready</div>
+              <div class="stock sold-out"><span class="stock-dot"></span>Sold Out</div>
               <div class="pkg-actions">
                 <button class="btn btn-primary btn-block btn-buy" data-id="PLUS_BRAZIL_BZ" type="button">CHECKOUT!</button>
                 <a class="btn btn-ghost btn-block" href="https://babayshop.id/gpt/redeem-acc" target="_blank" rel="noopener">Claim & Password Tutorial</a>
@@ -532,7 +528,7 @@
             </div>
           </article>
 
-          <article class="pkg reveal soldout-product" data-cat="plus">
+          <article class="pkg reveal" data-product="PLUS_EUROPE_B1">
             <div class="pkg-head"><div class="pkg-code">B1</div><div><h3>AI Chat GPT Plus 1 Month Private</h3><span class="pkg-role">Europe Channel (SEPA)</span></div></div>
             <div class="pkg-body">
               <div class="price"><strong>$4.50</strong><span> / package</span><span class="badge-mini">Middle</span></div>
@@ -545,11 +541,11 @@
                 <li><span class="warn">!</span><span>The core Plus functionality is the same.</span></li>
               </ul>
               <div class="stock sold-out"><span class="stock-dot"></span>Sold Out (waiting for latest method update)</div>
-              <div class="pkg-actions"><button class="btn btn-soldout btn-block" type="button" disabled aria-disabled="true">SOLD OUT</button><a class="btn btn-ghost btn-block" href="https://chatgpt.com/plans/plus/" target="_blank" rel="noopener">Official Plus Info</a></div>
+              <div class="pkg-actions"><button class="btn btn-primary btn-block btn-buy" data-id="PLUS_EUROPE_B1" type="button">CHECKOUT!</button><a class="btn btn-ghost btn-block" href="https://chatgpt.com/plans/plus/" target="_blank" rel="noopener">Official Plus Info</a></div>
             </div>
           </article>
 
-          <article class="pkg reveal soldout-product" data-cat="plus" id="b2">
+          <article class="pkg reveal" data-product="PLUS_SELF_SERVICE_B2" id="b2">
             <div class="pkg-head"><div class="pkg-code">B2</div><div><h3>GPT Plus Using Buyer Email</h3><span class="pkg-role">Poland / Netherlands Payment Method</span></div></div>
             <div class="pkg-body">
               <div class="price"><strong>$4</strong><span> / package</span><span class="badge-mini">Buyer Email</span></div>
@@ -562,28 +558,29 @@
                 <li><span class="warn">!</span><span>Process depends on stock, region, and channel terms.</span></li>
               </ul>
               <div class="stock sold-out"><span class="stock-dot"></span>Sold Out (waiting for latest method update)</div>
-              <div class="pkg-actions"><button class="btn btn-soldout btn-block" type="button" disabled aria-disabled="true">SOLD OUT</button><a class="btn btn-ghost btn-block" href="#ketentuan-b2">Read B2 Terms</a></div>
+              <div class="pkg-actions"><button class="btn btn-primary btn-block btn-buy" data-id="PLUS_SELF_SERVICE_B2" type="button">CHECKOUT!</button><a class="btn btn-ghost btn-block" href="#ketentuan-b2">Read B2 Terms</a></div>
             </div>
           </article>
 
-          <article class="pkg reveal" data-cat="plus">
-            <div class="pkg-head"><div class="pkg-code">C</div><div><h3>AI Chat GPT Plus 1 Month Private</h3><span class="pkg-role">VCC VISA / Mastercard Channel</span></div></div>
+          <article class="pkg reveal" data-product="PLUS_VCC">
+            <div class="pkg-head"><div class="pkg-code">C</div><div><h3>ApplePay with VISA / Mastercard</h3><span class="pkg-role">VCC VISA / Mastercard Channel</span></div></div>
             <div class="pkg-body">
-              <div class="price"><strong>$6</strong><span> / package</span><span class="badge-mini">10-Day Warranty</span></div>
-              <p class="tagline">VCC VISA / Mastercard channel, 10-day warranty, private account, and Codex.</p>
+              <div class="price"><strong>$5.50</strong><span> / package</span><span class="badge-mini">Ready</span></div>
+              <p class="tagline">ApplePay with VISA / Mastercard, Gmail / iCloud email, 10-day warranty, private account, and Codex.</p>
               <ul class="features">
                 <li><span class="chk">✓</span><span>Private access and private account.</span></li>
+                <li><span class="chk">✓</span><span>Email: Gmail / iCloud.</span></li>
                 <li><span class="chk">✓</span><span>10-day warranty.</span></li>
                 <li><span class="chk">✓</span><span>Codex included according to package availability.</span></li>
                 <li><span class="chk">✓</span><span>1-month duration: 25–28 days.</span></li>
                 <li><span class="warn">!</span><span>Stock and processing follow supplier channel availability.</span></li>
               </ul>
-              <div class="stock preorder"><span class="stock-dot"></span>Pre Order</div>
+              <div class="stock"><span class="stock-dot"></span>Ready</div>
               <div class="pkg-actions"><button class="btn btn-primary btn-block btn-buy" data-id="PLUS_VCC" type="button">CHECKOUT!</button><a class="btn btn-ghost btn-block" href="https://chatgpt.com/plans/plus/" target="_blank" rel="noopener">Official Plus Info</a></div>
             </div>
           </article>
 
-          <article class="pkg reveal" data-cat="reseller" id="reseller">
+          <article class="pkg reveal" data-product="RESELLER" id="reseller">
             <div class="pkg-head"><div class="pkg-code">E</div><div><h3>RESELLER PACKAGE</h3><span class="pkg-role">Method Info / GPT Channel</span></div></div>
             <div class="pkg-body">
               <div class="price"><strong>$10</strong><span> / package</span><span class="badge-mini">Reseller</span></div>
@@ -595,14 +592,14 @@
                 <li><span class="warn">!</span><span>Information follows updates from makers and suppliers.</span></li>
                 <li><span class="warn">!</span><span>Buyer must understand risks, stock, and channel terms.</span></li>
               </ul>
-              <div class="stock"><span class="stock-dot"></span>Info Ready</div>
+              <div class="stock sold-out"><span class="stock-dot"></span>Sold Out</div>
               <div class="pkg-actions">
                 <button class="btn btn-primary btn-block btn-buy" data-id="RESELLER" type="button">CHECKOUT!</button></div>
             </div>
           </article>
         </div>
 
-        <div class="reseller-box reveal">
+        <div class="reseller-box reveal" hidden>
           <div>
             <h3>RESELLER PACKAGE: Method Info / GPT Channel</h3>
             <p>Package containing GPT Plus and other method/channel information directly from makers and suppliers. Suitable for sellers who want lower channel costs. Package price: $10.</p>
@@ -654,12 +651,12 @@
             <table>
               <thead><tr><th>Package</th><th>Price</th><th>Warranty</th><th>Notes</th></tr></thead>
               <tbody>
-                <tr class="soldout-row"><td>Plus Private (India / UPI Channel)</td><td>$3.50</td><td>24 Hours</td><td>Sold Out (waiting for latest method update).</td></tr>
-                <tr><td>BZ Plus Private (Brazil / PIX Channel)</td><td>$3.80</td><td>1 Hour (Login)</td><td>Ready. Microsoft email + GPT account, password can be changed, phone verification included for Codex. Full duration is not guaranteed.</td></tr>
+                <tr><td>Plus Private (India / UPI Channel)</td><td>$3.50</td><td>24 Hours</td><td>Ready.</td></tr>
+                <tr class="soldout-row"><td>BZ Plus Private (Brazil / PIX Channel)</td><td>$3.80</td><td>1 Hour (Login)</td><td>Sold Out.</td></tr>
                 <tr class="soldout-row"><td>B1 Plus Private (Europe / SEPA Channel)</td><td>$4.50</td><td>3 Days</td><td>Sold Out (waiting for latest method update).</td></tr>
                 <tr class="soldout-row"><td>B2 GPT Plus Using Buyer Email</td><td>$4</td><td>2 Days</td><td>Sold Out (waiting for latest method update). Poland / Netherlands payment method, using the buyer’s own email.</td></tr>
-                <tr><td>Plus Private (VCC VISA / Mastercard Channel)</td><td>$6</td><td>10 Days</td><td>Private account and Codex. Status: Pre Order.</td></tr>
-                <tr><td>Reseller Package</td><td>$10</td><td>Channel info</td><td>GPT Plus and other method/channel information from makers and suppliers.</td></tr>
+                <tr><td>ApplePay with VISA / Mastercard</td><td>$5.50</td><td>10 Days</td><td>Ready. Email: Gmail / iCloud. Private account and Codex.</td></tr>
+                <tr class="soldout-row"><td>Reseller Package</td><td>$10</td><td>Channel info</td><td>Sold Out.</td></tr>
               </tbody>
             </table>
           </div>
@@ -767,7 +764,7 @@
           <h2 class="section-title">Frequently asked questions</h2>
         </div>
         <div class="faq reveal">
-          <details open><summary>What is the difference between India, BZ Brazil, B1 Europe, B2 Buyer Email, and VCC packages?</summary><div class="faq-content">The core Plus functionality is generally the same, but the service type and warranty differ. BZ Brazil is ready at $3.80 with a 1-hour login warranty, a Microsoft email + GPT account, and phone verification for Codex. India UPI, B1 Europe SEPA, and B2 Buyer Email are currently sold out, while the VCC VISA / Mastercard package is pre order with a 10-day warranty.</div></details>
+          <details open><summary>What is the difference between India, BZ Brazil, B1 Europe, B2 Buyer Email, and VCC packages?</summary><div class="faq-content">The core Plus functionality is generally the same, but the service type and warranty differ. India UPI is ready at $3.50. ApplePay with VISA / Mastercard is ready at $5.50, supports Gmail / iCloud email, and includes a 10-day warranty. Other packages are currently sold out.</div></details>
           <details><summary>What is included in the BZ Brazil package?</summary><div class="faq-content">BZ is a private ChatGPT Plus package through the Brazil PIX channel for $3.80. It includes a Microsoft email account and GPT account, allows password changes, includes phone verification for Codex, and has a 1-hour login warranty. Maximum duration is 1 month, but full duration is not guaranteed. Tutorial: <a href="https://babayshop.id/gpt/redeem-acc" target="_blank" rel="noopener">claim account & change password</a>.</div></details>
           <details><summary>What is the B2 GPT Plus Buyer Email package?</summary><div class="faq-content">B2 is a 1-month GPT Plus package using the buyer’s own email, priced at $4, with 2-day warranty and Poland / Netherlands payment method. Current status: Sold Out (waiting for latest method update).</div></details>
           <details><summary>What is the Reseller Package?</summary><div class="faq-content">The Reseller Package contains GPT Plus and other method/channel information directly from makers and suppliers. Price is $10, suitable for people who want to start reselling GPT with lower channel cost.</div></details>
@@ -890,6 +887,29 @@
       const WA_NUMBER = '6281523984574';
       const PAYPAL_TRANSFER_DETAIL = 'https://paypal.me/Babay27';
 
+      /* ==========================================================
+         * EDIT STATUS SEMUA PAKET CUKUP DI BAGIAN INI #ubahdisini
+
+         Pilihan status:
+         ready    = stok tersedia, tombol checkout aktif
+         preorder = pre order, tombol checkout aktif
+         soldout  = stok habis, tombol checkout otomatis nonaktif
+         ========================================================== */
+      const PACKAGE_STATUS = {
+        PLUS_UPI: 'ready',
+        PLUS_BRAZIL_BZ: 'soldout',
+        PLUS_EUROPE_B1: 'soldout',
+        PLUS_SELF_SERVICE_B2: 'soldout',
+        PLUS_VCC: 'ready',
+        RESELLER: 'soldout'
+      };
+
+      const STATUS_META = {
+        ready: { label: 'Ready', button: 'CHECKOUT!', className: 'ready' },
+        preorder: { label: 'Open Pre Order', button: 'CHECKOUT!', className: 'preorder' },
+        soldout: { label: 'Sold Out', button: 'SOLD OUT', className: 'soldout' }
+      };
+
       /* ================================
          EDIT HARGA & DETAIL PAKET DI SINI
          ================================ */
@@ -903,8 +923,7 @@
           duration: '1 Month (25–28 Days)',
           desc: '24-Hour Warranty, Private access, private account, Codex.',
           emailRequired: false,
-          note: 'Sold Out (waiting for latest method update). India Channel (UPI).',
-          soldOut: true
+          note: 'Ready. India Channel (UPI).'
         },
         PLUS_BRAZIL_BZ: {
           code: 'BZ',
@@ -915,7 +934,8 @@
           duration: 'Maximum 1 Month (Full Duration Not Guaranteed)',
           desc: 'Private Microsoft email + GPT account, password can be changed, phone verification included for Codex.',
           emailRequired: false,
-          note: 'Ready. Claim & password tutorial: https://babayshop.id/gpt/redeem-acc'
+          note: 'Sold Out. Claim & password tutorial: https://babayshop.id/gpt/redeem-acc',
+          soldOut: true
         },
         PLUS_EUROPE_B1: {
           code: 'B1',
@@ -944,14 +964,14 @@
         },
         PLUS_VCC: {
           code: 'C',
-          name: 'AI Chat GPT Plus 1 Month Private',
-          method: 'VCC VISA / Mastercard Channel',
-          price: 6,
+          name: 'ApplePay with VISA / Mastercard',
+          method: 'VCC VISA / Mastercard Channel · Email: Gmail / iCloud',
+          price: 5.5,
           warranty: '10-Day Warranty',
           duration: '1 Month (25–28 Days)',
-          desc: '10-Day Warranty, private access, private account, and Codex.',
+          desc: 'Email Gmail / iCloud, 10-Day Warranty, private access, private account, and Codex.',
           emailRequired: false,
-          note: 'Pre Order. VCC VISA / Mastercard Channel.'
+          note: 'Ready. ApplePay with VISA / Mastercard. Email: Gmail / iCloud.'
         },
         RESELLER: {
           code: 'E',
@@ -962,7 +982,8 @@
           duration: 'Follows channel/supplier updates',
           desc: 'Reseller Package contains GPT Plus and other method/channel information directly from makers and suppliers. Suitable for GPT resellers who want lower channel cost and better margin potential.',
           emailRequired: false,
-          note: 'Buyer must understand risks, stock, and channel terms.'
+          note: 'Sold Out. Buyer must understand risks, stock, and channel terms.',
+          soldOut: true
         }
       };
 
@@ -1029,39 +1050,55 @@
       }, { threshold: .12 });
       reveals.forEach(el => revealObs.observe(el));
 
-      const categoryChips = $$('.filter-chip[data-filter]');
-      const toggleSoldOut = $('#toggleSoldOut');
+      const statusChips = $$('.filter-chip[data-filter]');
       const packages = $$('.pkg');
-      const soldOutRows = $$('.soldout-row');
-      let activeFilter = 'all';
-      let showSoldOut = false;
+      let activeFilter = 'ready';
+
+      function applyPackageStatuses() {
+        packages.forEach(pkg => {
+          const productId = pkg.dataset.product;
+          const status = PACKAGE_STATUS[productId] || 'soldout';
+          const meta = STATUS_META[status] || STATUS_META.soldout;
+          const isSoldOut = status === 'soldout';
+          const stock = $('.stock', pkg);
+          const buyButton = $('.btn-buy', pkg);
+
+          // Ready dan preorder masuk Available Product; soldout masuk Sold Out Product.
+          pkg.dataset.status = isSoldOut ? 'sold' : 'ready';
+          pkg.dataset.packageStatus = status;
+
+          if (stock) {
+            stock.innerHTML = `<span class="stock-dot"></span>${meta.label}`;
+            stock.classList.toggle('sold-out', isSoldOut);
+            stock.classList.toggle('preorder', status === 'preorder');
+          }
+
+          if (buyButton) {
+            buyButton.textContent = meta.button;
+            buyButton.disabled = isSoldOut;
+            buyButton.setAttribute('aria-disabled', String(isSoldOut));
+            buyButton.classList.toggle('btn-primary', !isSoldOut);
+            buyButton.classList.toggle('btn-soldout', isSoldOut);
+          }
+        });
+      }
 
       function applyCatalogVisibility() {
         packages.forEach(pkg => {
-          const categoryMatch = activeFilter === 'all' || pkg.dataset.cat === activeFilter;
-          const hiddenByStock = pkg.classList.contains('soldout-product') && !showSoldOut;
-          pkg.style.display = categoryMatch && !hiddenByStock ? 'flex' : 'none';
+          pkg.style.display = pkg.dataset.status === activeFilter ? 'flex' : 'none';
         });
-        soldOutRows.forEach(row => row.classList.toggle('hidden-soldout', !showSoldOut));
-        toggleSoldOut.textContent = showSoldOut ? 'Hide Sold-Out Products' : 'Show Sold-Out Products';
-        toggleSoldOut.setAttribute('aria-pressed', String(showSoldOut));
-        toggleSoldOut.classList.toggle('active', showSoldOut);
       }
 
-      categoryChips.forEach(chip => {
+      statusChips.forEach(chip => {
         chip.addEventListener('click', () => {
-          categoryChips.forEach(c => c.classList.remove('active'));
+          statusChips.forEach(c => c.classList.remove('active'));
           chip.classList.add('active');
           activeFilter = chip.dataset.filter;
           applyCatalogVisibility();
         });
       });
 
-      toggleSoldOut.addEventListener('click', () => {
-        showSoldOut = !showSoldOut;
-        applyCatalogVisibility();
-      });
-
+      applyPackageStatuses();
       applyCatalogVisibility();
 
       const checkoutModal = $('#checkoutModal');
@@ -1139,7 +1176,7 @@
 
       function openModal(productId) {
         currentProduct = PRODUCTS[productId];
-        if (!currentProduct || currentProduct.soldOut) return;
+        if (!currentProduct || PACKAGE_STATUS[productId] === 'soldout') return;
         
         qty = 1;
         modalProduct.textContent = `${currentProduct.code}. ${currentProduct.name} · ${currentProduct.method}`;
