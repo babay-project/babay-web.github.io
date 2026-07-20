@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -14,7 +13,7 @@
        Edit cepat:
        1. Ubah warna utama di :root
        2. Ubah isi nota di fungsi generateNota()
-       3. Mode Direct bisa generate dari 5 baris input cepat
+       3. Mode Direct tersedia untuk akun sudah klaim dan belum klaim
        ============================================================ */
 
     :root {
@@ -482,6 +481,23 @@
       line-height: 1.6;
     }
 
+    .direct-status {
+      min-height: 22px;
+      margin: -5px 0 12px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .direct-status.valid { color: var(--green); }
+    .direct-status.invalid { color: var(--red); }
+
+    .direct-block + .direct-block {
+      margin-top: 22px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+    }
+
     .btn-mini {
       min-width: 0;
       padding: 10px 13px;
@@ -629,7 +645,6 @@
             </div>
 
             <div class="btn-row" style="margin-top: 24px;">
-              <button class="btn btn-primary" type="button" onclick="generateNota()">✨ Generate Nota</button>
               <button class="btn btn-ghost" type="button" onclick="resetForm()">🔄 Reset Form</button>
             </div>
           </div>
@@ -648,18 +663,21 @@
       <aside class="side-stack">
         <section class="card info-card">
           <div class="card-inner">
-            <div class="mini-title">Mode Direct</div>
-            <p class="mini-desc">Tempel data akun cepat. Format 5 baris untuk status sudah, dan 6 baris untuk status belum karena link redeem wajib dilampirkan.</p>
-            <textarea id="directInput" class="direct-box" placeholder="email@gmail.com
-passwordakun
-recovery@gmail.com
-kode32digit2fa
-belum
-https://one.google.com/partner-eft-onboard/..."></textarea>
-            <div class="direct-note">Status klaim boleh ditulis <b>sudah</b> atau <b>belum</b>. Jika status <b>belum</b>, baris ke-6 wajib berisi link redeem. Kalau link kosong, sistem akan menolak generate.</div>
-            <div class="btn-row">
-              <button class="btn btn-primary btn-mini" type="button" onclick="generateFromDirect()">⚡ Generate Direct</button>
-              <button class="btn btn-ghost btn-mini" type="button" onclick="fillFormFromDirect()">↳ Isi Form</button>
+            <div class="mini-title">Mode Direct — Auto Submit</div>
+            <p class="mini-desc">Pilih kolom sesuai status akun, lalu tempel format satu baris. Sistem otomatis mengecek dan membuat nota tanpa tombol submit.</p>
+
+            <div class="direct-block">
+              <div class="mini-title">🎁 Belum Klaim</div>
+              <textarea id="directBelum" class="direct-box" placeholder="email | pw | email pemulihan | 32digit kode | link redeem"></textarea>
+              <div class="direct-note">Format: email | password | email pemulihan | kode 32 digit | link redeem</div>
+              <div class="direct-status" id="statusDirectBelum">Menunggu data…</div>
+            </div>
+
+            <div class="direct-block">
+              <div class="mini-title">✅ Sudah Klaim</div>
+              <textarea id="directSudah" class="direct-box" placeholder="email | pw | email pemulihan | 32digit kode"></textarea>
+              <div class="direct-note">Format: email | password | email pemulihan | kode 32 digit</div>
+              <div class="direct-status" id="statusDirectSudah">Menunggu data…</div>
             </div>
            
         </section>
@@ -720,7 +738,7 @@ https://one.google.com/partner-eft-onboard/..."></textarea>
       return tanggalStr + (bulan === 12 ? ' + 1 Tahun' : ' + 1 Bulan');
     }
 
-    function generateNota() {
+    function generateNota(options = {}) {
       const emailAkun = document.getElementById('emailAkun').value.trim();
       const passwordAkun = document.getElementById('passwordAkun').value.trim();
       const emailPemulihan = document.getElementById('emailPemulihan').value.trim();
@@ -740,7 +758,10 @@ https://one.google.com/partner-eft-onboard/..."></textarea>
       setError('linkRedeem', 'errRedeem', redeemRequired && !linkRedeem);
       if (redeemRequired && !linkRedeem) valid = false;
       setError('tanggalAktif', 'errTanggal', !tanggalAktif); if (!tanggalAktif) valid = false;
-      if (!valid) return;
+      if (!valid) {
+        document.getElementById('outputCard').classList.remove('show');
+        return false;
+      }
 
       const tanggalMasaAktif = tambahDurasi(tanggalAktif, 12);
       const tanggalGaransi = tambahDurasi(tanggalAktif, 1);
@@ -756,6 +777,12 @@ https://one.google.com/partner-eft-onboard/..."></textarea>
       nota += `Email: ${emailAkun}\n`;
       nota += `Password: ${passwordAkun}\n`;
       nota += `Email Pemulihan: ${emailPemulihan}\n\n`;
+
+      nota += `🔎 Verifikasi Login Akun:\n`;
+      nota += `Gunakan hanya salah satu metode berikut:\n`;
+      nota += `• Tebak/konfirmasi Email Pemulihan; atau\n`;
+      nota += `• Masukkan kode dari Google Authenticator melalui link 2FA di bawah.\n`;
+      nota += `Selain kedua metode tersebut tidak dapat digunakan.\n\n`;
 
       nota += `🔐 Kode Autentikator:\n`;
       nota += `Akses kode 2FA di web berikut:\n`;
@@ -786,9 +813,13 @@ https://one.google.com/partner-eft-onboard/..."></textarea>
 
       nota += `📌 Catatan Penting:\n\n`;
       nota += `• Simpan data login dengan aman.\n`;
-      nota += `• Biarkan akun login di perangkat kurang lebih selama 3 harian, lalu ganti data akun secara berkala seperti password, email cadangan, dan data keamanan lain.\n`;
+      nota += `• Akun Gmail dari admin telah disiapkan sebagai akun yang strong dan kuat. Walaupun begitu, saat masuk ke perangkat baru, sistem Google tetap dapat membutuhkan waktu untuk memastikan bahwa login tersebut bukan aktivitas mencurigakan atau tindakan spam.\n`;
+      nota += `• Biarkan akun login di perangkat kurang lebih selama 3 hari sebelum mengubah password, email pemulihan, atau data keamanan lainnya secara bertahap.\n`;
       nota += `• Jangan terlalu sering login/logout di banyak perangkat agar tidak terjadi aktivitas mencurigakan.\n`;
       nota += `• Jika diminta kode autentikator, gunakan link 2FA yang sudah diberikan.\n`;
+      nota += `• Tidak disarankan langsung menggunakan akun untuk Antigravity atau proxy. Cara yang lebih disarankan adalah membagikan benefit paket melalui Google Family, lalu mengundang email yang sering kamu gunakan sebagai anggota keluarga.\n`;
+      nota += `• Jika email utama kamu pernah bergabung ke family lain dan terkena batas sebagai anggota, jadikan email utama tersebut sebagai kepala keluarga/buat grup keluarga baru. Setelah itu, masukkan Gmail Pro yang dibeli dari admin sebagai anggota.\n`;
+      nota += `• Benefit tidak hanya dapat dibagikan oleh kepala keluarga. Anggota yang memiliki paket juga dapat membagikan benefit dengan fungsi yang sama; hanya kuota atau limit pemakaian yang digunakan bersama (sharing).\n`;
       nota += `• Masa aktif paket bisa dilihat di menu langganan Play Store: https://play.google.com/store/account/subscriptions.\n`;
       nota += `• Garansi berlaku 1 bulan untuk kendala layanan dari sisi paket.\n`;
       nota += `• Garansi tidak berlaku jika pembeli melanggar kebijakan Google, mengganti pengaturan tanpa arahan, atau terjadi kesalahan penggunaan dari pembeli.\n\n`;
@@ -798,7 +829,10 @@ https://one.google.com/partner-eft-onboard/..."></textarea>
       const outputCard = document.getElementById('outputCard');
       outputBox.value = nota;
       outputCard.classList.add('show');
-      setTimeout(() => outputCard.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+      if (options.scroll !== false) {
+        setTimeout(() => outputCard.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+      }
+      return true;
     }
 
     function copyNota() {
@@ -837,48 +871,49 @@ https://one.google.com/partner-eft-onboard/..."></textarea>
 
 
 
-    function parseDirectInput() {
-      const direct = document.getElementById('directInput');
+    function parseDirectInput(mode) {
+      const direct = document.getElementById(mode === 'belum' ? 'directBelum' : 'directSudah');
       const raw = direct ? direct.value.trim() : '';
-      const lines = raw
-        .split(/\r?\n/)
-        .map(line => line.trim())
-        .filter(Boolean);
+      if (!raw) return { empty: true };
 
-      if (lines.length < 5) {
-        alert('Mode Direct butuh minimal 5 baris:\n1. email\n2. password\n3. email pemulihan\n4. kode 32 digit\n5. sudah/belum\n\nJika status belum, tambahkan baris ke-6 berisi link redeem.');
-        return null;
+      const parts = raw.split('|').map(item => item.trim());
+      const expected = mode === 'belum' ? 5 : 4;
+      if (parts.length !== expected || parts.some(item => !item)) {
+        return { error: `Format belum lengkap. Harus berisi ${expected} bagian yang dipisahkan tanda |.` };
       }
 
-      const statusRaw = lines[4].toLowerCase();
-      let status = '';
-      if (statusRaw.includes('sudah')) status = 'sudah';
-      if (statusRaw.includes('belum')) status = 'belum';
-
-      if (!status) {
-        alert('Baris ke-5 harus berisi status: sudah atau belum.');
-        return null;
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(parts[0]) || !emailPattern.test(parts[2])) {
+        return { error: 'Format email akun atau email pemulihan belum valid.' };
       }
 
-      const linkRedeem = lines[5] ? lines[5].trim() : '';
-      if (status === 'belum' && !linkRedeem) {
-        alert('Status masih belum klaim. Baris ke-6 wajib diisi link redeem voucher.\n\nFormat:\nemail\npassword\nemail pemulihan\nkode 32 digit\nbelum\nlink redeem');
-        return null;
+      const kode = parts[3].replace(/\s+/g, '');
+      if (!/^[a-zA-Z0-9]{32}$/.test(kode)) {
+        return { error: 'Kode autentikator wajib tepat 32 karakter huruf/angka.' };
+      }
+
+      if (mode === 'belum' && !/^https?:\/\//i.test(parts[4])) {
+        return { error: 'Link redeem harus diawali http:// atau https://.' };
       }
 
       return {
-        emailAkun: lines[0],
-        passwordAkun: lines[1],
-        emailPemulihan: lines[2],
-        kode2fa: lines[3].replace(/\s+/g, ''),
-        statusKlaim: status,
-        linkRedeem: linkRedeem
+        emailAkun: parts[0],
+        passwordAkun: parts[1],
+        emailPemulihan: parts[2],
+        kode2fa: kode,
+        statusKlaim: mode,
+        linkRedeem: mode === 'belum' ? parts[4] : ''
       };
     }
 
-    function fillFormFromDirect() {
-      const data = parseDirectInput();
-      if (!data) return false;
+    function setDirectStatus(mode, message, state = '') {
+      const status = document.getElementById(mode === 'belum' ? 'statusDirectBelum' : 'statusDirectSudah');
+      status.textContent = message;
+      status.className = `direct-status ${state}`.trim();
+    }
+
+    function fillFormFromDirect(data) {
+      if (!data || data.error || data.empty) return false;
 
       document.getElementById('emailAkun').value = data.emailAkun;
       document.getElementById('passwordAkun').value = data.passwordAkun;
@@ -893,8 +928,27 @@ https://one.google.com/partner-eft-onboard/..."></textarea>
       return true;
     }
 
-    function generateFromDirect() {
-      if (fillFormFromDirect()) generateNota();
+    function autoGenerateDirect(mode) {
+      const otherMode = mode === 'belum' ? 'sudah' : 'belum';
+      const otherInput = document.getElementById(otherMode === 'belum' ? 'directBelum' : 'directSudah');
+      const data = parseDirectInput(mode);
+
+      if (data.empty) {
+        setDirectStatus(mode, 'Menunggu data…');
+        return;
+      }
+      if (data.error) {
+        setDirectStatus(mode, `❌ ${data.error}`, 'invalid');
+        document.getElementById('outputCard').classList.remove('show');
+        return;
+      }
+
+      otherInput.value = '';
+      setDirectStatus(otherMode, 'Menunggu data…');
+      fillFormFromDirect(data);
+      if (generateNota({ scroll: false })) {
+        setDirectStatus(mode, '✅ Format valid — nota dibuat otomatis.', 'valid');
+      }
     }
 
     function resetForm() {
@@ -911,14 +965,33 @@ https://one.google.com/partner-eft-onboard/..."></textarea>
       document.getElementById('redeemSection').classList.remove('show');
       document.getElementById('outputCard').classList.remove('show');
       document.getElementById('outputBox').value = '';
-      const directInput = document.getElementById('directInput');
-      if (directInput) directInput.value = '';
+      ['directBelum', 'directSudah'].forEach(id => document.getElementById(id).value = '');
+      setDirectStatus('belum', 'Menunggu data…');
+      setDirectStatus('sudah', 'Menunggu data…');
     }
 
     window.addEventListener('DOMContentLoaded', () => {
       document.getElementById('tanggalAktif').value = getTanggalHariIni();
+      let directTimer;
+      ['belum', 'sudah'].forEach(mode => {
+        const input = document.getElementById(mode === 'belum' ? 'directBelum' : 'directSudah');
+        input.addEventListener('input', () => {
+          clearTimeout(directTimer);
+          directTimer = setTimeout(() => autoGenerateDirect(mode), 250);
+        });
+      });
+
+      let formTimer;
+      document.querySelectorAll('#emailAkun, #passwordAkun, #emailPemulihan, #kode2fa, #statusKlaim, #linkRedeem, #tanggalAktif').forEach(el => {
+        el.addEventListener('input', () => {
+          clearTimeout(formTimer);
+          formTimer = setTimeout(() => generateNota({ scroll: false }), 300);
+        });
+        el.addEventListener('change', () => generateNota({ scroll: false }));
+      });
     });
   </script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
