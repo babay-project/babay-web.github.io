@@ -1,0 +1,124 @@
+
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Generator Nota Bulk Google AI Pro - BabayShop</title>
+  <style>
+    :root{--bg:#050505;--card:#111;--line:#2b2b2b;--text:#f7f7f7;--soft:#aaa;--green:#60f28b;--red:#ff7b7b;--radius:22px}
+    *{box-sizing:border-box}body{margin:0;min-height:100vh;padding:28px 16px 64px;background:var(--bg);color:var(--text);font:14px/1.6 Inter,system-ui,sans-serif;background-image:linear-gradient(#ffffff0b 1px,transparent 1px),linear-gradient(90deg,#ffffff0b 1px,transparent 1px);background-size:44px 44px}
+    .wrap{width:min(1050px,100%);margin:auto}.head{text-align:center;margin:20px 0 30px}.head h1{font-size:clamp(34px,6vw,64px);line-height:1;margin:0;letter-spacing:-.06em}.head p{color:var(--soft)}
+    .layout{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start}.card{background:linear-gradient(180deg,#ffffff12,#ffffff08);border:1px solid var(--line);border-radius:var(--radius);padding:24px;box-shadow:0 30px 80px #0009}.wide{grid-column:1/-1}.title{font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px}
+    label{display:block;font-weight:800;margin:15px 0 6px}textarea,input{width:100%;border:1px solid var(--line);border-radius:15px;background:#0008;color:var(--text);padding:13px 14px;font:13px/1.6 Consolas,monospace;outline:none}textarea:focus,input:focus{border-color:#777;box-shadow:0 0 0 4px #ffffff0d}.bulk{min-height:210px;resize:vertical}.output{min-height:500px;resize:vertical;white-space:pre}
+    .hint,.status{color:var(--soft);font-size:12px;margin-top:7px}.status.ok{color:var(--green)}.status.bad{color:var(--red)}.example{padding:11px;border:1px solid var(--line);border-radius:12px;color:#bbb;background:#0005;font:12px/1.55 Consolas,monospace;white-space:pre-wrap;margin-top:10px}.checks{display:flex;gap:18px;flex-wrap:wrap;margin:14px 0}.check{display:flex;align-items:center;gap:8px;margin:0;padding:10px 13px;border:1px solid var(--line);border-radius:14px;background:#0005;cursor:pointer}.check input{width:18px;height:18px;margin:0}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+    .actions{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}button{flex:1;min-width:130px;border:1px solid #444;border-radius:999px;padding:12px 18px;font-weight:900;cursor:pointer;background:#fff;color:#050505}button.alt{background:#ffffff10;color:#fff}.hidden{display:none!important}.count{float:right;color:var(--soft);font-weight:500;text-transform:none;letter-spacing:0}.tabs{display:flex;gap:8px;margin:14px 0 20px}.tab{background:#ffffff0a;color:#bbb}.tab.active{background:#fff;color:#050505}.notice{padding:12px 14px;border:1px solid #ffcc6655;border-radius:14px;background:#ffcc6612;color:#ffe1a3;margin:10px 0;font-size:13px}.account-list{display:grid;gap:9px;margin-top:14px}.account-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 13px;border:1px solid var(--line);border-radius:13px;background:#0005}.account-item button{flex:0;min-width:0;padding:7px 12px;color:#fff;background:#ff7b7b22;border-color:#ff7b7b55}.subhead{font-weight:900;margin-top:18px}
+    @media(max-width:760px){.layout,.form-grid{grid-template-columns:1fr}.card{padding:19px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="head"><h1>Generator Nota Bulk</h1><p>Google AI Pro by Pixel · 1–10 akun dalam satu nota</p></header>
+    <main class="layout">
+      <section class="card wide">
+        <div class="title">👤 Data Akun <span class="count" id="accountCount">0 akun</span></div>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="needRecovery" checked> Butuh email cadangan</label>
+          <label class="check"><input type="checkbox" id="needRedeem"> Butuh link/kode redeem</label>
+        </div>
+        <div class="notice hidden" id="redeemNotice">Akun belum diklaim Google AI Pro. Link/kode redeem wajib dimasukkan untuk setiap akun.</div>
+        <div class="tabs"><button type="button" class="tab active" id="tabBulk" onclick="switchInputMode('bulk')">Input Bulk</button><button type="button" class="tab" id="tabSingle" onclick="switchInputMode('single')">Form Satu-satu</button></div>
+        <div id="bulkPanel">
+          <textarea id="bulkInput" class="bulk" placeholder="Satu akun per baris..."></textarea>
+          <div class="hint" id="formatHint"></div>
+          <div class="example" id="formatExample"></div>
+          <div class="status" id="bulkStatus">Masukkan 1–10 akun.</div>
+        </div>
+        <div id="singlePanel" class="hidden">
+          <div class="form-grid">
+            <div><label for="singleEmail">Email akun</label><input id="singleEmail" type="email" placeholder="akun@gmail.com"></div>
+            <div><label for="singlePassword">Password</label><input id="singlePassword" type="text" placeholder="Password akun"></div>
+            <div id="singleRecoveryWrap"><label for="singleRecovery">Email pemulihan</label><input id="singleRecovery" type="email" placeholder="recovery@gmail.com"></div>
+            <div><label for="singleKode">Kode Google Autentikator</label><input id="singleKode" type="text" placeholder="32 karakter"></div>
+            <div id="singleRedeemWrap" class="hidden"><label for="singleRedeem">Link/kode redeem</label><input id="singleRedeem" type="text" placeholder="https://link-redeem"></div>
+          </div>
+          <div class="actions"><button type="button" onclick="addSingleAccount()">+ Tambahkan Akun</button></div>
+          <div class="status" id="singleStatus">Belum ada akun ditambahkan.</div>
+          <div class="account-list" id="singleAccountList"></div>
+        </div>
+      </section>
+      <section class="card wide">
+        <div class="title">📅 Data Nota</div>
+        <div class="form-grid">
+          <div><label for="tanggalAktif">Tanggal aktif / transaksi</label><input id="tanggalAktif" type="text" placeholder="20 Juli 2026"></div>
+          <div><label for="garansiBulan">Garansi berapa bulan</label><input id="garansiBulan" type="number" min="0" max="24" value="1" placeholder="1"></div>
+        </div>
+        <div class="hint">Masa aktif dihitung 1 tahun. Garansi mengikuti jumlah bulan yang diisi (0–24 bulan).</div>
+        <div class="actions"><button type="button" onclick="generateNota()">Buat Nota</button><button class="alt" type="button" onclick="resetForm()">Reset</button></div>
+      </section>
+      <section class="card wide hidden" id="outputCard">
+        <div class="title">📋 Hasil Nota</div>
+        <textarea id="outputBox" class="output" readonly></textarea>
+        <div class="actions"><button type="button" onclick="copyNota()">Copy Hasil Nota</button></div>
+      </section>
+    </main>
+  </div>
+  <script>
+    const $=id=>document.getElementById(id);
+    const emailRe=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let inputMode='bulk',singleAccounts=[];
+    function lines(){return $('bulkInput').value.split(/\r?\n/).map(x=>x.trim()).filter(Boolean)}
+    function selectedFormat(){return{recovery:$('needRecovery').checked,redeem:$('needRedeem').checked}}
+    function updateFormat(){
+      const f=selectedFormat(),parts=['email','password'];if(f.recovery)parts.push('email cadangan');parts.push('kode autentikator 32 digit');if(f.redeem)parts.push('link/kode redeem');
+      $('formatHint').textContent='Format: '+parts.join(' | ');
+      const sample=['akun@gmail.com','password'];if(f.recovery)sample.push('recovery@gmail.com');sample.push('ABCD1234ABCD1234ABCD1234ABCD1234');if(f.redeem)sample.push('https://link-redeem');$('formatExample').textContent=sample.join(' | ');
+      $('redeemNotice').classList.toggle('hidden',!f.redeem);$('singleRecoveryWrap').classList.toggle('hidden',!f.recovery);$('singleRedeemWrap').classList.toggle('hidden',!f.redeem);
+      validateBulk();
+    }
+    function switchInputMode(mode){inputMode=mode;$('bulkPanel').classList.toggle('hidden',mode!=='bulk');$('singlePanel').classList.toggle('hidden',mode!=='single');$('tabBulk').classList.toggle('active',mode==='bulk');$('tabSingle').classList.toggle('active',mode==='single');updateAccountCount()}
+    function addSingleAccount(){
+      if(singleAccounts.length>=10){$('singleStatus').textContent='Maksimal 10 akun.';$('singleStatus').className='status bad';return}
+      const f=selectedFormat(),a={email:$('singleEmail').value.trim(),password:$('singlePassword').value.trim(),recovery:$('singleRecovery').value.trim(),kode:$('singleKode').value.replace(/\s+/g,''),redeem:$('singleRedeem').value.trim()};
+      let error='';if(!emailRe.test(a.email))error='Email akun belum valid.';else if(!a.password)error='Password wajib diisi.';else if(f.recovery&&!emailRe.test(a.recovery))error='Email pemulihan belum valid.';else if(!/^[a-z0-9]{32}$/i.test(a.kode))error='Kode autentikator harus 32 karakter.';else if(f.redeem&&!a.redeem)error='Link/kode redeem wajib diisi karena akun belum diklaim.';
+      if(error){$('singleStatus').textContent=error;$('singleStatus').className='status bad';return}
+      singleAccounts.push(a);['singleEmail','singlePassword','singleRecovery','singleKode','singleRedeem'].forEach(id=>$(id).value='');renderSingleAccounts();$('singleEmail').focus();
+    }
+    function removeSingleAccount(index){singleAccounts.splice(index,1);renderSingleAccounts()}
+    function renderSingleAccounts(){$('singleAccountList').innerHTML=singleAccounts.map((a,i)=>`<div class="account-item"><span><b>#Akun_${i+1}</b> · ${a.email}</span><button type="button" onclick="removeSingleAccount(${i})">Hapus</button></div>`).join('');$('singleStatus').textContent=singleAccounts.length?`${singleAccounts.length} akun siap dibuat nota.`:'Belum ada akun ditambahkan.';$('singleStatus').className='status '+(singleAccounts.length?'ok':'');updateAccountCount()}
+    function updateAccountCount(){const count=inputMode==='bulk'?lines().length:singleAccounts.length;$('accountCount').textContent=`${count} akun`}
+    function parseBulk(){
+      const raw=lines(),f=selectedFormat(),expected=3+(f.recovery?1:0)+(f.redeem?1:0),errors=[];
+      const accounts=raw.map((line,i)=>{const p=line.split('|').map(x=>x.trim());
+        if(p.length!==expected||p.some(x=>!x)){errors.push(`Baris ${i+1}: harus ${expected} bagian lengkap.`);return null}
+        let x=0,email=p[x++],password=p[x++],recovery=f.recovery?p[x++]:'';
+        if(!emailRe.test(email))errors.push(`Baris ${i+1}: email akun tidak valid.`);if(f.recovery&&!emailRe.test(recovery))errors.push(`Baris ${i+1}: email cadangan tidak valid.`);
+        const kode=p[x++].replace(/\s+/g,''),redeem=f.redeem?p[x++]:'';if(!/^[a-z0-9]{32}$/i.test(kode))errors.push(`Baris ${i+1}: kode autentikator harus 32 karakter.`);
+        return{email,password,recovery,kode,redeem}
+      }).filter(Boolean);
+      if(raw.length<1)errors.unshift('Minimal 1 akun.');if(raw.length>10)errors.unshift('Maksimal 10 akun.');return{accounts,errors,count:raw.length,format:f}
+    }
+    function validateBulk(){const r=parseBulk(),status=$('bulkStatus');if(inputMode==='bulk')$('accountCount').textContent=`${r.count} akun`;status.textContent=r.count?r.errors[0]||`Format valid: ${r.count} akun.`:'Masukkan 1–10 akun.';status.className='status '+(r.count&&!r.errors.length?'ok':r.count?'bad':'');return r}
+    function tambahDurasi(s,months){const m={januari:0,februari:1,maret:2,april:3,mei:4,juni:5,juli:6,agustus:7,september:8,oktober:9,november:10,desember:11},n=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'],p=s.trim().toLowerCase().split(/\s+/),d=+p[0],mi=m[p[1]],y=+p[2];if(p.length===3&&d&&mi!==undefined&&y){const x=new Date(y,mi+months,d);return `${x.getDate()} ${n[x.getMonth()]} ${x.getFullYear()}`}return s+(months===12?' + 1 Tahun':' + 1 Bulan')}
+    function accountBlock(a,i,f){let t=`#Akun_${i+1}\nEmail: ${a.email}\nPassword: ${a.password}\n`;if(f.recovery)t+=`Email Pemulihan: ${a.recovery}\n`;t+=`🔐 Kode Google Autentikator:\nAkses kode 2FA di web berikut:\nhttps://babay.web.id/2fa/?key=${a.kode}\n`;if(f.redeem)t+=`🎁 Link/Kode Redeem:\n${a.redeem}\n`;return t+'\n'}
+    function generateNota(){
+      const f=selectedFormat(),chosen=inputMode==='bulk'?validateBulk():{accounts:singleAccounts,errors:[],count:singleAccounts.length,format:f},tanggal=$('tanggalAktif').value.trim(),garansi=Number($('garansiBulan').value);
+      if(inputMode==='single'){chosen.accounts.forEach((a,i)=>{if(f.recovery&&!emailRe.test(a.recovery))chosen.errors.push(`#Akun_${i+1} belum memiliki email pemulihan valid.`);if(f.redeem&&!a.redeem)chosen.errors.push(`#Akun_${i+1} belum memiliki link/kode redeem.`)})}
+      if(!chosen.count){alert('Masukkan 1–10 akun.');return}if(chosen.errors.length){alert(chosen.errors.join('\n'));return}if(!tanggal){alert('Tanggal aktif wajib diisi.');return}if(!Number.isInteger(garansi)||garansi<0||garansi>24){alert('Garansi harus berupa angka 0–24 bulan.');return}
+      const teksGaransi=garansi===0?'Tanpa garansi':`${garansi} Bulan (s/d ${tambahDurasi(tanggal,garansi)})`;
+      let nota=`📦 Akun Google One AI Pro 1 Tahun by Pixel\n⏳ Masa Aktif: s/d ${tambahDurasi(tanggal,12)}\n🛡️ Garansi: ${teksGaransi}\n**--------------------**\n\n📧 Detail Login:\n`;
+      chosen.accounts.forEach((a,i)=>nota+=accountBlock(a,i,chosen.format));
+      const nomor=chosen.accounts.map((_,i)=>`#${i+1}`).join(',');
+      nota+=`**--------------------**\n\n`;
+      if(chosen.format.redeem)nota+=`🎁 Status Voucher akun ${nomor} :\nVoucher Google AI Pro belum diklaim. Gunakan link/kode redeem pada masing-masing akun untuk melakukan klaim.\n\n`;
+      else nota+=`✅ Status Voucher akun ${nomor} :\nVoucher Google AI Pro sudah diklaim dan akun sudah siap digunakan.\n\n`;
+      nota+=`👨‍👩‍👧 Sharing Family Google One:\nUntuk sharing Google One AI Pro, bisa aktifkan family melalui:\nhttps://g.co/yourfamily\n\n📖 S&K / Panduan Pixel:\nTips penggunaan Head, Invite, Antigravity, Flow, dan family sharing bisa dibaca di:\nhttps://babay.web.id/snk/pixel\n\n📌 Catatan Penting:\n\n• Simpan data login dengan aman.\n• Akun Gmail dari admin telah disiapkan sebagai akun yang strong dan kuat. Walaupun begitu, saat masuk ke perangkat baru, sistem Google tetap dapat membutuhkan waktu untuk memastikan bahwa login tersebut bukan aktivitas mencurigakan atau tindakan spam.\n• Biarkan akun login di perangkat kurang lebih selama 3 hari sebelum mengubah password, email pemulihan, atau data keamanan lainnya secara bertahap.\n• Jangan terlalu sering login/logout di banyak perangkat agar tidak terjadi aktivitas mencurigakan.\n• Jika diminta kode autentikator, gunakan link 2FA yang sudah diberikan.\n• Tidak disarankan langsung menggunakan akun untuk Antigravity atau proxy. Cara yang lebih disarankan adalah membagikan benefit paket melalui Google Family, lalu mengundang email yang sering kamu gunakan sebagai anggota keluarga.\n• Jika email utama kamu pernah bergabung ke family lain dan terkena batas sebagai anggota, jadikan email utama tersebut sebagai kepala keluarga/buat grup keluarga baru. Setelah itu, masukkan Gmail Pro yang dibeli dari admin sebagai anggota.\n• Benefit tidak hanya dapat dibagikan oleh kepala keluarga. Anggota yang memiliki paket juga dapat membagikan benefit dengan fungsi yang sama; hanya kuota atau limit pemakaian yang digunakan bersama (sharing).\n• Masa aktif paket bisa dilihat di menu langganan Play Store: https://play.google.com/store/account/subscriptions.\n• ${garansi===0?'Nota ini tidak memiliki garansi.':`Garansi berlaku ${garansi} bulan untuk kendala layanan dari sisi paket.`}\n• Garansi tidak berlaku jika pembeli melanggar kebijakan Google, mengganti pengaturan tanpa arahan, atau terjadi kesalahan penggunaan dari pembeli.\n\nTerima kasih sudah order di BabayShop 🙏`;
+      $('outputBox').value=nota;$('outputCard').classList.remove('hidden');$('outputCard').scrollIntoView({behavior:'smooth'});
+    }
+    function getToday(){const n=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'],d=new Date();return `${d.getDate()} ${n[d.getMonth()]} ${d.getFullYear()}`}
+    function resetForm(){$('bulkInput').value='';$('outputBox').value='';['singleEmail','singlePassword','singleRecovery','singleKode','singleRedeem'].forEach(id=>$(id).value='');singleAccounts=[];$('tanggalAktif').value=getToday();$('garansiBulan').value='1';$('needRecovery').checked=true;$('needRedeem').checked=false;$('outputCard').classList.add('hidden');renderSingleAccounts();switchInputMode('bulk');updateFormat()}
+    async function copyNota(){const t=$('outputBox').value;try{await navigator.clipboard.writeText(t);alert('Nota berhasil disalin.')}catch{$('outputBox').select();document.execCommand('copy');alert('Nota berhasil disalin.')}}
+    $('bulkInput').addEventListener('input',validateBulk);$('needRecovery').addEventListener('change',updateFormat);$('needRedeem').addEventListener('change',updateFormat);$('tanggalAktif').value=getToday();updateFormat();
+  </script>
+</body>
+</html>
