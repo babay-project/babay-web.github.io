@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -501,6 +502,7 @@
           <select id="inGaransiType" onchange="toggleGaransiUI()">
             <option value="login">Garansi Login (1x24 Jam)</option>
             <option value="hari" selected>Garansi Hari</option>
+            <option value="none">No Garansi</option>
           </select>
         </div>
       </div>
@@ -549,7 +551,7 @@
         <textarea id="inNote" class="input-field" placeholder="Contoh: Bonus Shared Akun"></textarea>
       </div>
 
-      <button type="button" class="btn" onclick="generateNota()">Generate Nota</button>
+      <div class="info-mini">Nota dibuat otomatis setelah data lengkap dan format akun dinyatakan valid.</div>
       <div class="info-mini">Data diproses langsung di browser dan tidak dikirim ke server melalui halaman ini.</div>
     </section>
 
@@ -573,6 +575,7 @@
     let isEditMode = false;
     let inputMode = 'line';
     let accountRowCounter = 0;
+    let autoGenerateTimer = null;
 
     function setInputMode(mode) {
       inputMode = mode;
@@ -589,6 +592,7 @@
 
       clearBulkStatus();
       updateAccountCount();
+      scheduleAutoGenerate();
     }
 
     function createAccountRow(email = '', password = '', secret = '') {
@@ -656,16 +660,19 @@
     function toggleDurasiCustom() {
       const durasiType = document.getElementById('inDurasiSelect').value;
       document.getElementById('customDurasiDiv').classList.toggle('hidden', durasiType !== 'custom');
+      scheduleAutoGenerate();
     }
 
     function toggleGaransiUI() {
       const garansiType = document.getElementById('inGaransiType').value;
       document.getElementById('garansiHariDiv').classList.toggle('hidden', garansiType !== 'hari');
+      scheduleAutoGenerate();
     }
 
     function toggleCustomMethod() {
       const method = document.getElementById('inMethod').value;
       document.getElementById('customMethodDiv').classList.toggle('hidden', method !== 'custom');
+      scheduleAutoGenerate();
     }
 
     function parseLocalDate(dateString) {
@@ -719,6 +726,7 @@
 
       document.getElementById('accountCountBadge').textContent = `${count} akun`;
       clearBulkStatus();
+      scheduleAutoGenerate();
     }
 
     function parseBulkAccounts() {
@@ -745,6 +753,11 @@
 
         if (!email.includes('@')) {
           errors.push(`Baris ${lineNumber}: format email tidak valid.`);
+          return;
+        }
+
+        if (!/^[A-Za-z0-9]{32}$/.test(secret)) {
+          errors.push(`Baris ${lineNumber}: kode harus tepat 32 karakter huruf/angka.`);
           return;
         }
 
@@ -786,6 +799,11 @@
 
         if (!email.includes('@')) {
           errors.push(`Akun ${rowNumber}: format email tidak valid.`);
+          return;
+        }
+
+        if (!/^[A-Za-z0-9]{32}$/.test(secret)) {
+          errors.push(`Akun ${rowNumber}: kode harus tepat 32 karakter huruf/angka.`);
           return;
         }
 
@@ -846,13 +864,22 @@
       }).join('\n');
     }
 
-    function generateNota() {
+    function scheduleAutoGenerate() {
+      window.clearTimeout(autoGenerateTimer);
+      autoGenerateTimer = window.setTimeout(() => generateNota(true), 250);
+    }
+
+    function generateNota(isAutomatic = false) {
       const accounts = getAccounts();
-      if (!accounts) return;
+      if (!accounts) {
+        document.getElementById('resultCard').classList.add('hidden');
+        return;
+      }
 
       const tglBeli = document.getElementById('inTgl').value;
       if (!tglBeli) {
-        alert('Pilih tanggal pembelian terlebih dahulu.');
+        if (!isAutomatic) alert('Pilih tanggal pembelian terlebih dahulu.');
+        document.getElementById('resultCard').classList.add('hidden');
         return;
       }
 
@@ -862,7 +889,8 @@
         : Number.parseInt(durasiSelect, 10);
 
       if (!Number.isFinite(durasiPaket) || durasiPaket <= 0) {
-        alert('Durasi paket harus lebih dari 0 hari.');
+        if (!isAutomatic) alert('Durasi paket harus lebih dari 0 hari.');
+        document.getElementById('resultCard').classList.add('hidden');
         return;
       }
 
@@ -878,10 +906,14 @@
 
       if (garansiType === 'login') {
         garansiTeks = 'Garansi Login 1x24 Jam';
+      } else if (garansiType === 'none') {
+        garansiTeks = 'No Garansi';
+        garansiNote = 'Produk tidak memiliki garansi setelah akun berhasil diterima dan login.';
       } else {
         const garansiDays = Number.parseInt(document.getElementById('inGaransiDay').value, 10);
         if (!Number.isFinite(garansiDays) || garansiDays <= 0) {
-          alert('Jumlah hari garansi harus lebih dari 0.');
+          if (!isAutomatic) alert('Jumlah hari garansi harus lebih dari 0.');
+          document.getElementById('resultCard').classList.add('hidden');
           return;
         }
 
@@ -955,7 +987,7 @@ Terima kasih...
       isEditMode = false;
       editBtn.textContent = 'Edit Nota';
 
-      resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (!isAutomatic) resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function toggleEdit() {
@@ -1023,7 +1055,14 @@ Terima kasih...
     toggleGaransiUI();
     addAccountRow();
     setInputMode('line');
+
+    document.querySelectorAll('#inTgl, #inMethod, #inMethodCustom, #inDurasiSelect, #inDurasiCustomVal, #inGaransiType, #inGaransiDay, #inNote')
+      .forEach(field => {
+        field.addEventListener('input', scheduleAutoGenerate);
+        field.addEventListener('change', scheduleAutoGenerate);
+      });
   </script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
