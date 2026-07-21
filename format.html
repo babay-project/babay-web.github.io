@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Account Formatter Pro</title>
+  <style>
+    :root{
+      --bg:#070b16;--card:rgba(17,24,39,.82);--card-2:#0d1424;--line:#26334a;
+      --text:#f8fafc;--muted:#94a3b8;--blue:#3b82f6;--blue-2:#2563eb;
+      --green:#22c55e;--red:#fb7185;--amber:#fbbf24;--shadow:0 24px 70px rgba(0,0,0,.35)
+    }
+    *{box-sizing:border-box}
+    body{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:
+      radial-gradient(circle at 10% 0%,rgba(37,99,235,.24),transparent 34%),
+      radial-gradient(circle at 95% 15%,rgba(124,58,237,.15),transparent 30%),var(--bg);
+      color:var(--text);margin:0;min-height:100vh;padding:42px 18px}
+    .container{max-width:1120px;margin:auto}
+    .header{display:flex;justify-content:space-between;align-items:end;gap:18px;margin-bottom:24px}
+    .eyebrow{color:#60a5fa;text-transform:uppercase;letter-spacing:.16em;font-size:12px;font-weight:800}
+    h1{font-size:clamp(28px,5vw,46px);line-height:1.05;margin:8px 0 10px;letter-spacing:-.04em}
+    .subtitle{color:var(--muted);margin:0;max-width:650px;line-height:1.6}
+    .badge{white-space:nowrap;background:rgba(34,197,94,.1);color:#86efac;border:1px solid rgba(34,197,94,.3);padding:9px 13px;border-radius:999px;font-size:12px;font-weight:800}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .card{background:var(--card);border:1px solid rgba(148,163,184,.16);backdrop-filter:blur(14px);border-radius:20px;padding:22px;box-shadow:var(--shadow)}
+    .card-head{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:14px}
+    h2{font-size:17px;margin:0}.hint{color:var(--muted);font-size:12px}
+    textarea{width:100%;height:330px;resize:vertical;background:var(--card-2);color:#e2e8f0;border:1px solid var(--line);border-radius:14px;padding:16px;font-family:"SFMono-Regular",Consolas,monospace;font-size:13px;line-height:1.65;outline:none;transition:.2s}
+    textarea:focus{border-color:var(--blue);box-shadow:0 0 0 4px rgba(59,130,246,.13)}
+    textarea[readonly]{color:#cbd5e1;cursor:default}
+    .controls{display:grid;grid-template-columns:minmax(190px,1fr) auto;gap:12px;margin-top:14px}
+    select,button{font:inherit;border-radius:11px;min-height:44px}
+    select{width:100%;background:#111a2d;color:var(--text);border:1px solid var(--line);padding:0 12px;outline:none}
+    .buttons{display:flex;flex-wrap:wrap;gap:9px}
+    button{border:1px solid transparent;padding:0 16px;color:#fff;font-weight:750;cursor:pointer;transition:transform .15s,background .15s,border-color .15s}
+    button:hover{transform:translateY(-1px)}button:active{transform:translateY(0)}
+    .primary{background:linear-gradient(135deg,var(--blue),var(--blue-2))}.primary:hover{background:#2563eb}
+    .secondary{background:#172033;border-color:#334155}.secondary:hover{background:#202b40}
+    .success{background:#15803d}.success:hover{background:#166534}
+    .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+    .stat{background:#0d1424;border:1px solid var(--line);border-radius:12px;padding:12px}
+    .stat span{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}.stat b{font-size:20px}
+    .valid b{color:#4ade80}.invalid b{color:var(--red)}
+    .errors{display:none;margin-top:14px;padding:13px 15px;background:rgba(244,63,94,.08);border:1px solid rgba(244,63,94,.25);border-radius:12px;color:#fecdd3;font-size:12px;line-height:1.6;max-height:145px;overflow:auto}
+    .rules{margin-top:20px;display:flex;gap:10px;flex-wrap:wrap;color:var(--muted);font-size:12px}
+    .rule{background:rgba(15,23,42,.7);border:1px solid var(--line);border-radius:999px;padding:8px 11px}
+    .toast{position:fixed;right:20px;bottom:20px;background:#f8fafc;color:#0f172a;padding:12px 16px;border-radius:12px;font-weight:750;box-shadow:var(--shadow);opacity:0;transform:translateY(12px);pointer-events:none;transition:.25s}
+    .toast.show{opacity:1;transform:translateY(0)}
+    @media(max-width:850px){body{padding:26px 12px}.header{align-items:start}.badge{display:none}.grid{grid-template-columns:1fr}.controls{grid-template-columns:1fr}.buttons button{flex:1}.card{padding:16px}textarea{height:260px}}
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header class="header">
+      <div><div class="eyebrow">Secure formatting tool</div><h1>Account Formatter</h1><p class="subtitle">Rapikan data akun sekaligus memeriksa domain email dan secret key pada setiap baris.</p></div>
+      <div class="badge">● Local processing</div>
+    </header>
+
+    <section class="grid">
+      <div class="card">
+        <div class="card-head"><h2>01 — Input akun</h2><span class="hint">1 baris = 1 akun</span></div>
+        <textarea id="input" spellcheck="false" placeholder="email@gmail.com | password | 12345678901234567890123456789012"></textarea>
+        <div class="controls">
+          <select id="format" aria-label="Format output">
+            <option value="pipeSpace">email | password | secret</option>
+            <option value="pipe">email|password|secret</option>
+            <option value="comma">email,password,secret</option>
+            <option value="colon">email : password : secret</option>
+            <option value="space">email password secret</option>
+            <option value="tab">email[TAB]password[TAB]secret</option>
+          </select>
+          <div class="buttons"><button class="primary" id="generateBtn">Generate</button><button class="secondary" id="clearBtn">Clear</button></div>
+        </div>
+        <div class="rules"><span class="rule">✓ Domain email resmi</span><span class="rule">✓ Secret tepat 32 angka</span><span class="rule">✓ Data diproses di browser</span></div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><h2>02 — Hasil</h2><span class="hint" id="editStatus">Terkunci</span></div>
+        <textarea id="output" readonly spellcheck="false" placeholder="Hasil yang valid akan muncul di sini..."></textarea>
+        <div class="buttons" style="margin-top:14px">
+          <button class="success" id="copyBtn">Copy</button>
+          <button class="secondary" id="editBtn">Edit</button>
+          <button class="secondary" id="downloadBtn">Download TXT</button>
+        </div>
+        <div class="stats">
+          <div class="stat"><span>Total diperiksa</span><b id="total">0</b></div>
+          <div class="stat valid"><span>Valid</span><b id="valid">0</b></div>
+          <div class="stat invalid"><span>Invalid</span><b id="invalid">0</b></div>
+        </div>
+        <div class="errors" id="errors"></div>
+      </div>
+    </section>
+  </main>
+  <div class="toast" id="toast"></div>
+
+<script>
+  const EMAIL_DOMAINS = new Set([
+    'gmail.com','googlemail.com','icloud.com','me.com','mac.com',
+    'hotmail.com','hotmail.co.id','outlook.com','outlook.co.id','live.com','msn.com',
+    'yahoo.com','yahoo.co.id','ymail.com','rocketmail.com',
+    'proton.me','protonmail.com','aol.com','zoho.com','zohomail.com',
+    'gmx.com','gmx.net','mail.com','yandex.com','yandex.ru','fastmail.com'
+  ]);
+  const $ = id => document.getElementById(id);
+
+  function toast(message){
+    $('toast').textContent=message;$('toast').classList.add('show');
+    clearTimeout(window.toastTimer);window.toastTimer=setTimeout(()=>$('toast').classList.remove('show'),1800);
+  }
+
+  function splitLine(line){
+    const value=line.trim();if(!value)return null;
+    let parts;
+    if(value.includes('|')) parts=value.split('|');
+    else if(value.includes('----')) parts=value.split(/-{2,}/);
+    else if(value.includes(',')) parts=value.split(',');
+    else if(value.includes(';')) parts=value.split(';');
+    else if(/\s:\s/.test(value)) parts=value.split(/\s:\s/);
+    else parts=value.split(/\s+/);
+    parts=parts.map(item=>item.trim()).filter(Boolean);
+    return parts.length===3 ? parts : null;
+  }
+
+  function validate(parts){
+    const reasons=[];
+    if(!parts)return ['Format harus berisi tepat 3 bagian: email, password, dan secret'];
+    const [email,password,secret]=parts;
+    const emailMatch=email.toLowerCase().match(/^[a-z0-9.!#$%&'*+/=?^_`{|}~-]+@([a-z0-9.-]+\.[a-z]{2,})$/i);
+    if(!emailMatch) reasons.push('format email tidak valid');
+    else if(!EMAIL_DOMAINS.has(emailMatch[1])) reasons.push(`domain @${emailMatch[1]} belum termasuk domain resmi yang didukung`);
+    if(!password) reasons.push('password kosong');
+    if(!/^\d{32}$/.test(secret)) reasons.push('secret key harus tepat 32 angka');
+    return reasons;
+  }
+
+  function joinParts(parts,mode){
+    const separators={pipeSpace:' | ',pipe:'|',comma:',',colon:' : ',space:' ',tab:'\t'};
+    return parts.join(separators[mode]||' | ');
+  }
+
+  function generate(){
+    const lines=$('input').value.split(/\r?\n/);const output=[];const errors=[];let total=0;
+    lines.forEach((line,index)=>{
+      if(!line.trim())return;total++;
+      const parts=splitLine(line);const reasons=validate(parts);
+      if(reasons.length)errors.push(`Baris ${index+1}: ${reasons.join('; ')}`);
+      else output.push(joinParts(parts,$('format').value));
+    });
+    $('output').value=output.join('\n');$('total').textContent=total;$('valid').textContent=output.length;$('invalid').textContent=errors.length;
+    $('errors').style.display=errors.length?'block':'none';$('errors').innerHTML=errors.map(e=>`• ${escapeHtml(e)}`).join('<br>');
+    $('output').readOnly=true;$('editBtn').textContent='Edit';$('editStatus').textContent='Terkunci';
+    toast(total ? `Selesai: ${output.length} akun valid` : 'Masukkan data akun terlebih dahulu');
+  }
+
+  function escapeHtml(value){const div=document.createElement('div');div.textContent=value;return div.innerHTML}
+
+  async function copyOutput(){
+    if(!$('output').value)return toast('Belum ada hasil untuk disalin');
+    try{await navigator.clipboard.writeText($('output').value)}catch(e){$('output').select();document.execCommand('copy')}
+    toast('Hasil berhasil disalin');
+  }
+
+  function toggleEdit(){
+    $('output').readOnly=!$('output').readOnly;
+    $('editBtn').textContent=$('output').readOnly?'Edit':'Selesai';$('editStatus').textContent=$('output').readOnly?'Terkunci':'Mode edit aktif';
+    if(!$('output').readOnly)$('output').focus();
+  }
+
+  function downloadTxt(){
+    if(!$('output').value)return toast('Belum ada hasil untuk diunduh');
+    const url=URL.createObjectURL(new Blob([$('output').value],{type:'text/plain;charset=utf-8'}));
+    const a=document.createElement('a');a.href=url;a.download='formatted_accounts.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),500);toast('File TXT diunduh');
+  }
+
+  function clearAll(){
+    $('input').value='';$('output').value='';['total','valid','invalid'].forEach(id=>$(id).textContent='0');
+    $('errors').style.display='none';$('errors').innerHTML='';$('input').focus();toast('Data dibersihkan');
+  }
+
+  $('generateBtn').addEventListener('click',generate);$('copyBtn').addEventListener('click',copyOutput);
+  $('editBtn').addEventListener('click',toggleEdit);$('downloadBtn').addEventListener('click',downloadTxt);$('clearBtn').addEventListener('click',clearAll);
+  $('format').addEventListener('change',()=>{if($('input').value.trim())generate()});
+</script>
+</body>
+</html>
