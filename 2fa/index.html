@@ -1,1129 +1,589 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="A private, client-side TOTP authenticator code generator." />
-  <meta name="theme-color" content="#0F111A" />
-  <title>Authenticator Code Generator</title>
-
-  <!-- Typography -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
-
-  <!-- OTPAuth.js: RFC 6238-compatible TOTP generation in the browser. -->
-  <script src="https://cdn.jsdelivr.net/npm/otpauth@9.5.1/dist/otpauth.umd.min.js"></script>
-
-  <style>
-    :root {
-      --primary: #22c55e;
-      --primary-dark: #16a34a;
-      --page: #0f111a;
-      --card: #171923;
-      --ink: #ffffff;
-      --muted: #9ca3af;
-      --input: #222532;
-      --white: #ffffff;
-      --danger: #fb7185;
-      --success: #22c55e;
-      --border: rgba(255, 255, 255, 0.08);
-      --shadow: 0 28px 80px rgba(0, 0, 0, 0.35), 0 8px 24px rgba(0, 0, 0, 0.24);
-      --soft-shadow: 0 12px 30px rgba(0, 0, 0, 0.24);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      min-height: 100%;
-      background: var(--page);
-    }
-
-    body {
-      min-height: 100vh;
-      margin: 0;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 20% 10%, rgba(34, 197, 94, 0.14), transparent 30%),
-        radial-gradient(circle at 85% 85%, rgba(16, 185, 129, 0.10), transparent 32%),
-        var(--page);
-      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      overflow-x: hidden;
-    }
-
-    button,
-    input {
-      font: inherit;
-    }
-
-    button {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .page-shell {
-      position: relative;
-      isolation: isolate;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 48px 24px 34px;
-    }
-
-    .page-shell::before,
-    .page-shell::after {
-      content: "";
-      position: fixed;
-      z-index: -1;
-      width: 320px;
-      height: 320px;
-      border-radius: 50%;
-      filter: blur(10px);
-      opacity: 0.42;
-      pointer-events: none;
-    }
-
-    .page-shell::before {
-      top: -180px;
-      right: -100px;
-      background: rgba(34, 197, 94, 0.16);
-    }
-
-    .page-shell::after {
-      bottom: -210px;
-      left: -120px;
-      background: rgba(16, 185, 129, 0.13);
-    }
-
-    main {
-      width: min(100%, 700px);
-      text-align: center;
-      animation: fadeUp 700ms cubic-bezier(.2, .75, .25, 1) both;
-    }
-
-    .privacy-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      margin-bottom: 24px;
-      padding: 10px 15px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.055);
-      box-shadow: 0 9px 28px rgba(0, 0, 0, 0.16);
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 800;
-      letter-spacing: 0.11em;
-      text-transform: uppercase;
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
-
-    .status-dot {
-      width: 9px;
-      height: 9px;
-      flex: 0 0 9px;
-      border-radius: 50%;
-      background: var(--success);
-      box-shadow: 0 0 0 4px rgba(32, 178, 107, 0.11);
-    }
-
-    .hero-title {
-      margin: 0;
-      line-height: 0.9;
-      letter-spacing: -0.065em;
-    }
-
-    .hero-title .brand {
-      display: block;
-      color: var(--primary);
-      font-family: "Fredoka", "Inter", sans-serif;
-      font-size: clamp(58px, 10vw, 92px);
-      font-weight: 700;
-    }
-
-    .hero-title .subtitle {
-      display: block;
-      margin-top: 16px;
-      color: var(--ink);
-      font-family: "Inter", sans-serif;
-      font-size: clamp(37px, 7vw, 62px);
-      font-weight: 900;
-      letter-spacing: -0.07em;
-    }
-
-    .description {
-      max-width: 600px;
-      margin: 26px auto 34px;
-      color: var(--muted);
-      font-size: 16px;
-      line-height: 1.7;
-    }
-
-    .description strong {
-      color: var(--primary);
-      font-weight: 800;
-    }
-
-    .auth-card {
-      width: min(100%, 540px);
-      margin: 0 auto;
-      padding: 42px;
-      border: 1px solid var(--border);
-      border-radius: 32px;
-      background: rgba(23, 25, 35, 0.94);
-      box-shadow: var(--shadow);
-      text-align: left;
-      backdrop-filter: blur(22px);
-      -webkit-backdrop-filter: blur(22px);
-      transition: transform 280ms ease, box-shadow 280ms ease;
-    }
-
-    .auth-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 34px 88px rgba(0, 0, 0, 0.42), 0 10px 30px rgba(0, 0, 0, 0.3);
-    }
-
-    .field-wrap {
-      position: relative;
-      display: flex;
-      align-items: center;
-      min-height: 76px;
-      padding: 8px 8px 8px 26px;
-      border-radius: 999px;
-      background: var(--input);
-      box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 14px 34px rgba(64, 54, 82, 0.18);
-      transition: box-shadow 220ms ease, transform 220ms ease;
-    }
-
-    .field-wrap:focus-within {
-      transform: translateY(-1px);
-      box-shadow: 0 0 0 5px rgba(34, 197, 94, 0.14), 0 17px 38px rgba(0, 0, 0, 0.28);
-    }
-
-    #secretInput {
-      min-width: 0;
-      flex: 1;
-      height: 56px;
-      border: 0;
-      outline: 0;
-      background: transparent;
-      color: var(--white);
-      font-size: 15px;
-      font-weight: 650;
-      letter-spacing: 0.035em;
-    }
-
-    #secretInput::placeholder {
-      color: rgba(255, 255, 255, 0.55);
-      letter-spacing: 0;
-    }
-
-    .action-button {
-      position: relative;
-      isolation: isolate;
-      overflow: hidden;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      flex: 0 0 auto;
-      min-width: 112px;
-      height: 58px;
-      padding: 0 20px;
-      border: 0;
-      border-radius: 999px;
-      cursor: pointer;
-      font-size: 14px;
-      font-weight: 800;
-      transition: transform 160ms ease, box-shadow 200ms ease, background-color 200ms ease;
-    }
-
-    .action-button:hover {
-      transform: translateY(-2px) scale(1.015);
-    }
-
-    .action-button:active {
-      transform: scale(0.96);
-    }
-
-    .paste-button {
-      background: var(--white);
-      color: #171923;
-      box-shadow: 0 8px 22px rgba(17, 19, 24, 0.15);
-    }
-
-    .copy-button {
-      min-width: 105px;
-      height: 54px;
-      background: rgba(34, 197, 94, 0.13);
-      color: #86efac;
-      box-shadow: none;
-    }
-
-    .copy-button:hover {
-      background: rgba(34, 197, 94, 0.22);
-      box-shadow: 0 9px 20px rgba(34, 197, 94, 0.14);
-    }
-
-    .action-button svg {
-      width: 18px;
-      height: 18px;
-      fill: none;
-      stroke: currentColor;
-      stroke-width: 2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-
-    .ripple {
-      position: absolute;
-      z-index: -1;
-      border-radius: 50%;
-      background: currentColor;
-      opacity: 0.12;
-      transform: scale(0);
-      animation: ripple 520ms ease-out;
-      pointer-events: none;
-    }
-
-    .error-message {
-      min-height: 20px;
-      margin: 11px 18px 4px;
-      color: var(--danger);
-      font-size: 12px;
-      font-weight: 650;
-      opacity: 0;
-      transform: translateY(-3px);
-      transition: opacity 180ms ease, transform 180ms ease;
-    }
-
-    .error-message.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .code-panel {
-      margin-top: 18px;
-      padding: 26px 27px 24px;
-      border: 1px solid var(--border);
-      border-radius: 25px;
-      background: rgba(255, 255, 255, 0.035);
-      box-shadow: var(--soft-shadow);
-    }
-
-    .code-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-    }
-
-    .otp-code {
-      min-width: 0;
-      color: var(--ink);
-      font-size: clamp(34px, 8vw, 42px);
-      font-weight: 850;
-      line-height: 1;
-      letter-spacing: 0.12em;
-      white-space: nowrap;
-      font-variant-numeric: tabular-nums;
-      transition: opacity 160ms ease, transform 160ms ease, color 180ms ease;
-    }
-
-    .otp-code.empty {
-      color: #626978;
-      letter-spacing: 0.1em;
-    }
-
-    .otp-code.refreshing {
-      opacity: 0.42;
-      transform: translateY(2px) scale(0.98);
-    }
-
-    .timer-row {
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      margin-top: 27px;
-      gap: 20px;
-    }
-
-    .timer-label {
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 650;
-    }
-
-    .timer-value {
-      color: var(--ink);
-      font-size: 25px;
-      font-weight: 850;
-      line-height: 1;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .progress-track {
-      height: 7px;
-      margin-top: 13px;
-      overflow: hidden;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.08);
-    }
-
-    .progress-bar {
-      width: 100%;
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, #22c55e, #86efac);
-      transform-origin: left center;
-      transform: scaleX(1);
-      transition: transform 950ms linear;
-      box-shadow: 0 0 12px rgba(34, 197, 94, 0.34);
-    }
-
-    .detail-stack {
-      display: grid;
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .detail-box {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      min-width: 0;
-      padding: 14px 14px 14px 17px;
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      background: rgba(255, 255, 255, 0.035);
-    }
-
-    .detail-content {
-      min-width: 0;
-    }
-
-    .detail-label {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 750;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-
-    .detail-value {
-      display: block;
-      overflow: hidden;
-      color: var(--ink);
-      font-size: 13px;
-      font-weight: 700;
-      line-height: 1.45;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .next-code-line {
-      margin-top: 18px;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 650;
-      text-align: center;
-    }
-
-    .next-code-line strong {
-      color: #86efac;
-      font-weight: 850;
-      letter-spacing: 0.06em;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .small-copy-button {
-      min-width: auto;
-      height: 42px;
-      padding: 0 14px;
-      font-size: 12px;
-    }
-
-    .action-button:disabled {
-      cursor: not-allowed;
-      opacity: 0.45;
-      transform: none;
-      box-shadow: none;
-    }
-
-    .security-note {
-      margin: 25px 0 0;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.65;
-      text-align: center;
-    }
-
-    .security-note strong {
-      color: #d1d5db;
-    }
-
-    .toast {
-      position: fixed;
-      left: 50%;
-      bottom: 24px;
-      z-index: 50;
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      max-width: calc(100vw - 32px);
-      padding: 12px 17px;
-      border: 1px solid rgba(255,255,255,.85);
-      border-radius: 999px;
-      background: rgba(25, 28, 35, 0.88);
-      box-shadow: 0 14px 36px rgba(17,19,24,.22);
-      color: white;
-      font-size: 13px;
-      font-weight: 700;
-      opacity: 0;
-      transform: translate(-50%, 18px) scale(.96);
-      pointer-events: none;
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      transition: opacity 220ms ease, transform 220ms ease;
-    }
-
-    .toast.visible {
-      opacity: 1;
-      transform: translate(-50%, 0) scale(1);
-    }
-
-    .toast-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #6ee7a8;
-      box-shadow: 0 0 0 4px rgba(110, 231, 168, .12);
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes ripple {
-      to { transform: scale(3.2); opacity: 0; }
-    }
-
-    @media (max-width: 620px) {
-      .page-shell {
-        place-items: start center;
-        padding: 30px 16px 24px;
-      }
-
-      .privacy-badge {
-        margin-bottom: 20px;
-        padding: 9px 12px;
-        font-size: 9px;
-      }
-
-      .description {
-        margin: 21px auto 27px;
-        padding: 0 6px;
-        font-size: 14px;
-      }
-
-      .auth-card {
-        width: 100%;
-        padding: 24px;
-        border-radius: 27px;
-      }
-
-      .field-wrap {
-        min-height: 70px;
-        padding-left: 20px;
-      }
-
-      .action-button {
-        min-width: 94px;
-        height: 54px;
-        padding: 0 15px;
-      }
-
-      .code-panel {
-        padding: 23px 20px 21px;
-      }
-
-      .copy-button {
-        min-width: 54px;
-        width: 54px;
-        padding: 0;
-      }
-
-      .copy-button span {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        overflow: hidden;
-        clip: rect(0 0 0 0);
-        white-space: nowrap;
-      }
-
-      .otp-code {
-        letter-spacing: 0.075em;
-      }
-
-      .detail-box {
-        align-items: stretch;
-        flex-direction: column;
-      }
-
-      .small-copy-button {
-        width: 100%;
-      }
-
-      .small-copy-button span {
-        position: static;
-        width: auto;
-        height: auto;
-        overflow: visible;
-        clip: auto;
-        white-space: normal;
-      }
-    }
-
-    @media (max-width: 390px) {
-      .auth-card {
-        padding: 18px;
-      }
-
-      .field-wrap {
-        padding-left: 17px;
-      }
-
-      .paste-button {
-        min-width: 54px;
-        width: 54px;
-        padding: 0;
-      }
-
-      .paste-button span {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        overflow: hidden;
-        clip: rect(0 0 0 0);
-        white-space: nowrap;
-      }
-
-      .code-panel {
-        padding-inline: 17px;
-      }
-    }
-
-    .top-controls {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 14px;
-    }
-
-    .language-select {
-      height: 38px;
-      padding: 0 34px 0 14px;
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      outline: none;
-      color: var(--ink);
-      background: rgba(255, 255, 255, 0.055);
-      font-size: 12px;
-      font-weight: 750;
-      cursor: pointer;
-      color-scheme: dark;
-    }
-
-    @media (max-width: 620px) {
-      .page-shell { padding: 18px 12px 18px; }
-      main { width: 100%; }
-      .top-controls { margin-bottom: 10px; }
-      .language-select { height: 34px; font-size: 11px; }
-      .privacy-badge { margin-bottom: 12px; padding: 7px 10px; font-size: 8px; }
-      .hero-title .brand { font-size: clamp(40px, 14vw, 58px); }
-      .hero-title .subtitle { margin-top: 8px; font-size: clamp(27px, 9vw, 39px); }
-      .description { margin: 14px auto 17px; font-size: 12.5px; line-height: 1.55; }
-      .auth-card { padding: 16px; border-radius: 22px; }
-      .auth-card:hover { transform: none; }
-      .field-wrap { min-height: 58px; padding: 5px 5px 5px 16px; }
-      #secretInput { height: 46px; font-size: 13px; }
-      .action-button { height: 46px; min-width: 82px; padding: 0 13px; font-size: 12px; }
-      .code-panel { margin-top: 10px; padding: 17px 15px 15px; border-radius: 20px; }
-      .otp-code { font-size: clamp(29px, 10vw, 37px); }
-      .timer-row { margin-top: 18px; }
-      .timer-value { font-size: 21px; }
-      .progress-track { margin-top: 9px; height: 6px; }
-      .next-code-line { margin-top: 13px; font-size: 12px; }
-      .detail-stack { gap: 8px; margin-top: 13px; }
-      .detail-box { padding: 11px 11px 11px 13px; border-radius: 15px; }
-      .detail-label { font-size: 9px; }
-      .detail-value { font-size: 11px; }
-      .small-copy-button { height: 38px; }
-      .security-note { margin-top: 14px; font-size: 10.5px; }
-      .error-message { margin: 7px 12px 2px; min-height: 16px; font-size: 10.5px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        scroll-behavior: auto !important;
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>2FA Code Generator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: #0b0b14;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+        .card {
+            background: #13131f;
+            border-radius: 20px;
+            padding: 32px 28px;
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid #1f1f2e;
+            box-shadow: 0 12px 48px rgba(0,0,0,0.6);
+            text-align: center;
+        }
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+        .logo span { color: #a855f7; }
+        .tagline {
+            color: #666;
+            font-size: 0.75rem;
+            margin-bottom: 24px;
+            letter-spacing: 0.3px;
+        }
+        .secret-input-area {
+            margin-bottom: 14px;
+        }
+        .secret-input-area input {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid #222;
+            background: #0b0b14;
+            color: #fff;
+            font-size: 0.95rem;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            text-align: center;
+            transition: border 0.2s;
+        }
+        .secret-input-area input:focus {
+            outline: none;
+            border-color: #a855f7;
+        }
+        .secret-input-area input::placeholder {
+            color: #444;
+            text-transform: none;
+            letter-spacing: 0;
+            font-size: 0.8rem;
+        }
+        .code-box {
+            background: #0b0b14;
+            border-radius: 14px;
+            padding: 20px 16px 16px;
+            margin-top: 4px;
+            border: 1px solid #1a1a2a;
+            display: none;
+        }
+        .code-box.show { display: block; }
+        .code-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.75rem;
+            color: #555;
+            margin-bottom: 8px;
+        }
+        .code-label .copy-btn,
+        .mini-copy-btn {
+            background: transparent;
+            border: 1px solid #222;
+            color: #888;
+            padding: 3px 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            transition: all 0.2s;
+        }
+        .code-label .copy-btn:hover,
+        .mini-copy-btn:hover {
+            border-color: #a855f7;
+            color: #a855f7;
+        }
+        .code-label .copy-btn.copied,
+        .mini-copy-btn.copied {
+            border-color: #22c55e;
+            color: #22c55e;
+        }
+        .code-digits {
+            font-family: 'Courier New', monospace;
+            font-size: 2.6rem;
+            font-weight: 700;
+            letter-spacing: 10px;
+            color: #a855f7;
+            padding: 4px 0 8px;
+            word-break: break-all;
+            cursor: pointer;
+            user-select: none;
+            transition: transform 0.15s, opacity 0.15s;
+        }
+        .code-digits:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+        .code-digits:active {
+            transform: scale(0.98);
+        }
+        .copy-hint {
+            font-size: 0.68rem;
+            color: #444;
+            margin-top: -4px;
+            margin-bottom: 6px;
+            min-height: 14px;
+        }
+        .copy-hint.active {
+            color: #22c55e;
+        }
+        .secret-display {
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            color: #444;
+            word-break: break-all;
+            margin-top: 2px;
+            padding: 4px 0;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .secret-display:hover {
+            color: #a855f7;
+        }
+        .next-code {
+            font-size: 0.8rem;
+            color: #555;
+            margin-top: 8px;
+            min-height: 22px;
+        }
+        .next-code span { color: #888; font-weight: 600; }
+        .progress-bar {
+            height: 3px;
+            background: #1a1a2a;
+            border-radius: 2px;
+            margin: 10px 0 6px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background: #a855f7;
+            width: 100%;
+            transition: width 1s linear;
+        }
+        .alt-link-box {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #1a1a2a;
+            border-radius: 10px;
+            background: #10101a;
+            text-align: left;
+            display: none;
+        }
+        .alt-link-box.show { display: block; }
+        .alt-title {
+            color: #666;
+            font-size: 0.72rem;
+            margin-bottom: 6px;
+        }
+        .secret-link {
+            display: block;
+            color: #a855f7;
+            font-family: 'Courier New', monospace;
+            font-size: 0.68rem;
+            line-height: 1.35;
+            text-decoration: none;
+            word-break: break-all;
+            margin-bottom: 8px;
+        }
+        .secret-link:hover {
+            text-decoration: underline;
+        }
+        .mini-copy-btn {
+            width: 100%;
+            padding: 7px 10px;
+        }
+        .links {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .links a {
+            display: block;
+            padding: 11px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .links .home-btn {
+            background: #1a1a2e;
+            color: #ccc;
+            border: 1px solid #222;
+        }
+        .links .home-btn:hover { background: #222; border-color: #444; }
+        .links .wa-btn {
+            background: #075e54;
+            color: #fff;
+        }
+        .links .wa-btn:hover { background: #0a7a6b; }
+        .error-msg {
+            color: #ef4444;
+            font-size: 0.8rem;
+            margin-top: 8px;
+            display: none;
+        }
+        .error-msg.show { display: block; }
+        .footer {
+            margin-top: 16px;
+            font-size: 0.65rem;
+            color: #333;
+        }
+        @media (max-width: 400px) {
+            .card { padding: 24px 16px; }
+            .code-digits { font-size: 2rem; letter-spacing: 6px; }
+        }
+    </style>
 </head>
 <body>
-  <div class="page-shell">
-    <main>
-      <div class="top-controls">
-        <select id="languageSelect" class="language-select" aria-label="Language">
-          <option value="en">English</option>
-          <option value="id">Indonesia</option>
-        </select>
-      </div>
-      <div class="privacy-badge" aria-label="Privacy status">
-        <span class="status-dot" aria-hidden="true"></span>
-        <span id="privacyText">Your secret never leaves the browser</span>
-      </div>
+    <div class="card">
+        <div class="logo">BABAY<span>SHOP</span></div>
+        <div class="tagline">2FA Code Generator</div>
 
-      <h1 class="hero-title">
-        <span id="brandText" class="brand">Authenticator</span>
-        <span id="subtitleText" class="subtitle">Code Generator</span>
-      </h1>
-
-      <p id="descriptionText" class="description">
-        Paste any TOTP <strong>secret key</strong> to instantly see your live
-        <strong>6-digit code</strong> and the seconds until it rotates.
-      </p>
-
-      <section class="auth-card" aria-label="TOTP code generator">
-        <div class="field-wrap">
-          <input
-            id="secretInput"
-            type="text"
-            inputmode="text"
-            autocomplete="off"
-            autocapitalize="characters"
-            spellcheck="false"
-            aria-label="Base32 secret key"
-            aria-describedby="errorMessage"
-            placeholder="Paste Base32 Secret"
-          />
-          <button id="pasteButton" class="action-button paste-button" type="button" aria-label="Paste secret from clipboard">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="8" y="4" width="10" height="14" rx="2"></rect>
-              <path d="M16 4V3a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v1"></path>
-              <path d="M6 7H5a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2"></path>
-            </svg>
-            <span id="pasteText">Paste</span>
-          </button>
+        <div class="secret-input-area">
+            <input type="text" id="secretInput" placeholder="Paste secret key here..." autocomplete="off" spellcheck="false">
         </div>
 
-        <p id="errorMessage" class="error-message" role="alert" aria-live="polite"></p>
+        <div class="error-msg" id="errorMsg">Invalid secret key</div>
 
-        <div class="code-panel">
-          <div class="code-row">
-            <output id="otpCode" class="otp-code empty" aria-live="polite" aria-label="Generated authentication code">••• •••</output>
-            <button id="copyButton" class="action-button copy-button" type="button" aria-label="Copy generated code" disabled>
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="8" y="8" width="12" height="12" rx="2"></rect>
-                <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
-              </svg>
-              <span id="copyCodeText">Copy Code</span>
-            </button>
-          </div>
-
-          <div class="timer-row">
-            <span id="timerLabel" class="timer-label">Next code in</span>
-            <span id="timerValue" class="timer-value">30s</span>
-          </div>
-          <div class="progress-track" aria-hidden="true">
-            <div id="progressBar" class="progress-bar"></div>
-          </div>
-
-          <p id="nextCodeLine" class="next-code-line" aria-live="polite">Next code (<strong>••• •••</strong>) in 30s</p>
-
-          <div class="detail-stack">
-            <div class="detail-box">
-              <div class="detail-content">
-                <span id="secretLabel" class="detail-label">Secret</span>
-                <output id="normalizedSecret" class="detail-value">—</output>
-              </div>
-              <button id="copySecretButton" class="action-button copy-button small-copy-button" type="button" disabled>
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <rect x="8" y="8" width="12" height="12" rx="2"></rect>
-                  <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
-                </svg>
-                <span id="copySecretText">Copy Secret</span>
-              </button>
+        <div class="code-box" id="codeBox">
+            <div class="code-label">
+                <span>2FA Code :</span>
+                <button class="copy-btn" id="copyBtn">Copy</button>
             </div>
-
-            <div class="detail-box">
-              <div class="detail-content">
-                <span id="linkLabel" class="detail-label">Alternative Link</span>
-                <output id="alternativeLink" class="detail-value">—</output>
-              </div>
-              <button id="copyLinkButton" class="action-button copy-button small-copy-button" type="button" disabled>
-                <svg viewBox="0 0 24 24" aria-hidden="true">
-                  <rect x="8" y="8" width="12" height="12" rx="2"></rect>
-                  <path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"></path>
-                </svg>
-                <span id="copyLinkText">Copy Alternative Link</span>
-              </button>
+            <div class="code-digits" id="codeDisplay" title="Click to copy code">------</div>
+            <div class="copy-hint" id="copyHint">Click code to copy</div>
+            <div class="secret-display" id="secretDisplay" title="Click to copy secret key"></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
             </div>
-          </div>
+            <div class="next-code" id="nextCodeDisplay">Next code in <span>30</span>s</div>
+
+            <div class="alt-link-box" id="altLinkBox">
+                <div class="alt-title">Alternative link with secret key:</div>
+                <a href="#" class="secret-link" id="secretLink" target="_blank" rel="noopener noreferrer"></a>
+                <button class="mini-copy-btn" id="copyLinkBtn">Copy Alternative Link</button>
+            </div>
         </div>
 
-        <p id="securityNote" class="security-note">
-          <strong>Your secret never leaves your browser.</strong><br />
-          No information is sent over the internet.
-        </p>
-      </section>
-    </main>
-  </div>
+        <div class="links">
+            <a href="https://babayshop.my.id" class="home-btn" target="_blank">Homepage</a>
+        </div>
+        <div class="footer">Authorized tool</div>
+    </div>
 
-  <div id="toast" class="toast" role="status" aria-live="polite">
-    <span class="toast-dot" aria-hidden="true"></span>
-    <span id="toastText">Copied</span>
-  </div>
+    <script>
+        // Change this if your 2FA page URL is different
+        const SHARE_BASE_URL = 'https://babay.web.id/2fa/';
 
-  <script>
-    (() => {
-      "use strict";
-
-      const PERIOD = 30;
-      const BASE32_PATTERN = /^[A-Z2-7]+=*$/;
-
-      const secretInput = document.getElementById("secretInput");
-      const pasteButton = document.getElementById("pasteButton");
-      const copyButton = document.getElementById("copyButton");
-      const copySecretButton = document.getElementById("copySecretButton");
-      const copyLinkButton = document.getElementById("copyLinkButton");
-      const otpCode = document.getElementById("otpCode");
-      const timerValue = document.getElementById("timerValue");
-      const progressBar = document.getElementById("progressBar");
-      const nextCodeLine = document.getElementById("nextCodeLine");
-      const normalizedSecretOutput = document.getElementById("normalizedSecret");
-      const alternativeLinkOutput = document.getElementById("alternativeLink");
-      const errorMessage = document.getElementById("errorMessage");
-      const toast = document.getElementById("toast");
-      const toastText = document.getElementById("toastText");
-      const languageSelect = document.getElementById("languageSelect");
-
-      const translations = {
-        en: {
-          privacy: "Your secret never leaves the browser",
-          brand: "Authenticator", subtitle: "Code Generator",
-          description: 'Paste any TOTP <strong>secret key</strong> to instantly see your live <strong>6-digit code</strong> and the seconds until it rotates.',
-          placeholder: "Paste Base32 Secret", paste: "Paste", copyCode: "Copy Code", nextIn: "Next code in", nextCode: "Next code",
-          secret: "Secret", copySecret: "Copy Secret", link: "Alternative Link", copyLink: "Copy Alternative Link",
-          security: "<strong>Your secret never leaves your browser.</strong><br />No information is sent over the internet.",
-          invalidChars: "Use a valid Base32 key containing only A–Z and 2–7.", tooShort: "That secret looks too short. Check the key and try again.", invalidLength: "This Base32 key has an invalid length.",
-          libraryError: "OTPAuth.js failed to load. Connect once, reload the page, then try again.", generateError: "Failed to generate code. Make sure this is a valid Base32 TOTP secret.",
-          pasted: "Secret pasted and normalized", blocked: "Clipboard access was blocked", codeCopied: "Code copied", secretCopied: "Secret copied in lowercase", linkCopied: "Alternative link copied"
-        },
-        id: {
-          privacy: "Rahasia Anda tidak pernah keluar dari browser",
-          brand: "Autentikator", subtitle: "Pembuat Kode",
-          description: 'Tempel <strong>kunci rahasia</strong> TOTP untuk langsung melihat <strong>kode 6 digit</strong> aktif dan waktu hingga kode berganti.',
-          placeholder: "Tempel Rahasia Base32", paste: "Tempel", copyCode: "Salin Kode", nextIn: "Kode berikutnya dalam", nextCode: "Kode berikutnya",
-          secret: "Rahasia", copySecret: "Salin Rahasia", link: "Tautan Alternatif", copyLink: "Salin Tautan",
-          security: "<strong>Rahasia Anda tidak pernah keluar dari browser.</strong><br />Tidak ada informasi yang dikirim melalui internet.",
-          invalidChars: "Gunakan kunci Base32 yang valid, hanya berisi A–Z dan 2–7.", tooShort: "Kunci tersebut terlalu pendek. Periksa lalu coba lagi.", invalidLength: "Panjang kunci Base32 ini tidak valid.",
-          libraryError: "OTPAuth.js gagal dimuat. Hubungkan internet sekali, muat ulang halaman, lalu coba lagi.", generateError: "Kode gagal dibuat. Pastikan ini adalah rahasia TOTP Base32 yang valid.",
-          pasted: "Rahasia ditempel dan dinormalisasi", blocked: "Akses clipboard diblokir", codeCopied: "Kode disalin", secretCopied: "Rahasia disalin dalam huruf kecil", linkCopied: "Tautan alternatif disalin"
-        }
-      };
-      let currentLanguage = localStorage.getItem("authenticator-language") === "id" ? "id" : "en";
-
-      function t(key) { return translations[currentLanguage][key]; }
-      function applyLanguage(language) {
-        currentLanguage = language === "id" ? "id" : "en";
-        localStorage.setItem("authenticator-language", currentLanguage);
-        document.documentElement.lang = currentLanguage;
-        languageSelect.value = currentLanguage;
-        document.getElementById("privacyText").textContent = t("privacy");
-        document.getElementById("brandText").textContent = t("brand");
-        document.getElementById("subtitleText").textContent = t("subtitle");
-        document.getElementById("descriptionText").innerHTML = t("description");
-        secretInput.placeholder = t("placeholder");
-        document.getElementById("pasteText").textContent = t("paste");
-        document.getElementById("copyCodeText").textContent = t("copyCode");
-        document.getElementById("timerLabel").textContent = t("nextIn");
-        document.getElementById("secretLabel").textContent = t("secret");
-        document.getElementById("copySecretText").textContent = t("copySecret");
-        document.getElementById("linkLabel").textContent = t("link");
-        document.getElementById("copyLinkText").textContent = t("copyLink");
-        document.getElementById("securityNote").innerHTML = t("security");
-        updateCode(Date.now());
-      }
-
-      let currentCode = "";
-      let nextCode = "";
-      let activeSecret = "";
-      let alternativeLink = "";
-      let lastCounter = -1;
-      let toastTimeout;
-
-      /** Remove whitespace and normalize pasted or typed Base32 secrets. */
-      function normalizeSecret(value) {
-        return value.replace(/\s+/g, "").toUpperCase();
-      }
-
-      /** Perform friendly validation before passing the secret to OTPAuth.js. */
-      function validateSecret(secret) {
-        if (!secret) return { valid: false, empty: true, message: "" };
-        if (!BASE32_PATTERN.test(secret)) {
-          return { valid: false, message: t("invalidChars") };
+        // ====== Clean secret ======
+        function cleanSecret(raw) {
+            // Ignores spaces, dashes, new lines, and other non-Base32 characters
+            return String(raw || '').toUpperCase().replace(/[^A-Z2-7]/g, '');
         }
 
-        const unpadded = secret.replace(/=+$/, "");
-        if (unpadded.length < 8) {
-          return { valid: false, message: t("tooShort") };
+        // ====== Base32 → Bytes ======
+        function base32ToBytes(b32) {
+            const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+            const cleaned = cleanSecret(b32);
+            if (cleaned.length < 4) return null;
+
+            let bits = '';
+            for (const c of cleaned) {
+                const val = alphabet.indexOf(c);
+                if (val === -1) return null;
+                bits += val.toString(2).padStart(5, '0');
+            }
+
+            const bytes = [];
+            for (let i = 0; i + 7 < bits.length; i += 8) {
+                bytes.push(parseInt(bits.substring(i, i + 8), 2));
+            }
+            return bytes;
         }
 
-        if ([1, 3, 6].includes(unpadded.length % 8)) {
-          return { valid: false, message: t("invalidLength") };
+        // ====== TOTP RFC 6238 (Web Crypto) ======
+        async function hmacSha1(key, msg) {
+            const cryptoKey = await crypto.subtle.importKey(
+                'raw',
+                new Uint8Array(key),
+                { name: 'HMAC', hash: 'SHA-1' },
+                false,
+                ['sign']
+            );
+            return new Uint8Array(await crypto.subtle.sign('HMAC', cryptoKey, new Uint8Array(msg)));
         }
 
-        return { valid: true };
-      }
-
-      /** Create an RFC 6238 TOTP instance using OTPAuth.js only. */
-      function createTotp(secret) {
-        if (!window.OTPAuth?.TOTP) {
-          throw new Error("OTPAuth.js is not loaded");
+        function truncate(hs) {
+            const offset = hs[hs.length - 1] & 0xf;
+            return (
+                ((hs[offset] & 0x7f) << 24) |
+                (hs[offset + 1] << 16) |
+                (hs[offset + 2] << 8) |
+                hs[offset + 3]
+            ) % 1000000;
         }
 
-        // OTPAuth accepts a Base32 string directly. Passing the normalized
-        // string avoids compatibility issues between different UMD releases.
-        return new window.OTPAuth.TOTP({
-          issuer: "Local Authenticator",
-          label: "Browser",
-          algorithm: "SHA1",
-          digits: 6,
-          period: PERIOD,
-          secret: secret.replace(/=+$/, "")
+        async function totp(secretBytes, time = Math.floor(Date.now() / 1000)) {
+            let cnt = Math.floor(time / 30);
+            const msg = new Uint8Array(8);
+            for (let i = 7; i >= 0; i--) {
+                msg[i] = cnt & 0xff;
+                cnt = Math.floor(cnt / 256);
+            }
+            return String(truncate(await hmacSha1(secretBytes, msg))).padStart(6, '0');
+        }
+
+        // ====== Predict next code ======
+        async function nextTotp(secretBytes) {
+            const t = Math.floor(Date.now() / 1000);
+            const nextT = (Math.floor(t / 30) + 1) * 30;
+            return {
+                code: await totp(secretBytes, nextT),
+                secondsUntil: nextT - t
+            };
+        }
+
+        // ====== State ======
+        let secretBytes = null;
+        let secretStr = '';
+        let intervalId = null;
+        let debounceId = null;
+        let lastStartedSecret = '';
+
+        // ====== DOM refs ======
+        const secretInput = document.getElementById('secretInput');
+        const errorMsg = document.getElementById('errorMsg');
+        const codeBox = document.getElementById('codeBox');
+        const codeDisplay = document.getElementById('codeDisplay');
+        const copyHint = document.getElementById('copyHint');
+        const secretDisplay = document.getElementById('secretDisplay');
+        const progressFill = document.getElementById('progressFill');
+        const nextCodeDisplay = document.getElementById('nextCodeDisplay');
+        const copyBtn = document.getElementById('copyBtn');
+        const altLinkBox = document.getElementById('altLinkBox');
+        const secretLink = document.getElementById('secretLink');
+        const copyLinkBtn = document.getElementById('copyLinkBtn');
+
+        // ====== Clipboard helper ======
+        async function copyText(text) {
+            try {
+                await navigator.clipboard.writeText(text);
+            } catch {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            }
+        }
+
+        function setCopyFeedback(message = 'Copied!') {
+            copyBtn.textContent = message;
+            copyBtn.classList.add('copied');
+            copyHint.textContent = message;
+            copyHint.classList.add('active');
+
+            setTimeout(() => {
+                copyBtn.textContent = 'Copy';
+                copyBtn.classList.remove('copied');
+                copyHint.textContent = 'Click code to copy';
+                copyHint.classList.remove('active');
+            }, 1300);
+        }
+
+        function buildAlternativeLink() {
+            return SHARE_BASE_URL + '?key=' + encodeURIComponent(secretStr.toLowerCase());
+        }
+
+        function updateAlternativeLink() {
+            const link = buildAlternativeLink();
+            secretLink.href = link;
+            secretLink.textContent = link;
+            altLinkBox.classList.add('show');
+        }
+
+        function stopGeneration() {
+            secretBytes = null;
+            secretStr = '';
+            lastStartedSecret = '';
+            codeBox.classList.remove('show');
+            altLinkBox.classList.remove('show');
+            if (intervalId) {
+                clearInterval(intervalId);
+                intervalId = null;
+            }
+        }
+
+        // ====== Load secret from URL query ======
+        function loadSecretFromQuery() {
+            const params = new URLSearchParams(window.location.search);
+            const key = params.get('key');
+
+            if (key && cleanSecret(key).length >= 8) {
+                secretInput.value = key;
+                return key;
+            }
+            return null;
+        }
+
+        // ====== Start generating ======
+        async function startGeneration(rawSecret, options = {}) {
+            const cleaned = cleanSecret(rawSecret);
+
+            if (!cleaned) {
+                errorMsg.classList.remove('show');
+                stopGeneration();
+                return false;
+            }
+
+            // Avoid flashing error while user is still typing very short input
+            if (cleaned.length < 8) {
+                if (!options.silent) {
+                    errorMsg.textContent = 'Secret key masih terlalu pendek';
+                    errorMsg.classList.add('show');
+                } else {
+                    errorMsg.classList.remove('show');
+                }
+                stopGeneration();
+                return false;
+            }
+
+            const bytes = base32ToBytes(cleaned);
+            if (!bytes || bytes.length < 6) {
+                errorMsg.textContent = 'Invalid secret — enter a valid Base32 key';
+                errorMsg.classList.add('show');
+                stopGeneration();
+                return false;
+            }
+
+            errorMsg.classList.remove('show');
+            secretBytes = bytes;
+            secretStr = cleaned;
+            lastStartedSecret = cleaned;
+
+            // UBAH: Format lowercase diterapkan di sini
+            secretDisplay.textContent = 'Secret: ' + secretStr.toLowerCase();
+            codeBox.classList.add('show');
+            updateAlternativeLink();
+
+            await updateDisplay();
+
+            if (intervalId) clearInterval(intervalId);
+            intervalId = setInterval(updateDisplay, 1000);
+
+            return true;
+        }
+
+        async function updateDisplay() {
+            if (!secretBytes) return;
+
+            const now = Math.floor(Date.now() / 1000);
+            const elapsed = now % 30;
+            const progress = (elapsed / 30) * 100;
+            progressFill.style.width = (100 - progress) + '%';
+
+            const currentCode = await totp(secretBytes, now);
+            codeDisplay.textContent = currentCode;
+
+            const next = await nextTotp(secretBytes);
+            nextCodeDisplay.innerHTML = 'Next code (<span>' + next.code + '</span>) in <span>' + next.secondsUntil + '</span>s';
+        }
+
+        // ====== Auto-generate after paste/type ======
+        secretInput.addEventListener('input', () => {
+            clearTimeout(debounceId);
+
+            debounceId = setTimeout(() => {
+                const cleaned = cleanSecret(secretInput.value);
+
+                if (!cleaned) {
+                    errorMsg.classList.remove('show');
+                    stopGeneration();
+                    return;
+                }
+
+                if (cleaned === lastStartedSecret) return;
+
+                startGeneration(cleaned, { silent: true });
+            }, 250);
         });
-      }
 
-      function formatCode(code) {
-        return code ? `${code.slice(0, 3)} ${code.slice(3)}` : "••• •••";
-      }
+        // ====== Enter key still works ======
+        secretInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                startGeneration(secretInput.value, { silent: false });
+            }
+        });
 
-      function showError(message) {
-        errorMessage.textContent = message;
-        errorMessage.classList.toggle("visible", Boolean(message));
-        secretInput.setAttribute("aria-invalid", String(Boolean(message)));
-      }
+        // ====== Copy 6 digit code by button ======
+        copyBtn.addEventListener('click', async () => {
+            const code = codeDisplay.textContent.trim();
+            if (!/^\d{6}$/.test(code)) return;
 
-      function buildAlternativeLink(secret) {
-        const url = new URL(window.location.href);
-        url.search = "";
-        url.hash = "";
-        url.searchParams.set("key", secret);
-        return url.toString();
-      }
+            await copyText(code);
+            setCopyFeedback('Copied!');
+        });
 
-      function updateBrowserUrl(secret) {
-        const url = new URL(window.location.href);
-        url.search = "";
-        url.hash = "";
-        if (secret) url.searchParams.set("key", secret);
-        history.replaceState(null, "", `${url.pathname}${url.search}`);
-      }
+        // ====== Copy 6 digit code by clicking the number ======
+        codeDisplay.addEventListener('click', async () => {
+            const code = codeDisplay.textContent.trim();
+            if (!/^\d{6}$/.test(code)) return;
 
-      function updateSecretDetails(secret) {
-        if (!secret) {
-          alternativeLink = "";
-          normalizedSecretOutput.textContent = "—";
-          alternativeLinkOutput.textContent = "—";
-          copySecretButton.disabled = true;
-          copyLinkButton.disabled = true;
-          return;
-        }
+            await copyText(code);
+            setCopyFeedback('Copied!');
+        });
 
-        alternativeLink = buildAlternativeLink(secret);
-        normalizedSecretOutput.textContent = secret;
-        normalizedSecretOutput.title = secret;
-        alternativeLinkOutput.textContent = alternativeLink;
-        alternativeLinkOutput.title = alternativeLink;
-        copySecretButton.disabled = false;
-        copyLinkButton.disabled = false;
-      }
+        // ====== Copy alternative link ======
+        copyLinkBtn.addEventListener('click', async () => {
+            if (!secretStr) return;
 
-      function showEmptyState() {
-        currentCode = "";
-        nextCode = "";
-        activeSecret = "";
-        lastCounter = -1;
-        otpCode.textContent = "••• •••";
-        otpCode.classList.add("empty");
-        nextCodeLine.innerHTML = `${t("nextCode")} (<strong>••• •••</strong>) ${currentLanguage === "id" ? "dalam" : "in"} 30s`;
-        copyButton.disabled = true;
-      }
+            await copyText(buildAlternativeLink());
+            copyLinkBtn.textContent = 'Link Copied!';
+            copyLinkBtn.classList.add('copied');
 
-      function showToast(message) {
-        toastText.textContent = message;
-        toast.classList.add("visible");
-        clearTimeout(toastTimeout);
-        toastTimeout = setTimeout(() => toast.classList.remove("visible"), 1800);
-      }
+            setTimeout(() => {
+                copyLinkBtn.textContent = 'Copy Alternative Link';
+                copyLinkBtn.classList.remove('copied');
+            }, 1300);
+        });
 
-      function getTiming(now = Date.now()) {
-        const elapsedSeconds = (now / 1000) % PERIOD;
-        return {
-          secondsLeft: Math.max(1, Math.ceil(PERIOD - elapsedSeconds)),
-          progress: (PERIOD - elapsedSeconds) / PERIOD,
-          counter: Math.floor(now / 1000 / PERIOD)
-        };
-      }
+        // ====== Copy Secret Key by clicking the text ======
+        secretDisplay.addEventListener('click', async () => {
+            if (!secretStr) return;
 
-      function renderTiming(now = Date.now()) {
-        const timing = getTiming(now);
-        timerValue.textContent = `${timing.secondsLeft}s`;
-        progressBar.style.transform = `scaleX(${timing.progress})`;
-        nextCodeLine.innerHTML = `${t("nextCode")} (<strong>${formatCode(nextCode)}</strong>) ${currentLanguage === "id" ? "dalam" : "in"} ${timing.secondsLeft}s`;
-        return timing;
-      }
+            // Salin ke clipboard dalam format huruf kecil
+            await copyText(secretStr.toLowerCase());
 
-      function updateCode(now = Date.now()) {
-        const normalized = normalizeSecret(secretInput.value);
-        if (secretInput.value !== normalized) {
-          secretInput.value = normalized;
-        }
+            // Feedback visual (Teks berubah menjadi hijau sementara)
+            const originalText = secretDisplay.textContent;
+            secretDisplay.textContent = 'Secret key copied!';
+            secretDisplay.style.color = '#22c55e'; // Hijau sukses
 
-        const validation = validateSecret(normalized);
-        const timing = renderTiming(now);
+            setTimeout(() => {
+                secretDisplay.textContent = originalText;
+                secretDisplay.style.color = ''; // Reset warna
+            }, 1300);
+        });
 
-        if (!validation.valid) {
-          showError(validation.message || "");
-          showEmptyState();
-          updateSecretDetails("");
-          updateBrowserUrl("");
-          return;
-        }
+        // ====== Init: auto-load from URL ======
+        (async function init() {
+            const querySecret = loadSecretFromQuery();
+            if (querySecret) {
+                await startGeneration(querySecret, { silent: false });
+            }
+        })();
 
-        try {
-          updateSecretDetails(normalized);
-          updateBrowserUrl(normalized);
-
-          if (normalized === activeSecret && timing.counter === lastCounter && currentCode && nextCode) {
-            renderTiming(now);
-            return;
-          }
-
-          const totp = createTotp(normalized);
-          const generatedCurrentCode = totp.generate({ timestamp: now });
-          const generatedNextCode = totp.generate({ timestamp: now + PERIOD * 1000 });
-
-          currentCode = generatedCurrentCode;
-          nextCode = generatedNextCode;
-          activeSecret = normalized;
-          lastCounter = timing.counter;
-
-          otpCode.classList.add("refreshing");
-          requestAnimationFrame(() => {
-            otpCode.textContent = formatCode(currentCode);
-            otpCode.classList.remove("empty", "refreshing");
-          });
-
-          copyButton.disabled = false;
-          showError("");
-          renderTiming(now);
-        } catch (error) {
-          console.error("Unable to generate TOTP:", error);
-          const libraryMissing = !window.OTPAuth?.TOTP;
-          showError(
-            libraryMissing
-              ? t("libraryError")
-              : t("generateError")
-          );
-          showEmptyState();
-          updateSecretDetails("");
-          updateBrowserUrl("");
-        }
-      }
-
-      async function pasteSecret() {
-        try {
-          if (!navigator.clipboard?.readText) throw new Error("Clipboard API unavailable");
-          const clipboardText = await navigator.clipboard.readText();
-          secretInput.value = normalizeSecret(clipboardText);
-          secretInput.dispatchEvent(new Event("input", { bubbles: true }));
-          secretInput.focus();
-          showToast(t("pasted"));
-        } catch (error) {
-          showToast(t("blocked"));
-          secretInput.focus();
-        }
-      }
-
-      async function copyText(value, successMessage) {
-        if (!value) return;
-        try {
-          await navigator.clipboard.writeText(value);
-        } catch (error) {
-          const temporary = document.createElement("textarea");
-          temporary.value = value;
-          temporary.setAttribute("readonly", "");
-          temporary.style.position = "fixed";
-          temporary.style.opacity = "0";
-          document.body.appendChild(temporary);
-          temporary.select();
-          document.execCommand("copy");
-          temporary.remove();
-        }
-        showToast(successMessage);
-      }
-
-      function addRipple(event) {
-        const button = event.currentTarget;
-        if (button.disabled) return;
-        const rect = button.getBoundingClientRect();
-        const size = Math.max(rect.width, rect.height);
-        const ripple = document.createElement("span");
-        ripple.className = "ripple";
-        ripple.style.width = ripple.style.height = `${size}px`;
-        ripple.style.left = `${event.clientX - rect.left - size / 2}px`;
-        ripple.style.top = `${event.clientY - rect.top - size / 2}px`;
-        button.appendChild(ripple);
-        ripple.addEventListener("animationend", () => ripple.remove(), { once: true });
-      }
-
-      secretInput.addEventListener("input", () => {
-        activeSecret = "";
-        lastCounter = -1;
-        updateCode(Date.now());
-      });
-      pasteButton.addEventListener("click", pasteSecret);
-      copyButton.addEventListener("click", () => copyText(currentCode, t("codeCopied")));
-      copySecretButton.addEventListener("click", () => copyText(activeSecret.toLowerCase(), t("secretCopied")));
-      copyLinkButton.addEventListener("click", () => copyText(alternativeLink, t("linkCopied")));
-      document.querySelectorAll(".action-button").forEach((button) => {
-        button.addEventListener("pointerdown", addRipple);
-      });
-
-      languageSelect.addEventListener("change", (event) => applyLanguage(event.target.value));
-      applyLanguage(currentLanguage);
-
-      // Load a normalized secret directly from ?key= without requiring interaction.
-      const urlSecret = normalizeSecret(new URLSearchParams(window.location.search).get("key") || "");
-      if (urlSecret) secretInput.value = urlSecret;
-
-      updateCode(Date.now());
-      window.setInterval(() => updateCode(Date.now()), 250);
-    })();
-  </script>
+        console.log('Babayshop 2FA Generator ready');
+    </script>
 </body>
 </html>
