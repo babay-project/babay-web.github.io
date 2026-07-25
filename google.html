@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -1326,6 +1327,146 @@
       color: var(--indigo);
     }
 
+    /* Animated package frames: JIO fire, Pixel ice, Invite eco */
+    .pkg-card.package-fire,
+    .pkg-card.package-ice,
+    .pkg-card.package-eco {
+      isolation: isolate;
+    }
+
+    .pkg-card.package-fire::after,
+    .pkg-card.package-ice::after,
+    .pkg-card.package-eco::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      padding: 2px;
+      pointer-events: none;
+      z-index: 8;
+      background-size: 300% 300%;
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+    }
+
+    .pkg-card.package-fire::after {
+      background-image: linear-gradient(115deg, #5f0b0b, #ef1b1b, #ff7a00, #ffcc33, #ef1b1b, #5f0b0b);
+      animation: frameFlow 2.2s linear infinite, fireFrameGlow 1.35s ease-in-out infinite;
+    }
+
+    .pkg-card.package-ice::after {
+      background-image: linear-gradient(115deg, #082f75, #2563eb, #38bdf8, #e0f2fe, #60a5fa, #082f75);
+      animation: frameFlow 4.8s linear infinite, iceFrameGlow 2.8s ease-in-out infinite;
+    }
+
+    .pkg-card.package-eco::after {
+      background-image: linear-gradient(115deg, #064e3b, #059669, #34d399, #bbf7d0, #16a34a, #064e3b);
+      animation: frameFlow 4s linear infinite, ecoFrameGlow 2.4s ease-in-out infinite;
+    }
+
+    .pkg-frame-label {
+      margin-left: auto;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 9.5px;
+      font-weight: 900;
+      letter-spacing: 0.055em;
+      line-height: 1;
+      text-transform: uppercase;
+      white-space: nowrap;
+      position: relative;
+      z-index: 10;
+    }
+
+    .pkg-title-group {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .label-fire {
+      color: #fff1f2;
+      border: 1px solid rgba(248, 113, 113, 0.45);
+      background: linear-gradient(135deg, rgba(127, 29, 29, 0.92), rgba(239, 68, 68, 0.76));
+      box-shadow: 0 0 18px rgba(239, 68, 68, 0.28);
+      animation: fireLabelPulse 1.35s ease-in-out infinite;
+    }
+
+    .label-ice {
+      color: #e0f2fe;
+      border: 1px solid rgba(125, 211, 252, 0.5);
+      background: linear-gradient(135deg, rgba(30, 64, 175, 0.9), rgba(14, 165, 233, 0.62));
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.25);
+      animation: iceLabelPulse 2.8s ease-in-out infinite;
+    }
+
+    .label-eco {
+      color: #ecfdf5;
+      border: 1px solid rgba(110, 231, 183, 0.45);
+      background: linear-gradient(135deg, rgba(6, 95, 70, 0.92), rgba(16, 185, 129, 0.66));
+      box-shadow: 0 0 18px rgba(52, 211, 153, 0.22);
+      animation: ecoLabelPulse 2.4s ease-in-out infinite;
+    }
+
+    @keyframes frameFlow {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 300% 50%; }
+    }
+
+    @keyframes fireFrameGlow {
+      0%, 100% { filter: drop-shadow(0 0 3px rgba(239, 68, 68, 0.45)); opacity: 0.82; }
+      50% { filter: drop-shadow(0 0 11px rgba(255, 92, 0, 0.85)); opacity: 1; }
+    }
+
+    @keyframes iceFrameGlow {
+      0%, 100% { filter: drop-shadow(0 0 4px rgba(37, 99, 235, 0.38)); opacity: 0.78; }
+      50% { filter: drop-shadow(0 0 12px rgba(56, 189, 248, 0.72)); opacity: 1; }
+    }
+
+    @keyframes ecoFrameGlow {
+      0%, 100% { filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.34)); opacity: 0.8; }
+      50% { filter: drop-shadow(0 0 11px rgba(52, 211, 153, 0.65)); opacity: 1; }
+    }
+
+    @keyframes fireLabelPulse {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-1px) scale(1.035); }
+    }
+
+    @keyframes iceLabelPulse {
+      0%, 100% { opacity: 0.82; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes ecoLabelPulse {
+      0%, 100% { box-shadow: 0 0 10px rgba(52, 211, 153, 0.16); }
+      50% { box-shadow: 0 0 22px rgba(52, 211, 153, 0.38); }
+    }
+
+    @media (max-width: 520px) {
+      .pkg-header {
+        flex-wrap: wrap;
+      }
+
+      .pkg-frame-label {
+        margin-left: 52px;
+        margin-top: -8px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pkg-card.package-fire::after,
+      .pkg-card.package-ice::after,
+      .pkg-card.package-eco::after,
+      .pkg-frame-label {
+        animation: none !important;
+      }
+    }
+
 
 
     /* ==========================================================================
@@ -2252,6 +2393,70 @@
     .form-group.error input {
       border-color: rgba(239, 68, 68, 0.5);
       background: rgba(239, 68, 68, 0.02);
+    }
+
+    .promo-group {
+      padding: 14px;
+      border: 1px solid rgba(239, 68, 68, 0.22);
+      border-radius: var(--r-md);
+      background: linear-gradient(135deg, rgba(127, 29, 29, 0.12), rgba(239, 68, 68, 0.035));
+    }
+
+    .promo-input-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+    }
+
+    .promo-input-row .btn {
+      padding: 10px 15px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #b91c1c, #ef4444);
+      color: #fff;
+      box-shadow: 0 5px 16px rgba(239, 68, 68, 0.2);
+    }
+
+    .promo-feedback {
+      display: none;
+      font-size: 12px;
+      font-weight: 750;
+      line-height: 1.4;
+      margin-top: 2px;
+    }
+
+    .promo-feedback.active {
+      display: block;
+    }
+
+    .promo-feedback.success {
+      color: #86efac;
+    }
+
+    .promo-feedback.error {
+      color: #fca5a5;
+    }
+
+    .promo-discount-row {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(52, 168, 83, 0.2);
+      background: rgba(52, 168, 83, 0.065);
+      color: #bbf7d0;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .promo-discount-row.active {
+      display: flex;
+    }
+
+    .promo-discount-row strong {
+      color: #86efac;
+      white-space: nowrap;
     }
 
     .form-checkbox {
@@ -4598,13 +4803,14 @@
 
         <div class="packages-grid">
           <!-- Paket A: Voucher JIO Max Durasi 18B -->
-          <article class="pkg-card clay clay--interactive spotlight reveal-on-scroll" data-cat="head">
+          <article class="pkg-card package-fire clay clay--interactive spotlight reveal-on-scroll" data-cat="head">
             <div class="pkg-header">
               <div class="pkg-code code-indigo">A</div>
               <div class="pkg-title-group">
                 <h3>Offer Voucher JIO (Max 18 Bulan)</h3>
                 <span class="pkg-role">Head Google AI Pro</span>
               </div>
+              <span class="pkg-frame-label label-fire">🔥 Hot JIO</span>
             </div>
             <div class="pkg-body">
               <div class="price-row">
@@ -4628,6 +4834,7 @@
                 <li><span class="icon-chk text-green">✓</span><span>Akses Antigravity Plan Pro.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>1.000+ AI Flow Credits.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>Tutorial klaim via YouTube BabayShop.</span></li>
+                <li><span class="icon-chk text-green">✓</span><span>Kode <strong>DISKONBAY</strong> potong Rp10.000 saat checkout.</span></li>
                 <li><span class="icon-chk text-indigo">✓</span><span class="text-glow-indigo">Garansi sampai akun berhasil klaim paket (maks. 1x24 jam).</span></li>
               </ul>
               <div class="pkg-stock-status text-green">
@@ -4644,24 +4851,25 @@
           </article>
 
           <!-- Paket C: AI PRO 12 Bulan Pixel Head -->
-          <article class="pkg-card clay clay--interactive spotlight reveal-on-scroll" data-cat="head">
+          <article class="pkg-card package-ice clay clay--interactive spotlight reveal-on-scroll" data-cat="head">
             <div class="pkg-header">
               <div class="pkg-code code-pink">C</div>
               <div class="pkg-title-group">
                 <h3>Offer Voucher Pixel (12 Bulan)</h3>
                 <span class="pkg-role">Head Google AI Pro</span>
               </div>
+              <span class="pkg-frame-label label-ice">❄ Paling Stabil</span>
             </div>
             <div class="pkg-body">
               <div class="price-row">
                 <span class="price-old">Rp130.000</span>
                 <div class="price-new">
-                  <strong>Rp85.000</strong>
+                  <strong>Rp86.000</strong>
                   <span class="price-unit">/ paket</span>
                   <span class="discount-tag text-green">Promo</span>
                 </div>
               </div>
-              <p class="pkg-tagline">Head bisa memakai Gmail admin atau Gmail kamu sendiri. Garansi tetap 1 bulan.</p>
+              <p class="pkg-tagline">Frame dingin biru menandakan opsi Head yang paling stabil. Bisa memakai Gmail admin atau Gmail kamu sendiri.</p>
               <div class="bulk-promo-clip" data-bulk-clip="C">
                 <span class="bulk-promo-kicker">Bundle Admin</span>
                 <div class="bulk-promo-line"><span>Ambil 2 head</span><strong>Rp160.000</strong></div>
@@ -4680,8 +4888,8 @@
                 <span>Stok: Ready (Pre Order)</span>
               </div>
               <div class="pkg-actions">
-                <button class="btn btn-primary btn-block btn-buy" data-id="C" data-name="AI PRO 12 Bulan Pixel Head" data-price="85000" type="button">Beli Sekarang</button>
-                <button class="btn btn-bulk btn-block btn-bulk-order" data-id="C" data-name="AI PRO 12 Bulan Pixel Head" data-price="85000" data-bulk-qty="2" type="button">Pesan Bulk Hemat</button>
+                <button class="btn btn-primary btn-block btn-buy" data-id="C" data-name="AI PRO 12 Bulan Pixel Head" data-price="86000" type="button">Beli Sekarang</button>
+                <button class="btn btn-bulk btn-block btn-bulk-order" data-id="C" data-name="AI PRO 12 Bulan Pixel Head" data-price="86000" data-bulk-qty="2" type="button">Pesan Bulk Hemat</button>
                 <a class="pkg-tutorial-link" href="https://babay.web.id/pixel.html" target="_blank" rel="noopener">Baca diskusi →</a>
                 <a class="pkg-tutorial-link" href="https://babay.web.id/snk/pixel" target="_blank" rel="noopener">S&K Pixel Head →</a>
               </div>
@@ -4689,13 +4897,14 @@
           </article>
 
           <!-- Paket D: Invite Email 12 Bulan -->
-          <article class="pkg-card clay clay--interactive spotlight reveal-on-scroll" data-cat="invite">
+          <article class="pkg-card package-eco clay clay--interactive spotlight reveal-on-scroll" data-cat="invite">
             <div class="pkg-header">
               <div class="pkg-code code-green">D</div>
               <div class="pkg-title-group">
                 <h3>Invite Email 12 Bulan</h3>
                 <span class="pkg-role">Member Google AI Pro</span>
               </div>
+              <span class="pkg-frame-label label-eco">✓ Ekonomis & Stabil</span>
             </div>
             <div class="pkg-body">
               <div class="price-row">
@@ -4706,7 +4915,7 @@
                   <span class="discount-tag text-green">Promo</span>
                 </div>
               </div>
-              <p class="pkg-tagline">Paling hemat untuk pemakaian personal ringan.</p>
+              <p class="pkg-tagline">Pilihan paling ekonomis dan stabil untuk pemakaian personal ringan.</p>
               <div class="bulk-promo-clip" data-bulk-clip="D">
                 <span class="bulk-promo-kicker">Promo Slot</span>
                 <div class="bulk-promo-line"><span>Ambil 3 slot</span><strong>Rp90.000</strong></div>
@@ -5155,7 +5364,21 @@
               </div>
             </div>
 
+            <div class="form-group promo-group" id="promoGroup" hidden>
+              <label for="inputPromo">Kode Voucher Khusus Paket JIO</label>
+              <div class="promo-input-row">
+                <input type="text" id="inputPromo" placeholder="Masukkan kode voucher" autocomplete="off" maxlength="20">
+                <button class="btn" type="button" id="btnApplyPromo">Terapkan</button>
+              </div>
+              <span class="promo-feedback" id="promoFeedback" aria-live="polite"></span>
+              <small style="color: var(--muted); font-size: 11px;">Gunakan <strong style="color:#fca5a5;">DISKONBAY</strong> untuk potongan Rp10.000.</small>
+            </div>
+
             <div class="bulk-save-row" id="bulkSaveRow">Harga bulk aktif. Total tagihan sudah menyesuaikan promo jumlah pembelian.</div>
+            <div class="promo-discount-row" id="promoDiscountRow">
+              <span>Voucher DISKONBAY aktif</span>
+              <strong>-Rp10.000</strong>
+            </div>
 
             <div class="form-checkbox">
               <input type="checkbox" id="checkAgree" checked required>
@@ -5352,6 +5575,11 @@
       const emailRequiredStar = document.getElementById('emailRequiredStar');
       const emailHelpNote = document.getElementById('emailHelpNote');
       const labelEmail = document.getElementById('labelEmail');
+      const promoGroup = document.getElementById('promoGroup');
+      const inputPromo = document.getElementById('inputPromo');
+      const btnApplyPromo = document.getElementById('btnApplyPromo');
+      const promoFeedback = document.getElementById('promoFeedback');
+      const promoDiscountRow = document.getElementById('promoDiscountRow');
 
       function setEmailLabel(text) {
         if (labelEmail && labelEmail.firstChild) labelEmail.firstChild.nodeValue = `${text} `;
@@ -5389,14 +5617,19 @@
          ========================================================================== */
       const PAKET_HARGA = {
         A: { hargaLama: 100000, hargaPromo: 75000 },
-        C: { hargaLama: 130000, hargaPromo: 85000 },
+        C: { hargaLama: 130000, hargaPromo: 86000 },
         D: { hargaLama: 40000, hargaPromo: 35000 }
       };
 
       const BULK_HARGA = {
         A: { 1: 75000, 2: 140000, 3: 200000, 5: 320000 },
-        C: { 1: 85000, 2: 160000, 3: 230000, 5: 360000 },
+        C: { 1: 86000, 2: 160000, 3: 230000, 5: 360000 },
         D: { 1: 35000, 2: 65000, 3: 90000, 5: 150000 }
+      };
+
+      const PROMO_JIO = {
+        code: 'DISKONBAY',
+        discount: 10000
       };
 
       /* ==========================================================================
@@ -5678,6 +5911,57 @@
         return base * qty;
       }
 
+      function setPromoFeedback(message = '', type = '') {
+        promoFeedback.textContent = message;
+        promoFeedback.className = 'promo-feedback';
+        if (message) promoFeedback.classList.add('active');
+        if (type) promoFeedback.classList.add(type);
+      }
+
+      function recalculateCheckoutPrice() {
+        if (!currentPackage) return;
+        currentPackage.basePrice = getPackageTotal(currentPackage.id, currentPackage.qty);
+        currentPackage.discount = currentPackage.id === 'A' && currentPackage.promoApplied
+          ? Math.min(PROMO_JIO.discount, currentPackage.basePrice)
+          : 0;
+        currentPackage.price = Math.max(currentPackage.basePrice - currentPackage.discount, 0);
+        checkoutPriceText.textContent = formatRupiah(currentPackage.price);
+        promoDiscountRow.classList.toggle('active', currentPackage.discount > 0);
+      }
+
+      function resetPromoState() {
+        if (currentPackage) {
+          currentPackage.promoApplied = false;
+          currentPackage.promoCode = '';
+          currentPackage.discount = 0;
+        }
+        inputPromo.value = '';
+        setPromoFeedback();
+        promoDiscountRow.classList.remove('active');
+      }
+
+      function applyJioPromo() {
+        if (!currentPackage || currentPackage.id !== 'A') {
+          setPromoFeedback('Kode voucher ini hanya berlaku untuk Paket JIO.', 'error');
+          return;
+        }
+
+        const normalizedCode = inputPromo.value.trim().toUpperCase();
+        if (normalizedCode === PROMO_JIO.code) {
+          currentPackage.promoApplied = true;
+          currentPackage.promoCode = PROMO_JIO.code;
+          inputPromo.value = PROMO_JIO.code;
+          recalculateCheckoutPrice();
+          setPromoFeedback(`Voucher berhasil dipakai. Total dipotong ${formatRupiah(PROMO_JIO.discount)}.`, 'success');
+          return;
+        }
+
+        currentPackage.promoApplied = false;
+        currentPackage.promoCode = '';
+        recalculateCheckoutPrice();
+        setPromoFeedback(normalizedCode ? 'Kode voucher tidak valid.' : 'Masukkan kode voucher terlebih dahulu.', 'error');
+      }
+
       function configureQtyOptions(packageId) {
         const maxQty = packageId === 'D' ? 3 : 5;
         if (qtyGrid) qtyGrid.style.gridTemplateColumns = packageId === 'D' ? 'repeat(3, 1fr)' : '';
@@ -5733,17 +6017,16 @@
         const maxQty = currentPackage.id === 'D' ? 3 : 5;
         const safeQty = Math.min(Math.max(Number(qty) || 1, 1), maxQty);
         currentPackage.qty = safeQty;
-        currentPackage.price = getPackageTotal(currentPackage.id, safeQty);
+        recalculateCheckoutPrice();
 
         qtyButtons.forEach(btn => btn.classList.toggle('active', Number(btn.getAttribute('data-qty')) === safeQty));
-        checkoutPriceText.textContent = formatRupiah(currentPackage.price);
         renderInviteEmailFields(safeQty);
 
         const normalPrice = currentPackage.unitPrice * safeQty;
-        const saving = normalPrice - currentPackage.price;
+        const saving = normalPrice - currentPackage.basePrice;
         if (saving > 0) {
           bulkSaveRow.classList.add('active');
-          bulkSaveRow.textContent = `Promo bulk aktif: ${safeQty} item total ${formatRupiah(currentPackage.price)}. Hemat ${formatRupiah(saving)} dari harga satuan.`;
+          bulkSaveRow.textContent = `Promo bulk aktif: ${safeQty} item total ${formatRupiah(currentPackage.basePrice)}. Hemat ${formatRupiah(saving)} dari harga satuan.`;
         } else {
           bulkSaveRow.classList.remove('active');
           bulkSaveRow.textContent = 'Harga bulk aktif. Total tagihan sudah menyesuaikan promo jumlah pembelian.';
@@ -5756,6 +6039,23 @@
         });
       });
 
+      btnApplyPromo.addEventListener('click', applyJioPromo);
+      inputPromo.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          applyJioPromo();
+        }
+      });
+      inputPromo.addEventListener('input', () => {
+        inputPromo.value = inputPromo.value.toUpperCase();
+        if (currentPackage?.promoApplied && inputPromo.value.trim() !== PROMO_JIO.code) {
+          currentPackage.promoApplied = false;
+          currentPackage.promoCode = '';
+          recalculateCheckoutPrice();
+          setPromoFeedback('Kode diubah. Terapkan kembali untuk mendapat potongan.', 'error');
+        }
+      });
+
       function openCheckoutFromButton(btn, defaultQty = 1) {
         const id = btn.getAttribute('data-id');
         const name = btn.getAttribute('data-name');
@@ -5763,7 +6063,20 @@
         const maxQty = id === 'D' ? 3 : 5;
         const safeDefaultQty = Math.min(Math.max(Number(defaultQty) || 1, 1), maxQty);
 
-        currentPackage = { id, name, unitPrice, qty: safeDefaultQty, price: getPackageTotal(id, safeDefaultQty) };
+        currentPackage = {
+          id,
+          name,
+          unitPrice,
+          qty: safeDefaultQty,
+          basePrice: getPackageTotal(id, safeDefaultQty),
+          price: getPackageTotal(id, safeDefaultQty),
+          discount: 0,
+          promoApplied: false,
+          promoCode: ''
+        };
+
+        resetPromoState();
+        promoGroup.hidden = id !== 'A';
 
         // Set checkout details
         checkoutProdName.textContent = name;
@@ -5800,7 +6113,7 @@
           emailGroup.style.display = 'none';
           setEmailLabel('Email Aktivasi / Invite');
           emailRequiredStar.style.display = 'none';
-          checkoutStepDesc.textContent = 'Lanjutkan pembelian paket Google AI Pro tanpa mengisi email pada halaman ini.';
+          checkoutStepDesc.textContent = 'Lanjutkan pembelian Paket JIO. Masukkan kode voucher DISKONBAY untuk potongan Rp10.000.';
           if (labelCheckAgree) labelCheckAgree.textContent = 'Saya telah membaca, memahami, dan menyetujui detail ketentuan risiko, garansi, serta persyaratan paket ini.';
           inputEmail.disabled = true;
           inputEmail.value = '';
@@ -5975,6 +6288,9 @@ ${inviteEmailValues.map((email, index) => `  ${index + 1}. ${email}`).join('\n')
           : currentPackage.id === 'C'
             ? `- Opsi Head: ${headEmail ? `Gmail sendiri (${headEmail})` : 'Gmail admin BabayShop'}\n`
             : '';
+        const promoLine = currentPackage.promoApplied
+          ? `- Voucher: ${currentPackage.promoCode} (-${formatRupiah(currentPackage.discount)})\n`
+          : '';
         const totalPayment = currentPackage.price + currentUniqueCode;
         const formatWaRupiah = (number) => formatRupiah(number).replace(/^Rp/, 'Rp ');
         const garansiText = {
@@ -5994,7 +6310,7 @@ ${inviteEmailValues.map((email, index) => `  ${index + 1}. ${email}`).join('\n')
 
 - ${formattedDate}
 - ID: ${qrisTxId.textContent}
-${emailLine}- Paket ${currentPackage.id} - ${currentPackage.name}
+${emailLine}${promoLine}- Paket ${currentPackage.id} - ${currentPackage.name}
 - Jumlah Pembelian: ${currentPackage.qty}
 - Nominal Transfer: ${formatWaRupiah(totalPayment)}
 - ${garansiText}
@@ -6066,5 +6382,6 @@ Berikut saya lampirkan bukti screenshot transfer pembayaran. Mohon dicek dan dip
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1}' crossorigin="anonymous"></script>
 </body>
 </html>
