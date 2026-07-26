@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -1096,8 +1097,8 @@
 
     .packages-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+      gap: 20px;
       align-items: stretch;
     }
 
@@ -3076,9 +3077,6 @@
       .hero-visual {
         display: none;
       }
-      .packages-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
       .info-grid {
         grid-template-columns: 1fr;
       }
@@ -4821,20 +4819,20 @@
                   <span class="discount-tag text-green">Promo</span>
                 </div>
               </div>
-              <p class="pkg-tagline">Durasi 18 bulan adalah maksimal. Durasi aktif mengikuti ketentuan website JIO saat klaim.</p>
+              <p class="pkg-tagline"><strong>Maksimal durasi yang bisa didapatkan adalah 18 bulan.</strong> Tidak ada jaminan paket akan aktif penuh selama 18 bulan; layanan dapat berhenti lebih awal sesuai kebijakan provider JIO.</p>
               <div class="bulk-promo-clip" data-bulk-clip="A">
                 <span class="bulk-promo-kicker">Promo Bulk</span>
                 <div class="bulk-promo-line"><span>Ambil 2 voucher</span><strong>Rp140.000</strong></div>
                
               </div>
               <ul class="pkg-features">
-                <li><span class="icon-chk text-green">✓</span><span>Klaim voucher JIO Max Durasi 18B.</span></li>
+                <li><span class="icon-chk text-green">✓</span><span>Klaim voucher JIO dengan durasi maksimal 18 bulan.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>Akun jadi Head / pengelola paket.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>Bisa invite 5 member.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>Akses Antigravity Plan Pro.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>1.000+ AI Flow Credits.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>Tutorial klaim via YouTube BabayShop.</span></li>
-                <li><span class="icon-chk text-green">✓</span><span>Kode <strong>DISKONBAY</strong> potong Rp10.000 saat checkout.</span></li>
+                <li><span class="icon-chk text-green">✓</span><span>Kode <strong>DISKONBAY</strong> memberikan diskon acak (Sampai 10,000) saat checkout.</span></li>
                 <li><span class="icon-chk text-indigo">✓</span><span class="text-glow-indigo">Garansi sampai akun berhasil klaim paket (maks. 1x24 jam).</span></li>
               </ul>
               <div class="pkg-stock-status text-green">
@@ -4915,7 +4913,7 @@
                   <span class="discount-tag text-green">Promo</span>
                 </div>
               </div>
-              <p class="pkg-tagline">Pilihan paling ekonomis dan stabil untuk pemakaian personal ringan.</p>
+              <p class="pkg-tagline">Pilihan ekonomis untuk member. Token/kuota Flow dan Antigravity digunakan bersama (sharing) oleh maksimal 5 user dalam satu paket.</p>
               <div class="bulk-promo-clip" data-bulk-clip="D">
                 <span class="bulk-promo-kicker">Promo Slot</span>
                 <div class="bulk-promo-line"><span>Ambil 3 slot</span><strong>Rp90.000</strong></div>
@@ -4923,8 +4921,8 @@
               <ul class="pkg-features">
                 <li><span class="icon-chk text-green">✓</span><span>Durasi 12 bulan.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>Pakai email Google pribadi pembeli.</span></li>
-                <li><span class="icon-chk text-green">✓</span><span>Akses Sharing Antigravity Plan Pro.</span></li>
-                <li><span class="icon-chk text-green">✓</span><span>1.000+ AI Flow Sharing.</span></li>
+                <li><span class="icon-chk text-green">✓</span><span>Akses Antigravity Plan Pro sharing maksimal 5 user.</span></li>
+                <li><span class="icon-chk text-green">✓</span><span>Token/kuota AI Flow sharing maksimal 5 user.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>Coba akses Google AI Pro sharing.</span></li>
                 <li><span class="icon-chk text-amber">!</span><span>Khusus akun belum pernah join family.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>Garansi layanan 1 bulan.</span></li>
@@ -4958,7 +4956,7 @@
               <h3>Voucher JIO Max Durasi 18B</h3>
             </div>
             <p><strong>Voucher JIO</strong> berasal dari program promosi Reliance Jio di India untuk pengguna Jio Unlimited 5G yang memenuhi syarat. Bukan hasil crack, bukan aplikasi mod, dan bukan generator ilegal.</p>
-            <p>Benefitnya berasal dari mekanisme promo JIO + Google. Durasi 18 bulan adalah durasi maksimal; durasi aktif asli mengikuti ketentuan yang muncul di website JIO saat proses klaim.</p>
+            <p><strong>Maksimal durasi yang bisa didapatkan adalah 18 bulan.</strong> Tidak ada jaminan paket akan aktif penuh selama 18 bulan. Durasi aktual mengikuti ketentuan provider JIO dan layanan dapat berhenti lebih awal sesuai kebijakan provider.</p>
             
             <div class="soft-box">
               <p>Pengalaman pengguna dan diskusi forum dirangkum di halaman khusus BabayShop.</p>
@@ -5011,6 +5009,11 @@
                 <td class="comparison-feature">Kontrol akses</td>
                 <td>Bisa mengelola paket dan slot member selama fitur family sharing tersedia.</td>
                 <td>Tidak bisa mengelola member atau invite orang lain.</td>
+              </tr>
+              <tr>
+                <td class="comparison-feature">Token/kuota AI</td>
+                <td>Head mengelola akses paket dan benefit yang tersedia.</td>
+                <td>Token/kuota Flow dan Antigravity digunakan bersama (sharing) oleh maksimal 5 user dalam satu paket.</td>
               </tr>
               <tr>
                 <td class="comparison-feature">Cocok untuk</td>
@@ -5096,6 +5099,7 @@
               <p><strong>Ketentuan & Solusi Garansi Jio New</strong></p>
               <p>Paket ini menawarkan harga yang lebih ekonomis dengan proteksi klaim sampai akun berhasil klaim paket.</p>
               <ul>
+                <li><strong>Durasi:</strong> Maksimal durasi yang bisa didapatkan adalah 18 bulan. Tidak ada jaminan aktif penuh selama 18 bulan dan layanan dapat berhenti sesuai kebijakan provider JIO.</li>
                 <li><strong>Masa Klaim:</strong> Garansi berlaku sampai akun berhasil klaim paket, dengan batas maksimal pengecekan 1x24 jam sejak voucher/proses klaim diberikan.</li>
                 <li><strong>Solusi Garansi:</strong> Jika klaim gagal dalam masa 1x24 jam, admin akan membantu penggantian/proses ulang sampai berhasil klaim, atau opsi refund jika sistem sedang trouble.</li>
               </ul>
@@ -5371,13 +5375,13 @@
                 <button class="btn" type="button" id="btnApplyPromo">Terapkan</button>
               </div>
               <span class="promo-feedback" id="promoFeedback" aria-live="polite"></span>
-              <small style="color: var(--muted); font-size: 11px;">Gunakan <strong style="color:#fca5a5;">DISKONBAY</strong> untuk potongan Rp10.000.</small>
+              <small style="color: var(--muted); font-size: 11px;">Gunakan <strong style="color:#fca5a5;">DISKONBAY</strong> untuk diskon acak (Sampai 10,000).</small>
             </div>
 
             <div class="bulk-save-row" id="bulkSaveRow">Harga bulk aktif. Total tagihan sudah menyesuaikan promo jumlah pembelian.</div>
             <div class="promo-discount-row" id="promoDiscountRow">
               <span>Voucher DISKONBAY aktif</span>
-              <strong>-Rp10.000</strong>
+              <strong id="promoDiscountText">-Rp0</strong>
             </div>
 
             <div class="form-checkbox">
@@ -5580,6 +5584,7 @@
       const btnApplyPromo = document.getElementById('btnApplyPromo');
       const promoFeedback = document.getElementById('promoFeedback');
       const promoDiscountRow = document.getElementById('promoDiscountRow');
+      const promoDiscountText = document.getElementById('promoDiscountText');
 
       function setEmailLabel(text) {
         if (labelEmail && labelEmail.firstChild) labelEmail.firstChild.nodeValue = `${text} `;
@@ -5629,7 +5634,9 @@
 
       const PROMO_JIO = {
         code: 'DISKONBAY',
-        discount: 10000
+        minDiscount: 3000,
+        maxDiscount: 10000,
+        step: 1000
       };
 
       /* ==========================================================================
@@ -5918,21 +5925,38 @@
         if (type) promoFeedback.classList.add(type);
       }
 
+      function getRandomJioDiscount() {
+        const optionCount = Math.floor((PROMO_JIO.maxDiscount - PROMO_JIO.minDiscount) / PROMO_JIO.step) + 1;
+        let randomIndex;
+
+        if (window.crypto && window.crypto.getRandomValues) {
+          const randomValue = new Uint32Array(1);
+          window.crypto.getRandomValues(randomValue);
+          randomIndex = randomValue[0] % optionCount;
+        } else {
+          randomIndex = Math.floor(Math.random() * optionCount);
+        }
+
+        return PROMO_JIO.minDiscount + (randomIndex * PROMO_JIO.step);
+      }
+
       function recalculateCheckoutPrice() {
         if (!currentPackage) return;
         currentPackage.basePrice = getPackageTotal(currentPackage.id, currentPackage.qty);
         currentPackage.discount = currentPackage.id === 'A' && currentPackage.promoApplied
-          ? Math.min(PROMO_JIO.discount, currentPackage.basePrice)
+          ? Math.min(currentPackage.promoDiscount, currentPackage.basePrice)
           : 0;
         currentPackage.price = Math.max(currentPackage.basePrice - currentPackage.discount, 0);
         checkoutPriceText.textContent = formatRupiah(currentPackage.price);
         promoDiscountRow.classList.toggle('active', currentPackage.discount > 0);
+        promoDiscountText.textContent = `-${formatRupiah(currentPackage.discount)}`;
       }
 
       function resetPromoState() {
         if (currentPackage) {
           currentPackage.promoApplied = false;
           currentPackage.promoCode = '';
+          currentPackage.promoDiscount = 0;
           currentPackage.discount = 0;
         }
         inputPromo.value = '';
@@ -5948,16 +5972,20 @@
 
         const normalizedCode = inputPromo.value.trim().toUpperCase();
         if (normalizedCode === PROMO_JIO.code) {
+          if (!currentPackage.promoApplied || !currentPackage.promoDiscount) {
+            currentPackage.promoDiscount = getRandomJioDiscount();
+          }
           currentPackage.promoApplied = true;
           currentPackage.promoCode = PROMO_JIO.code;
           inputPromo.value = PROMO_JIO.code;
           recalculateCheckoutPrice();
-          setPromoFeedback(`Voucher berhasil dipakai. Total dipotong ${formatRupiah(PROMO_JIO.discount)}.`, 'success');
+          setPromoFeedback(`Voucher berhasil dipakai. Kamu mendapat diskon acak (Sampai 10,000) ${formatRupiah(currentPackage.discount)}.`, 'success');
           return;
         }
 
         currentPackage.promoApplied = false;
         currentPackage.promoCode = '';
+        currentPackage.promoDiscount = 0;
         recalculateCheckoutPrice();
         setPromoFeedback(normalizedCode ? 'Kode voucher tidak valid.' : 'Masukkan kode voucher terlebih dahulu.', 'error');
       }
@@ -6051,6 +6079,7 @@
         if (currentPackage?.promoApplied && inputPromo.value.trim() !== PROMO_JIO.code) {
           currentPackage.promoApplied = false;
           currentPackage.promoCode = '';
+          currentPackage.promoDiscount = 0;
           recalculateCheckoutPrice();
           setPromoFeedback('Kode diubah. Terapkan kembali untuk mendapat potongan.', 'error');
         }
@@ -6071,6 +6100,7 @@
           basePrice: getPackageTotal(id, safeDefaultQty),
           price: getPackageTotal(id, safeDefaultQty),
           discount: 0,
+          promoDiscount: 0,
           promoApplied: false,
           promoCode: ''
         };
@@ -6113,7 +6143,7 @@
           emailGroup.style.display = 'none';
           setEmailLabel('Email Aktivasi / Invite');
           emailRequiredStar.style.display = 'none';
-          checkoutStepDesc.textContent = 'Lanjutkan pembelian Paket JIO. Masukkan kode voucher DISKONBAY untuk potongan Rp10.000.';
+          checkoutStepDesc.textContent = 'Lanjutkan pembelian Paket JIO. Masukkan kode voucher DISKONBAY untuk diskon acak (Sampai 10,000).';
           if (labelCheckAgree) labelCheckAgree.textContent = 'Saya telah membaca, memahami, dan menyetujui detail ketentuan risiko, garansi, serta persyaratan paket ini.';
           inputEmail.disabled = true;
           inputEmail.value = '';
@@ -6382,6 +6412,7 @@ Berikut saya lampirkan bukti screenshot transfer pembayaran. Mohon dicek dan dip
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1}' crossorigin="anonymous"></script>
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1}' crossorigin="anonymous"></script>
 </body>
 </html>
