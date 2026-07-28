@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="id">
   <head>
@@ -1094,6 +1095,22 @@
       color: white;
       box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
     }
+    .filter-chip[data-filter="soldout"].active {
+      background: #b91c1c;
+      border-color: #ef4444;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.25);
+    }
+
+    .catalog-empty {
+      display: none;
+      grid-column: 1 / -1;
+      padding: 34px 20px;
+      border: 1px dashed var(--border);
+      border-radius: var(--r-lg);
+      color: var(--muted);
+      text-align: center;
+      background: rgba(255, 255, 255, 0.015);
+    }
 
     .packages-grid {
       display: grid;
@@ -1310,6 +1327,24 @@
     }
     .stock-dot.pulse {
       animation: pulseGreen 2s infinite;
+    }
+    .pkg-stock-status.status-preorder {
+      color: var(--amber);
+    }
+    .pkg-stock-status.status-preorder .stock-dot {
+      background: var(--amber);
+      animation: pulseAmber 2s infinite;
+    }
+    .pkg-stock-status.status-soldout {
+      color: #f87171;
+    }
+    .pkg-stock-status.status-soldout .stock-dot {
+      background: #ef4444;
+      animation: none;
+    }
+    @keyframes pulseAmber {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.45); }
+      50% { box-shadow: 0 0 0 6px rgba(251, 191, 36, 0); }
     }
 
     .pkg-actions {
@@ -4793,13 +4828,13 @@
           
           <!-- Filter Chips -->
           <div class="catalog-filters">
-            <button class="filter-chip active" data-filter="all">Semua</button>
-            <button class="filter-chip" data-filter="head">Head</button>
-            <button class="filter-chip" data-filter="invite">Member</button>
+            <button class="filter-chip active" data-filter="available">Produk Tersedia</button>
+            <button class="filter-chip" data-filter="soldout">Sold Out</button>
           </div>
         </div>
 
         <div class="packages-grid">
+          <p class="catalog-empty" id="catalogEmpty">Belum ada produk pada kategori ini.</p>
           <!-- Paket A: Voucher JIO Max Durasi 18B -->
           <article class="pkg-card package-fire clay clay--interactive spotlight reveal-on-scroll" data-cat="head">
             <div class="pkg-header">
@@ -4822,7 +4857,7 @@
               <p class="pkg-tagline"><strong>Maksimal durasi yang bisa didapatkan adalah 18 bulan.</strong> Tidak ada jaminan paket akan aktif penuh selama 18 bulan (layanan dapat berhenti lebih awal).</p>
               <div class="bulk-promo-clip" data-bulk-clip="A">
                 <span class="bulk-promo-kicker">Promo Bulk</span>
-                <div class="bulk-promo-line"><span>Ambil 2 voucher</span><strong>Jadi Rp280.000</strong></div>
+                <div class="bulk-promo-line"><span>Ambil 2 voucher</span><strong>Rp140.000</strong></div>
                
               </div>
               <ul class="pkg-features">
@@ -4870,7 +4905,7 @@
               <p class="pkg-tagline">Opsi Paket yang paling stabil. Bisa memakai Gmail admin atau Gmail kamu sendiri untuk menjadi head.</p>
               <div class="bulk-promo-clip" data-bulk-clip="C">
                 <span class="bulk-promo-kicker">Bundle Admin</span>
-                <div class="bulk-promo-line"><span>Ambil 2 head</span><strong>Jadi Rp160.000</strong></div>
+                <div class="bulk-promo-line"><span>Ambil 2 head</span><strong>Rp160.000</strong></div>
                   </div>
               <ul class="pkg-features">
                 <li><span class="icon-chk text-green">✓</span><span>AI PRO Pixel Head 12 bulan.</span></li>
@@ -4916,7 +4951,7 @@
               <p class="pkg-tagline">Pilihan ekonomis untuk member. Token/kuota Flow dan Antigravity digunakan bersama (sharing) oleh maksimal 5 user dalam satu paket.</p>
               <div class="bulk-promo-clip" data-bulk-clip="D">
                 <span class="bulk-promo-kicker">Promo Slot</span>
-                <div class="bulk-promo-line"><span>Ambil 3 slot</span><strong>Jadi Rp90.000</strong></div>
+                <div class="bulk-promo-line"><span>Ambil 3 slot</span><strong>Rp90.000</strong></div>
                   </div>
               <ul class="pkg-features">
                 <li><span class="icon-chk text-green">✓</span><span>Durasi 12 bulan.</span></li>
@@ -5762,6 +5797,113 @@
          ========================================================================== */
       const filterChips = document.querySelectorAll('.filter-chip');
       const pkgCards = document.querySelectorAll('.pkg-card');
+      const catalogEmpty = document.getElementById('catalogEmpty');
+
+      /* ==========================================================================
+         SECTION EDIT STATUS PAKET
+         Pilihan status: 'ready', 'preorder', atau 'soldout'.
+         Ready dan Pre Order masuk ke filter "Produk Tersedia".
+         Sold Out masuk ke filter "Sold Out" dan tombol order dinonaktifkan.
+         ========================================================================== */
+      const PAKET_STATUS = {
+        A: 'soldout',
+        C: 'ready',
+        D: 'ready'
+      };
+
+      const STATUS_DETAIL = {
+        ready: {
+          label: 'Stok: Ready',
+          buttonLabel: 'Beli Sekarang',
+          className: 'status-ready'
+        },
+        preorder: {
+          label: 'Stok: Pre Order',
+          buttonLabel: 'Pre Order Sekarang',
+          className: 'status-preorder'
+        },
+        soldout: {
+          label: 'Stok: Sold Out',
+          buttonLabel: 'Sold Out',
+          className: 'status-soldout'
+        }
+      };
+
+      function applyPackageStatuses() {
+        pkgCards.forEach(card => {
+          const packageId = card.querySelector('.pkg-code')?.textContent.trim();
+          const status = PAKET_STATUS[packageId] || 'soldout';
+          const detail = STATUS_DETAIL[status];
+          const stockBox = card.querySelector('.pkg-stock-status');
+          const stockLabel = stockBox?.querySelector('span:last-child');
+          const orderButtons = card.querySelectorAll('.btn-buy, .btn-bulk-order');
+
+          card.dataset.status = status;
+          card.classList.toggle('soldout-card', status === 'soldout');
+
+          if (stockBox) {
+            stockBox.classList.remove('text-green', 'status-ready', 'status-preorder', 'status-soldout');
+            stockBox.classList.add(detail.className);
+          }
+          if (stockLabel) stockLabel.textContent = detail.label;
+
+          orderButtons.forEach((button, index) => {
+            if (!button.dataset.originalLabel) {
+              button.dataset.originalLabel = button.textContent.trim();
+            }
+
+            if (status === 'soldout') {
+              button.disabled = true;
+              button.classList.add('btn-soldout');
+              button.textContent = 'Sold Out';
+              button.setAttribute('aria-disabled', 'true');
+            } else {
+              button.disabled = false;
+              button.classList.remove('btn-soldout');
+              button.removeAttribute('aria-disabled');
+              button.textContent = status === 'preorder' && index === 0
+                ? detail.buttonLabel
+                : button.dataset.originalLabel;
+            }
+          });
+        });
+      }
+
+      function filterPackages(filterVal) {
+        let visibleCount = 0;
+
+        pkgCards.forEach(card => {
+          const status = card.dataset.status;
+          const shouldShow = filterVal === 'soldout'
+            ? status === 'soldout'
+            : status === 'ready' || status === 'preorder';
+
+          if (shouldShow) {
+            visibleCount += 1;
+            card.style.display = 'flex';
+            setTimeout(() => {
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, 10);
+          } else {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(15px)';
+            setTimeout(() => {
+              card.style.display = 'none';
+            }, 250);
+          }
+        });
+
+        if (catalogEmpty) {
+          catalogEmpty.style.display = visibleCount === 0 ? 'block' : 'none';
+          catalogEmpty.textContent = filterVal === 'soldout'
+            ? 'Saat ini belum ada produk yang sold out.'
+            : 'Saat ini belum ada produk yang tersedia.';
+        }
+      }
+
+      applyPackageStatuses();
+      filterPackages('available');
 
       filterChips.forEach(chip => {
         chip.addEventListener('click', () => {
@@ -5770,23 +5912,7 @@
           chip.classList.add('active');
 
           const filterVal = chip.getAttribute('data-filter');
-
-          pkgCards.forEach(card => {
-            const cat = card.getAttribute('data-cat');
-            if (filterVal === 'all' || cat === filterVal) {
-              card.style.display = 'flex';
-              setTimeout(() => {
-                card.style.opacity = '1';
-                card.style.transform = 'translateY(0)';
-              }, 10);
-            } else {
-              card.style.opacity = '0';
-              card.style.transform = 'translateY(15px)';
-              setTimeout(() => {
-                card.style.display = 'none';
-              }, 250); // Match transit delay
-            }
-          });
+          filterPackages(filterVal);
         });
       });
 
@@ -6412,6 +6538,7 @@ Berikut saya lampirkan bukti screenshot transfer pembayaran. Mohon dicek dan dip
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1}' crossorigin="anonymous"></script>
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1}' crossorigin="anonymous"></script>
 <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1}' crossorigin="anonymous"></script>
 </body>
