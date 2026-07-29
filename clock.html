@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0f172a" />
+  <title>Clock Studio — Jam Online Kustom</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Caveat:wght@400..700&family=Comfortaa:wght@300..700&family=Inter:wght@300..900&family=Montserrat:wght@300..900&family=Orbitron:wght@400..900&family=Playfair+Display:wght@400..900&family=Poppins:wght@300..900&family=Press+Start+2P&family=Roboto+Mono:wght@300..700&family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --clock: #f8fafc;
+      --accent: #8b5cf6;
+      --panel: rgba(15, 23, 42, .82);
+      --panel-2: rgba(255,255,255,.075);
+      --border: rgba(255,255,255,.12);
+      --muted: rgba(248,250,252,.68);
+      --shadow: 0 24px 70px rgba(0,0,0,.34);
+      --clock-size: 151px;
+      --clock-font: "Inter", system-ui, sans-serif;
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { width: 100%; height: 100%; margin: 0; }
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      color: #fff;
+      background: var(--bg);
+      overflow: hidden;
+    }
+    button, input, select, textarea { font: inherit; }
+    button { color: inherit; }
+    button, select, input[type="range"], input[type="color"], input[type="checkbox"] { cursor: pointer; }
+
+    .app {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      isolation: isolate;
+      background: var(--bg);
+    }
+
+    .background-layer,
+    .background-layer::before,
+    .background-layer::after {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .background-layer {
+      z-index: -5;
+      background-color: var(--bg);
+      background-position: center;
+      background-size: cover;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+    .background-layer::before,
+    .background-layer::after { content: ""; opacity: 0; }
+
+    .bg-aurora::before {
+      opacity: .9;
+      inset: -35%;
+      background:
+        radial-gradient(circle at 20% 30%, rgba(34,211,238,.55), transparent 26%),
+        radial-gradient(circle at 75% 25%, rgba(139,92,246,.58), transparent 28%),
+        radial-gradient(circle at 55% 75%, rgba(16,185,129,.42), transparent 29%);
+      filter: blur(55px);
+      animation: drift 13s ease-in-out infinite alternate;
+    }
+    .bg-bokeh::before {
+      opacity: .65;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,.35) 0 2.2%, transparent 2.5%),
+        radial-gradient(circle at 72% 16%, rgba(244,114,182,.33) 0 3.8%, transparent 4.1%),
+        radial-gradient(circle at 90% 70%, rgba(59,130,246,.35) 0 4.2%, transparent 4.5%),
+        radial-gradient(circle at 38% 76%, rgba(250,204,21,.26) 0 3.2%, transparent 3.5%),
+        radial-gradient(circle at 55% 45%, rgba(255,255,255,.18) 0 2.8%, transparent 3.1%);
+      filter: blur(6px);
+      animation: breathe 8s ease-in-out infinite alternate;
+    }
+    .bg-stars::before {
+      opacity: .8;
+      background-image:
+        radial-gradient(circle, #fff 0 1px, transparent 1.5px),
+        radial-gradient(circle, rgba(255,255,255,.7) 0 1px, transparent 1.5px);
+      background-size: 58px 58px, 91px 91px;
+      background-position: 0 0, 28px 12px;
+      animation: starsMove 30s linear infinite;
+    }
+    .bg-grid::before {
+      opacity: .36;
+      background-image:
+        linear-gradient(rgba(34,211,238,.25) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(34,211,238,.25) 1px, transparent 1px);
+      background-size: 52px 52px;
+      transform: perspective(500px) rotateX(58deg) scale(1.8) translateY(28%);
+      transform-origin: bottom;
+      mask-image: linear-gradient(to top, #000, transparent 78%);
+      animation: gridMove 4s linear infinite;
+    }
+    .bg-rain::before {
+      opacity: .28;
+      background-image: repeating-linear-gradient(
+        106deg,
+        transparent 0 17px,
+        rgba(255,255,255,.45) 18px,
+        transparent 20px 34px
+      );
+      background-size: 110px 180px;
+      animation: rain .68s linear infinite;
+      filter: blur(.25px);
+    }
+    .bg-pulse::before {
+      opacity: .85;
+      inset: -20%;
+      background: radial-gradient(circle at 50% 50%, rgba(139,92,246,.58), transparent 35%);
+      animation: pulseBg 4.2s ease-in-out infinite;
+    }
+    .bg-matrix::before {
+      opacity: .26;
+      background-image:
+        linear-gradient(180deg, rgba(34,197,94,0) 0%, rgba(34,197,94,.6) 70%, rgba(34,197,94,0) 100%),
+        repeating-linear-gradient(90deg, transparent 0 27px, rgba(34,197,94,.12) 28px 29px);
+      background-size: 100% 190px, 29px 100%;
+      animation: matrixDrop 2.6s linear infinite;
+    }
+
+    @keyframes drift { to { transform: translate(11%, -7%) rotate(11deg) scale(1.08); } }
+    @keyframes breathe { to { transform: scale(1.12) translateY(-2%); opacity: .9; } }
+    @keyframes starsMove { to { background-position: 58px 116px, -63px 103px; } }
+    @keyframes gridMove { to { background-position-y: 52px; } }
+    @keyframes rain { to { background-position: -40px 180px; } }
+    @keyframes pulseBg { 50% { transform: scale(1.25); opacity: .36; } }
+    @keyframes matrixDrop { to { background-position-y: 190px, 0; } }
+
+    .backdrop-shade {
+      position: absolute;
+      inset: 0;
+      z-index: -3;
+      background: radial-gradient(circle at center, transparent 0 30%, rgba(0,0,0,.13) 68%, rgba(0,0,0,.32) 100%);
+      pointer-events: none;
+    }
+
+    .topbar {
+      position: fixed;
+      top: 16px;
+      left: 16px;
+      right: 16px;
+      height: 58px;
+      z-index: 40;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      pointer-events: none;
+    }
+    .topbar > * { pointer-events: auto; }
+    .brand, .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(2,6,23,.48);
+      border: 1px solid var(--border);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 14px 40px rgba(0,0,0,.17);
+      border-radius: 18px;
+      padding: 9px 11px;
+    }
+    .brand-mark {
+      width: 35px;
+      height: 35px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      font-size: 19px;
+      background: linear-gradient(135deg, var(--accent), #22d3ee);
+      box-shadow: inset 0 1px rgba(255,255,255,.25);
+    }
+    .brand-copy strong { display: block; font-size: 14px; letter-spacing: -.01em; }
+    .brand-copy span { display: block; font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+    .icon-btn, .pill-btn, .action-btn, .seg-btn, .theme-card, .app-tab, .quick-time {
+      border: 0;
+      outline: none;
+      transition: .2s ease;
+    }
+    .icon-btn {
+      width: 39px;
+      height: 39px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(255,255,255,.085);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .icon-btn:hover, .pill-btn:hover { background: rgba(255,255,255,.15); transform: translateY(-1px); }
+    .pill-btn {
+      height: 39px;
+      padding: 0 14px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.085);
+      border: 1px solid rgba(255,255,255,.08);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .clock-stage {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 90px 24px 28px;
+      text-align: center;
+    }
+    .clock-wrap {
+      position: relative;
+      max-width: 100%;
+      user-select: none;
+      filter: drop-shadow(0 20px 35px rgba(0,0,0,.28));
+    }
+    .digital-clock {
+      color: var(--clock);
+      font-family: var(--clock-font);
+      font-size: clamp(72px, calc(var(--clock-size) * 1), 28vw);
+      font-weight: 650;
+      line-height: .92;
+      letter-spacing: -.065em;
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+      text-shadow: 0 6px 28px rgba(0,0,0,.2);
+    }
+    .digital-clock .ampm {
+      display: inline-block;
+      margin-left: .18em;
+      font-size: .19em;
+      letter-spacing: .08em;
+      vertical-align: 18%;
+      opacity: .82;
+      text-transform: uppercase;
+    }
+    .date-text {
+      margin-top: 22px;
+      color: var(--clock);
+      opacity: .82;
+      font-size: clamp(16px, 2.2vw, 28px);
+      font-weight: 500;
+      letter-spacing: .02em;
+    }
+    .zone-label {
+      display: inline-flex;
+      margin-top: 16px;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,.13);
+      border-radius: 999px;
+      background: rgba(2,6,23,.24);
+      color: rgba(255,255,255,.76);
+      font-size: 12px;
+      backdrop-filter: blur(10px);
+    }
+
+    .analog-clock {
+      display: none;
+      position: relative;
+      width: min(62vw, 420px);
+      aspect-ratio: 1;
+      margin-inline: auto;
+      border: min(1.2vw, 8px) solid color-mix(in srgb, var(--clock) 80%, transparent);
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 48%, rgba(255,255,255,.095), rgba(255,255,255,.025) 65%);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.18), inset 0 0 50px rgba(255,255,255,.035);
+      backdrop-filter: blur(12px);
+    }
+    .analog-clock::after {
+      content: "";
+      position: absolute;
+      left: 50%; top: 50%;
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--clock);
+      transform: translate(-50%, -50%);
+      z-index: 5;
+      box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent) 70%, transparent);
+    }
+    .tick {
+      position: absolute;
+      left: 50%;
+      top: 6px;
+      width: 2px;
+      height: 9px;
+      background: var(--clock);
+      opacity: .45;
+      transform-origin: 50% calc(50% - 6px);
+    }
+    .tick.major { height: 16px; width: 3px; opacity: .8; }
+    .hand {
+      position: absolute;
+      left: 50%;
+      bottom: 50%;
+      transform-origin: 50% 100%;
+      border-radius: 999px;
+      background: var(--clock);
+      transform: translateX(-50%) rotate(0deg);
+    }
+    .hour-hand { width: 8px; height: 27%; opacity: .94; }
+    .minute-hand { width: 5px; height: 37%; opacity: .9; }
+    .second-hand { width: 2px; height: 41%; background: var(--accent); }
+    .app.analogue .digital-clock { display: none; }
+    .app.analogue .analog-clock { display: block; }
+
+    .bottom-hint {
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      z-index: 15;
+      transform: translateX(-50%);
+      padding: 9px 13px;
+      border-radius: 999px;
+      color: rgba(255,255,255,.66);
+      background: rgba(2,6,23,.28);
+      border: 1px solid rgba(255,255,255,.08);
+      backdrop-filter: blur(12px);
+      font-size: 11px;
+      transition: opacity .3s ease;
+    }
+
+    .panel {
+      position: fixed;
+      top: 0;
+      right: 0;
+      z-index: 60;
+      width: min(430px, 94vw);
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: rgba(8,13,27,.91);
+      border-left: 1px solid var(--border);
+      backdrop-filter: blur(28px);
+      box-shadow: -20px 0 70px rgba(0,0,0,.28);
+      transform: translateX(104%);
+      transition: transform .28s cubic-bezier(.2,.8,.2,1);
+    }
+    .panel.open { transform: translateX(0); }
+    .panel-head {
+      padding: 18px 18px 12px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .panel-head-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .panel-title strong { display: block; font-size: 17px; }
+    .panel-title span { display: block; color: var(--muted); font-size: 11px; margin-top: 3px; }
+    .panel-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 7px;
+      margin-top: 14px;
+      padding: 5px;
+      border-radius: 14px;
+      background: rgba(255,255,255,.055);
+    }
+    .app-tab {
+      padding: 9px 7px;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .app-tab.active {
+      background: rgba(255,255,255,.12);
+      color: #fff;
+      box-shadow: inset 0 1px rgba(255,255,255,.09);
+    }
+    .panel-body {
+      overflow-y: auto;
+      padding: 16px 16px 32px;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,.2) transparent;
+    }
+    .tab-page { display: none; }
+    .tab-page.active { display: block; }
+
+    .section {
+      margin-bottom: 14px;
+      padding: 15px;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.055);
+      border: 1px solid rgba(255,255,255,.075);
+    }
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+    .section-title h3 { margin: 0; font-size: 13px; }
+    .section-title span { color: var(--muted); font-size: 10px; }
+
+    .theme-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 9px; }
+    .theme-card {
+      position: relative;
+      min-height: 80px;
+      padding: 11px;
+      border-radius: 16px;
+      text-align: left;
+      background: var(--preview);
+      border: 1px solid rgba(255,255,255,.12);
+      overflow: hidden;
+    }
+    .theme-card:hover { transform: translateY(-2px); box-shadow: 0 14px 28px rgba(0,0,0,.2); }
+    .theme-card strong { position: relative; z-index: 2; display: block; font-size: 11px; margin-top: 33px; }
+    .theme-card span { position: absolute; top: 12px; right: 12px; font-size: 18px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .theme-card.active { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .field { margin-bottom: 13px; }
+    .field:last-child { margin-bottom: 0; }
+    .field label, .label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 7px;
+      color: rgba(255,255,255,.82);
+      font-size: 11px;
+      font-weight: 650;
+    }
+    .field small { color: var(--muted); font-size: 10px; font-weight: 500; }
+    .text-input, .select-input, .textarea-input {
+      width: 100%;
+      color: #fff;
+      background: rgba(2,6,23,.54);
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 12px;
+      outline: none;
+    }
+    .text-input, .select-input { height: 42px; padding: 0 12px; }
+    .textarea-input { min-height: 130px; resize: vertical; padding: 12px; line-height: 1.55; }
+    .text-input:focus, .select-input:focus, .textarea-input:focus { border-color: color-mix(in srgb, var(--accent) 75%, #fff); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
+    .select-input option { background: #0f172a; color: #fff; }
+    .range-wrap { display: grid; grid-template-columns: 1fr 58px; align-items: center; gap: 9px; }
+    input[type="range"] { width: 100%; accent-color: var(--accent); }
+    .range-value {
+      height: 34px;
+      display: grid;
+      place-items: center;
+      border-radius: 10px;
+      font-size: 10px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.07);
+    }
+    .color-row { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .color-box {
+      padding: 9px;
+      border-radius: 13px;
+      background: rgba(2,6,23,.42);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .color-box label { display: block; color: var(--muted); font-size: 10px; margin-bottom: 7px; }
+    .color-input-wrap { display: flex; align-items: center; gap: 8px; }
+    input[type="color"] {
+      width: 34px; height: 34px;
+      padding: 0;
+      border: 0;
+      border-radius: 10px;
+      overflow: hidden;
+      background: transparent;
+    }
+    .hex-value { font-size: 10px; font-family: "Roboto Mono", monospace; text-transform: uppercase; }
+
+    .segment {
+      display: grid;
+      grid-auto-flow: column;
+      grid-auto-columns: 1fr;
+      gap: 6px;
+      padding: 5px;
+      background: rgba(2,6,23,.4);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 13px;
+    }
+    .seg-btn {
+      min-height: 34px;
+      border-radius: 9px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 750;
+    }
+    .seg-btn.active { color: #fff; background: rgba(255,255,255,.12); }
+
+    .file-button {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 44px;
+      border-radius: 13px;
+      border: 1px dashed rgba(255,255,255,.2);
+      background: rgba(255,255,255,.045);
+      color: rgba(255,255,255,.75);
+      font-size: 11px;
+      overflow: hidden;
+    }
+    .file-button input { position: absolute; inset: 0; opacity: 0; }
+
+    .action-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .action-btn {
+      min-height: 42px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.085);
+      border: 1px solid rgba(255,255,255,.08);
+      font-size: 11px;
+      font-weight: 750;
+    }
+    .action-btn.primary { background: var(--accent); border-color: transparent; }
+    .action-btn:hover { transform: translateY(-1px); filter: brightness(1.08); }
+
+    .timer-display {
+      text-align: center;
+      font-family: "Roboto Mono", monospace;
+      font-size: 52px;
+      font-weight: 700;
+      letter-spacing: -.06em;
+      margin: 10px 0 15px;
+      font-variant-numeric: tabular-nums;
+    }
+    .quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin-bottom: 11px; }
+    .quick-time {
+      min-height: 35px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.07);
+      border: 1px solid rgba(255,255,255,.07);
+      font-size: 10px;
+    }
+    .quick-time:hover { background: rgba(255,255,255,.13); }
+    .progress {
+      height: 7px;
+      border-radius: 999px;
+      overflow: hidden;
+      background: rgba(255,255,255,.08);
+      margin: 10px 0 14px;
+    }
+    .progress > span {
+      display: block;
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #22d3ee);
+      border-radius: inherit;
+      transition: width .3s linear;
+    }
+
+    .countdown-list, .notes-list { display: grid; gap: 8px; margin-top: 11px; }
+    .mini-card {
+      padding: 11px;
+      border-radius: 13px;
+      background: rgba(2,6,23,.38);
+      border: 1px solid rgba(255,255,255,.075);
+    }
+    .mini-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+    .mini-card strong { display: block; font-size: 11px; }
+    .mini-card span { color: var(--muted); font-size: 9px; }
+    .mini-card .count-value { margin-top: 6px; font-family: "Roboto Mono", monospace; font-size: 12px; color: #fff; }
+    .tiny-delete { border: 0; background: transparent; color: #fda4af; font-size: 13px; padding: 2px; }
+
+    .weather-main { display: flex; align-items: center; gap: 14px; padding: 4px 2px 11px; }
+    .weather-icon { font-size: 42px; }
+    .weather-temp { font-size: 30px; font-weight: 800; line-height: 1; }
+    .weather-copy strong { display: block; font-size: 12px; margin-top: 4px; }
+    .weather-copy span { color: var(--muted); font-size: 10px; }
+
+    .switch-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      min-height: 38px;
+    }
+    .switch-row strong { font-size: 11px; }
+    .switch-row span { display: block; color: var(--muted); font-size: 9px; margin-top: 3px; }
+    .switch {
+      position: relative;
+      width: 42px; height: 24px;
+      flex: 0 0 auto;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .switch i {
+      position: absolute; inset: 0;
+      border-radius: 999px;
+      background: rgba(255,255,255,.14);
+      transition: .2s;
+    }
+    .switch i::after {
+      content: "";
+      position: absolute;
+      width: 18px; height: 18px;
+      left: 3px; top: 3px;
+      border-radius: 50%;
+      background: #fff;
+      transition: .2s;
+    }
+    .switch input:checked + i { background: var(--accent); }
+    .switch input:checked + i::after { transform: translateX(18px); }
+
+    .toast {
+      position: fixed;
+      left: 50%;
+      top: 88px;
+      z-index: 100;
+      transform: translate(-50%, -15px);
+      padding: 10px 14px;
+      border-radius: 12px;
+      background: rgba(2,6,23,.88);
+      border: 1px solid rgba(255,255,255,.12);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+      opacity: 0;
+      pointer-events: none;
+      transition: .25s ease;
+      font-size: 11px;
+    }
+    .toast.show { transform: translate(-50%, 0); opacity: 1; }
+
+    .overlay {
+      position: fixed; inset: 0; z-index: 50;
+      background: rgba(0,0,0,.35);
+      opacity: 0; pointer-events: none;
+      transition: .25s;
+    }
+    .overlay.show { opacity: 1; pointer-events: auto; }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 720px) {
+      .topbar { top: 10px; left: 10px; right: 10px; }
+      .brand-copy { display: none; }
+      .brand { padding: 8px; }
+      .toolbar { padding: 7px; gap: 7px; }
+      .pill-btn span { display: none; }
+      .pill-btn { width: 39px; padding: 0; justify-content: center; }
+      .clock-stage { padding-inline: 12px; }
+      .digital-clock { font-size: clamp(55px, calc(var(--clock-size) * .68), 22vw); }
+      .date-text { margin-top: 15px; font-size: 16px; }
+      .zone-label { margin-top: 12px; }
+      .bottom-hint { display: none; }
+      .analog-clock { width: min(82vw, 380px); }
+    }
+
+    @media (max-height: 620px) and (orientation: landscape) {
+      .topbar { top: 8px; }
+      .clock-stage { padding-top: 70px; }
+      .digital-clock { font-size: min(calc(var(--clock-size) * .78), 30vh); }
+      .date-text { margin-top: 10px; }
+      .zone-label { margin-top: 8px; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="app" id="app">
+    <div class="background-layer bg-aurora" id="backgroundLayer"></div>
+    <div class="backdrop-shade"></div>
+
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">◷</div>
+        <div class="brand-copy">
+          <strong>Clock Studio</strong>
+          <span>Jam online kustom</span>
+        </div>
+      </div>
+
+      <div class="toolbar">
+        <button class="pill-btn" id="appsBtn" title="Mini Apps"><span>Mini Apps</span> ◫</button>
+        <button class="icon-btn" id="fullscreenBtn" title="Layar penuh">⛶</button>
+        <button class="icon-btn" id="settingsBtn" title="Kustomisasi">🎨</button>
+      </div>
+    </header>
+
+    <section class="clock-stage">
+      <div class="clock-wrap">
+        <div class="digital-clock" id="digitalClock">16:14:00</div>
+
+        <div class="analog-clock" id="analogClock" aria-label="Jam analog"></div>
+
+        <div class="date-text" id="dateText">Rabu, 29 Juli 2026</div>
+        <div class="zone-label" id="zoneLabel">📍 Asia/Jakarta</div>
+      </div>
+    </section>
+
+    <div class="bottom-hint" id="bottomHint">Klik ikon 🎨 untuk mengubah tampilan jam</div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <aside class="panel" id="panel">
+      <div class="panel-head">
+        <div class="panel-head-row">
+          <div class="panel-title">
+            <strong id="panelHeading">Kustomisasi Jam</strong>
+            <span>Semua pengaturan tersimpan otomatis</span>
+          </div>
+          <button class="icon-btn" id="closePanelBtn" aria-label="Tutup panel">✕</button>
+        </div>
+
+        <nav class="panel-tabs">
+          <button class="app-tab active" data-tab="customize">Tampilan</button>
+          <button class="app-tab" data-tab="miniapps">Mini Apps</button>
+          <button class="app-tab" data-tab="settings">Lainnya</button>
+        </nav>
+      </div>
+
+      <div class="panel-body">
+        <section class="tab-page active" id="tab-customize">
+          <div class="section">
+            <div class="section-title">
+              <h3>Tema Cepat</h3>
+              <span>Starter themes</span>
+            </div>
+            <div class="theme-grid" id="themeGrid">
+              <button class="theme-card" data-theme="softBlush" style="--preview:linear-gradient(135deg,#fbcfe8,#fdf2f8);color:#831843"><span>12:34</span><strong>Soft Blush</strong></button>
+              <button class="theme-card" data-theme="boho" style="--preview:linear-gradient(135deg,#8b5e3c,#d6b38c);color:#fff"><span>12:34</span><strong>Boho Chic</strong></button>
+              <button class="theme-card" data-theme="lilac" style="--preview:linear-gradient(135deg,#312e81,#a78bfa);color:#fff"><span>12:34</span><strong>Lilac Dream</strong></button>
+              <button class="theme-card active" data-theme="midnight" style="--preview:linear-gradient(135deg,#020617,#1e293b);color:#f8fafc"><span>12:34</span><strong>Midnight</strong></button>
+              <button class="theme-card" data-theme="minimal" style="--preview:linear-gradient(135deg,#f8fafc,#e2e8f0);color:#111827"><span>12:34</span><strong>Minimalist</strong></button>
+              <button class="theme-card" data-theme="cyber" style="--preview:linear-gradient(135deg,#020617,#052e16);color:#4ade80"><span>12:34</span><strong>Cyber Grid</strong></button>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">
+              <h3>Background</h3>
+              <span>Warna, animasi, atau foto</span>
+            </div>
+
+            <div class="color-row field">
+              <div class="color-box">
+                <label>Warna latar</label>
+                <div class="color-input-wrap">
+                  <input type="color" id="bgColor" value="#0f172a">
+                  <span class="hex-value" id="bgHex">#0F172A</span>
+                </div>
+              </div>
+              <div class="color-box">
+                <label>Warna aksen</label>
+                <div class="color-input-wrap">
+                  <input type="color" id="accentColor" value="#8b5cf6">
+                  <span class="hex-value" id="accentHex">#8B5CF6</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Live Background <small>CSS ringan</small></label>
+              <select class="select-input" id="backgroundEffect">
+                <option value="none">Tanpa animasi</option>
+                <option value="aurora" selected>Aurora</option>
+                <option value="bokeh">Bokeh</option>
+                <option value="stars">Stars</option>
+                <option value="grid">Cyber Grid</option>
+                <option value="rain">Rain</option>
+                <option value="pulse">Pulse</option>
+                <option value="matrix">Matrix</option>
+              </select>
+            </div>
+
+            <label class="file-button">
+              <input type="file" id="backgroundUpload" accept="image/*">
+              🖼️ Upload gambar background
+            </label>
+
+            <div class="field" style="margin-top:11px">
+              <label>URL gambar <small>opsional</small></label>
+              <input class="text-input" id="backgroundUrl" placeholder="https://example.com/background.jpg">
+            </div>
+
+            <div class="action-row">
+              <button class="action-btn" id="applyUrlBtn">Pakai URL</button>
+              <button class="action-btn" id="clearImageBtn">Hapus Foto</button>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">
+              <h3>Teks & Gaya</h3>
+              <span>Jam utama</span>
+            </div>
+
+            <div class="color-row field">
+              <div class="color-box">
+                <label>Warna jam</label>
+                <div class="color-input-wrap">
+                  <input type="color" id="clockColor" value="#f8fafc">
+                  <span class="hex-value" id="clockHex">#F8FAFC</span>
+                </div>
+              </div>
+              <div class="color-box">
+                <label>Ukuran</label>
+                <div class="hex-value" id="clockSizeLabel" style="padding-top:10px">151px</div>
+              </div>
+            </div>
+
+            <div class="field">
+              <input type="range" id="clockSize" min="72" max="260" value="151">
+            </div>
+
+            <div class="field">
+              <label>Font</label>
+              <select class="select-input" id="clockFont">
+                <option value='"Inter", sans-serif'>Inter</option>
+                <option value='"Orbitron", sans-serif'>Orbitron</option>
+                <option value='"Bebas Neue", sans-serif'>Bebas Neue</option>
+                <option value='"Anton", sans-serif'>Anton</option>
+                <option value='"Montserrat", sans-serif'>Montserrat</option>
+                <option value='"Poppins", sans-serif'>Poppins</option>
+                <option value='"Comfortaa", sans-serif'>Comfortaa</option>
+                <option value='"Playfair Display", serif'>Playfair Display</option>
+                <option value='"Caveat", cursive'>Caveat</option>
+                <option value='"Press Start 2P", monospace'>Press Start 2P</option>
+                <option value='"Roboto Mono", monospace'>Roboto Mono</option>
+                <option value='"VT323", monospace'>VT323</option>
+                <option value='Arial, sans-serif'>Arial</option>
+                <option value='Georgia, serif'>Georgia</option>
+                <option value='"Times New Roman", serif'>Times New Roman</option>
+                <option value='"Courier New", monospace'>Courier New</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">
+              <h3>Waktu & Tanggal</h3>
+              <span>Zona waktu global</span>
+            </div>
+
+            <div class="field">
+              <label>Zona Waktu</label>
+              <select class="select-input" id="timeZone"></select>
+            </div>
+
+            <div class="field">
+              <label>Tipe Jam</label>
+              <div class="segment" id="clockTypeSegment">
+                <button class="seg-btn active" data-value="digital">Digital</button>
+                <button class="seg-btn" data-value="analogue">Analog</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Format Waktu</label>
+              <div class="segment" id="formatSegment">
+                <button class="seg-btn" data-value="12">12 Jam</button>
+                <button class="seg-btn active" data-value="24">24 Jam</button>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="switch-row">
+                <div><strong>Tampilkan Detik</strong><span>Untuk digital dan analog</span></div>
+                <label class="switch"><input type="checkbox" id="showSeconds" checked><i></i></label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="switch-row">
+                <div><strong>Tampilkan Tanggal</strong><span>Di bawah jam utama</span></div>
+                <label class="switch"><input type="checkbox" id="showDate" checked><i></i></label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Format Tanggal</label>
+              <div class="segment" id="dateFormatSegment">
+                <button class="seg-btn" data-value="us">USA</button>
+                <button class="seg-btn active" data-value="intl">Internasional</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="tab-page" id="tab-miniapps">
+          <div class="section">
+            <div class="section-title">
+              <h3>Focus Timer</h3>
+              <span>Pomodoro sederhana</span>
+            </div>
+
+            <div class="timer-display" id="focusDisplay">25:00</div>
+            <div class="progress"><span id="focusProgress"></span></div>
+            <div class="quick-grid">
+              <button class="quick-time" data-minutes="10">10m</button>
+              <button class="quick-time" data-minutes="25">25m</button>
+              <button class="quick-time" data-minutes="50">50m</button>
+              <button class="quick-time" id="customFocusBtn">Custom</button>
+            </div>
+            <div class="action-row">
+              <button class="action-btn primary" id="focusStartBtn">Mulai Fokus</button>
+              <button class="action-btn" id="focusResetBtn">Reset</button>
+            </div>
+            <div style="margin-top:11px;color:var(--muted);font-size:10px;text-align:center">
+              Sesi selesai: <strong id="focusSessions" style="color:#fff">0</strong>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">
+              <h3>Countdown</h3>
+              <span>Acara penting</span>
+            </div>
+            <div class="field"><input class="text-input" id="countdownName" placeholder="Nama acara"></div>
+            <div class="field"><input class="text-input" id="countdownDate" type="datetime-local"></div>
+            <button class="action-btn primary" id="addCountdownBtn" style="width:100%">Tambah Countdown</button>
+            <div class="countdown-list" id="countdownList"></div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">
+              <h3>Sticky Notes</h3>
+              <span>Tersimpan lokal</span>
+            </div>
+            <textarea class="textarea-input" id="notesInput" placeholder="Tulis catatan, daftar tugas, atau target hari ini..."></textarea>
+            <div class="action-row" style="margin-top:9px">
+              <button class="action-btn primary" id="saveNotesBtn">Simpan Catatan</button>
+              <button class="action-btn" id="clearNotesBtn">Kosongkan</button>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">
+              <h3>Cuaca Lokal</h3>
+              <span>Open-Meteo</span>
+            </div>
+            <div id="weatherResult" class="hidden">
+              <div class="weather-main">
+                <div class="weather-icon" id="weatherIcon">☀️</div>
+                <div class="weather-copy">
+                  <div class="weather-temp" id="weatherTemp">--°</div>
+                  <strong id="weatherCity">Lokasi</strong>
+                  <span id="weatherDesc">Memuat cuaca...</span>
+                </div>
+              </div>
+            </div>
+            <div class="field"><input class="text-input" id="weatherSearch" placeholder="Cari kota, contoh: Jakarta"></div>
+            <div class="action-row">
+              <button class="action-btn primary" id="searchWeatherBtn">Cari Kota</button>
+              <button class="action-btn" id="locationWeatherBtn">Lokasi Saya</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="tab-page" id="tab-settings">
+          <div class="section">
+            <div class="section-title">
+              <h3>Preferensi</h3>
+              <span>Pengalaman layar</span>
+            </div>
+
+            <div class="field">
+              <div class="switch-row">
+                <div><strong>Gerakan Halus</strong><span>Jarum detik bergerak smooth</span></div>
+                <label class="switch"><input type="checkbox" id="smoothMotion" checked><i></i></label>
+              </div>
+            </div>
+
+            <div class="field">
+              <div class="switch-row">
+                <div><strong>Tampilkan Zona Waktu</strong><span>Label di bawah tanggal</span></div>
+                <label class="switch"><input type="checkbox" id="showZone" checked><i></i></label>
+              </div>
+            </div>
+
+            <div class="field">
+              <label>Pesan Kecil <small>opsional</small></label>
+              <input class="text-input" id="customMessage" placeholder="Contoh: Fokus pada hal yang penting">
+            </div>
+
+            <div class="field">
+              <label>Ambient Sound</label>
+              <select class="select-input" id="ambientSelect">
+                <option value="off">Mati</option>
+                <option value="rain">Rain Noise</option>
+                <option value="brown">Brown Noise</option>
+                <option value="white">White Noise</option>
+              </select>
+            </div>
+            <button class="action-btn" id="ambientToggleBtn" style="width:100%">Putar Ambient</button>
+          </div>
+
+          <div class="section">
+            <div class="section-title">
+              <h3>Data & Reset</h3>
+              <span>LocalStorage browser</span>
+            </div>
+            <div class="action-row">
+              <button class="action-btn" id="exportBtn">Export Pengaturan</button>
+              <label class="action-btn" style="display:grid;place-items:center;position:relative;overflow:hidden">
+                Import
+                <input id="importInput" type="file" accept=".json,application/json" style="position:absolute;inset:0;opacity:0">
+              </label>
+            </div>
+            <button class="action-btn" id="resetAllBtn" style="width:100%;margin-top:8px;color:#fecaca">Reset Semua</button>
+          </div>
+
+          <div class="section">
+            <div class="section-title">
+              <h3>Tentang</h3>
+              <span>Versi 1.0</span>
+            </div>
+            <p style="margin:0;color:var(--muted);font-size:10px;line-height:1.65">
+              Clock Studio adalah halaman jam online mandiri yang terinspirasi konsep dashboard jam kustom.
+              Tidak membutuhkan akun dan tidak mengirim pengaturan pribadi ke server.
+            </p>
+          </div>
+        </section>
+      </div>
+    </aside>
+
+    <div class="toast" id="toast">Tersimpan</div>
+  </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const $ = (s, root = document) => root.querySelector(s);
+      const $$ = (s, root = document) => [...root.querySelectorAll(s)];
+      const STORAGE_KEY = "clockStudioSettingsV1";
+      const COUNTDOWN_KEY = "clockStudioCountdownsV1";
+      const NOTES_KEY = "clockStudioNotesV1";
+      const FOCUS_SESSIONS_KEY = "clockStudioFocusSessionsV1";
+
+      const defaults = {
+        bgColor: "#0f172a",
+        accentColor: "#8b5cf6",
+        clockColor: "#f8fafc",
+        clockSize: 151,
+        font: '"Inter", sans-serif',
+        effect: "aurora",
+        bgImage: "",
+        timeZone: "Asia/Jakarta",
+        clockType: "digital",
+        hourFormat: "24",
+        showSeconds: true,
+        showDate: true,
+        dateFormat: "intl",
+        smoothMotion: true,
+        showZone: true,
+        customMessage: "",
+        theme: "midnight"
+      };
+
+      const themes = {
+        softBlush: { bgColor:"#fbcfe8", clockColor:"#831843", accentColor:"#db2777", effect:"bokeh", font:'"Playfair Display", serif' },
+        boho:      { bgColor:"#6b4423", clockColor:"#fff7ed", accentColor:"#f59e0b", effect:"pulse", font:'"Caveat", cursive' },
+        lilac:     { bgColor:"#312e81", clockColor:"#f5f3ff", accentColor:"#c4b5fd", effect:"aurora", font:'"Comfortaa", sans-serif' },
+        midnight:  { bgColor:"#0f172a", clockColor:"#f8fafc", accentColor:"#8b5cf6", effect:"aurora", font:'"Inter", sans-serif' },
+        minimal:   { bgColor:"#f8fafc", clockColor:"#111827", accentColor:"#64748b", effect:"none", font:'"Helvetica Neue", Arial, sans-serif' },
+        cyber:     { bgColor:"#020617", clockColor:"#4ade80", accentColor:"#22c55e", effect:"grid", font:'"Orbitron", sans-serif' }
+      };
+
+      let state = { ...defaults, ...readJSON(STORAGE_KEY, {}) };
+      let countdowns = readJSON(COUNTDOWN_KEY, []);
+      let focusSessions = Number(localStorage.getItem(FOCUS_SESSIONS_KEY) || 0);
+
+      let focusTotal = 25 * 60;
+      let focusRemaining = focusTotal;
+      let focusTimer = null;
+      let audioCtx = null;
+      let noiseSource = null;
+      let noiseGain = null;
+      let toastTimer = null;
+
+      const app = $("#app");
+      const backgroundLayer = $("#backgroundLayer");
+      const digitalClock = $("#digitalClock");
+      const dateText = $("#dateText");
+      const zoneLabel = $("#zoneLabel");
+      const analogClock = $("#analogClock");
+      const panel = $("#panel");
+      const overlay = $("#overlay");
+      const toast = $("#toast");
+
+      buildAnalogTicks();
+      populateTimeZones();
+      bindEvents();
+      applyState(false);
+      renderCountdowns();
+      $("#notesInput").value = localStorage.getItem(NOTES_KEY) || "";
+      $("#focusSessions").textContent = focusSessions;
+      updateFocusUI();
+      updateClock();
+      setInterval(updateClock, 100);
+      setInterval(renderCountdowns, 1000);
+
+      function readJSON(key, fallback) {
+        try {
+          const raw = localStorage.getItem(key);
+          return raw ? JSON.parse(raw) : fallback;
+        } catch {
+          return fallback;
+        }
+      }
+
+      function saveState(show = false) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        if (show) notify("Pengaturan tersimpan");
+      }
+
+      function notify(message) {
+        toast.textContent = message;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 1800);
+      }
+
+      function buildAnalogTicks() {
+        for (let i = 0; i < 60; i++) {
+          const tick = document.createElement("i");
+          tick.className = "tick" + (i % 5 === 0 ? " major" : "");
+          tick.style.transform = `translateX(-50%) rotate(${i * 6}deg)`;
+          analogClock.appendChild(tick);
+        }
+        ["hour", "minute", "second"].forEach(type => {
+          const hand = document.createElement("div");
+          hand.className = `hand ${type}-hand`;
+          hand.id = `${type}Hand`;
+          analogClock.appendChild(hand);
+        });
+      }
+
+      function populateTimeZones() {
+        const select = $("#timeZone");
+        let zones;
+        try {
+          zones = Intl.supportedValuesOf("timeZone");
+        } catch {
+          zones = [
+            "Asia/Jakarta","Asia/Makassar","Asia/Jayapura","Asia/Singapore","Asia/Tokyo",
+            "Asia/Seoul","Asia/Dubai","Europe/London","Europe/Paris","America/New_York",
+            "America/Chicago","America/Los_Angeles","Australia/Sydney","Pacific/Auckland","UTC"
+          ];
+        }
+
+        const preferred = ["Asia/Jakarta","Asia/Makassar","Asia/Jayapura","Asia/Singapore","Asia/Tokyo","UTC"];
+        zones = [...new Set([...preferred, ...zones])];
+
+        const formatter = new Intl.DateTimeFormat("en-US", {
+          timeZoneName: "shortOffset",
+          hour: "2-digit",
+          timeZone: "UTC"
+        });
+
+        zones.forEach(zone => {
+          let offset = "";
+          try {
+            const parts = new Intl.DateTimeFormat("en-US", {
+              timeZone: zone,
+              timeZoneName: "shortOffset",
+              hour: "2-digit"
+            }).formatToParts(new Date());
+            offset = parts.find(p => p.type === "timeZoneName")?.value || "";
+          } catch {}
+
+          const option = document.createElement("option");
+          option.value = zone;
+          option.textContent = `${offset ? "(" + offset.replace("GMT","UTC") + ") " : ""}${zone.replaceAll("_"," ")}`;
+          select.appendChild(option);
+        });
+      }
+
+      function bindEvents() {
+        $("#settingsBtn").addEventListener("click", () => openPanel("customize"));
+        $("#appsBtn").addEventListener("click", () => openPanel("miniapps"));
+        $("#closePanelBtn").addEventListener("click", closePanel);
+        overlay.addEventListener("click", closePanel);
+        document.addEventListener("keydown", e => {
+          if (e.key === "Escape") closePanel();
+          if (e.key.toLowerCase() === "f" && !["INPUT","TEXTAREA","SELECT"].includes(document.activeElement.tagName)) toggleFullscreen();
+        });
+
+        $$(".app-tab").forEach(btn => btn.addEventListener("click", () => setTab(btn.dataset.tab)));
+
+        $("#fullscreenBtn").addEventListener("click", toggleFullscreen);
+        document.addEventListener("fullscreenchange", () => {
+          $("#fullscreenBtn").textContent = document.fullscreenElement ? "🡼" : "⛶";
+        });
+
+        $("#themeGrid").addEventListener("click", e => {
+          const btn = e.target.closest(".theme-card");
+          if (!btn) return;
+          const t = themes[btn.dataset.theme];
+          if (!t) return;
+          state = { ...state, ...t, theme: btn.dataset.theme, bgImage: "" };
+          applyState();
+          notify(`Tema ${$("strong", btn).textContent} diterapkan`);
+        });
+
+        bindColor("#bgColor", "bgColor", "#bgHex");
+        bindColor("#accentColor", "accentColor", "#accentHex");
+        bindColor("#clockColor", "clockColor", "#clockHex");
+
+        $("#clockSize").addEventListener("input", e => {
+          state.clockSize = Number(e.target.value);
+          document.documentElement.style.setProperty("--clock-size", `${state.clockSize}px`);
+          $("#clockSizeLabel").textContent = `${state.clockSize}px`;
+          saveState();
+        });
+
+        $("#clockFont").addEventListener("change", e => {
+          state.font = e.target.value;
+          document.documentElement.style.setProperty("--clock-font", state.font);
+          saveState();
+        });
+
+        $("#backgroundEffect").addEventListener("change", e => {
+          state.effect = e.target.value;
+          applyBackground();
+          saveState();
+        });
+
+        $("#backgroundUpload").addEventListener("change", e => {
+          const file = e.target.files?.[0];
+          if (!file) return;
+          if (!file.type.startsWith("image/")) return notify("File harus berupa gambar");
+          if (file.size > 5 * 1024 * 1024) return notify("Ukuran gambar maksimal 5 MB");
+          const reader = new FileReader();
+          reader.onload = () => {
+            state.bgImage = reader.result;
+            applyBackground();
+            saveState();
+            notify("Background berhasil dipasang");
+          };
+          reader.readAsDataURL(file);
+        });
+
+        $("#applyUrlBtn").addEventListener("click", () => {
+          const value = $("#backgroundUrl").value.trim();
+          if (!value) return notify("Masukkan URL gambar");
+          try { new URL(value); } catch { return notify("URL gambar tidak valid"); }
+          state.bgImage = value;
+          applyBackground();
+          saveState();
+          notify("Background URL diterapkan");
+        });
+
+        $("#clearImageBtn").addEventListener("click", () => {
+          state.bgImage = "";
+          $("#backgroundUrl").value = "";
+          $("#backgroundUpload").value = "";
+          applyBackground();
+          saveState();
+          notify("Foto background dihapus");
+        });
+
+        $("#timeZone").addEventListener("change", e => {
+          state.timeZone = e.target.value;
+          saveState();
+          updateClock();
+        });
+
+        bindSegment("#clockTypeSegment", value => {
+          state.clockType = value;
+          app.classList.toggle("analogue", value === "analogue");
+          saveState();
+        });
+        bindSegment("#formatSegment", value => { state.hourFormat = value; saveState(); updateClock(); });
+        bindSegment("#dateFormatSegment", value => { state.dateFormat = value; saveState(); updateClock(); });
+
+        bindCheck("#showSeconds", "showSeconds", updateClock);
+        bindCheck("#showDate", "showDate", () => {
+          dateText.classList.toggle("hidden", !state.showDate);
+        });
+        bindCheck("#smoothMotion", "smoothMotion", updateClock);
+        bindCheck("#showZone", "showZone", () => {
+          zoneLabel.classList.toggle("hidden", !state.showZone);
+        });
+
+        $("#customMessage").addEventListener("input", e => {
+          state.customMessage = e.target.value;
+          updateZoneLabel();
+          saveState();
+        });
+
+        $$(".quick-time").forEach(btn => {
+          if (!btn.dataset.minutes) return;
+          btn.addEventListener("click", () => setFocusMinutes(Number(btn.dataset.minutes)));
+        });
+        $("#customFocusBtn").addEventListener("click", () => {
+          const value = Number(prompt("Durasi fokus dalam menit:", "30"));
+          if (Number.isFinite(value) && value >= 1 && value <= 300) setFocusMinutes(value);
+        });
+        $("#focusStartBtn").addEventListener("click", toggleFocus);
+        $("#focusResetBtn").addEventListener("click", resetFocus);
+
+        $("#addCountdownBtn").addEventListener("click", addCountdown);
+        $("#countdownList").addEventListener("click", e => {
+          const btn = e.target.closest("[data-delete-countdown]");
+          if (!btn) return;
+          countdowns = countdowns.filter(item => item.id !== btn.dataset.deleteCountdown);
+          localStorage.setItem(COUNTDOWN_KEY, JSON.stringify(countdowns));
+          renderCountdowns();
+        });
+
+        $("#saveNotesBtn").addEventListener("click", () => {
+          localStorage.setItem(NOTES_KEY, $("#notesInput").value);
+          notify("Catatan tersimpan");
+        });
+        $("#clearNotesBtn").addEventListener("click", () => {
+          $("#notesInput").value = "";
+          localStorage.removeItem(NOTES_KEY);
+          notify("Catatan dikosongkan");
+        });
+
+        $("#searchWeatherBtn").addEventListener("click", searchWeather);
+        $("#weatherSearch").addEventListener("keydown", e => {
+          if (e.key === "Enter") searchWeather();
+        });
+        $("#locationWeatherBtn").addEventListener("click", locateWeather);
+
+        $("#ambientToggleBtn").addEventListener("click", toggleAmbient);
+        $("#ambientSelect").addEventListener("change", () => {
+          if (noiseSource) {
+            stopAmbient();
+            startAmbient();
+          }
+        });
+
+        $("#exportBtn").addEventListener("click", exportSettings);
+        $("#importInput").addEventListener("change", importSettings);
+        $("#resetAllBtn").addEventListener("click", resetAll);
+      }
+
+      function bindColor(selector, key, hexSelector) {
+        $(selector).addEventListener("input", e => {
+          state[key] = e.target.value;
+          $(hexSelector).textContent = e.target.value.toUpperCase();
+          applyCSSVariables();
+          saveState();
+        });
+      }
+
+      function bindCheck(selector, key, callback) {
+        $(selector).addEventListener("change", e => {
+          state[key] = e.target.checked;
+          callback?.();
+          saveState();
+        });
+      }
+
+      function bindSegment(selector, callback) {
+        $(selector).addEventListener("click", e => {
+          const btn = e.target.closest(".seg-btn");
+          if (!btn) return;
+          $$(".seg-btn", $(selector)).forEach(x => x.classList.toggle("active", x === btn));
+          callback(btn.dataset.value);
+        });
+      }
+
+      function openPanel(tab = "customize") {
+        setTab(tab);
+        panel.classList.add("open");
+        overlay.classList.add("show");
+        $("#bottomHint").style.opacity = "0";
+      }
+
+      function closePanel() {
+        panel.classList.remove("open");
+        overlay.classList.remove("show");
+      }
+
+      function setTab(tab) {
+        $$(".app-tab").forEach(btn => btn.classList.toggle("active", btn.dataset.tab === tab));
+        $$(".tab-page").forEach(page => page.classList.toggle("active", page.id === `tab-${tab}`));
+        $("#panelHeading").textContent =
+          tab === "customize" ? "Kustomisasi Jam" :
+          tab === "miniapps" ? "Mini Apps" : "Pengaturan";
+      }
+
+      function applyState(save = true) {
+        applyCSSVariables();
+        applyBackground();
+
+        $("#bgColor").value = state.bgColor;
+        $("#bgHex").textContent = state.bgColor.toUpperCase();
+        $("#accentColor").value = state.accentColor;
+        $("#accentHex").textContent = state.accentColor.toUpperCase();
+        $("#clockColor").value = state.clockColor;
+        $("#clockHex").textContent = state.clockColor.toUpperCase();
+        $("#clockSize").value = state.clockSize;
+        $("#clockSizeLabel").textContent = `${state.clockSize}px`;
+        $("#clockFont").value = state.font;
+        $("#backgroundEffect").value = state.effect;
+        $("#timeZone").value = state.timeZone;
+        $("#showSeconds").checked = state.showSeconds;
+        $("#showDate").checked = state.showDate;
+        $("#smoothMotion").checked = state.smoothMotion;
+        $("#showZone").checked = state.showZone;
+        $("#customMessage").value = state.customMessage;
+        $("#backgroundUrl").value = state.bgImage?.startsWith("http") ? state.bgImage : "";
+
+        app.classList.toggle("analogue", state.clockType === "analogue");
+        dateText.classList.toggle("hidden", !state.showDate);
+        zoneLabel.classList.toggle("hidden", !state.showZone);
+
+        activateSegment("#clockTypeSegment", state.clockType);
+        activateSegment("#formatSegment", state.hourFormat);
+        activateSegment("#dateFormatSegment", state.dateFormat);
+
+        $$(".theme-card").forEach(card => card.classList.toggle("active", card.dataset.theme === state.theme));
+
+        updateClock();
+        if (save) saveState();
+      }
+
+      function applyCSSVariables() {
+        const root = document.documentElement.style;
+        root.setProperty("--bg", state.bgColor);
+        root.setProperty("--clock", state.clockColor);
+        root.setProperty("--accent", state.accentColor);
+        root.setProperty("--clock-size", `${state.clockSize}px`);
+        root.setProperty("--clock-font", state.font);
+      }
+
+      function applyBackground() {
+        backgroundLayer.className = "background-layer";
+        if (state.effect && state.effect !== "none") backgroundLayer.classList.add(`bg-${state.effect}`);
+        backgroundLayer.style.backgroundColor = state.bgColor;
+        backgroundLayer.style.backgroundImage = state.bgImage ? `url("${String(state.bgImage).replaceAll('"','%22')}")` : "";
+      }
+
+      function activateSegment(selector, value) {
+        $$(".seg-btn", $(selector)).forEach(btn => btn.classList.toggle("active", btn.dataset.value === String(value)));
+      }
+
+      function updateClock() {
+        const now = new Date();
+        const timeParts = getTimeParts(now);
+
+        const hour = timeParts.hour;
+        const minute = timeParts.minute;
+        const second = timeParts.second;
+        const ampm = timeParts.dayPeriod;
+
+        const separator = state.smoothMotion && state.showSeconds ? ":" : ":";
+        let display = `${hour}${separator}${minute}`;
+        if (state.showSeconds) display += `:${second}`;
+        if (ampm) display += `<span class="ampm">${ampm}</span>`;
+        digitalClock.innerHTML = display;
+
+        updateDate(now);
+        updateZoneLabel();
+
+        const h24 = getNumericPart(now, "hour", false);
+        const m = getNumericPart(now, "minute", false);
+        const s = getNumericPart(now, "second", false);
+        const millis = state.smoothMotion ? now.getMilliseconds() / 1000 : 0;
+
+        $("#hourHand").style.transform = `translateX(-50%) rotate(${(h24 % 12) * 30 + m * .5 + s / 120}deg)`;
+        $("#minuteHand").style.transform = `translateX(-50%) rotate(${m * 6 + s * .1}deg)`;
+        $("#secondHand").style.transform = `translateX(-50%) rotate(${(s + millis) * 6}deg)`;
+        $("#secondHand").style.display = state.showSeconds ? "block" : "none";
+        $("#secondHand").style.transition = state.smoothMotion ? "none" : "transform .12s cubic-bezier(.4,2.08,.55,.44)";
+      }
+
+      function getTimeParts(date) {
+        const parts = new Intl.DateTimeFormat("en-US", {
+          timeZone: state.timeZone,
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+          hour12: state.hourFormat === "12"
+        }).formatToParts(date);
+
+        const obj = Object.fromEntries(parts.map(p => [p.type, p.value]));
+        return {
+          hour: state.hourFormat === "24" ? String(obj.hour).padStart(2,"0") : obj.hour,
+          minute: obj.minute,
+          second: obj.second,
+          dayPeriod: state.hourFormat === "12" ? (obj.dayPeriod || "") : ""
+        };
+      }
+
+      function getNumericPart(date, type) {
+        const parts = new Intl.DateTimeFormat("en-US", {
+          timeZone: state.timeZone,
+          [type]: "numeric",
+          hour12: false
+        }).formatToParts(date);
+        return Number(parts.find(p => p.type === type)?.value || 0);
+      }
+
+      function updateDate(date) {
+        if (!state.showDate) return;
+        const opts = state.dateFormat === "us"
+          ? { timeZone: state.timeZone, weekday: "long", month: "long", day: "numeric", year: "numeric" }
+          : { timeZone: state.timeZone, weekday: "long", day: "numeric", month: "long", year: "numeric" };
+        const locale = state.dateFormat === "us" ? "en-US" : "id-ID";
+        dateText.textContent = new Intl.DateTimeFormat(locale, opts).format(date);
+      }
+
+      function updateZoneLabel() {
+        zoneLabel.textContent = state.customMessage.trim()
+          ? `✦ ${state.customMessage.trim()}`
+          : `📍 ${state.timeZone.replaceAll("_"," ")}`;
+      }
+
+      async function toggleFullscreen() {
+        try {
+          if (!document.fullscreenElement) await document.documentElement.requestFullscreen();
+          else await document.exitFullscreen();
+        } catch {
+          notify("Fullscreen tidak didukung browser ini");
+        }
+      }
+
+      function setFocusMinutes(minutes) {
+        clearInterval(focusTimer);
+        focusTimer = null;
+        focusTotal = minutes * 60;
+        focusRemaining = focusTotal;
+        $("#focusStartBtn").textContent = "Mulai Fokus";
+        updateFocusUI();
+      }
+
+      function toggleFocus() {
+        if (focusTimer) {
+          clearInterval(focusTimer);
+          focusTimer = null;
+          $("#focusStartBtn").textContent = "Lanjutkan";
+          return;
+        }
+
+        if (focusRemaining <= 0) focusRemaining = focusTotal;
+        $("#focusStartBtn").textContent = "Jeda";
+        const expectedEnd = Date.now() + focusRemaining * 1000;
+
+        focusTimer = setInterval(() => {
+          focusRemaining = Math.max(0, Math.ceil((expectedEnd - Date.now()) / 1000));
+          updateFocusUI();
+          if (focusRemaining <= 0) {
+            clearInterval(focusTimer);
+            focusTimer = null;
+            focusSessions++;
+            localStorage.setItem(FOCUS_SESSIONS_KEY, focusSessions);
+            $("#focusSessions").textContent = focusSessions;
+            $("#focusStartBtn").textContent = "Mulai Lagi";
+            notify("Sesi fokus selesai 🎉");
+            beep();
+          }
+        }, 250);
+      }
+
+      function resetFocus() {
+        clearInterval(focusTimer);
+        focusTimer = null;
+        focusRemaining = focusTotal;
+        $("#focusStartBtn").textContent = "Mulai Fokus";
+        updateFocusUI();
+      }
+
+      function updateFocusUI() {
+        const m = Math.floor(focusRemaining / 60);
+        const s = focusRemaining % 60;
+        $("#focusDisplay").textContent = `${String(m).padStart(2,"0")}:${String(s).padStart(2,"0")}`;
+        const progress = focusTotal ? ((focusTotal - focusRemaining) / focusTotal) * 100 : 0;
+        $("#focusProgress").style.width = `${progress}%`;
+      }
+
+      function beep() {
+        try {
+          const ctx = new (window.AudioContext || window.webkitAudioContext)();
+          const oscillator = ctx.createOscillator();
+          const gain = ctx.createGain();
+          oscillator.frequency.value = 700;
+          gain.gain.setValueAtTime(.0001, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(.18, ctx.currentTime + .02);
+          gain.gain.exponentialRampToValueAtTime(.0001, ctx.currentTime + .7);
+          oscillator.connect(gain).connect(ctx.destination);
+          oscillator.start();
+          oscillator.stop(ctx.currentTime + .72);
+        } catch {}
+      }
+
+      function addCountdown() {
+        const name = $("#countdownName").value.trim();
+        const dateValue = $("#countdownDate").value;
+        if (!name || !dateValue) return notify("Lengkapi nama dan tanggal acara");
+        const timestamp = new Date(dateValue).getTime();
+        if (!Number.isFinite(timestamp)) return notify("Tanggal tidak valid");
+
+        countdowns.push({
+          id: (crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`),
+          name,
+          timestamp
+        });
+        countdowns.sort((a,b) => a.timestamp - b.timestamp);
+        localStorage.setItem(COUNTDOWN_KEY, JSON.stringify(countdowns));
+        $("#countdownName").value = "";
+        $("#countdownDate").value = "";
+        renderCountdowns();
+        notify("Countdown ditambahkan");
+      }
+
+      function renderCountdowns() {
+        const list = $("#countdownList");
+        if (!countdowns.length) {
+          list.innerHTML = `<div style="text-align:center;color:var(--muted);font-size:10px;padding:9px">Belum ada countdown.</div>`;
+          return;
+        }
+
+        list.innerHTML = countdowns.map(item => {
+          const diff = item.timestamp - Date.now();
+          const past = diff < 0;
+          const abs = Math.abs(diff);
+          const days = Math.floor(abs / 86400000);
+          const hours = Math.floor((abs % 86400000) / 3600000);
+          const mins = Math.floor((abs % 3600000) / 60000);
+          const secs = Math.floor((abs % 60000) / 1000);
+          const value = past
+            ? `Sudah lewat ${days}h ${hours}j`
+            : `${days}h ${String(hours).padStart(2,"0")}j ${String(mins).padStart(2,"0")}m ${String(secs).padStart(2,"0")}d`;
+          const date = new Intl.DateTimeFormat("id-ID", {dateStyle:"medium", timeStyle:"short"}).format(new Date(item.timestamp));
+          return `
+            <article class="mini-card">
+              <div class="mini-card-top">
+                <div><strong>${escapeHTML(item.name)}</strong><span>${date}</span></div>
+                <button class="tiny-delete" data-delete-countdown="${item.id}" title="Hapus">✕</button>
+              </div>
+              <div class="count-value">${value}</div>
+            </article>`;
+        }).join("");
+      }
+
+      async function searchWeather() {
+        const city = $("#weatherSearch").value.trim();
+        if (!city) return notify("Masukkan nama kota");
+        try {
+          notify("Mencari kota...");
+          const geoRes = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1&language=id&format=json`);
+          if (!geoRes.ok) throw new Error("Gagal mencari kota");
+          const geo = await geoRes.json();
+          const place = geo.results?.[0];
+          if (!place) throw new Error("Kota tidak ditemukan");
+          await loadWeather(place.latitude, place.longitude, `${place.name}${place.admin1 ? ", " + place.admin1 : ""}`);
+        } catch (err) {
+          notify(err.message || "Gagal memuat cuaca");
+        }
+      }
+
+      function locateWeather() {
+        if (!navigator.geolocation) return notify("Geolocation tidak tersedia");
+        notify("Mengambil lokasi...");
+        navigator.geolocation.getCurrentPosition(
+          pos => loadWeather(pos.coords.latitude, pos.coords.longitude, "Lokasi saya"),
+          () => notify("Izin lokasi ditolak"),
+          { enableHighAccuracy: false, timeout: 10000 }
+        );
+      }
+
+      async function loadWeather(lat, lon, label) {
+        try {
+          const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`);
+          if (!res.ok) throw new Error("Gagal memuat cuaca");
+          const data = await res.json();
+          const current = data.current;
+          const weather = weatherCode(current.weather_code);
+          $("#weatherResult").classList.remove("hidden");
+          $("#weatherIcon").textContent = weather.icon;
+          $("#weatherTemp").textContent = `${Math.round(current.temperature_2m)}°`;
+          $("#weatherCity").textContent = label;
+          $("#weatherDesc").textContent = `${weather.text} • Kelembapan ${current.relative_humidity_2m}% • Angin ${Math.round(current.wind_speed_10m)} km/j`;
+          notify("Cuaca diperbarui");
+        } catch (err) {
+          notify(err.message || "Gagal memuat cuaca");
+        }
+      }
+
+      function weatherCode(code) {
+        if (code === 0) return {icon:"☀️", text:"Cerah"};
+        if ([1,2].includes(code)) return {icon:"🌤️", text:"Cerah berawan"};
+        if (code === 3) return {icon:"☁️", text:"Berawan"};
+        if ([45,48].includes(code)) return {icon:"🌫️", text:"Berkabut"};
+        if ([51,53,55,56,57].includes(code)) return {icon:"🌦️", text:"Gerimis"};
+        if ([61,63,65,66,67,80,81,82].includes(code)) return {icon:"🌧️", text:"Hujan"};
+        if ([71,73,75,77,85,86].includes(code)) return {icon:"❄️", text:"Salju"};
+        if ([95,96,99].includes(code)) return {icon:"⛈️", text:"Badai petir"};
+        return {icon:"🌡️", text:"Kondisi cuaca"};
+      }
+
+      function toggleAmbient() {
+        if (noiseSource) stopAmbient();
+        else startAmbient();
+      }
+
+      function startAmbient() {
+        const type = $("#ambientSelect").value;
+        if (type === "off") return notify("Pilih jenis ambient sound");
+
+        try {
+          audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+          const bufferSize = audioCtx.sampleRate * 2;
+          const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+          const data = buffer.getChannelData(0);
+          let last = 0;
+
+          for (let i = 0; i < bufferSize; i++) {
+            const white = Math.random() * 2 - 1;
+            if (type === "brown" || type === "rain") {
+              last = (last + 0.02 * white) / 1.02;
+              data[i] = last * (type === "rain" ? 2.2 : 3.4);
+            } else {
+              data[i] = white * .55;
+            }
+          }
+
+          noiseSource = audioCtx.createBufferSource();
+          noiseSource.buffer = buffer;
+          noiseSource.loop = true;
+          noiseGain = audioCtx.createGain();
+          noiseGain.gain.value = type === "rain" ? .09 : .055;
+
+          if (type === "rain") {
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = "highpass";
+            filter.frequency.value = 420;
+            noiseSource.connect(filter).connect(noiseGain).connect(audioCtx.destination);
+          } else {
+            noiseSource.connect(noiseGain).connect(audioCtx.destination);
+          }
+
+          noiseSource.start();
+          $("#ambientToggleBtn").textContent = "Hentikan Ambient";
+          notify("Ambient sound diputar");
+        } catch {
+          notify("Audio tidak didukung browser ini");
+        }
+      }
+
+      function stopAmbient() {
+        try { noiseSource?.stop(); } catch {}
+        noiseSource = null;
+        noiseGain = null;
+        $("#ambientToggleBtn").textContent = "Putar Ambient";
+      }
+
+      function exportSettings() {
+        const payload = {
+          version: 1,
+          settings: state,
+          countdowns,
+          notes: $("#notesInput").value,
+          focusSessions
+        };
+        const blob = new Blob([JSON.stringify(payload, null, 2)], {type:"application/json"});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "clock-studio-settings.json";
+        a.click();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+        notify("File pengaturan diekspor");
+      }
+
+      function importSettings(e) {
+        const file = e.target.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          try {
+            const payload = JSON.parse(reader.result);
+            if (!payload.settings) throw new Error();
+            state = { ...defaults, ...payload.settings };
+            countdowns = Array.isArray(payload.countdowns) ? payload.countdowns : [];
+            focusSessions = Number(payload.focusSessions || 0);
+            $("#notesInput").value = payload.notes || "";
+            localStorage.setItem(NOTES_KEY, payload.notes || "");
+            localStorage.setItem(COUNTDOWN_KEY, JSON.stringify(countdowns));
+            localStorage.setItem(FOCUS_SESSIONS_KEY, focusSessions);
+            $("#focusSessions").textContent = focusSessions;
+            applyState();
+            renderCountdowns();
+            notify("Pengaturan berhasil diimpor");
+          } catch {
+            notify("File pengaturan tidak valid");
+          }
+        };
+        reader.readAsText(file);
+        e.target.value = "";
+      }
+
+      function resetAll() {
+        const approved = confirm("Reset seluruh tema, countdown, catatan, dan statistik fokus?");
+        if (!approved) return;
+        stopAmbient();
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(COUNTDOWN_KEY);
+        localStorage.removeItem(NOTES_KEY);
+        localStorage.removeItem(FOCUS_SESSIONS_KEY);
+        state = { ...defaults };
+        countdowns = [];
+        focusSessions = 0;
+        $("#notesInput").value = "";
+        $("#focusSessions").textContent = "0";
+        applyState();
+        renderCountdowns();
+        resetFocus();
+        notify("Semua data direset");
+      }
+
+      function escapeHTML(value) {
+        return String(value)
+          .replaceAll("&","&amp;")
+          .replaceAll("<","&lt;")
+          .replaceAll(">","&gt;")
+          .replaceAll('"',"&quot;")
+          .replaceAll("'","&#039;");
+      }
+    })();
+  </script>
+</body>
+</html>
