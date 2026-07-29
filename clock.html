@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0f172a" />
-  <title>Clock Studio — Jam Online Kustom</title>
+  <title>Clock Studio — Jam Online</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -62,6 +62,17 @@
     }
     .background-layer::before,
     .background-layer::after { content: ""; opacity: 0; }
+
+    .background-video {
+      position: absolute;
+      inset: 0;
+      z-index: -4;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      background: var(--bg);
+    }
 
     .bg-aurora::before {
       opacity: .9;
@@ -160,7 +171,16 @@
       gap: 12px;
       pointer-events: none;
     }
+    .topbar {
+      transition: opacity .35s ease, transform .35s ease;
+    }
     .topbar > * { pointer-events: auto; }
+    .app.ui-idle .topbar {
+      opacity: 0;
+      transform: translateY(-18px);
+      pointer-events: none;
+    }
+    .app.ui-idle .topbar > * { pointer-events: none; }
     .brand, .toolbar {
       display: flex;
       align-items: center;
@@ -660,6 +680,7 @@
 <body>
   <main class="app" id="app">
     <div class="background-layer bg-aurora" id="backgroundLayer"></div>
+    <video class="background-video hidden" id="backgroundVideo" autoplay muted loop playsinline preload="metadata"></video>
     <div class="backdrop-shade"></div>
 
     <header class="topbar">
@@ -765,18 +786,18 @@
             </div>
 
             <label class="file-button">
-              <input type="file" id="backgroundUpload" accept="image/*">
-              🖼️ Upload gambar background
+              <input type="file" id="backgroundUpload" accept="image/*,video/*">
+              🖼️🎬 Upload gambar atau video (maks. 20 MB)
             </label>
 
             <div class="field" style="margin-top:11px">
-              <label>URL gambar <small>opsional</small></label>
-              <input class="text-input" id="backgroundUrl" placeholder="https://example.com/background.jpg">
+              <label>URL gambar/video <small>gunakan link file langsung</small></label>
+              <input class="text-input" id="backgroundUrl" placeholder="https://example.com/background.mp4">
             </div>
 
             <div class="action-row">
               <button class="action-btn" id="applyUrlBtn">Pakai URL</button>
-              <button class="action-btn" id="clearImageBtn">Hapus Foto</button>
+              <button class="action-btn" id="clearImageBtn">Hapus Media</button>
             </div>
           </div>
 
@@ -836,6 +857,13 @@
             <div class="field">
               <label>Zona Waktu</label>
               <select class="select-input" id="timeZone"></select>
+            </div>
+
+            <div class="field">
+              <div class="switch-row">
+                <div><strong>Tampilkan Nama Wilayah</strong><span>Sembunyikan teks seperti Asia/Jakarta</span></div>
+                <label class="switch"><input type="checkbox" id="showZone" checked><i></i></label>
+              </div>
             </div>
 
             <div class="field">
@@ -963,13 +991,6 @@
             </div>
 
             <div class="field">
-              <div class="switch-row">
-                <div><strong>Tampilkan Zona Waktu</strong><span>Label di bawah tanggal</span></div>
-                <label class="switch"><input type="checkbox" id="showZone" checked><i></i></label>
-              </div>
-            </div>
-
-            <div class="field">
               <label>Pesan Kecil <small>opsional</small></label>
               <input class="text-input" id="customMessage" placeholder="Contoh: Fokus pada hal yang penting">
             </div>
@@ -989,7 +1010,7 @@
           <div class="section">
             <div class="section-title">
               <h3>Data & Reset</h3>
-              <span>LocalStorage browser</span>
+              <span>Penyimpanan browser</span>
             </div>
             <div class="action-row">
               <button class="action-btn" id="exportBtn">Export Pengaturan</button>
@@ -1004,7 +1025,7 @@
           <div class="section">
             <div class="section-title">
               <h3>Tentang</h3>
-              <span>Versi 1.0</span>
+              <span>Versi 1.1</span>
             </div>
             <p style="margin:0;color:var(--muted);font-size:10px;line-height:1.65">
               Clock Studio adalah halaman jam online mandiri yang terinspirasi konsep dashboard jam kustom.
@@ -1028,6 +1049,11 @@
       const COUNTDOWN_KEY = "clockStudioCountdownsV1";
       const NOTES_KEY = "clockStudioNotesV1";
       const FOCUS_SESSIONS_KEY = "clockStudioFocusSessionsV1";
+      const MEDIA_DB_NAME = "clockStudioMediaDB";
+      const MEDIA_STORE_NAME = "backgroundMedia";
+      const MEDIA_KEY = "activeBackground";
+      const MAX_MEDIA_SIZE = 20 * 1024 * 1024;
+      const UI_IDLE_DELAY = 60 * 1000;
 
       const defaults = {
         bgColor: "#0f172a",
@@ -1037,6 +1063,9 @@
         font: '"Inter", sans-serif',
         effect: "aurora",
         bgImage: "",
+        bgVideo: "",
+        bgMediaType: "",
+        bgMediaStored: false,
         timeZone: "Asia/Jakarta",
         clockType: "digital",
         hourFormat: "24",
@@ -1069,9 +1098,14 @@
       let noiseSource = null;
       let noiseGain = null;
       let toastTimer = null;
+      let uiIdleTimer = null;
+      let lastPointerActivity = 0;
+      let activeMediaObjectUrl = "";
+      let storedMediaBlob = null;
 
       const app = $("#app");
       const backgroundLayer = $("#backgroundLayer");
+      const backgroundVideo = $("#backgroundVideo");
       const digitalClock = $("#digitalClock");
       const dateText = $("#dateText");
       const zoneLabel = $("#zoneLabel");
@@ -1084,6 +1118,8 @@
       populateTimeZones();
       bindEvents();
       applyState(false);
+      restoreStoredMedia();
+      setupAutoHide();
       renderCountdowns();
       $("#notesInput").value = localStorage.getItem(NOTES_KEY) || "";
       $("#focusSessions").textContent = focusSessions;
@@ -1102,8 +1138,12 @@
       }
 
       function saveState(show = false) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        if (show) notify("Pengaturan tersimpan");
+        try {
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          if (show) notify("Pengaturan tersimpan");
+        } catch {
+          notify("Pengaturan tidak dapat disimpan oleh browser");
+        }
       }
 
       function notify(message) {
@@ -1190,7 +1230,12 @@
           if (!btn) return;
           const t = themes[btn.dataset.theme];
           if (!t) return;
-          state = { ...state, ...t, theme: btn.dataset.theme, bgImage: "" };
+          storedMediaBlob = null;
+          deleteStoredMedia().catch(() => {});
+          state = {
+            ...state, ...t, theme: btn.dataset.theme,
+            bgImage: "", bgVideo: "", bgMediaType: "", bgMediaStored: false
+          };
           applyState();
           notify(`Tema ${$("strong", btn).textContent} diterapkan`);
         });
@@ -1218,38 +1263,60 @@
           saveState();
         });
 
-        $("#backgroundUpload").addEventListener("change", e => {
+        $("#backgroundUpload").addEventListener("change", async e => {
           const file = e.target.files?.[0];
           if (!file) return;
-          if (!file.type.startsWith("image/")) return notify("File harus berupa gambar");
-          if (file.size > 5 * 1024 * 1024) return notify("Ukuran gambar maksimal 5 MB");
-          const reader = new FileReader();
-          reader.onload = () => {
-            state.bgImage = reader.result;
-            applyBackground();
-            saveState();
-            notify("Background berhasil dipasang");
-          };
-          reader.readAsDataURL(file);
-        });
 
-        $("#applyUrlBtn").addEventListener("click", () => {
-          const value = $("#backgroundUrl").value.trim();
-          if (!value) return notify("Masukkan URL gambar");
-          try { new URL(value); } catch { return notify("URL gambar tidak valid"); }
-          state.bgImage = value;
-          applyBackground();
-          saveState();
-          notify("Background URL diterapkan");
-        });
+          const isImage = file.type.startsWith("image/");
+          const isVideo = file.type.startsWith("video/");
+          if (!isImage && !isVideo) {
+            e.target.value = "";
+            return notify("File harus berupa gambar atau video");
+          }
+          if (file.size > MAX_MEDIA_SIZE) {
+            e.target.value = "";
+            return notify("Ukuran file maksimal 20 MB");
+          }
 
-        $("#clearImageBtn").addEventListener("click", () => {
+          storedMediaBlob = file;
           state.bgImage = "";
-          $("#backgroundUrl").value = "";
-          $("#backgroundUpload").value = "";
+          state.bgVideo = "";
+          state.bgMediaType = isVideo ? "video" : "image";
+          state.bgMediaStored = true;
+
+          try {
+            await saveStoredMedia(file);
+            notify(isVideo ? "Video background berhasil dipasang" : "Gambar background berhasil dipasang");
+          } catch {
+            state.bgMediaStored = false;
+            notify("Media dipasang, tetapi hanya berlaku sampai halaman ditutup");
+          }
+
           applyBackground();
           saveState();
-          notify("Foto background dihapus");
+          e.target.value = "";
+        });
+
+        $("#applyUrlBtn").addEventListener("click", async () => {
+          const value = $("#backgroundUrl").value.trim();
+          if (!value) return notify("Masukkan URL gambar atau video");
+          try { new URL(value); } catch { return notify("URL media tidak valid"); }
+
+          const isVideo = /\.(mp4|webm|ogg|ogv|m4v|mov)(?:$|[?#])/i.test(value);
+          storedMediaBlob = null;
+          await deleteStoredMedia().catch(() => {});
+          state.bgMediaStored = false;
+          state.bgMediaType = isVideo ? "video" : "image";
+          state.bgVideo = isVideo ? value : "";
+          state.bgImage = isVideo ? "" : value;
+          applyBackground();
+          saveState();
+          notify(isVideo ? "Video URL diterapkan" : "Gambar URL diterapkan");
+        });
+
+        $("#clearImageBtn").addEventListener("click", async () => {
+          await clearBackgroundMedia();
+          notify("Background media dihapus");
         });
 
         $("#timeZone").addEventListener("change", e => {
@@ -1330,6 +1397,32 @@
         $("#resetAllBtn").addEventListener("click", resetAll);
       }
 
+      function setupAutoHide() {
+        const reset = () => registerUiActivity();
+        ["pointerdown", "touchstart", "wheel", "keydown"].forEach(type => {
+          document.addEventListener(type, reset, { passive: true });
+        });
+        document.addEventListener("pointermove", () => {
+          const now = Date.now();
+          if (now - lastPointerActivity < 750) return;
+          lastPointerActivity = now;
+          registerUiActivity();
+        }, { passive: true });
+        registerUiActivity();
+      }
+
+      function registerUiActivity() {
+        app.classList.remove("ui-idle");
+        clearTimeout(uiIdleTimer);
+        uiIdleTimer = setTimeout(() => {
+          if (panel.classList.contains("open")) {
+            registerUiActivity();
+            return;
+          }
+          app.classList.add("ui-idle");
+        }, UI_IDLE_DELAY);
+      }
+
       function bindColor(selector, key, hexSelector) {
         $(selector).addEventListener("input", e => {
           state[key] = e.target.value;
@@ -1357,6 +1450,7 @@
       }
 
       function openPanel(tab = "customize") {
+        registerUiActivity();
         setTab(tab);
         panel.classList.add("open");
         overlay.classList.add("show");
@@ -1366,6 +1460,7 @@
       function closePanel() {
         panel.classList.remove("open");
         overlay.classList.remove("show");
+        registerUiActivity();
       }
 
       function setTab(tab) {
@@ -1396,7 +1491,7 @@
         $("#smoothMotion").checked = state.smoothMotion;
         $("#showZone").checked = state.showZone;
         $("#customMessage").value = state.customMessage;
-        $("#backgroundUrl").value = state.bgImage?.startsWith("http") ? state.bgImage : "";
+        $("#backgroundUrl").value = state.bgVideo || (state.bgImage?.startsWith("http") ? state.bgImage : "");
 
         app.classList.toggle("analogue", state.clockType === "analogue");
         dateText.classList.toggle("hidden", !state.showDate);
@@ -1425,7 +1520,120 @@
         backgroundLayer.className = "background-layer";
         if (state.effect && state.effect !== "none") backgroundLayer.classList.add(`bg-${state.effect}`);
         backgroundLayer.style.backgroundColor = state.bgColor;
-        backgroundLayer.style.backgroundImage = state.bgImage ? `url("${String(state.bgImage).replaceAll('"','%22')}")` : "";
+        backgroundLayer.style.backgroundImage = "";
+        hideBackgroundVideo();
+
+        if (state.bgMediaType === "video") {
+          const source = storedMediaBlob || state.bgVideo;
+          if (source) showBackgroundMedia("video", source);
+        } else if (state.bgMediaType === "image") {
+          const source = storedMediaBlob || state.bgImage;
+          if (source) showBackgroundMedia("image", source);
+        } else if (state.bgImage) {
+          showBackgroundMedia("image", state.bgImage);
+        }
+      }
+
+      function showBackgroundMedia(type, source) {
+        releaseActiveMediaUrl();
+        const src = source instanceof Blob ? URL.createObjectURL(source) : String(source);
+        if (source instanceof Blob) activeMediaObjectUrl = src;
+
+        if (type === "video") {
+          backgroundVideo.src = src;
+          backgroundVideo.classList.remove("hidden");
+          backgroundVideo.play().catch(() => {});
+        } else {
+          backgroundLayer.style.backgroundImage = `url("${src.replaceAll('"','%22')}")`;
+        }
+      }
+
+      function hideBackgroundVideo() {
+        backgroundVideo.pause();
+        backgroundVideo.classList.add("hidden");
+        backgroundVideo.removeAttribute("src");
+        backgroundVideo.load();
+        releaseActiveMediaUrl();
+      }
+
+      function releaseActiveMediaUrl() {
+        if (!activeMediaObjectUrl) return;
+        URL.revokeObjectURL(activeMediaObjectUrl);
+        activeMediaObjectUrl = "";
+      }
+
+      function openMediaDB() {
+        return new Promise((resolve, reject) => {
+          if (!("indexedDB" in window)) return reject(new Error("IndexedDB tidak tersedia"));
+          const request = indexedDB.open(MEDIA_DB_NAME, 1);
+          request.onupgradeneeded = () => {
+            const db = request.result;
+            if (!db.objectStoreNames.contains(MEDIA_STORE_NAME)) db.createObjectStore(MEDIA_STORE_NAME);
+          };
+          request.onsuccess = () => resolve(request.result);
+          request.onerror = () => reject(request.error);
+        });
+      }
+
+      async function saveStoredMedia(file) {
+        const db = await openMediaDB();
+        await new Promise((resolve, reject) => {
+          const tx = db.transaction(MEDIA_STORE_NAME, "readwrite");
+          tx.objectStore(MEDIA_STORE_NAME).put({ blob: file, type: file.type, name: file.name }, MEDIA_KEY);
+          tx.oncomplete = resolve;
+          tx.onerror = () => reject(tx.error);
+          tx.onabort = () => reject(tx.error);
+        });
+        db.close();
+      }
+
+      async function restoreStoredMedia() {
+        if (!state.bgMediaStored) return;
+        try {
+          const db = await openMediaDB();
+          const record = await new Promise((resolve, reject) => {
+            const tx = db.transaction(MEDIA_STORE_NAME, "readonly");
+            const request = tx.objectStore(MEDIA_STORE_NAME).get(MEDIA_KEY);
+            request.onsuccess = () => resolve(request.result);
+            request.onerror = () => reject(request.error);
+          });
+          db.close();
+          if (!record?.blob) throw new Error("Media tidak ditemukan");
+          storedMediaBlob = record.blob;
+          state.bgMediaType = record.type?.startsWith("video/") ? "video" : "image";
+          applyBackground();
+        } catch {
+          state.bgMediaStored = false;
+          storedMediaBlob = null;
+          saveState();
+        }
+      }
+
+      async function deleteStoredMedia() {
+        try {
+          const db = await openMediaDB();
+          await new Promise((resolve, reject) => {
+            const tx = db.transaction(MEDIA_STORE_NAME, "readwrite");
+            tx.objectStore(MEDIA_STORE_NAME).delete(MEDIA_KEY);
+            tx.oncomplete = resolve;
+            tx.onerror = () => reject(tx.error);
+            tx.onabort = () => reject(tx.error);
+          });
+          db.close();
+        } catch {}
+      }
+
+      async function clearBackgroundMedia() {
+        storedMediaBlob = null;
+        await deleteStoredMedia();
+        state.bgImage = "";
+        state.bgVideo = "";
+        state.bgMediaType = "";
+        state.bgMediaStored = false;
+        $("#backgroundUrl").value = "";
+        $("#backgroundUpload").value = "";
+        applyBackground();
+        saveState();
       }
 
       function activateSegment(selector, value) {
@@ -1792,6 +2000,9 @@
         const approved = confirm("Reset seluruh tema, countdown, catatan, dan statistik fokus?");
         if (!approved) return;
         stopAmbient();
+        storedMediaBlob = null;
+        deleteStoredMedia().catch(() => {});
+        hideBackgroundVideo();
         localStorage.removeItem(STORAGE_KEY);
         localStorage.removeItem(COUNTDOWN_KEY);
         localStorage.removeItem(NOTES_KEY);
