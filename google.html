@@ -4849,7 +4849,7 @@
               <div class="price-row">
                 <span class="price-old">Rp200.000</span>
                 <div class="price-new">
-                  <strong>Rp150.000</strong>
+                  <strong>Rp100.000</strong>
                   <span class="price-unit">/ paket</span>
                   <span class="discount-tag text-green">Promo</span>
                 </div>
@@ -4857,7 +4857,7 @@
               <p class="pkg-tagline"><strong>Maksimal durasi yang bisa didapatkan adalah 18 bulan.</strong> Tidak ada jaminan paket akan aktif penuh selama 18 bulan (layanan dapat berhenti lebih awal).</p>
               <div class="bulk-promo-clip" data-bulk-clip="A">
                 <span class="bulk-promo-kicker">Promo Bulk</span>
-                <div class="bulk-promo-line"><span>Ambil 2 voucher</span><strong>Rp140.000</strong></div>
+                <div class="bulk-promo-line"><span>Ambil 2 voucher</span><strong>Rp180.000</strong></div>
                
               </div>
               <ul class="pkg-features">
@@ -5656,13 +5656,13 @@
          hargaPromo = harga aktif / nominal paket sebelum kode unik
          ========================================================================== */
       const PAKET_HARGA = {
-        A: { hargaLama: 200000, hargaPromo: 150000 },
+        A: { hargaLama: 200000, hargaPromo: 100000 },
         C: { hargaLama: 130000, hargaPromo: 86000 },
         D: { hargaLama: 40000, hargaPromo: 35000 }
       };
 
       const BULK_HARGA = {
-        A: { 1: 150000, 2: 280000, 3: 400000, 5: 520000 },
+        A: { 1: 100000, 2: 180000, 3: 360000, 5: 400000 },
         C: { 1: 86000, 2: 160000, 3: 230000, 5: 360000 },
         D: { 1: 35000, 2: 65000, 3: 90000, 5: 150000 }
       };
@@ -5806,7 +5806,7 @@
          Sold Out masuk ke filter "Sold Out" dan tombol order dinonaktifkan.
          ========================================================================== */
       const PAKET_STATUS = {
-        A: 'soldout',
+        A: 'ready',
         C: 'ready',
         D: 'ready'
       };
