@@ -1,5 +1,6 @@
 
 
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -447,10 +448,69 @@
       }
     }
   </style>
+
+<style>
+  .panel-navigation {
+    width: min(100%, 760px);
+    margin: 0 auto 18px;
+    padding: 7px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 8px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    background: rgba(13,15,19,.94);
+    box-shadow: 0 16px 42px rgba(0,0,0,.30);
+    position: sticky;
+    top: 10px;
+    z-index: 200;
+    backdrop-filter: blur(12px);
+  }
+  .panel-nav-btn {
+    border: 0;
+    border-radius: 11px;
+    padding: 12px 10px;
+    cursor: pointer;
+    color: var(--muted);
+    background: transparent;
+    font-size: 12px;
+    font-weight: 800;
+    transition: .2s ease;
+  }
+  .panel-nav-btn.active {
+    color: #111318;
+    background: #e5e7eb;
+  }
+  .tool-panel { display: none; }
+  .tool-panel.active { display: block; }
+  .package-note-output { min-height: 620px !important; }
+  .package-tip {
+    margin-top: 12px;
+    padding: 12px 13px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: #0d0f13;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .package-accent { color: #f3f4f6; font-weight: 700; }
+  @media(max-width:650px){
+    .panel-navigation { top: 6px; margin-bottom: 14px; }
+    .panel-nav-btn { font-size: 11px; padding: 11px 7px; }
+  }
+</style>
+
 </head>
 
 <body>
-  <main class="container">
+
+<nav class="panel-navigation">
+  <button type="button" class="panel-nav-btn active" id="navBulk" onclick="switchMainPanel('bulk')">⚙️ Generator Akun Massal</button>
+  <button type="button" class="panel-nav-btn" id="navPackage" onclick="switchMainPanel('package')">🧾 Nota Semua Paket</button>
+</nav>
+
+  <main class="container tool-panel active" id="bulkPanel">
     <header class="header">
       <div class="eyebrow">BabayShop Tools</div>
       <h1>GPT Plus Generator</h1>
@@ -570,6 +630,116 @@
       </div>
     </section>
   </main>
+
+<main class="container tool-panel" id="packagePanel">
+  <header class="header">
+    <div class="eyebrow">BabayShop Complete Panel</div>
+    <h1>Nota Semua Paket GPT</h1>
+    <p class="subtitle">Pilih jenis paket, isi data akses, tentukan garansi, lalu nota dan instruksi akan dibuat otomatis.</p>
+  </header>
+
+  <section class="card">
+    <div class="card-title">
+      <h2>Informasi Paket</h2>
+      <span class="count-badge" id="pkgTypeBadge">Invite Team</span>
+    </div>
+
+    <div class="grid-2">
+      <div class="group">
+        <label for="pkgType">Jenis Paket</label>
+        <select id="pkgType" onchange="pkgToggleFields(); pkgGenerate(true)">
+          <option value="invite">GPT Pro Plus — Invite Team</option>
+          <option value="direct">GPT Plus — Direct Login Private</option>
+          <option value="sharing">GPT Plus — Sharing 3–5 Orang</option>
+          <option value="go">GPT GO — Private</option>
+        </select>
+      </div>
+      <div class="group">
+        <label for="pkgOrderDate">Tanggal Order</label>
+        <input type="date" id="pkgOrderDate">
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:15px;">
+      <div class="group">
+        <label for="pkgDuration">Durasi Paket</label>
+        <select id="pkgDuration" onchange="pkgToggleDuration(); pkgGenerate(true)">
+          <option value="30">1 Bulan (30 Hari)</option>
+          <option value="90">3 Bulan (90 Hari)</option>
+          <option value="365">Max 1 Tahun</option>
+          <option value="custom">Custom Hari</option>
+        </select>
+      </div>
+      <div class="group hidden" id="pkgCustomDurationWrap">
+        <label for="pkgCustomDuration">Durasi Custom</label>
+        <input type="number" id="pkgCustomDuration" value="30" min="1">
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:15px;">
+      <div class="group">
+        <label for="pkgWarrantyType">Tipe Garansi</label>
+        <select id="pkgWarrantyType" onchange="pkgToggleWarranty(); pkgGenerate(true)">
+          <option value="days">Garansi Custom Hari</option>
+          <option value="login">Garansi Login 1×24 Jam</option>
+          <option value="none">Tanpa Garansi</option>
+        </select>
+      </div>
+      <div class="group" id="pkgWarrantyDaysWrap">
+        <label for="pkgWarrantyDays">Jumlah Hari Garansi</label>
+        <input type="number" id="pkgWarrantyDays" value="5" min="1">
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="pkgInviteFields">
+    <div class="card-title"><h2>Data Invite</h2></div>
+    <div class="grid-2">
+      <div class="group">
+        <label for="pkgInviteEmail">Email Pembeli</label>
+        <input type="email" id="pkgInviteEmail" placeholder="email@pembeli.com">
+      </div>
+      <div class="group">
+        <label for="pkgTeamName">Nama Team / Workspace</label>
+        <input type="text" id="pkgTeamName" placeholder="Contoh: Team BabayShop">
+      </div>
+    </div>
+  </section>
+
+  <section class="card hidden" id="pkgAccountFields">
+    <div class="card-title"><h2>Data Akses Akun</h2></div>
+    <div class="group">
+      <label for="pkgBulkAccounts">Akun — Satu Akun per Baris</label>
+      <textarea id="pkgBulkAccounts" class="input-field" style="min-height:190px;font-family:'Courier New',monospace" placeholder="email|password|secret2fa&#10;email|password|https://link-otp.com"></textarea>
+      <div class="format-box">email | password | secret 2FA atau link OTP/MFA</div>
+      <p class="helper">Bagian ketiga boleh berupa secret key 2FA atau link OTP/MFA langsung. Jika secret key diisi, link MFA dibuat otomatis.</p>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="card-title"><h2>Pengaturan Tambahan</h2></div>
+    <div class="group">
+      <label for="pkgExtraNote">Catatan Tambahan (Opsional)</label>
+      <textarea id="pkgExtraNote" class="input-field" placeholder="Catatan khusus untuk pembeli..."></textarea>
+    </div>
+    <div class="package-tip"><span class="package-accent">Paket Sharing:</span> pembeli akan mendapat instruksi masuk ke Folder/Project masing-masing sebelum mengisi prompt agar chat tidak tercampur.</div>
+    <button type="button" class="btn" onclick="pkgGenerate(false)">Buat Nota Paket</button>
+  </section>
+
+  <section class="card hidden" id="pkgResultCard">
+    <div class="card-title">
+      <h2>Hasil Nota Paket</h2>
+      <span class="count-badge" id="pkgResultBadge">1 akun</span>
+    </div>
+    <textarea id="pkgOutput" class="output-field package-note-output" spellcheck="false"></textarea>
+    <div class="action-row">
+      <button type="button" class="btn" id="pkgCopyBtn" onclick="pkgCopy()">Salin Nota</button>
+      <button type="button" class="btn btn-secondary" onclick="pkgGenerate(false)">Buat Ulang</button>
+      <button type="button" class="btn btn-danger-soft" onclick="pkgReset()">Reset</button>
+    </div>
+  </section>
+</main>
+
 
   <script>
     let isEditMode = false;
@@ -1730,6 +1900,161 @@ ${extraNote}` : ''}`
 
   setLanguage(currentLanguage);
 })();
+</script>
+
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1}' crossorigin="anonymous"></script>
+
+<script>
+function switchMainPanel(panel) {
+  const bulk = panel === 'bulk';
+  document.getElementById('bulkPanel').classList.toggle('active', bulk);
+  document.getElementById('packagePanel').classList.toggle('active', !bulk);
+  document.getElementById('navBulk').classList.toggle('active', bulk);
+  document.getElementById('navPackage').classList.toggle('active', !bulk);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function pkgToday() {
+  const now = new Date();
+  const local = new Date(now.getTime() - now.getTimezoneOffset()*60000).toISOString().slice(0,10);
+  document.getElementById('pkgOrderDate').value = local;
+}
+function pkgDate(value) {
+  if(!value) return null;
+  const [y,m,d]=value.split('-').map(Number);
+  return new Date(y,m-1,d);
+}
+function pkgDateText(date) {
+  if(!date || Number.isNaN(date.getTime())) return '-';
+  return date.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+}
+function pkgAddDays(value, days) {
+  const date=pkgDate(value);
+  if(!date) return '-';
+  date.setDate(date.getDate()+Number(days||0));
+  return pkgDateText(date);
+}
+function pkgToggleDuration() {
+  document.getElementById('pkgCustomDurationWrap').classList.toggle('hidden', document.getElementById('pkgDuration').value!=='custom');
+}
+function pkgToggleWarranty() {
+  document.getElementById('pkgWarrantyDaysWrap').classList.toggle('hidden', document.getElementById('pkgWarrantyType').value!=='days');
+}
+function pkgToggleFields() {
+  const type=document.getElementById('pkgType').value;
+  const invite=type==='invite';
+  document.getElementById('pkgInviteFields').classList.toggle('hidden',!invite);
+  document.getElementById('pkgAccountFields').classList.toggle('hidden',invite);
+  const labels={invite:'Invite Team',direct:'Direct Private',sharing:'Sharing 3–5',go:'GPT GO'};
+  document.getElementById('pkgTypeBadge').textContent=labels[type];
+  if(type==='go' && document.getElementById('pkgDuration').value==='30') document.getElementById('pkgDuration').value='365';
+}
+function pkgParseAccounts() {
+  const lines=document.getElementById('pkgBulkAccounts').value.split(/\r?\n/).map(v=>v.trim()).filter(Boolean);
+  const errors=[];
+  const accounts=[];
+  lines.forEach((line,i)=>{
+    const p=line.split('|').map(v=>v.trim());
+    if(p.length<2 || p.length>3){ errors.push(`Baris ${i+1} harus menggunakan format email|password|secret/link.`); return; }
+    const [email,password,access='']=p;
+    if(!email || !password){ errors.push(`Baris ${i+1}: email dan password wajib diisi.`); return; }
+    accounts.push({email,password,access});
+  });
+  return {accounts,errors};
+}
+function pkgAccessLink(access) {
+  if(!access) return '';
+  if(/^https?:\/\//i.test(access)) return access;
+  const clean=access.replace(/\s+/g,'');
+  return `https://babay.web.id/2fa/?key=${encodeURIComponent(clean)}`;
+}
+function pkgWarrantyInfo() {
+  const type=document.getElementById('pkgWarrantyType').value;
+  const date=document.getElementById('pkgOrderDate').value;
+  if(type==='none') return {line:'Tanpa Garansi', sentence:'Produk tidak memiliki garansi setelah data akun diterima dan berhasil login.'};
+  if(type==='login') return {line:'Garansi Login 1×24 Jam', sentence:'Garansi login berlaku 1×24 jam sejak data akun dikirim.'};
+  const days=Math.max(1,parseInt(document.getElementById('pkgWarrantyDays').value,10)||1);
+  return {line:`${days} Hari — sampai ${pkgAddDays(date,days)}`, sentence:`Garansi berlaku selama ${days} hari. Lebih dari masa garansi, silakan order kembali.`};
+}
+function pkgDurationInfo() {
+  const select=document.getElementById('pkgDuration').value;
+  const days=select==='custom' ? Math.max(1,parseInt(document.getElementById('pkgCustomDuration').value,10)||1) : parseInt(select,10);
+  const label=select==='30'?'1 Bulan':select==='90'?'3 Bulan':select==='365'?'Max 1 Tahun':`${days} Hari`;
+  return {days,label};
+}
+function pkgBuildAccounts(accounts) {
+  return accounts.map((a,i)=>{
+    const link=pkgAccessLink(a.access);
+    return `#Akun_${i+1}\n▰ Email : ${a.email}\n▰ Password : ${a.password}${link?`\n▰ Link OTP / MFA : ${link}`:''}`;
+  }).join('\n\n');
+}
+function pkgLoginInstruction(hasMissingLink=false) {
+  return `📝 CARA LOGIN:\n1. Buka aplikasi atau website ChatGPT.\n2. Masukkan email langsung di halaman login ChatGPT.\n3. Masukkan password yang diberikan.\n4. Jika diminta One-Time Code, buka Link OTP / MFA sesuai akun yang digunakan.\n5. Salin kode OTP yang muncul lalu masukkan ke ChatGPT.\n6. Setelah masuk, cek Settings / Pengaturan untuk memastikan paket sudah aktif.${hasMissingLink?'\n7. Jika link OTP tidak tersedia tetapi kode diminta, hubungi admin.':''}`;
+}
+function pkgGenerate(automatic=false) {
+  const type=document.getElementById('pkgType').value;
+  const order=document.getElementById('pkgOrderDate').value;
+  if(!order){ if(!automatic) alert('Pilih tanggal order.'); return; }
+  const duration=pkgDurationInfo();
+  const warranty=pkgWarrantyInfo();
+  const extra=document.getElementById('pkgExtraNote').value.trim();
+  let item='',typeLabel='',data='',instructions='',count=1;
+
+  if(type==='invite') {
+    const email=document.getElementById('pkgInviteEmail').value.trim();
+    const team=document.getElementById('pkgTeamName').value.trim();
+    if((!email || !team) && automatic) return;
+    if(!email || !team){ alert('Isi email pembeli dan nama team.'); return; }
+    item='AI ChatGPT Pro Plus Invite'; typeLabel='Private Invite (Team)';
+    data=`▰ Email User : ${email}\n▰ Invitation : ${team}`;
+    instructions=`📝 CARA AKTIVASI:\n1. Buka email yang didaftarkan.\n2. Cari email undangan dari OpenAI / ChatGPT.\n3. Klik “Join Team” lalu masuk ke workspace yang sesuai.\n4. Gunakan ChatGPT di dalam workspace tersebut.\n\n⚠️ PENTING:\n• Chat dan prompt di workspace hanya bisa diakses selama akun masih berada di dalam team.\n• Backup hasil chat penting sebelum masa aktif berakhir.\n• Jangan mengubah pengaturan team tanpa izin admin.`;
+  } else {
+    const parsed=pkgParseAccounts();
+    if(parsed.errors.length){ if(!automatic) alert(parsed.errors.join('\n')); return; }
+    if(!parsed.accounts.length){ if(!automatic) alert('Masukkan minimal satu akun.'); return; }
+    count=parsed.accounts.length;
+    data=pkgBuildAccounts(parsed.accounts);
+    const missing=parsed.accounts.some(a=>!a.access);
+    if(type==='direct') {
+      item='AI ChatGPT Plus Direct'; typeLabel='Private Account (Personal)';
+      instructions=`${pkgLoginInstruction(missing)}\n\n📌 KETENTUAN:\n• Akun bersifat private/personal.\n• Jangan mengganti email, password, billing, plan, atau pengaturan keamanan selama masa garansi.\n• Jangan menggunakan cookies, token, API, tools pihak ketiga, proxy, atau router terlarang.\n• Gunakan akun secara normal agar tidak terdeteksi aktivitas mencurigakan.`;
+    } else if(type==='sharing') {
+      item='AI ChatGPT Plus Sharing'; typeLabel='Sharing 3–5 Orang';
+      instructions=`${pkgLoginInstruction(missing)}\n\n📂 INSTRUKSI SHARING:\n• Akun digunakan bersama sekitar 3–5 orang.\n• Setiap pengguna mendapatkan Folder / Project masing-masing.\n• Sebelum mengisi prompt atau ngobrol, masuk ke Folder / Project milik masing-masing terlebih dahulu agar chat AI tidak tercampur.\n• Jangan membuka, mengubah, atau menghapus Folder / Project pengguna lain.\n\n⚠️ PEMAKAIAN:\n• Jangan menggunakan akun secara bar-bar, terlalu memaksa, atau mengirim request terlalu sering.\n• Hindari pemakaian berat secara terus-menerus karena akun dibagi dengan pengguna lain.\n• Jangan mengubah email, password, nama akun, billing, plan, atau keamanan akun.`;
+    } else {
+      item='AI ChatGPT GO'; typeLabel='Private Account (Personal)';
+      instructions=`${pkgLoginInstruction(missing)}\n\n📌 INFO AKUN:\n• Akun private, bukan sharing.\n• Gunakan secara normal dan jangan melakukan spam fitur.\n• Jangan mengubah billing, plan, atau pengaturan keamanan akun.\n• Jika ada kendala selama masa garansi, hubungi admin.`;
+    }
+  }
+
+  let output=`╭────〔 BABAYSHOP.MY.ID 〕────\n┊・Item : ${item}\n┊・Type : ${typeLabel}\n┊・Order Date : ${pkgDateText(pkgDate(order))}\n┊・Durasi : ${duration.label}\n┊・Masa Aktif s/d : ${pkgAddDays(order,duration.days)}\n┊・Garansi : ${warranty.line}\n╰────────────────────\n\n📦 DATA AKSES:\n${data}\n\n╰────────────────────\n\n${instructions}\n\n🛡️ GARANSI:\n• ${warranty.sentence}\n• Garansi hanya mencakup kendala paket seperti plan hilang atau kembali ke Free yang bukan disebabkan kesalahan pengguna.\n• Garansi hangus jika akun digunakan berlebihan, spam, dibagikan tidak sesuai paket, menggunakan cookies/token/API/tools pihak ketiga, proxy/router terlarang, atau pengaturan akun diubah.\n• Jika akun deactivated, banned, atau terkunci akibat kesalahan pengguna, hal tersebut di luar tanggung jawab penyedia.\n• Dengan menggunakan akun, pembeli dianggap memahami dan menyetujui ketentuan ini.${extra?`\n\n📝 CATATAN TAMBAHAN:\n${extra}`:''}\n\n🌐 Info lengkap: https://babayshop.my.id/gpt/`;
+
+  document.getElementById('pkgOutput').value=output;
+  document.getElementById('pkgResultBadge').textContent=`${count} akun`;
+  document.getElementById('pkgResultCard').classList.remove('hidden');
+  if(!automatic) document.getElementById('pkgResultCard').scrollIntoView({behavior:'smooth',block:'start'});
+}
+async function pkgCopy() {
+  const out=document.getElementById('pkgOutput');
+  const btn=document.getElementById('pkgCopyBtn');
+  try { await navigator.clipboard.writeText(out.value); btn.textContent='✅ Tersalin!'; }
+  catch(e){ out.select(); document.execCommand('copy'); btn.textContent='✅ Tersalin!'; }
+  setTimeout(()=>btn.textContent='Salin Nota',1800);
+}
+function pkgReset() {
+  document.getElementById('pkgInviteEmail').value='';
+  document.getElementById('pkgTeamName').value='';
+  document.getElementById('pkgBulkAccounts').value='';
+  document.getElementById('pkgExtraNote').value='';
+  document.getElementById('pkgOutput').value='';
+  document.getElementById('pkgResultCard').classList.add('hidden');
+  pkgToday();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+['pkgOrderDate','pkgCustomDuration','pkgWarrantyDays','pkgInviteEmail','pkgTeamName','pkgBulkAccounts','pkgExtraNote'].forEach(id=>{
+  const el=document.getElementById(id); if(el) el.addEventListener('input',()=>pkgGenerate(true));
+});
+pkgToday(); pkgToggleFields(); pkgToggleDuration(); pkgToggleWarranty();
 </script>
 
 </body>
