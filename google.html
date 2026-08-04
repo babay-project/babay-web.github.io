@@ -1095,22 +1095,6 @@
       color: white;
       box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
     }
-    .filter-chip[data-filter="soldout"].active {
-      background: #b91c1c;
-      border-color: #ef4444;
-      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.25);
-    }
-
-    .catalog-empty {
-      display: none;
-      grid-column: 1 / -1;
-      padding: 34px 20px;
-      border: 1px dashed var(--border);
-      border-radius: var(--r-lg);
-      color: var(--muted);
-      text-align: center;
-      background: rgba(255, 255, 255, 0.015);
-    }
 
     .packages-grid {
       display: grid;
@@ -1327,24 +1311,6 @@
     }
     .stock-dot.pulse {
       animation: pulseGreen 2s infinite;
-    }
-    .pkg-stock-status.status-preorder {
-      color: var(--amber);
-    }
-    .pkg-stock-status.status-preorder .stock-dot {
-      background: var(--amber);
-      animation: pulseAmber 2s infinite;
-    }
-    .pkg-stock-status.status-soldout {
-      color: #f87171;
-    }
-    .pkg-stock-status.status-soldout .stock-dot {
-      background: #ef4444;
-      animation: none;
-    }
-    @keyframes pulseAmber {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.45); }
-      50% { box-shadow: 0 0 0 6px rgba(251, 191, 36, 0); }
     }
 
     .pkg-actions {
@@ -1580,7 +1546,7 @@
     }
     .qty-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 8px;
     }
     .qty-option {
@@ -1605,6 +1571,30 @@
       color: #fff;
       border-color: rgba(251, 191, 36, 0.45);
       background: rgba(251, 191, 36, 0.09);
+    }
+    .qty-option.qty-discount {
+      color: #fef3c7;
+      border-color: rgba(251, 191, 36, 0.42);
+      background: linear-gradient(145deg, rgba(251,191,36,0.10), rgba(99,102,241,0.08));
+      box-shadow: 0 0 12px rgba(251,191,36,0.18), inset 0 1px 0 rgba(255,255,255,0.08);
+      animation: qtyDiscountGlow 1.8s ease-in-out infinite;
+    }
+    .qty-option.qty-discount small {
+      color: #fde68a;
+    }
+    .qty-option.qty-discount.active {
+      color: #fff;
+      border-color: #fbbf24;
+      background: linear-gradient(145deg, rgba(245,158,11,0.28), rgba(99,102,241,0.20));
+      box-shadow: 0 0 22px rgba(251,191,36,0.48), 0 0 38px rgba(99,102,241,0.20);
+      transform: translateY(-2px) scale(1.03);
+    }
+    @keyframes qtyDiscountGlow {
+      0%, 100% { box-shadow: 0 0 9px rgba(251,191,36,0.16), inset 0 1px 0 rgba(255,255,255,0.08); }
+      50% { box-shadow: 0 0 20px rgba(251,191,36,0.42), 0 0 30px rgba(99,102,241,0.14); }
+    }
+    @media (max-width: 560px) {
+      .qty-grid { grid-template-columns: repeat(3, 1fr); }
     }
     .bulk-save-row {
       display: none;
@@ -4754,6 +4744,70 @@
       </div>
     </section>
 
+    <!-- Benefit Section -->
+    <section class="section-benefit" id="benefit">
+      <div class="wrap">
+        <div class="section-head reveal-on-scroll">
+          <span class="section-label">Apa yang Kamu Dapat</span>
+          <h2 class="section-title">Benefit Google AI Pro</h2>
+          <p class="section-sub">Semua benefit di bawah tersedia selama paket aktif. Beberapa fitur bisa berbeda tergantung region, kebijakan Google, dan jenis offer.</p>
+        </div>
+
+        <div class="benefit-grid">
+          <article class="benefit-card clay clay--interactive spotlight">
+            <div class="benefit-icon">✦</div>
+            <h3>Akses Gemini Pro</h3>
+            <p>Brainstorming, menulis, merangkum, ide konten, coding, analisis data, belajar, dan riset mendalam setiap hari.</p>
+          </article>
+
+          <article class="benefit-card clay clay--interactive spotlight">
+            <div class="benefit-icon">✦</div>
+            <h3>Storage Jumbo</h3>
+            <p>Google Drive, Gmail, dan Google Photos dengan kuota besar. Kapasitas mengikuti jenis offer dan tipe akun.</p>
+          </article>
+
+          <article >
+          </article>
+        </div>
+
+        <!-- Exclusive Bonus Platform Highlight -->
+        <div class="highlight-box reveal-on-scroll">
+          <div class="highlight-header">
+            <span class="sparkle-icon">✦</span>
+            <h3>Bonus Eksklusif di Paket Ini</h3>
+          </div>
+          <p>Selain Gemini Pro dan storage, kamu juga mendapatkan akses ke platform dan kredit AI tambahan yang tidak ada di paket Free atau Plus biasa.</p>
+          
+          <div class="hb-grid">
+            <article class="hb-item">
+              <div class="hb-icon-wrapper text-indigo">✦</div>
+              <div class="hb-body">
+                <h4>Antigravity Plan Pro</h4>
+                <p>Akses penuh ke Antigravity Plan Pro — platform AI yang hanya tersedia untuk pengguna Google AI Pro. Fitur lebih lengkap dibanding tier Free maupun Plus.</p>
+                <div class="benefit-tags">
+                </div>
+              </div>
+            </article>
+
+            <article class="hb-item">
+              <div class="hb-icon-wrapper text-cyan">✦</div>
+              <div class="hb-body">
+                <h4>1.000+ AI Flow Credits</h4>
+                <p>Dapatkan 1.000 kredit lebih banyak untuk AI Flow dan platform kredit AI dibanding paket Free maupun Plus. Gunakan untuk automasi, pipeline AI, dan tools lainnya.</p>
+                <div class="credit-compare">
+                  <span class="credit-pill cp-free">Free/Plus: ~100–200</span>
+                  <span class="credit-arrow">→</span>
+                  <span class="credit-pill cp-pro">Pro: 1.000+ kredit</span>
+                </div>
+              </div>
+            </article>
+          </div>
+          
+          
+        </div>
+      </div>
+    </section>
+
     <!-- Product Catalog Section -->
     <section class="section-katalog" id="katalog">
       <div class="wrap">
@@ -4764,13 +4818,13 @@
           
           <!-- Filter Chips -->
           <div class="catalog-filters">
-            <button class="filter-chip active" data-filter="available">Produk Tersedia</button>
-            <button class="filter-chip" data-filter="soldout">Sold Out</button>
+            <button class="filter-chip active" data-filter="all">Semua</button>
+            <button class="filter-chip" data-filter="head">Head</button>
+            <button class="filter-chip" data-filter="invite">Member</button>
           </div>
         </div>
 
         <div class="packages-grid">
-          <p class="catalog-empty" id="catalogEmpty">Belum ada produk pada kategori ini.</p>
           <!-- Paket A: Voucher JIO Max Durasi 18B -->
           <article class="pkg-card package-fire clay clay--interactive spotlight reveal-on-scroll" data-cat="head">
             <div class="pkg-header">
@@ -4783,9 +4837,9 @@
             </div>
             <div class="pkg-body">
               <div class="price-row">
-                <span class="price-old">Rp100.000</span>
+                <span class="price-old">Rp200.000</span>
                 <div class="price-new">
-                  <strong>Rp52.000</strong>
+                  <strong>Rp150.000</strong>
                   <span class="price-unit">/ paket</span>
                   <span class="discount-tag text-green">Promo</span>
                 </div>
@@ -4793,7 +4847,7 @@
               <p class="pkg-tagline"><strong>Maksimal durasi yang bisa didapatkan adalah 18 bulan.</strong> Tidak ada jaminan paket akan aktif penuh selama 18 bulan (layanan dapat berhenti lebih awal).</p>
               <div class="bulk-promo-clip" data-bulk-clip="A">
                 <span class="bulk-promo-kicker">Promo Bulk</span>
-                <div class="bulk-promo-line"><span>Ambil 2 voucher</span><strong>Rp98.000</strong></div>
+                <div class="bulk-promo-line"><span>Ambil 2 voucher</span><strong>Rp140.000</strong></div>
                
               </div>
               <ul class="pkg-features">
@@ -4803,15 +4857,15 @@
                 <li><span class="icon-chk text-green">✓</span><span>Akses Antigravity Plan Pro.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>1.000+ AI Flow Credits.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>Tutorial klaim via YouTube BabayShop.</span></li>
-                <li><span class="icon-chk text-indigo">✓</span><span class="text-glow-indigo">Garansi sampai akun berhasil klaim paket (maks. 1x24 jam).</span></li>
+                <li><span class="icon-chk text-green">✓</span><span>Kode <strong>DISKONBAY</strong> memberikan diskon acak (Sampai 10,000) saat checkout.</span></li>
+                <li><span class="icon-chk text-indigo">✓</span><span class="text-glow-indigo">Garansi klaim maksimal 1x24 jam dan hanya berlaku sampai paket berhasil aktif. Setelah paket aktif, garansi berakhir—termasuk jika paket kemudian dicabut, dihentikan, atau dinonaktifkan oleh JIO.</span></li>
               </ul>
               <div class="pkg-stock-status text-green">
                 <span class="stock-dot pulse"></span>
                 <span>Stok: Ready</span>
               </div>
               <div class="pkg-actions">
-                <button class="btn btn-primary btn-block btn-buy" data-id="A" data-name="Voucher JIO Max Durasi 18B" data-price="52000" type="button">Beli Sekarang</button>
-                <button class="btn btn-bulk btn-block btn-bulk-order" data-id="A" data-name="Voucher JIO Max Durasi 18B" data-price="52000" data-bulk-qty="2" type="button">Pesan Bulk Hemat</button>
+                <button class="btn btn-primary btn-block btn-buy" data-id="A" data-name="Voucher JIO Max Durasi 18B" data-price="75000" type="button">Beli Sekarang</button>
                 <a class="pkg-tutorial-link" href="https://youtu.be/j1EfO8NGXvI" target="_blank" rel="noopener">Lihat tutorial klaim Jio →</a>
                 <a class="pkg-tutorial-link" href="https://babay.web.id/jio" target="_blank" rel="noopener">Baca diskusi →</a>
               </div>
@@ -4857,7 +4911,6 @@
               </div>
               <div class="pkg-actions">
                 <button class="btn btn-primary btn-block btn-buy" data-id="C" data-name="AI PRO 12 Bulan Pixel Head" data-price="86000" type="button">Beli Sekarang</button>
-                <button class="btn btn-bulk btn-block btn-bulk-order" data-id="C" data-name="AI PRO 12 Bulan Pixel Head" data-price="86000" data-bulk-qty="2" type="button">Pesan Bulk Hemat</button>
                 <a class="pkg-tutorial-link" href="https://babay.web.id/pixel.html" target="_blank" rel="noopener">Baca diskusi →</a>
                 <a class="pkg-tutorial-link" href="https://babay.web.id/snk/pixel" target="_blank" rel="noopener">S&K Pixel Head →</a>
               </div>
@@ -4903,7 +4956,6 @@
               </div>
               <div class="pkg-actions">
                 <button class="btn btn-primary btn-block btn-buy" data-id="D" data-name="Invite Email 12 Bulan" data-price="35000" type="button">Beli Sekarang</button>
-                <button class="btn btn-bulk btn-block btn-bulk-order" data-id="D" data-name="Invite Email 12 Bulan" data-price="35000" data-bulk-qty="3" type="button">Pesan Bulk Hemat</button>
               </div>
             </div>
           </article>
@@ -4927,6 +4979,7 @@
             </div>
             <p><strong>Voucher JIO</strong> berasal dari program promosi Reliance Jio di India untuk pengguna Jio Unlimited 5G yang memenuhi syarat. Bukan hasil crack, bukan aplikasi mod, dan bukan generator ilegal.</p>
             <p><strong>Maksimal durasi yang bisa didapatkan adalah 18 bulan.</strong> Tidak ada jaminan paket akan aktif penuh selama 18 bulan. Durasi aktual mengikuti ketentuan provider JIO lebih awal sesuai kebijakan provider.</p>
+            <p style="color:#fca5a5;"><strong>Penegasan garansi:</strong> Garansi Voucher JIO hanya untuk proses klaim maksimal 1x24 jam dan berakhir saat paket berhasil aktif. Apabila setelah aktif paket dicabut, dihentikan, atau dinonaktifkan oleh JIO, hal tersebut tidak termasuk garansi.</p>
             
             <div class="soft-box">
               <p>Pengalaman pengguna dan diskusi forum dirangkum di halaman khusus BabayShop.</p>
@@ -5073,7 +5126,7 @@
                 <li><strong>Masa Klaim:</strong> Garansi berlaku sampai akun berhasil klaim paket, dengan batas maksimal pengecekan 1x24 jam sejak voucher/proses klaim diberikan.</li>
                 <li><strong>Solusi Garansi:</strong> Jika klaim gagal dalam masa 1x24 jam, admin akan membantu penggantian/proses ulang sampai berhasil klaim, atau opsi refund jika sistem sedang trouble.</li>
               </ul>
-              <p class="w-note" style="border-left-color: var(--red); color: #fca5a5; background: rgba(239, 68, 68, 0.02);">Setelah akun berhasil klaim paket atau lewat 1x24 jam tanpa laporan kendala, masa garansi klaim dinyatakan selesai.</p>
+              <p class="w-note" style="border-left-color: var(--red); color: #fca5a5; background: rgba(239, 68, 68, 0.02);">Setelah paket berhasil aktif, garansi langsung dinyatakan selesai. Tidak ada garansi apabila setelah aktif paket dicabut, dihentikan, atau dinonaktifkan oleh JIO. Batas laporan kendala klaim maksimal 1x24 jam.</p>
             </div>
           </div>
 
@@ -5332,13 +5385,28 @@
               <label>Jumlah Pembelian</label>
               <div class="qty-grid" id="qtyGrid">
                 <button class="qty-option active" type="button" data-qty="1">1<small>Satuan</small></button>
-                <button class="qty-option" type="button" data-qty="2">2<small>Bulk</small></button>
-                <button class="qty-option" type="button" data-qty="3">3<small>Hemat</small></button>
-                <button class="qty-option" type="button" data-qty="5">5<small>Reseller</small></button>
+                <button class="qty-option qty-discount" type="button" data-qty="2">2<small class="qty-discount-label">Diskon</small></button>
+                <button class="qty-option qty-discount" type="button" data-qty="3">3<small class="qty-discount-label">Diskon</small></button>
+                <button class="qty-option qty-discount" type="button" data-qty="4">4<small class="qty-discount-label">Diskon</small></button>
+                <button class="qty-option qty-discount" type="button" data-qty="5">5<small class="qty-discount-label">Diskon</small></button>
               </div>
             </div>
 
+            <div class="form-group promo-group" id="promoGroup" hidden>
+              <label for="inputPromo">Kode Voucher Khusus Paket JIO</label>
+              <div class="promo-input-row">
+                <input type="text" id="inputPromo" placeholder="Masukkan kode voucher" autocomplete="off" maxlength="20">
+                <button class="btn" type="button" id="btnApplyPromo">Terapkan</button>
+              </div>
+              <span class="promo-feedback" id="promoFeedback" aria-live="polite"></span>
+              <small style="color: var(--muted); font-size: 11px;">Gunakan <strong style="color:#fca5a5;">DISKONBAY</strong> untuk diskon acak (Sampai 10,000).</small>
+            </div>
+
             <div class="bulk-save-row" id="bulkSaveRow">Harga bulk aktif. Total tagihan sudah menyesuaikan promo jumlah pembelian.</div>
+            <div class="promo-discount-row" id="promoDiscountRow">
+              <span>Voucher DISKONBAY aktif</span>
+              <strong id="promoDiscountText">-Rp0</strong>
+            </div>
 
             <div class="form-checkbox">
               <input type="checkbox" id="checkAgree" checked required>
@@ -5535,6 +5603,12 @@
       const emailRequiredStar = document.getElementById('emailRequiredStar');
       const emailHelpNote = document.getElementById('emailHelpNote');
       const labelEmail = document.getElementById('labelEmail');
+      const promoGroup = document.getElementById('promoGroup');
+      const inputPromo = document.getElementById('inputPromo');
+      const btnApplyPromo = document.getElementById('btnApplyPromo');
+      const promoFeedback = document.getElementById('promoFeedback');
+      const promoDiscountRow = document.getElementById('promoDiscountRow');
+      const promoDiscountText = document.getElementById('promoDiscountText');
 
       function setEmailLabel(text) {
         if (labelEmail && labelEmail.firstChild) labelEmail.firstChild.nodeValue = `${text} `;
@@ -5571,15 +5645,22 @@
          hargaPromo = harga aktif / nominal paket sebelum kode unik
          ========================================================================== */
       const PAKET_HARGA = {
-        A: { hargaLama: 100000, hargaPromo: 52000 },
+        A: { hargaLama: 200000, hargaPromo: 150000 },
         C: { hargaLama: 130000, hargaPromo: 86000 },
         D: { hargaLama: 40000, hargaPromo: 35000 }
       };
 
       const BULK_HARGA = {
-        A: { 1: 52000, 2: 98000, 3: 144000, 5: 230000 },
-        C: { 1: 86000, 2: 160000, 3: 230000, 5: 360000 },
-        D: { 1: 35000, 2: 65000, 3: 90000, 5: 150000 }
+        A: { 1: 150000, 2: 280000, 3: 400000, 4: 470000, 5: 520000 },
+        C: { 1: 86000, 2: 160000, 3: 230000, 4: 300000, 5: 360000 },
+        D: { 1: 35000, 2: 65000, 3: 90000, 4: 120000, 5: 150000 }
+      };
+
+      const PROMO_JIO = {
+        code: 'DISKONBAY',
+        minDiscount: 3000,
+        maxDiscount: 10000,
+        step: 1000
       };
 
       /* ==========================================================================
@@ -5705,113 +5786,6 @@
          ========================================================================== */
       const filterChips = document.querySelectorAll('.filter-chip');
       const pkgCards = document.querySelectorAll('.pkg-card');
-      const catalogEmpty = document.getElementById('catalogEmpty');
-
-      /* ==========================================================================
-         SECTION EDIT STATUS PAKET
-         Pilihan status: 'ready', 'preorder', atau 'soldout'.
-         Ready dan Pre Order masuk ke filter "Produk Tersedia".
-         Sold Out masuk ke filter "Sold Out" dan tombol order dinonaktifkan.
-         ========================================================================== */
-      const PAKET_STATUS = {
-        A: 'ready',
-        C: 'ready',
-        D: 'ready'
-      };
-
-      const STATUS_DETAIL = {
-        ready: {
-          label: 'Stok: Ready',
-          buttonLabel: 'Beli Sekarang',
-          className: 'status-ready'
-        },
-        preorder: {
-          label: 'Stok: Pre Order',
-          buttonLabel: 'Pre Order Sekarang',
-          className: 'status-preorder'
-        },
-        soldout: {
-          label: 'Stok: Sold Out',
-          buttonLabel: 'Sold Out',
-          className: 'status-soldout'
-        }
-      };
-
-      function applyPackageStatuses() {
-        pkgCards.forEach(card => {
-          const packageId = card.querySelector('.pkg-code')?.textContent.trim();
-          const status = PAKET_STATUS[packageId] || 'soldout';
-          const detail = STATUS_DETAIL[status];
-          const stockBox = card.querySelector('.pkg-stock-status');
-          const stockLabel = stockBox?.querySelector('span:last-child');
-          const orderButtons = card.querySelectorAll('.btn-buy, .btn-bulk-order');
-
-          card.dataset.status = status;
-          card.classList.toggle('soldout-card', status === 'soldout');
-
-          if (stockBox) {
-            stockBox.classList.remove('text-green', 'status-ready', 'status-preorder', 'status-soldout');
-            stockBox.classList.add(detail.className);
-          }
-          if (stockLabel) stockLabel.textContent = detail.label;
-
-          orderButtons.forEach((button, index) => {
-            if (!button.dataset.originalLabel) {
-              button.dataset.originalLabel = button.textContent.trim();
-            }
-
-            if (status === 'soldout') {
-              button.disabled = true;
-              button.classList.add('btn-soldout');
-              button.textContent = 'Sold Out';
-              button.setAttribute('aria-disabled', 'true');
-            } else {
-              button.disabled = false;
-              button.classList.remove('btn-soldout');
-              button.removeAttribute('aria-disabled');
-              button.textContent = status === 'preorder' && index === 0
-                ? detail.buttonLabel
-                : button.dataset.originalLabel;
-            }
-          });
-        });
-      }
-
-      function filterPackages(filterVal) {
-        let visibleCount = 0;
-
-        pkgCards.forEach(card => {
-          const status = card.dataset.status;
-          const shouldShow = filterVal === 'soldout'
-            ? status === 'soldout'
-            : status === 'ready' || status === 'preorder';
-
-          if (shouldShow) {
-            visibleCount += 1;
-            card.style.display = 'flex';
-            setTimeout(() => {
-              card.style.opacity = '1';
-              card.style.transform = 'translateY(0)';
-            }, 10);
-          } else {
-            card.style.opacity = '0';
-            card.style.transform = 'translateY(15px)';
-            setTimeout(() => {
-              card.style.display = 'none';
-            }, 250);
-          }
-        });
-
-        if (catalogEmpty) {
-          catalogEmpty.style.display = visibleCount === 0 ? 'block' : 'none';
-          catalogEmpty.textContent = filterVal === 'soldout'
-            ? 'Saat ini belum ada produk yang sold out.'
-            : 'Saat ini belum ada produk yang tersedia.';
-        }
-      }
-
-      applyPackageStatuses();
-      filterPackages('available');
 
       filterChips.forEach(chip => {
         chip.addEventListener('click', () => {
@@ -5820,7 +5794,23 @@
           chip.classList.add('active');
 
           const filterVal = chip.getAttribute('data-filter');
-          filterPackages(filterVal);
+
+          pkgCards.forEach(card => {
+            const cat = card.getAttribute('data-cat');
+            if (filterVal === 'all' || cat === filterVal) {
+              card.style.display = 'flex';
+              setTimeout(() => {
+                card.style.opacity = '1';
+                card.style.transform = 'translateY(0)';
+              }, 10);
+            } else {
+              card.style.opacity = '0';
+              card.style.transform = 'translateY(15px)';
+              setTimeout(() => {
+                card.style.display = 'none';
+              }, 250); // Match transit delay
+            }
+          });
         });
       });
 
@@ -5952,23 +5942,97 @@
         return base * qty;
       }
 
+      function setPromoFeedback(message = '', type = '') {
+        promoFeedback.textContent = message;
+        promoFeedback.className = 'promo-feedback';
+        if (message) promoFeedback.classList.add('active');
+        if (type) promoFeedback.classList.add(type);
+      }
+
+      function getRandomJioDiscount() {
+        const optionCount = Math.floor((PROMO_JIO.maxDiscount - PROMO_JIO.minDiscount) / PROMO_JIO.step) + 1;
+        let randomIndex;
+
+        if (window.crypto && window.crypto.getRandomValues) {
+          const randomValue = new Uint32Array(1);
+          window.crypto.getRandomValues(randomValue);
+          randomIndex = randomValue[0] % optionCount;
+        } else {
+          randomIndex = Math.floor(Math.random() * optionCount);
+        }
+
+        return PROMO_JIO.minDiscount + (randomIndex * PROMO_JIO.step);
+      }
+
       function recalculateCheckoutPrice() {
         if (!currentPackage) return;
         currentPackage.basePrice = getPackageTotal(currentPackage.id, currentPackage.qty);
-        currentPackage.price = currentPackage.basePrice;
+        currentPackage.discount = currentPackage.id === 'A' && currentPackage.promoApplied
+          ? Math.min(currentPackage.promoDiscount, currentPackage.basePrice)
+          : 0;
+        currentPackage.price = Math.max(currentPackage.basePrice - currentPackage.discount, 0);
         checkoutPriceText.textContent = formatRupiah(currentPackage.price);
+        promoDiscountRow.classList.toggle('active', currentPackage.discount > 0);
+        promoDiscountText.textContent = `-${formatRupiah(currentPackage.discount)}`;
+      }
+
+      function resetPromoState() {
+        if (currentPackage) {
+          currentPackage.promoApplied = false;
+          currentPackage.promoCode = '';
+          currentPackage.promoDiscount = 0;
+          currentPackage.discount = 0;
+        }
+        inputPromo.value = '';
+        setPromoFeedback();
+        promoDiscountRow.classList.remove('active');
+      }
+
+      function applyJioPromo() {
+        if (!currentPackage || currentPackage.id !== 'A') {
+          setPromoFeedback('Kode voucher ini hanya berlaku untuk Paket JIO.', 'error');
+          return;
+        }
+
+        const normalizedCode = inputPromo.value.trim().toUpperCase();
+        if (normalizedCode === PROMO_JIO.code) {
+          if (!currentPackage.promoApplied || !currentPackage.promoDiscount) {
+            currentPackage.promoDiscount = getRandomJioDiscount();
+          }
+          currentPackage.promoApplied = true;
+          currentPackage.promoCode = PROMO_JIO.code;
+          inputPromo.value = PROMO_JIO.code;
+          recalculateCheckoutPrice();
+          setPromoFeedback(`Voucher berhasil dipakai. Kamu mendapat diskon sebesar: ${formatRupiah(currentPackage.discount)}.`, 'success');
+          return;
+        }
+
+        currentPackage.promoApplied = false;
+        currentPackage.promoCode = '';
+        currentPackage.promoDiscount = 0;
+        recalculateCheckoutPrice();
+        setPromoFeedback(normalizedCode ? 'Kode voucher tidak valid.' : 'Masukkan kode voucher terlebih dahulu.', 'error');
       }
 
       function configureQtyOptions(packageId) {
         const maxQty = packageId === 'D' ? 3 : 5;
-        if (qtyGrid) qtyGrid.style.gridTemplateColumns = packageId === 'D' ? 'repeat(3, 1fr)' : '';
+        if (qtyGrid) qtyGrid.style.gridTemplateColumns = packageId === 'D' ? 'repeat(3, 1fr)' : 'repeat(5, 1fr)';
 
+        const unitPrice = PAKET_HARGA[packageId]?.hargaPromo || 0;
         qtyButtons.forEach(btn => {
           const qty = Number(btn.getAttribute('data-qty'));
           const shouldHide = qty > maxQty;
           btn.style.display = shouldHide ? 'none' : '';
           btn.disabled = shouldHide;
           if (shouldHide) btn.classList.remove('active');
+
+          const label = btn.querySelector('.qty-discount-label');
+          if (label && unitPrice > 0 && qty > 1) {
+            const normalTotal = unitPrice * qty;
+            const promoTotal = getPackageTotal(packageId, qty);
+            const discountPercent = Math.max(0, Math.round(((normalTotal - promoTotal) / normalTotal) * 100));
+            label.textContent = `Diskon ${discountPercent}%`;
+          }
         });
       }
 
@@ -6036,6 +6100,24 @@
         });
       });
 
+      btnApplyPromo.addEventListener('click', applyJioPromo);
+      inputPromo.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          event.preventDefault();
+          applyJioPromo();
+        }
+      });
+      inputPromo.addEventListener('input', () => {
+        inputPromo.value = inputPromo.value.toUpperCase();
+        if (currentPackage?.promoApplied && inputPromo.value.trim() !== PROMO_JIO.code) {
+          currentPackage.promoApplied = false;
+          currentPackage.promoCode = '';
+          currentPackage.promoDiscount = 0;
+          recalculateCheckoutPrice();
+          setPromoFeedback('Kode diubah. Terapkan kembali untuk mendapat potongan.', 'error');
+        }
+      });
+
       function openCheckoutFromButton(btn, defaultQty = 1) {
         const id = btn.getAttribute('data-id');
         const name = btn.getAttribute('data-name');
@@ -6049,8 +6131,15 @@
           unitPrice,
           qty: safeDefaultQty,
           basePrice: getPackageTotal(id, safeDefaultQty),
-          price: getPackageTotal(id, safeDefaultQty)
+          price: getPackageTotal(id, safeDefaultQty),
+          discount: 0,
+          promoDiscount: 0,
+          promoApplied: false,
+          promoCode: ''
         };
+
+        resetPromoState();
+        promoGroup.hidden = id !== 'A';
 
         // Set checkout details
         checkoutProdName.textContent = name;
@@ -6087,8 +6176,8 @@
           emailGroup.style.display = 'none';
           setEmailLabel('Email Aktivasi / Invite');
           emailRequiredStar.style.display = 'none';
-          checkoutStepDesc.textContent = 'Lanjutkan pembelian Paket JIO dan pilih metode pembayaran yang tersedia.';
-          if (labelCheckAgree) labelCheckAgree.textContent = 'Saya telah membaca, memahami, dan menyetujui detail ketentuan risiko, garansi, serta persyaratan paket ini.';
+          checkoutStepDesc.textContent = 'Lanjutkan pembelian Paket JIO. Masukkan kode voucher DISKONBAY untuk diskon acak (Sampai 10,000).';
+          if (labelCheckAgree) labelCheckAgree.textContent = 'Saya memahami garansi Voucher JIO hanya untuk proses klaim maksimal 1x24 jam sampai paket aktif. Setelah aktif tidak ada garansi, termasuk jika paket dicabut oleh JIO.';
           inputEmail.disabled = true;
           inputEmail.value = '';
           inputEmail.parentElement.classList.remove('error');
@@ -6115,11 +6204,6 @@
       const buyBtns = document.querySelectorAll('.btn-buy');
       buyBtns.forEach(btn => {
         btn.addEventListener('click', () => openCheckoutFromButton(btn, 1));
-      });
-
-      const bulkBtns = document.querySelectorAll('.btn-bulk-order');
-      bulkBtns.forEach(btn => {
-        btn.addEventListener('click', () => openCheckoutFromButton(btn, Number(btn.getAttribute('data-bulk-qty')) || 2));
       });
 
       // Close Checkout Modal helper
@@ -6198,8 +6282,8 @@
         const randomId = Math.floor(1000000 + Math.random() * 9000000);
         qrisTxId.textContent = `TX-${randomId}`;
 
-        // Generate 3 digit unique code
-        currentUniqueCode = Math.floor(100 + Math.random() * 900);
+        // Generate kode unik 3 digit: selalu di atas 500 dan di bawah 999 (501–998)
+        currentUniqueCode = Math.floor(501 + Math.random() * 498);
         const totalPrice = currentPackage.price + currentUniqueCode;
 
         // Update nominal displays
@@ -6268,7 +6352,7 @@ ${inviteEmailValues.map((email, index) => `  ${index + 1}. ${email}`).join('\n')
         const totalPayment = currentPackage.price + currentUniqueCode;
         const formatWaRupiah = (number) => formatRupiah(number).replace(/^Rp/, 'Rp ');
         const garansiText = {
-          A: 'Garansi sampai akun berhasil klaim paket (maks. 1x24 jam)',
+          A: 'Garansi klaim maksimal 1x24 jam, hanya sampai paket berhasil aktif. Setelah aktif tidak ada garansi, termasuk jika paket dicabut oleh JIO',
           C: 'Garansi layanan 1 bulan',
           D: 'Garansi layanan 1 bulan'
         }[currentPackage.id] || 'Mengikuti ketentuan garansi di website';
