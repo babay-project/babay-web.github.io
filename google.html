@@ -1581,31 +1581,81 @@
     }
     .qty-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(5, 1fr);
       gap: 8px;
     }
     .qty-option {
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 10px 8px;
-      background: rgba(255,255,255,0.02);
+      padding: 10px 6px;
+      background: rgba(255,255,255,0.025);
       color: var(--muted);
       font-family: inherit;
       font-weight: 900;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s;
     }
+
+    /* Qty 2–5: isi tetap gelap, hanya frame tipis yang bergerak */
+    .qty-option[data-qty="2"],
+    .qty-option[data-qty="3"],
+    .qty-option[data-qty="4"],
+    .qty-option[data-qty="5"] {
+      border: 1px solid transparent;
+      color: #fff;
+      background:
+        linear-gradient(#11131d, #11131d) padding-box,
+        linear-gradient(110deg, #7c5b08, #fbbf24, #fff1a8, #d99100, #7c5b08) border-box;
+      background-size: 100% 100%, 300% 300%;
+      animation: qtyFrameFlow 3.2s linear infinite;
+      box-shadow: none;
+    }
+
+    @keyframes qtyFrameFlow {
+      0% { background-position: 0 0, 0% 50%; }
+      100% { background-position: 0 0, 300% 50%; }
+    }
+
     .qty-option small {
       display: block;
-      margin-top: 2px;
-      color: var(--dim);
-      font-size: 10.5px;
-      font-weight: 800;
+      margin-top: 3px;
+      color: #fde68a;
+      font-size: 9.5px;
+      font-weight: 900;
+      line-height: 1.25;
     }
-    .qty-option:hover, .qty-option.active {
+    .qty-option[data-qty="1"] small { color: var(--dim); }
+
+    .qty-option:hover {
       color: #fff;
-      border-color: rgba(251, 191, 36, 0.45);
-      background: rgba(251, 191, 36, 0.09);
+      transform: translateY(-1px);
+    }
+
+    .qty-option.active {
+      color: #fff;
+      background:
+        linear-gradient(#181a27, #181a27) padding-box,
+        linear-gradient(110deg, #b77900, #fbbf24, #fff5c2, #f59e0b, #b77900) border-box;
+      border-color: transparent;
+    }
+
+    .qty-option[data-qty="1"].active {
+      border-color: rgba(251, 191, 36, 0.72);
+      background: rgba(251, 191, 36, 0.11);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .qty-option[data-qty="2"],
+      .qty-option[data-qty="3"],
+      .qty-option[data-qty="4"],
+      .qty-option[data-qty="5"] {
+        animation: none;
+      }
+    }
+    @media (max-width: 520px) {
+      .qty-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 5px; }
+      .qty-option { padding: 9px 3px; font-size: 12px; }
+      .qty-option small { font-size: 8px; }
     }
     .bulk-save-row {
       display: none;
@@ -4723,7 +4773,7 @@
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               </svg>
-              <span>Garansi sampai berhasil klaim (maks. 1x24 jam)</span>
+              <span>Garansi JIO hanya sampai paket aktif (maks. 1x24 jam)</span>
               <span class="badge-status-online">● Ready</span>
             </div>
           </div>
@@ -4804,7 +4854,7 @@
                 <li><span class="icon-chk text-green">✓</span><span>Akses Antigravity Plan Pro.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>1.000+ AI Flow Credits.</span></li>
                 <li><span class="icon-chk text-green">✓</span><span>Tutorial klaim via YouTube BabayShop.</span></li>
-                <li><span class="icon-chk text-indigo">✓</span><span class="text-glow-indigo">Garansi sampai akun berhasil klaim paket (maks. 1x24 jam).</span></li>
+                <li><span class="icon-chk text-indigo">✓</span><span class="text-glow-indigo">Garansi maksimal 1x24 jam hanya sampai paket berhasil aktif. Setelah paket aktif, garansi berakhir dan tidak berlaku jika paket kemudian dicabut atau dinonaktifkan oleh JIO.</span></li>
               </ul>
               <div class="pkg-stock-status text-green">
                 <span class="stock-dot pulse"></span>
@@ -4812,7 +4862,6 @@
               </div>
               <div class="pkg-actions">
                 <button class="btn btn-primary btn-block btn-buy" data-id="A" data-name="Voucher JIO Max Durasi 18B" data-price="52000" type="button">Beli Sekarang</button>
-                <button class="btn btn-bulk btn-block btn-bulk-order" data-id="A" data-name="Voucher JIO Max Durasi 18B" data-price="52000" data-bulk-qty="2" type="button">Pesan Bulk Hemat</button>
                 <a class="pkg-tutorial-link" href="https://youtu.be/j1EfO8NGXvI" target="_blank" rel="noopener">Lihat tutorial klaim Jio →</a>
                 <a class="pkg-tutorial-link" href="https://babay.web.id/jio" target="_blank" rel="noopener">Baca diskusi →</a>
               </div>
@@ -4858,7 +4907,6 @@
               </div>
               <div class="pkg-actions">
                 <button class="btn btn-primary btn-block btn-buy" data-id="C" data-name="AI PRO 12 Bulan Pixel Head" data-price="86000" type="button">Beli Sekarang</button>
-                <button class="btn btn-bulk btn-block btn-bulk-order" data-id="C" data-name="AI PRO 12 Bulan Pixel Head" data-price="86000" data-bulk-qty="2" type="button">Pesan Bulk Hemat</button>
                 <a class="pkg-tutorial-link" href="https://babay.web.id/pixel.html" target="_blank" rel="noopener">Baca diskusi →</a>
                 <a class="pkg-tutorial-link" href="https://babay.web.id/snk/pixel" target="_blank" rel="noopener">S&K Pixel Head →</a>
               </div>
@@ -4904,7 +4952,6 @@
               </div>
               <div class="pkg-actions">
                 <button class="btn btn-primary btn-block btn-buy" data-id="D" data-name="Invite Email 12 Bulan" data-price="35000" type="button">Beli Sekarang</button>
-                <button class="btn btn-bulk btn-block btn-bulk-order" data-id="D" data-name="Invite Email 12 Bulan" data-price="35000" data-bulk-qty="3" type="button">Pesan Bulk Hemat</button>
               </div>
             </div>
           </article>
@@ -5017,7 +5064,7 @@
             <h3>Kebijakan Garansi BabayShop</h3>
           </div>
           <p style="font-size: 14.5px; color: #fae8ff; line-height: 1.65; margin-bottom: 12px;">
-            Garansi transparan BabayShop berkomitmen memberikan rasa aman. Voucher JIO bergaransi sampai akun berhasil klaim paket (maks. 1x24 jam), sedangkan Pixel Head dan Invite mengikuti masa garansi layanan yang tertulis pada masing-masing paket. Jika ada kendala dalam masa garansi, pembeli bisa langsung menghubungi admin untuk proses pengecekan dan penyelesaian.
+            Garansi transparan BabayShop berkomitmen memberikan rasa aman. Voucher JIO bergaransi maksimal 1x24 jam hanya sampai paket berhasil aktif. Setelah paket aktif, garansi Voucher JIO otomatis berakhir; tidak ada garansi apabila paket kemudian dicabut atau dinonaktifkan oleh pihak JIO. Pixel Head dan Invite mengikuti masa garansi layanan yang tertulis pada masing-masing paket. Jika ada kendala dalam masa garansi, pembeli bisa langsung menghubungi admin untuk proses pengecekan dan penyelesaian.
           </p>
           <p style="font-size: 13.5px; color: var(--muted); line-height: 1.6;">
             <strong>Penting:</strong> Garansi hanya berlaku untuk masalah pada paket Google AI Pro selama masih berada dalam masa dan ketentuan garansi layanan. Garansi tidak berlaku jika keluar dari family group sendiri, mengganti pengaturan tanpa arahan admin, atau terjadi perubahan kebijakan Google yang berada di luar kendali BabayShop.
@@ -5333,9 +5380,10 @@
               <label>Jumlah Pembelian</label>
               <div class="qty-grid" id="qtyGrid">
                 <button class="qty-option active" type="button" data-qty="1">1<small>Satuan</small></button>
-                <button class="qty-option" type="button" data-qty="2">2<small>Bulk</small></button>
-                <button class="qty-option" type="button" data-qty="3">3<small>Hemat</small></button>
-                <button class="qty-option" type="button" data-qty="5">5<small>Reseller</small></button>
+                <button class="qty-option" type="button" data-qty="2">2<small class="qty-discount-label">Diskon</small></button>
+                <button class="qty-option" type="button" data-qty="3">3<small class="qty-discount-label">Diskon</small></button>
+                <button class="qty-option" type="button" data-qty="4">4<small class="qty-discount-label">Diskon</small></button>
+                <button class="qty-option" type="button" data-qty="5">5<small class="qty-discount-label">Diskon</small></button>
               </div>
             </div>
 
@@ -5578,9 +5626,9 @@
       };
 
       const BULK_HARGA = {
-        A: { 1: 52000, 2: 98000, 3: 144000, 5: 230000 },
-        C: { 1: 86000, 2: 160000, 3: 230000, 5: 360000 },
-        D: { 1: 35000, 2: 65000, 3: 90000, 5: 150000 }
+        A: { 1: 52000, 2: 98000, 3: 144000, 4: 188000, 5: 230000 },
+        C: { 1: 86000, 2: 160000, 3: 230000, 4: 300000, 5: 360000 },
+        D: { 1: 35000, 2: 65000, 3: 90000, 4: 120000, 5: 150000 }
       };
 
       /* ==========================================================================
@@ -5961,8 +6009,8 @@
       }
 
       function configureQtyOptions(packageId) {
-        const maxQty = packageId === 'D' ? 3 : 5;
-        if (qtyGrid) qtyGrid.style.gridTemplateColumns = packageId === 'D' ? 'repeat(3, 1fr)' : '';
+        const maxQty = 5;
+        if (qtyGrid) qtyGrid.style.gridTemplateColumns = 'repeat(5, 1fr)';
 
         qtyButtons.forEach(btn => {
           const qty = Number(btn.getAttribute('data-qty'));
@@ -5970,6 +6018,17 @@
           btn.style.display = shouldHide ? 'none' : '';
           btn.disabled = shouldHide;
           if (shouldHide) btn.classList.remove('active');
+
+          const label = btn.querySelector('.qty-discount-label');
+          if (label && qty > 1) {
+            const unitPrice = PAKET_HARGA[packageId]?.hargaPromo || 0;
+            const normalTotal = unitPrice * qty;
+            const promoTotal = getPackageTotal(packageId, qty);
+            const discountPct = normalTotal > 0
+              ? Math.round(((normalTotal - promoTotal) / normalTotal) * 100)
+              : 0;
+            label.textContent = discountPct > 0 ? `Diskon ${discountPct}%` : 'Harga Paket';
+          }
         });
       }
 
@@ -5983,7 +6042,7 @@
 
         if (!currentPackage || currentPackage.id !== 'D') return;
 
-        const safeQty = Math.min(Math.max(Number(qty) || 1, 1), 3);
+        const safeQty = Math.min(Math.max(Number(qty) || 1, 1), 5);
         inputEmail.placeholder = 'email invite 1@gmail.com';
         inputEmail.disabled = false;
 
@@ -6012,7 +6071,7 @@
       function updateCheckoutQuantity(qty) {
         if (!currentPackage) return;
 
-        const maxQty = currentPackage.id === 'D' ? 3 : 5;
+        const maxQty = 5;
         const safeQty = Math.min(Math.max(Number(qty) || 1, 1), maxQty);
         currentPackage.qty = safeQty;
         recalculateCheckoutPrice();
@@ -6041,7 +6100,7 @@
         const id = btn.getAttribute('data-id');
         const name = btn.getAttribute('data-name');
         const unitPrice = PAKET_HARGA[id]?.hargaPromo || parseInt(btn.getAttribute('data-price'));
-        const maxQty = id === 'D' ? 3 : 5;
+        const maxQty = 5;
         const safeDefaultQty = Math.min(Math.max(Number(defaultQty) || 1, 1), maxQty);
 
         currentPackage = {
@@ -6089,7 +6148,7 @@
           setEmailLabel('Email Aktivasi / Invite');
           emailRequiredStar.style.display = 'none';
           checkoutStepDesc.textContent = 'Lanjutkan pembelian Paket JIO dan pilih metode pembayaran yang tersedia.';
-          if (labelCheckAgree) labelCheckAgree.textContent = 'Saya telah membaca, memahami, dan menyetujui detail ketentuan risiko, garansi, serta persyaratan paket ini.';
+          if (labelCheckAgree) labelCheckAgree.textContent = 'Saya memahami garansi Voucher JIO maksimal 1x24 jam hanya sampai paket aktif. Setelah aktif tidak ada garansi, termasuk jika paket dicabut atau dinonaktifkan oleh JIO.';
           inputEmail.disabled = true;
           inputEmail.value = '';
           inputEmail.parentElement.classList.remove('error');
@@ -6116,11 +6175,6 @@
       const buyBtns = document.querySelectorAll('.btn-buy');
       buyBtns.forEach(btn => {
         btn.addEventListener('click', () => openCheckoutFromButton(btn, 1));
-      });
-
-      const bulkBtns = document.querySelectorAll('.btn-bulk-order');
-      bulkBtns.forEach(btn => {
-        btn.addEventListener('click', () => openCheckoutFromButton(btn, Number(btn.getAttribute('data-bulk-qty')) || 2));
       });
 
       // Close Checkout Modal helper
@@ -6199,8 +6253,8 @@
         const randomId = Math.floor(1000000 + Math.random() * 9000000);
         qrisTxId.textContent = `TX-${randomId}`;
 
-        // Generate 3 digit unique code
-        currentUniqueCode = Math.floor(100 + Math.random() * 900);
+        // Generate kode unik 501–998 (selalu di atas 500 dan di bawah 999)
+        currentUniqueCode = Math.floor(501 + Math.random() * 498);
         const totalPrice = currentPackage.price + currentUniqueCode;
 
         // Update nominal displays
