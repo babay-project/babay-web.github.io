@@ -1495,26 +1495,28 @@ ${accountBlocks}
     ⚠️ CARA LOGIN & CEK PAKET
     
     1. Masukkan email akun di kolom chat (bagian kolom bawah), lalu lanjutkan dengan memasukkan password.
-    2. Jika diminta kode One Time Code (OTP), ambil kode melalui link di atas sesuai akun yang digunakan.
-    (Untuk Otp mfa ini seringkali gagal, bisa kalian refresh browser/web, ganti browser, clear chace, dll)
-    jika masih kesusahan masuk boleh chat admin, kita bantu login & ganti email ke email kalian
-    3. Setelah berhasil masuk, cek bagian Pengaturan / Penagihan untuk memastikan plan sudah Plus.
+    2. Jika diminta kode One Time Password (OTP), ambil kode melalui link di atas sesuai akun yang digunakan.
+       - Catatan: Jika OTP MFA sering gagal, Anda bisa refresh browser/web, ganti browser, atau clear cache.
+       - Jika masih kesulitan masuk, silakan chat admin. Kami akan membantu proses login dan mengganti akun ke email Anda.
+    3. Setelah berhasil masuk, cek bagian Pengaturan / Penagihan untuk memastikan plan sudah "Plus".
     4. Jika plan sudah aktif, akun siap digunakan seperti biasa.
    
     🔐 PANDUAN MENGAMANKAN AKUN (WAJIB BACA!)
     
     Akun yang kami jual berasal dari supplier luar negeri, sehingga kami tidak bisa menjamin keamanan database di pihak mereka. Demi keamanan, kami sangat menyarankan Anda segera mengamankan akun dengan salah satu cara berikut setelah login pertama:
     
-    Cara 1 — Ganti Kode MFA (Two-Factor Authentication)
+
+    
+    Ganti Email Akun
+    • Ganti email login ke email pribadi Anda agar data backup aman.
+    • Tutorial: https://youtu.be/3snOAyLeSY8
+    • Link alternatif: https://babay.web.id/url/change-gmail-gpt
+
+    Ganti Kode MFA (harus cepat prosesnya)
     • Aktifkan / ganti MFA agar akun terlindungi dari akses orang lain.
     • Tutorial: https://youtu.be/PKeFOvvf_wA
     
-    Cara 2 — Ganti Email Akun
-    • Ganti email login ke email pribadi Anda agar akun sepenuhnya milik Anda.
-    • Tutorial: https://youtu.be/3snOAyLeSY8
-    • Link alternatif: https://babay.web.id/url/change-gmail-gpt
-    
-    Dengan mengganti email dan/atau mengaktifkan MFA, risiko akun diambil alih orang lain akan jauh lebih kecil. Lakukan sesegera mungkin.
+    Dengan mengganti email dan atau mengaktifkan MFA, risiko akun diambil orang lain akan jauh lebih kecil. Lakukan sesegera mungkin.
     
     ⚠️ ATURAN PENGGUNAAN AKUN
     • Jika ingin menggunakan fitur Codex, akun mungkin diminta verifikasi nomor WhatsApp/SMS. Gunakan nomor aktif yang bisa Anda akses, atau gunakan layanan OTP SMS luar negeri.
@@ -1804,7 +1806,7 @@ ${accountBlocks}
           const secret = account.secret.replace(/\s+/g, '');
           const encodedSecret = encodeURIComponent(secret);
           const heading = currentLanguage === 'id' ? `#Akun_${index + 1}` : `#Account_${index + 1}`;
-          return `🔐 ${heading}\n📧 Email: ${account.email}\n🔑 Password: ${account.password}\n🛡️ Secret Key: ${secret}\n🔗 Link MFA 1: https://babay.web.id/2fa/?key=${encodedSecret}\n🔗 Link MFA 2: https://2fa.fb.tools/${encodedSecret}\n---------------`;
+          return `🔐 ${heading}\n📧 Email: ${account.email}\n🔑 Password: ${account.password}\n🛡️ Secret Key: ${secret}\n🔗 Link MFA (v.3) : https://2fa.fb.tools/${encodedSecret}\n---------------`;
         }).join('\n\n');
       };
     
