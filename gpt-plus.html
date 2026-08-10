@@ -1038,7 +1038,7 @@
       return accounts.map((account, index) => {
         const secret = account.secret.replace(/\s+/g, '');
         const encodedSecret = encodeURIComponent(secret);
-        return `🔐 #Akun_${index + 1}\n📧 Email: ${account.email}\n🔑 Password: ${account.password}\n🛡️ Secret Key: ${secret}\n🔗 Link MFA 1: https://babay.web.id/2fa/?key=${encodedSecret}\n🔗 Link MFA 2: https://babayshop.id/2fa/?key=${encodedSecret}\n---------------`;
+        return `🔐 #Akun_${index + 1}\n📧 Email: ${account.email}\n🔑 Password: ${account.password}\n🛡️ Secret Key: ${secret}\n🔗 Link MFA 1: https://babay.web.id/2fa/?key=${encodedSecret}\n🔗 Link MFA 2: https://2fa.fb.tools/${encodedSecret}\n---------------`;
       }).join('\n\n');
     }
 
@@ -1802,7 +1802,7 @@ ${accountBlocks}
           const secret = account.secret.replace(/\s+/g, '');
           const encodedSecret = encodeURIComponent(secret);
           const heading = currentLanguage === 'id' ? `#Akun_${index + 1}` : `#Account_${index + 1}`;
-          return `🔐 ${heading}\n📧 Email: ${account.email}\n🔑 Password: ${account.password}\n🛡️ Secret Key: ${secret}\n🔗 Link MFA 1: https://babay.web.id/2fa/?key=${encodedSecret}\n🔗 Link MFA 2: https://babayshop.id/2fa/?key=${encodedSecret}\n---------------`;
+          return `🔐 ${heading}\n📧 Email: ${account.email}\n🔑 Password: ${account.password}\n🛡️ Secret Key: ${secret}\n🔗 Link MFA 1: https://babay.web.id/2fa/?key=${encodedSecret}\n🔗 Link MFA 2: https://2fa.fb.tools/${encodedSecret}\n---------------`;
         }).join('\n\n');
       };
     
@@ -2028,7 +2028,7 @@ ${accountBlocks}
         const secret=keyMatch ? decodeURIComponent(keyMatch[1]).replace(/\s+/g,'') : (/^https?:\/\//i.test(raw) ? '' : raw.replace(/\s+/g,''));
         const encodedSecret=secret ? encodeURIComponent(secret) : '';
         const link1=secret ? `https://babay.web.id/2fa/?key=${encodedSecret}` : pkgAccessLink(raw);
-        const link2=secret ? `https://babayshop.id/2fa/?key=${encodedSecret}` : '';
+        const link2=secret ? `https://2fa.fb.tools/${encodedSecret}` : '';
         return `🔐 #Akun_${i+1}\n📧 Email: ${a.email}\n🔑 Password: ${a.password}${secret?`\n🛡️ Secret Key: ${secret}`:''}${link1?`\n🔗 Link MFA 1: ${link1}`:''}${link2?`\n🔗 Link MFA 2: ${link2}`:''}\n---------------`;
       }).join('\n\n');
     }
