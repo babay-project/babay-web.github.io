@@ -207,12 +207,17 @@
     
     textarea.output-field {
       min-height: 650px;
-      padding: 18px;
+      padding: 22px;
       resize: vertical;
-      font-family: "Courier New", Courier, monospace;
-      font-size: 13px;
-      line-height: 1.58;
+      font-family: "Cascadia Code", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      font-size: 13.5px;
+      line-height: 1.68;
+      letter-spacing: .01em;
       white-space: pre;
+      tab-size: 2;
+      background: linear-gradient(180deg, #101217 0%, #0c0e12 100%);
+      border-color: #30343d;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
     }
     
     textarea.output-field[readonly] {
@@ -1031,9 +1036,19 @@
     
     function buildAccountBlocks(accounts) {
       return accounts.map((account, index) => {
-        const mfaLink = `https://babay.web.id/2fa/?key=${encodeURIComponent(account.secret)}`;
-        return `#Akun_${index + 1}\nEmail   : ${account.email}\nPassword: ${account.password}\nLink MFA: ${mfaLink}\n----------------------------------`;
-      }).join('\n');
+        const secret = account.secret.replace(/\s+/g, '');
+        const encodedSecret = encodeURIComponent(secret);
+        return `🔐 #Akun_${index + 1}\n📧 Email: ${account.email}\n🔑 Password: ${account.password}\n🛡️ Secret Key: ${secret}\n🔗 Link MFA 1: https://babay.web.id/2fa/?key=${encodedSecret}\n🔗 Link MFA 2: https://babayshop.id/2fa/?key=${encodedSecret}\n---------------`;
+      }).join('\n\n');
+    }
+
+    function normalizeReceiptText(text) {
+      return text
+        .split('\n')
+        .map(line => line.trim())
+        .join('\n')
+        .replace(/\n{3,}/g, '\n\n')
+        .trim();
     }
     
     function scheduleAutoGenerate() {
@@ -1100,15 +1115,15 @@
       const extraNote = document.getElementById('inNote').value.trim();
     
       let text =
-    `PESANAN CHATGPT PLUS BERHASIL
-    ----------------------------------
-    Tgl Beli: ${tglFormatted}
-    Durasi  : ${labelDurasiTeks}
-    Methode : ${method}
-    
-    Garansi : ${garansiTeks}
-    ----------------------------------
-    ${accountBlocks}
+    `✅ PESANAN CHATGPT PLUS BERHASIL
+---------------
+📅 Tgl Beli: ${tglFormatted}
+⏳ Durasi: ${labelDurasiTeks}
+💳 Metode: ${method}
+🛡️ Garansi: ${garansiTeks}
+---------------
+
+${accountBlocks}
     
     ⚠️ CARA LOGIN DAN CEK PAKET:
     
@@ -1116,7 +1131,6 @@
     2. Jika saat login diminta kode One Time Code, ambil kode melalui link di atas sesuai akun yang digunakan.
     3. Setelah berhasil masuk, silakan cek bagian pengaturan / penagihan terlebih dahulu untuk memastikan plan sudah Plus.
     4. Jika plan sudah aktif, akun sudah bisa digunakan seperti biasa.
-    ----------------------------------
     
     ⚠️ ATURAN PENGGUNAAN AKUN:
     • Segera ganti password akun. Penggantian password tidak memerlukan verifikasi email.
@@ -1128,7 +1142,6 @@
     • Dilarang mengubah data Billing / Payment atau Plan akun karena dapat memicu verifikasi ulang.
     • Dilarang keras menggunakan proxy, router, atau layanan lain yang tidak diizinkan oleh OpenAI, termasuk 9router dan layanan sejenis.
     • Dilarang menggunakan tools pihak ketiga yang mengambil API, cookies, token, atau akses akun dengan cara tidak resmi.
-    ----------------------------------
     
     🛡️ KETENTUAN GARANSI:
     • ${garansiNote} Lebih dari itu diluar tanggung jawab kami.
@@ -1137,8 +1150,8 @@
     • Garansi hangus apabila akun terdeteksi digunakan secara berlebihan, spam, dipakai secara massal, menggunakan cookies/token, API/tools pihak ketiga, proxy/router terlarang, atau mengubah pengaturan.
     • Jika akun terkena deactivated, banned, terkunci, atau bermasalah karena terdapat unsur kesalahan pengguna, maka hal tersebut berada di luar tanggung jawab kami sebagai penyedia.
     • Dengan membeli dan menggunakan jasa ini, pembeli berarti sudah membaca, memahami, dan menyetujui aturan penggunaan serta ketentuannya.
-    Terima kasih...
-    ----------------------------------`;
+    
+    🙏 Terima kasih...`;
     
       if (extraNote) {
         text += `\n\nCATATAN TAMBAHAN:\n${extraNote}`;
@@ -1148,7 +1161,7 @@
       const resultCard = document.getElementById('resultCard');
       const editBtn = document.getElementById('editBtn');
     
-      output.value = text;
+      output.value = normalizeReceiptText(text);
       output.setAttribute('readonly', true);
       resultCard.classList.remove('hidden');
       document.getElementById('resultCountBadge').textContent = `${accounts.length} akun`;
@@ -1338,17 +1351,17 @@
           noWarrantyNote: 'The product has no warranty after the account has been received and successfully logged in.',
           dayWarrantyNote: days => `Subject to the full ${days}-day warranty description.`,
           custom: 'Custom',
-          receipt: ({date, duration, method, warranty, accountBlocks, warrantyNote, extraNote}) => `CHATGPT PLUS ORDER SUCCESSFUL
-    ----------------------------------
-    Purchase Date : ${date}
-    Duration      : ${duration}
-    Method        : ${method}
+          receipt: ({date, duration, method, warranty, accountBlocks, warrantyNote, extraNote}) => `✅ CHATGPT PLUS ORDER SUCCESSFUL
+---------------
+📅 Purchase Date: ${date}
+⏳ Duration: ${duration}
+💳 Method: ${method}
+🛡️ Warranty: ${warranty}
+---------------
+
+${accountBlocks}
     
-    Warranty      : ${warranty}
-    ----------------------------------
-    ${accountBlocks}
-    
-    MUST READ !!!
+    📢 MUST READ !!!
     
     ⚠️ HOW TO LOG IN & CHECK THE PLAN
     
@@ -1356,7 +1369,6 @@
     2. If a One-Time Code (OTP) is requested, retrieve it using the link above for the account being used.
     3. After signing in, check Settings / Billing to make sure the plan is already Plus.
     4. Once the plan is active, the account is ready to use normally.
-    ----------------------------------
     
     🔐 ACCOUNT SECURITY GUIDE (MUST READ!)
     
@@ -1372,7 +1384,6 @@
     • Alternative link: https://babay.web.id/url/change-gmail-gpt
     
     Changing the email and/or enabling MFA greatly reduces the risk of the account being taken over. Do this as soon as possible.
-    ----------------------------------
     
     ⚠️ ACCOUNT USAGE RULES
     • Codex may request WhatsApp/SMS number verification. Use an active number you can access, or use an overseas SMS OTP service.
@@ -1380,7 +1391,6 @@
     • Do not change the account's Billing/Payment details or plan, as this may trigger payment re-verification.
     • Do not use proxies, routers, or other services prohibited by OpenAI, including 9router and similar services.
     • Do not use third-party tools that obtain APIs, cookies, tokens, or account access through unofficial methods.
-    ----------------------------------
     
     🛡️ WARRANTY TERMS
     • ${warrantyNote} Anything beyond that is outside our responsibility.
@@ -1390,8 +1400,8 @@
     • The warranty is void if the account is used excessively, spammed, accessed from too many devices, shared, connected through cookies/tokens, APIs or third-party tools, prohibited proxies/routers, or modified settings.
     • Deactivation, bans, locks, or other problems caused by user actions are outside our responsibility as the provider.
     • By purchasing and using this service, the buyer confirms that they have read, understood, and accepted all usage rules and terms.
-    Thank you...
-    ----------------------------------${extraNote ? `
+    
+    🙏 Thank you...${extraNote ? `
     
     ADDITIONAL NOTES:
     ${extraNote}` : ''}`
@@ -1470,17 +1480,17 @@
           noWarrantyNote: 'Produk tidak memiliki garansi setelah akun berhasil diterima dan login.',
           dayWarrantyNote: days => `Sesuai deskripsi garansi full ${days} hari.`,
           custom: 'Custom',
-          receipt: ({date, duration, method, warranty, accountBlocks, warrantyNote, extraNote}) => `PESANAN CHATGPT PLUS BERHASIL
-    ----------------------------------
-    Tgl Beli: ${date}
-    Durasi  : ${duration}
-    Methode : ${method}
+          receipt: ({date, duration, method, warranty, accountBlocks, warrantyNote, extraNote}) => `✅ PESANAN CHATGPT PLUS BERHASIL
+---------------
+📅 Tgl Beli: ${date}
+⏳ Durasi: ${duration}
+💳 Metode: ${method}
+🛡️ Garansi: ${warranty}
+---------------
+
+${accountBlocks}
     
-    Garansi : ${warranty}
-    ----------------------------------
-    ${accountBlocks}
-    
-    WAJIB BACA !!!
+    📢 WAJIB BACA !!!
     
     ⚠️ CARA LOGIN & CEK PAKET
     
@@ -1488,8 +1498,7 @@
     2. Jika diminta kode One Time Code (OTP), ambil kode melalui link di atas sesuai akun yang digunakan.
     3. Setelah berhasil masuk, cek bagian Pengaturan / Penagihan untuk memastikan plan sudah Plus.
     4. Jika plan sudah aktif, akun siap digunakan seperti biasa.
-    ----------------------------------
-    
+   
     🔐 PANDUAN MENGAMANKAN AKUN (WAJIB BACA!)
     
     Akun yang kami jual berasal dari supplier luar negeri, sehingga kami tidak bisa menjamin keamanan database di pihak mereka. Demi keamanan, kami sangat menyarankan Anda segera mengamankan akun dengan salah satu cara berikut setelah login pertama:
@@ -1504,7 +1513,6 @@
     • Link alternatif: https://babay.web.id/url/change-gmail-gpt
     
     Dengan mengganti email dan/atau mengaktifkan MFA, risiko akun diambil alih orang lain akan jauh lebih kecil. Lakukan sesegera mungkin.
-    ----------------------------------
     
     ⚠️ ATURAN PENGGUNAAN AKUN
     • Jika ingin menggunakan fitur Codex, akun mungkin diminta verifikasi nomor WhatsApp/SMS. Gunakan nomor aktif yang bisa Anda akses, atau gunakan layanan OTP SMS luar negeri.
@@ -1512,8 +1520,7 @@
     • Dilarang mengubah data Billing/Payment atau plan akun karena dapat memicu verifikasi pembayaran ulang.
     • Dilarang keras menggunakan proxy, router, atau layanan lain yang tidak diizinkan oleh OpenAI, termasuk 9router dan layanan sejenis.
     • Dilarang menggunakan tools pihak ketiga yang mengambil API, cookies, token, atau akses akun dengan cara tidak resmi.
-    ----------------------------------
-    
+   
     🛡️ KETENTUAN GARANSI
     • ${warrantyNote} Lebih dari itu di luar tanggung jawab kami.
     • Metode pembayaran wajib valid agar tembus offer GPT Plus 1 month trial.
@@ -1522,8 +1529,8 @@
     • Garansi hangus apabila akun terdeteksi digunakan secara berlebihan, spam, dipakai banyak perangkat, dibagikan ke orang lain, menggunakan cookies/token, API/tools pihak ketiga, proxy/router terlarang, atau mengubah pengaturan.
     • Jika akun terkena deactivated, banned, terkunci, atau bermasalah karena terdapat unsur kesalahan pengguna, maka hal tersebut berada di luar tanggung jawab kami sebagai penyedia.
     • Dengan membeli dan menggunakan jasa ini, pembeli berarti sudah membaca, memahami, dan menyetujui aturan penggunaan serta ketentuannya.
-    Terima kasih...
-    ----------------------------------${extraNote ? `
+   
+    🙏 Terima kasih...${extraNote ? `
     
     CATATAN TAMBAHAN:
     ${extraNote}` : ''}`
@@ -1792,10 +1799,11 @@
     
       window.buildAccountBlocks = function(accounts) {
         return accounts.map((account, index) => {
-          const mfaLink = `https://babay.web.id/2fa/?key=${encodeURIComponent(account.secret)}`;
+          const secret = account.secret.replace(/\s+/g, '');
+          const encodedSecret = encodeURIComponent(secret);
           const heading = currentLanguage === 'id' ? `#Akun_${index + 1}` : `#Account_${index + 1}`;
-          return `${heading}\nEmail   : ${account.email}\nPassword: ${account.password}\nLink MFA: ${mfaLink}\n----------------------------------`;
-        }).join('\n');
+          return `🔐 ${heading}\n📧 Email: ${account.email}\n🔑 Password: ${account.password}\n🛡️ Secret Key: ${secret}\n🔗 Link MFA 1: https://babay.web.id/2fa/?key=${encodedSecret}\n🔗 Link MFA 2: https://babayshop.id/2fa/?key=${encodedSecret}\n---------------`;
+        }).join('\n\n');
       };
     
       window.generateNota = function(isAutomatic = false) {
@@ -1865,7 +1873,7 @@
         const resultCard = document.getElementById('resultCard');
         const editBtn = document.getElementById('editBtn');
     
-        output.value = text;
+        output.value = normalizeReceiptText(text);
         output.setAttribute('readonly', true);
         resultCard.classList.remove('hidden');
         document.getElementById('resultCountBadge').textContent = accountLabel(accounts.length);
@@ -2015,8 +2023,13 @@
     }
     function pkgBuildAccounts(accounts) {
       return accounts.map((a,i)=>{
-        const link=pkgAccessLink(a.access);
-        return `#Akun_${i+1}\n▰ Email : ${a.email}\n▰ Password : ${a.password}${link?`\n▰ Link OTP / MFA : ${link}`:''}`;
+        const raw=a.access.trim();
+        const keyMatch=raw.match(/[?&]key=([^&#]+)/i);
+        const secret=keyMatch ? decodeURIComponent(keyMatch[1]).replace(/\s+/g,'') : (/^https?:\/\//i.test(raw) ? '' : raw.replace(/\s+/g,''));
+        const encodedSecret=secret ? encodeURIComponent(secret) : '';
+        const link1=secret ? `https://babay.web.id/2fa/?key=${encodedSecret}` : pkgAccessLink(raw);
+        const link2=secret ? `https://babayshop.id/2fa/?key=${encodedSecret}` : '';
+        return `🔐 #Akun_${i+1}\n📧 Email: ${a.email}\n🔑 Password: ${a.password}${secret?`\n🛡️ Secret Key: ${secret}`:''}${link1?`\n🔗 Link MFA 1: ${link1}`:''}${link2?`\n🔗 Link MFA 2: ${link2}`:''}\n---------------`;
       }).join('\n\n');
     }
     function pkgLoginInstruction(hasMissingLink=false) {
@@ -2058,7 +2071,7 @@
         }
       }
     
-      let output=`╭────〔 BABAYSHOP.MY.ID 〕────\n┊・Item : ${item}\n┊・Type : ${typeLabel}\n┊・Order Date : ${pkgDateText(pkgDate(order))}\n┊・Durasi : ${duration.label}\n┊・Masa Aktif s/d : ${pkgAddDays(order,duration.days)}\n┊・Garansi : ${warranty.line}\n╰────────────────────\n\n📦 DATA AKSES:\n${data}\n\n╰────────────────────\n\n${instructions}\n\n🛡️ GARANSI:\n• ${warranty.sentence}\n• Garansi hanya mencakup kendala paket seperti plan hilang atau kembali ke Free yang bukan disebabkan kesalahan pengguna.\n• Garansi hangus jika akun digunakan berlebihan, spam, dibagikan tidak sesuai paket, menggunakan cookies/token/API/tools pihak ketiga, proxy/router terlarang, atau pengaturan akun diubah.\n• Jika akun deactivated, banned, atau terkunci akibat kesalahan pengguna, hal tersebut di luar tanggung jawab penyedia.\n• Dengan menggunakan akun, pembeli dianggap memahami dan menyetujui ketentuan ini.${extra?`\n\n📝 CATATAN TAMBAHAN:\n${extra}`:''}\n\n🌐 Info lengkap: https://babayshop.my.id/gpt/`;
+      let output=`✨ BABAYSHOP.MY.ID\n\n📦 Item: ${item}\n🏷️ Tipe: ${typeLabel}\n📅 Tanggal Order: ${pkgDateText(pkgDate(order))}\n⏳ Durasi: ${duration.label}\n📆 Aktif s/d: ${pkgAddDays(order,duration.days)}\n🛡️ Garansi: ${warranty.line}\n\n🔐 DATA AKSES\n${data}\n\n${instructions}\n\n🛡️ GARANSI:\n• ${warranty.sentence}\n• Garansi hanya mencakup kendala paket seperti plan hilang atau kembali ke Free yang bukan disebabkan kesalahan pengguna.\n• Garansi hangus jika akun digunakan berlebihan, spam, dibagikan tidak sesuai paket, menggunakan cookies/token/API/tools pihak ketiga, proxy/router terlarang, atau pengaturan akun diubah.\n• Jika akun deactivated, banned, atau terkunci akibat kesalahan pengguna, hal tersebut di luar tanggung jawab penyedia.\n• Dengan menggunakan akun, pembeli dianggap memahami dan menyetujui ketentuan ini.${extra?`\n\n📝 CATATAN TAMBAHAN:\n${extra}`:''}\n\n🌐 Info lengkap: https://babayshop.my.id/gpt/`;
     
       document.getElementById('pkgOutput').value=output;
       document.getElementById('pkgResultBadge').textContent=`${count} akun`;
