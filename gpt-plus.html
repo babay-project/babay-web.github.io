@@ -1,7 +1,3 @@
-
-
-
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -31,15 +27,15 @@
       --success-bg: rgba(74, 222, 128, 0.10);
       --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
     }
-
+    
     * {
       box-sizing: border-box;
     }
-
+    
     html {
       color-scheme: dark;
     }
-
+    
     body {
       margin: 0;
       min-height: 100vh;
@@ -51,24 +47,24 @@
       color: var(--text);
       font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-
+    
     button,
     input,
     select,
     textarea {
       font: inherit;
     }
-
+    
     .container {
       width: min(100%, 760px);
       margin: 0 auto;
     }
-
+    
     .header {
       margin-bottom: 18px;
       text-align: center;
     }
-
+    
     .eyebrow {
       display: inline-flex;
       align-items: center;
@@ -84,14 +80,14 @@
       letter-spacing: .12em;
       text-transform: uppercase;
     }
-
+    
     h1 {
       margin: 0;
       font-size: clamp(25px, 5vw, 36px);
       line-height: 1.1;
       letter-spacing: -0.04em;
     }
-
+    
     .subtitle {
       max-width: 620px;
       margin: 11px auto 0;
@@ -99,7 +95,7 @@
       font-size: 13px;
       line-height: 1.65;
     }
-
+    
     .card {
       margin-bottom: 18px;
       padding: 24px;
@@ -109,7 +105,7 @@
       background: linear-gradient(160deg, rgba(28,31,37,.98), rgba(16,18,22,.98));
       box-shadow: var(--shadow);
     }
-
+    
     .card-title {
       display: flex;
       align-items: center;
@@ -117,13 +113,13 @@
       gap: 12px;
       margin-bottom: 20px;
     }
-
+    
     .card-title h2 {
       margin: 0;
       font-size: 16px;
       letter-spacing: -0.01em;
     }
-
+    
     .count-badge {
       padding: 7px 10px;
       border: 1px solid var(--border-light);
@@ -133,21 +129,21 @@
       font-size: 11px;
       font-weight: 700;
     }
-
+    
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 14px;
     }
-
+    
     .group {
       margin-bottom: 15px;
     }
-
+    
     .grid-2 .group {
       margin-bottom: 0;
     }
-
+    
     label {
       display: block;
       margin-bottom: 7px;
@@ -157,7 +153,7 @@
       letter-spacing: .08em;
       text-transform: uppercase;
     }
-
+    
     input,
     select,
     textarea.input-field,
@@ -170,14 +166,14 @@
       color: var(--text);
       transition: border-color .2s ease, box-shadow .2s ease, background .2s ease;
     }
-
+    
     input,
     select,
     textarea.input-field {
       padding: 12px 13px;
       font-size: 14px;
     }
-
+    
     input:focus,
     select:focus,
     textarea.input-field:focus,
@@ -186,29 +182,29 @@
       box-shadow: 0 0 0 3px rgba(255,255,255,.07);
       background: #101217;
     }
-
+    
     input::placeholder,
     textarea::placeholder {
       color: #626875;
     }
-
+    
     select {
       cursor: pointer;
     }
-
+    
     textarea.input-field {
       min-height: 84px;
       resize: vertical;
       line-height: 1.55;
     }
-
+    
     #inBulkAccounts {
       min-height: 230px;
       font-family: "Courier New", Courier, monospace;
       font-size: 13px;
       white-space: pre;
     }
-
+    
     textarea.output-field {
       min-height: 650px;
       padding: 18px;
@@ -218,12 +214,12 @@
       line-height: 1.58;
       white-space: pre;
     }
-
+    
     textarea.output-field[readonly] {
       cursor: default;
       color: #f4f4f5;
     }
-
+    
     .mode-switch {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -234,7 +230,7 @@
       border-radius: 14px;
       background: #0d0f13;
     }
-
+    
     .mode-btn {
       border: 0;
       border-radius: 10px;
@@ -246,32 +242,32 @@
       font-weight: 700;
       transition: .2s ease;
     }
-
+    
     .mode-btn.active {
       background: #e5e7eb;
       color: #111318;
       box-shadow: 0 6px 18px rgba(0,0,0,.28);
     }
-
+    
     .helper {
       margin: 8px 0 0;
       color: var(--muted);
       font-size: 12px;
       line-height: 1.55;
     }
-
+    
     .account-list {
       display: grid;
       gap: 12px;
     }
-
+    
     .account-item {
       padding: 15px;
       border: 1px solid var(--border);
       border-radius: 14px;
       background: #0d0f13;
     }
-
+    
     .account-item-head {
       display: flex;
       align-items: center;
@@ -279,13 +275,13 @@
       gap: 12px;
       margin-bottom: 13px;
     }
-
+    
     .account-item-title {
       color: #e5e7eb;
       font-size: 12px;
       font-weight: 800;
     }
-
+    
     .remove-account-btn {
       padding: 7px 10px;
       border: 1px solid rgba(248,113,113,.28);
@@ -296,24 +292,24 @@
       font-size: 11px;
       font-weight: 800;
     }
-
+    
     .account-fields {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 11px;
     }
-
+    
     .account-fields .full-width {
       grid-column: 1 / -1;
     }
-
+    
     .add-account-btn {
       margin-top: 12px;
       border-color: var(--border-light);
       background: #20232a;
       color: #f3f4f6;
     }
-
+    
     .format-box {
       margin: 10px 0 0;
       padding: 12px 13px;
@@ -327,7 +323,7 @@
       line-height: 1.6;
       white-space: nowrap;
     }
-
+    
     .status-box {
       display: none;
       margin: 13px 0 0;
@@ -336,23 +332,23 @@
       font-size: 12px;
       line-height: 1.55;
     }
-
+    
     .status-box.show {
       display: block;
     }
-
+    
     .status-box.error {
       border: 1px solid rgba(248,113,113,.35);
       background: var(--warning-bg);
       color: #fecaca;
     }
-
+    
     .status-box.success {
       border: 1px solid rgba(74,222,128,.30);
       background: var(--success-bg);
       color: #bbf7d0;
     }
-
+    
     .btn {
       width: 100%;
       margin-top: 15px;
@@ -365,49 +361,49 @@
       font-weight: 800;
       transition: transform .18s ease, filter .18s ease, box-shadow .18s ease;
     }
-
+    
     .btn:hover {
       filter: brightness(1.07);
       box-shadow: 0 10px 28px rgba(0,0,0,.38);
       transform: translateY(-1px);
     }
-
+    
     .btn:active {
       transform: translateY(0) scale(.99);
     }
-
+    
     .btn-secondary {
       border-color: var(--border-light);
       background: #20232a;
       color: #f3f4f6;
     }
-
+    
     .btn-danger-soft {
       border-color: rgba(248,113,113,.25);
       background: rgba(248,113,113,.08);
       color: #fecaca;
     }
-
+    
     .action-row {
       display: grid;
       grid-template-columns: 1.2fr 1fr 1fr;
       gap: 10px;
     }
-
+    
     .action-row .btn {
       margin-top: 12px;
     }
-
+    
     .hidden {
       display: none !important;
     }
-
+    
     .divider {
       height: 1px;
       margin: 19px 0;
       background: var(--border);
     }
-
+    
     .info-mini {
       margin-top: 10px;
       color: #858b96;
@@ -415,101 +411,101 @@
       line-height: 1.5;
       text-align: center;
     }
-
+    
     @media (max-width: 650px) {
       body {
         padding: 18px 10px 42px;
       }
-
+    
       .card {
         padding: 18px;
         border-radius: 16px;
       }
-
+    
       .grid-2,
       .action-row,
       .account-fields {
         grid-template-columns: 1fr;
       }
-
+    
       .account-fields .full-width {
         grid-column: auto;
       }
-
+    
       .grid-2 {
         gap: 15px;
       }
-
+    
       .action-row {
         gap: 0;
       }
-
+    
       textarea.output-field {
         min-height: 560px;
       }
     }
   </style>
 
-<style>
-  .panel-navigation {
-    width: min(100%, 760px);
-    margin: 0 auto 18px;
-    padding: 7px;
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0,1fr));
-    gap: 8px;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: rgba(13,15,19,.94);
-    box-shadow: 0 16px 42px rgba(0,0,0,.30);
-    position: sticky;
-    top: 10px;
-    z-index: 200;
-    backdrop-filter: blur(12px);
-  }
-  .panel-nav-btn {
-    border: 0;
-    border-radius: 11px;
-    padding: 12px 10px;
-    cursor: pointer;
-    color: var(--muted);
-    background: transparent;
-    font-size: 12px;
-    font-weight: 800;
-    transition: .2s ease;
-  }
-  .panel-nav-btn.active {
-    color: #111318;
-    background: #e5e7eb;
-  }
-  .tool-panel { display: none; }
-  .tool-panel.active { display: block; }
-  .package-note-output { min-height: 620px !important; }
-  .package-tip {
-    margin-top: 12px;
-    padding: 12px 13px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: #0d0f13;
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.6;
-  }
-  .package-accent { color: #f3f4f6; font-weight: 700; }
-  @media(max-width:650px){
-    .panel-navigation { top: 6px; margin-bottom: 14px; }
-    .panel-nav-btn { font-size: 11px; padding: 11px 7px; }
-  }
-</style>
+  <style>
+    .panel-navigation {
+      width: min(100%, 760px);
+      margin: 0 auto 18px;
+      padding: 7px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 8px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(13,15,19,.94);
+      box-shadow: 0 16px 42px rgba(0,0,0,.30);
+      position: sticky;
+      top: 10px;
+      z-index: 200;
+      backdrop-filter: blur(12px);
+    }
+    .panel-nav-btn {
+      border: 0;
+      border-radius: 11px;
+      padding: 12px 10px;
+      cursor: pointer;
+      color: var(--muted);
+      background: transparent;
+      font-size: 12px;
+      font-weight: 800;
+      transition: .2s ease;
+    }
+    .panel-nav-btn.active {
+      color: #111318;
+      background: #e5e7eb;
+    }
+    .tool-panel { display: none; }
+    .tool-panel.active { display: block; }
+    .package-note-output { min-height: 620px !important; }
+    .package-tip {
+      margin-top: 12px;
+      padding: 12px 13px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #0d0f13;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.6;
+    }
+    .package-accent { color: #f3f4f6; font-weight: 700; }
+    @media(max-width:650px){
+      .panel-navigation { top: 6px; margin-bottom: 14px; }
+      .panel-nav-btn { font-size: 11px; padding: 11px 7px; }
+    }
+  </style>
 
 </head>
 
 <body>
 
-<nav class="panel-navigation">
-  <button type="button" class="panel-nav-btn active" id="navBulk" onclick="switchMainPanel('bulk')">⚙️ Generator Akun Massal</button>
-  <button type="button" class="panel-nav-btn" id="navPackage" onclick="switchMainPanel('package')">🧾 Nota Semua Paket</button>
-</nav>
+  <nav class="panel-navigation">
+    <button type="button" class="panel-nav-btn active" id="navBulk" onclick="switchMainPanel('bulk')">⚙️ Generator Akun Massal</button>
+    <button type="button" class="panel-nav-btn" id="navPackage" onclick="switchMainPanel('package')">🧾 Nota Semua Paket</button>
+  </nav>
 
   <main class="container tool-panel active" id="bulkPanel">
     <header class="header">
@@ -632,140 +628,145 @@
     </section>
   </main>
 
-<main class="container tool-panel" id="packagePanel">
-  <header class="header">
-    <div class="eyebrow">BabayShop Complete Panel</div>
-    <h1>Nota Semua Paket GPT</h1>
-    <p class="subtitle">Pilih jenis paket, isi data akses, tentukan garansi, lalu nota dan instruksi akan dibuat otomatis.</p>
-  </header>
+  <main class="container tool-panel" id="packagePanel">
+    <header class="header">
+      <div class="eyebrow">BabayShop Complete Panel</div>
+      <h1>Nota Semua Paket GPT</h1>
+      <p class="subtitle">Pilih jenis paket, isi data akses, tentukan garansi, lalu nota dan instruksi akan dibuat otomatis.</p>
+    </header>
 
-  <section class="card">
-    <div class="card-title">
-      <h2>Informasi Paket</h2>
-      <span class="count-badge" id="pkgTypeBadge">Invite Team</span>
-    </div>
+    <section class="card">
+      <div class="card-title">
+        <h2>Informasi Paket</h2>
+        <span class="count-badge" id="pkgTypeBadge">Invite Team</span>
+      </div>
 
-    <div class="grid-2">
-      <div class="group">
-        <label for="pkgType">Jenis Paket</label>
-        <select id="pkgType" onchange="pkgToggleFields(); pkgGenerate(true)">
-          <option value="invite">GPT Pro Plus — Invite Team</option>
-          <option value="direct">GPT Plus — Direct Login Private</option>
-          <option value="sharing">GPT Plus — Sharing 3–5 Orang</option>
-          <option value="go">GPT GO — Private</option>
-        </select>
+      <div class="grid-2">
+        <div class="group">
+          <label for="pkgType">Jenis Paket</label>
+          <select id="pkgType" onchange="pkgToggleFields(); pkgGenerate(true)">
+            <option value="invite">GPT Pro Plus — Invite Team</option>
+            <option value="direct">GPT Plus — Direct Login Private</option>
+            <option value="sharing">GPT Plus — Sharing 3–5 Orang</option>
+            <option value="go">GPT GO — Private</option>
+          </select>
+        </div>
+        <div class="group">
+          <label for="pkgOrderDate">Tanggal Order</label>
+          <input type="date" id="pkgOrderDate">
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:15px;">
+        <div class="group">
+          <label for="pkgDuration">Durasi Paket</label>
+          <select id="pkgDuration" onchange="pkgToggleDuration(); pkgGenerate(true)">
+            <option value="30">1 Bulan (30 Hari)</option>
+            <option value="90">3 Bulan (90 Hari)</option>
+            <option value="365">Max 1 Tahun</option>
+            <option value="custom">Custom Hari</option>
+          </select>
+        </div>
+        <div class="group hidden" id="pkgCustomDurationWrap">
+          <label for="pkgCustomDuration">Durasi Custom</label>
+          <input type="number" id="pkgCustomDuration" value="30" min="1">
+        </div>
+      </div>
+
+      <div class="grid-2" style="margin-top:15px;">
+        <div class="group">
+          <label for="pkgWarrantyType">Tipe Garansi</label>
+          <select id="pkgWarrantyType" onchange="pkgToggleWarranty(); pkgGenerate(true)">
+            <option value="days">Garansi Custom Hari</option>
+            <option value="login">Garansi Login 1×24 Jam</option>
+            <option value="none">Tanpa Garansi</option>
+          </select>
+        </div>
+        <div class="group" id="pkgWarrantyDaysWrap">
+          <label for="pkgWarrantyDays">Jumlah Hari Garansi</label>
+          <input type="number" id="pkgWarrantyDays" value="5" min="1">
+        </div>
+      </div>
+    </section>
+
+    <section class="card" id="pkgInviteFields">
+      <div class="card-title">
+        <h2>Data Invite</h2>
+      </div>
+      <div class="grid-2">
+        <div class="group">
+          <label for="pkgInviteEmail">Email Pembeli</label>
+          <input type="email" id="pkgInviteEmail" placeholder="email@pembeli.com">
+        </div>
+        <div class="group">
+          <label for="pkgTeamName">Nama Team / Workspace</label>
+          <input type="text" id="pkgTeamName" placeholder="Contoh: Team BabayShop">
+        </div>
+      </div>
+    </section>
+
+    <section class="card hidden" id="pkgAccountFields">
+      <div class="card-title">
+        <h2>Data Akses Akun</h2>
       </div>
       <div class="group">
-        <label for="pkgOrderDate">Tanggal Order</label>
-        <input type="date" id="pkgOrderDate">
+        <label for="pkgBulkAccounts">Akun — Satu Akun per Baris</label>
+        <textarea id="pkgBulkAccounts" class="input-field" style="min-height:190px;font-family:'Courier New',monospace" placeholder="email|password|secret2fa&#10;email|password|https://link-otp.com"></textarea>
+        <div class="format-box">email | password | secret 2FA atau link OTP/MFA</div>
+        <p class="helper">Bagian ketiga boleh berupa secret key 2FA atau link OTP/MFA langsung. Jika secret key diisi, link MFA dibuat otomatis.</p>
       </div>
-    </div>
+    </section>
 
-    <div class="grid-2" style="margin-top:15px;">
-      <div class="group">
-        <label for="pkgDuration">Durasi Paket</label>
-        <select id="pkgDuration" onchange="pkgToggleDuration(); pkgGenerate(true)">
-          <option value="30">1 Bulan (30 Hari)</option>
-          <option value="90">3 Bulan (90 Hari)</option>
-          <option value="365">Max 1 Tahun</option>
-          <option value="custom">Custom Hari</option>
-        </select>
-      </div>
-      <div class="group hidden" id="pkgCustomDurationWrap">
-        <label for="pkgCustomDuration">Durasi Custom</label>
-        <input type="number" id="pkgCustomDuration" value="30" min="1">
-      </div>
-    </div>
-
-    <div class="grid-2" style="margin-top:15px;">
-      <div class="group">
-        <label for="pkgWarrantyType">Tipe Garansi</label>
-        <select id="pkgWarrantyType" onchange="pkgToggleWarranty(); pkgGenerate(true)">
-          <option value="days">Garansi Custom Hari</option>
-          <option value="login">Garansi Login 1×24 Jam</option>
-          <option value="none">Tanpa Garansi</option>
-        </select>
-      </div>
-      <div class="group" id="pkgWarrantyDaysWrap">
-        <label for="pkgWarrantyDays">Jumlah Hari Garansi</label>
-        <input type="number" id="pkgWarrantyDays" value="5" min="1">
-      </div>
-    </div>
-  </section>
-
-  <section class="card" id="pkgInviteFields">
-    <div class="card-title"><h2>Data Invite</h2></div>
-    <div class="grid-2">
-      <div class="group">
-        <label for="pkgInviteEmail">Email Pembeli</label>
-        <input type="email" id="pkgInviteEmail" placeholder="email@pembeli.com">
+    <section class="card">
+      <div class="card-title">
+        <h2>Pengaturan Tambahan</h2>
       </div>
       <div class="group">
-        <label for="pkgTeamName">Nama Team / Workspace</label>
-        <input type="text" id="pkgTeamName" placeholder="Contoh: Team BabayShop">
+        <label for="pkgExtraNote">Catatan Tambahan (Opsional)</label>
+        <textarea id="pkgExtraNote" class="input-field" placeholder="Catatan khusus untuk pembeli..."></textarea>
       </div>
-    </div>
-  </section>
+      <div class="package-tip"><span class="package-accent">Paket Sharing:</span> pembeli akan mendapat instruksi masuk ke Folder/Project masing-masing sebelum mengisi prompt agar chat tidak tercampur.</div>
+      <button type="button" class="btn" onclick="pkgGenerate(false)">Buat Nota Paket</button>
+    </section>
 
-  <section class="card hidden" id="pkgAccountFields">
-    <div class="card-title"><h2>Data Akses Akun</h2></div>
-    <div class="group">
-      <label for="pkgBulkAccounts">Akun — Satu Akun per Baris</label>
-      <textarea id="pkgBulkAccounts" class="input-field" style="min-height:190px;font-family:'Courier New',monospace" placeholder="email|password|secret2fa&#10;email|password|https://link-otp.com"></textarea>
-      <div class="format-box">email | password | secret 2FA atau link OTP/MFA</div>
-      <p class="helper">Bagian ketiga boleh berupa secret key 2FA atau link OTP/MFA langsung. Jika secret key diisi, link MFA dibuat otomatis.</p>
-    </div>
-  </section>
-
-  <section class="card">
-    <div class="card-title"><h2>Pengaturan Tambahan</h2></div>
-    <div class="group">
-      <label for="pkgExtraNote">Catatan Tambahan (Opsional)</label>
-      <textarea id="pkgExtraNote" class="input-field" placeholder="Catatan khusus untuk pembeli..."></textarea>
-    </div>
-    <div class="package-tip"><span class="package-accent">Paket Sharing:</span> pembeli akan mendapat instruksi masuk ke Folder/Project masing-masing sebelum mengisi prompt agar chat tidak tercampur.</div>
-    <button type="button" class="btn" onclick="pkgGenerate(false)">Buat Nota Paket</button>
-  </section>
-
-  <section class="card hidden" id="pkgResultCard">
-    <div class="card-title">
-      <h2>Hasil Nota Paket</h2>
-      <span class="count-badge" id="pkgResultBadge">1 akun</span>
-    </div>
-    <textarea id="pkgOutput" class="output-field package-note-output" spellcheck="false"></textarea>
-    <div class="action-row">
-      <button type="button" class="btn" id="pkgCopyBtn" onclick="pkgCopy()">Salin Nota</button>
-      <button type="button" class="btn btn-secondary" onclick="pkgGenerate(false)">Buat Ulang</button>
-      <button type="button" class="btn btn-danger-soft" onclick="pkgReset()">Reset</button>
-    </div>
-  </section>
-</main>
-
+    <section class="card hidden" id="pkgResultCard">
+      <div class="card-title">
+        <h2>Hasil Nota Paket</h2>
+        <span class="count-badge" id="pkgResultBadge">1 akun</span>
+      </div>
+      <textarea id="pkgOutput" class="output-field package-note-output" spellcheck="false"></textarea>
+      <div class="action-row">
+        <button type="button" class="btn" id="pkgCopyBtn" onclick="pkgCopy()">Salin Nota</button>
+        <button type="button" class="btn btn-secondary" onclick="pkgGenerate(false)">Buat Ulang</button>
+        <button type="button" class="btn btn-danger-soft" onclick="pkgReset()">Reset</button>
+      </div>
+    </section>
+  </main>
 
   <script>
     let isEditMode = false;
     let inputMode = 'line';
     let accountRowCounter = 0;
     let autoGenerateTimer = null;
-
+    
     function setInputMode(mode) {
       inputMode = mode;
       const useColumns = mode === 'columns';
-
+    
       document.getElementById('lineInputSection').classList.toggle('hidden', useColumns);
       document.getElementById('columnInputSection').classList.toggle('hidden', !useColumns);
       document.getElementById('lineModeBtn').classList.toggle('active', !useColumns);
       document.getElementById('columnModeBtn').classList.toggle('active', useColumns);
-
+    
       if (useColumns && document.querySelectorAll('.account-item').length === 0) {
         addAccountRow();
       }
-
+    
       clearBulkStatus();
       updateAccountCount();
       scheduleAutoGenerate();
     }
-
+    
     function createAccountRow(email = '', password = '', secret = '') {
       accountRowCounter += 1;
       const wrapper = document.createElement('div');
@@ -792,7 +793,7 @@
         </div>`;
       return wrapper;
     }
-
+    
     function escapeHtml(value) {
       return String(value)
         .replaceAll('&', '&amp;')
@@ -801,13 +802,13 @@
         .replaceAll('"', '&quot;')
         .replaceAll("'", '&#039;');
     }
-
+    
     function addAccountRow(email = '', password = '', secret = '') {
       document.getElementById('accountList').appendChild(createAccountRow(email, password, secret));
       renumberAccountRows();
       updateAccountCount();
     }
-
+    
     function removeAccountRow(button) {
       const rows = document.querySelectorAll('.account-item');
       if (rows.length <= 1) {
@@ -821,38 +822,38 @@
       clearBulkStatus();
       updateAccountCount();
     }
-
+    
     function renumberAccountRows() {
       document.querySelectorAll('.account-item').forEach((row, index) => {
         row.querySelector('.account-item-title').textContent = `Akun #${index + 1}`;
       });
     }
-
+    
     function toggleDurasiCustom() {
       const durasiType = document.getElementById('inDurasiSelect').value;
       document.getElementById('customDurasiDiv').classList.toggle('hidden', durasiType !== 'custom');
       scheduleAutoGenerate();
     }
-
+    
     function toggleGaransiUI() {
       const garansiType = document.getElementById('inGaransiType').value;
       document.getElementById('garansiHariDiv').classList.toggle('hidden', garansiType !== 'hari');
       scheduleAutoGenerate();
     }
-
+    
     function toggleCustomMethod() {
       const method = document.getElementById('inMethod').value;
       document.getElementById('customMethodDiv').classList.toggle('hidden', method !== 'custom');
       scheduleAutoGenerate();
     }
-
+    
     function parseLocalDate(dateString) {
       if (!dateString) return null;
       const parts = dateString.split('-').map(Number);
       if (parts.length !== 3 || parts.some(Number.isNaN)) return null;
       return new Date(parts[0], parts[1] - 1, parts[2]);
     }
-
+    
     function formatDateObject(date) {
       if (!(date instanceof Date) || Number.isNaN(date.getTime())) return '-';
       return date.toLocaleDateString('id-ID', {
@@ -861,11 +862,11 @@
         year: 'numeric'
       });
     }
-
+    
     function formatTanggal(dateString) {
       return formatDateObject(parseLocalDate(dateString));
     }
-
+    
     function hitungTanggal(dateString, durasi) {
       const date = parseLocalDate(dateString);
       const days = Number.parseInt(durasi, 10);
@@ -873,17 +874,17 @@
       date.setDate(date.getDate() + days);
       return formatDateObject(date);
     }
-
+    
     function getNonEmptyBulkLines() {
       return document.getElementById('inBulkAccounts').value
         .split(/\r?\n/)
         .map(line => line.trim())
         .filter(Boolean);
     }
-
+    
     function updateAccountCount() {
       let count = 0;
-
+    
       if (inputMode === 'line') {
         count = getNonEmptyBulkLines().length;
       } else {
@@ -894,187 +895,187 @@
           return email || password || secret;
         }).length;
       }
-
+    
       document.getElementById('accountCountBadge').textContent = `${count} akun`;
       clearBulkStatus();
       scheduleAutoGenerate();
     }
-
+    
     function parseBulkAccounts() {
       const lines = getNonEmptyBulkLines();
       const accounts = [];
       const errors = [];
-
+    
       lines.forEach((line, index) => {
         const parts = line.split('|').map(part => part.trim());
         const lineNumber = index + 1;
-
+    
         if (parts.length !== 3) {
           errors.push(`Baris ${lineNumber}: harus berisi tepat 3 bagian (email|password|kode).`);
           return;
         }
-
+    
         const [email, password, rawSecret] = parts;
         const secret = rawSecret.replace(/\s+/g, '');
-
+    
         if (!email || !password || !secret) {
           errors.push(`Baris ${lineNumber}: email, password, atau kode masih kosong.`);
           return;
         }
-
+    
         if (!email.includes('@')) {
           errors.push(`Baris ${lineNumber}: format email tidak valid.`);
           return;
         }
-
+    
         if (!/^[A-Za-z0-9]{32}$/.test(secret)) {
           errors.push(`Baris ${lineNumber}: kode harus tepat 32 karakter huruf/angka.`);
           return;
         }
-
+    
         accounts.push({ email, password, secret });
       });
-
+    
       return { lines, accounts, errors };
     }
-
+    
     function showBulkStatus(message, type) {
       const box = document.getElementById('bulkStatus');
       box.textContent = message;
       box.className = `status-box show ${type}`;
     }
-
+    
     function clearBulkStatus() {
       const box = document.getElementById('bulkStatus');
       box.textContent = '';
       box.className = 'status-box';
     }
-
+    
     function parseColumnAccounts() {
       const rows = Array.from(document.querySelectorAll('.account-item'));
       const accounts = [];
       const errors = [];
-
+    
       rows.forEach((row, index) => {
         const email = row.querySelector('.column-email').value.trim();
         const password = row.querySelector('.column-password').value.trim();
         const secret = row.querySelector('.column-secret').value.replace(/\s+/g, '');
         const rowNumber = index + 1;
-
+    
         if (!email && !password && !secret) return;
-
+    
         if (!email || !password || !secret) {
           errors.push(`Akun ${rowNumber}: Email, Password, dan kode harus diisi lengkap.`);
           return;
         }
-
+    
         if (!email.includes('@')) {
           errors.push(`Akun ${rowNumber}: format email tidak valid.`);
           return;
         }
-
+    
         if (!/^[A-Za-z0-9]{32}$/.test(secret)) {
           errors.push(`Akun ${rowNumber}: kode harus tepat 32 karakter huruf/angka.`);
           return;
         }
-
+    
         accounts.push({ email, password, secret });
       });
-
+    
       return { accounts, errors };
     }
-
+    
     function getAccounts() {
       if (inputMode === 'line') {
         const result = parseBulkAccounts();
-
+    
         if (result.lines.length < 1) {
           showBulkStatus('Masukkan minimal 1 akun menggunakan format email|password|kode.', 'error');
           return null;
         }
-
+    
         if (result.errors.length > 0) {
           const preview = result.errors.slice(0, 8).join(' ');
           const remaining = result.errors.length > 8 ? ` Masih ada ${result.errors.length - 8} kesalahan lainnya.` : '';
           showBulkStatus(preview + remaining, 'error');
           return null;
         }
-
+    
         showBulkStatus(`${result.accounts.length} akun berhasil dibaca dari format satu garis.`, 'success');
         return result.accounts;
       }
-
+    
       const result = parseColumnAccounts();
-
+    
       if (result.accounts.length < 1 && result.errors.length < 1) {
         showBulkStatus('Isi minimal 1 akun pada kolom Email, Password, dan kode 2FA.', 'error');
         return null;
       }
-
+    
       if (result.errors.length > 0) {
         const preview = result.errors.slice(0, 8).join(' ');
         const remaining = result.errors.length > 8 ? ` Masih ada ${result.errors.length - 8} kesalahan lainnya.` : '';
         showBulkStatus(preview + remaining, 'error');
         return null;
       }
-
+    
       showBulkStatus(`${result.accounts.length} akun berhasil dibaca dari kolom terpisah.`, 'success');
       return result.accounts;
     }
-
+    
     function getMethodLabel() {
       const method = document.getElementById('inMethod').value;
       if (method !== 'custom') return method;
       return document.getElementById('inMethodCustom').value.trim() || 'Custom';
     }
-
+    
     function buildAccountBlocks(accounts) {
       return accounts.map((account, index) => {
         const mfaLink = `https://babay.web.id/2fa/?key=${encodeURIComponent(account.secret)}`;
         return `#Akun_${index + 1}\nEmail   : ${account.email}\nPassword: ${account.password}\nLink MFA: ${mfaLink}\n----------------------------------`;
       }).join('\n');
     }
-
+    
     function scheduleAutoGenerate() {
       window.clearTimeout(autoGenerateTimer);
       autoGenerateTimer = window.setTimeout(() => generateNota(true), 250);
     }
-
+    
     function generateNota(isAutomatic = false) {
       const accounts = getAccounts();
       if (!accounts) {
         document.getElementById('resultCard').classList.add('hidden');
         return;
       }
-
+    
       const tglBeli = document.getElementById('inTgl').value;
       if (!tglBeli) {
         if (!isAutomatic) alert('Pilih tanggal pembelian terlebih dahulu.');
         document.getElementById('resultCard').classList.add('hidden');
         return;
       }
-
+    
       const durasiSelect = document.getElementById('inDurasiSelect').value;
       const durasiPaket = durasiSelect === 'custom'
         ? Number.parseInt(document.getElementById('inDurasiCustomVal').value, 10)
         : Number.parseInt(durasiSelect, 10);
-
+    
       if (!Number.isFinite(durasiPaket) || durasiPaket <= 0) {
         if (!isAutomatic) alert('Durasi paket harus lebih dari 0 hari.');
         document.getElementById('resultCard').classList.add('hidden');
         return;
       }
-
+    
       const labelDurasiTeks = durasiSelect === '30'
         ? '1 Bulan'
         : durasiSelect === '90'
           ? '3 Bulan'
           : `${durasiPaket} Hari`;
-
+    
       const garansiType = document.getElementById('inGaransiType').value;
       let garansiTeks = '';
       let garansiNote = 'Sesuai deskripsi garansi login 1x24 jam.';
-
+    
       if (garansiType === 'login') {
         garansiTeks = 'Garansi Login 1x24 Jam';
       } else if (garansiType === 'none') {
@@ -1087,84 +1088,84 @@
           document.getElementById('resultCard').classList.add('hidden');
           return;
         }
-
+    
         const garansiBerakhir = hitungTanggal(tglBeli, garansiDays);
         garansiTeks = `${garansiDays} Hari (s/d ${garansiBerakhir})`;
         garansiNote = `Sesuai deskripsi garansi full ${garansiDays} hari.`;
       }
-
+    
       const tglFormatted = formatTanggal(tglBeli);
       const method = getMethodLabel();
       const accountBlocks = buildAccountBlocks(accounts);
       const extraNote = document.getElementById('inNote').value.trim();
-
+    
       let text =
-`PESANAN CHATGPT PLUS BERHASIL
-----------------------------------
-Tgl Beli: ${tglFormatted}
-Durasi  : ${labelDurasiTeks}
-Methode : ${method}
-
-Garansi : ${garansiTeks}
-----------------------------------
-${accountBlocks}
-
-⚠️ CARA LOGIN DAN CEK PAKET:
-
-1. Silahkan langung input email di gpt nya (bagian kolom bawah), lanjutkan & input password.
-2. Jika saat login diminta kode One Time Code, ambil kode melalui link di atas sesuai akun yang digunakan.
-3. Setelah berhasil masuk, silakan cek bagian pengaturan / penagihan terlebih dahulu untuk memastikan plan sudah Plus.
-4. Jika plan sudah aktif, akun sudah bisa digunakan seperti biasa.
-----------------------------------
-
-⚠️ ATURAN PENGGUNAAN AKUN:
-• Segera ganti password akun. Penggantian password tidak memerlukan verifikasi email.
-• Jangan pernah menonaktifkan MFA / autentikator agar kode verifikasi tidak dialihkan ke email.
-• Lakukan backup chat atau prompt penting secara berkala. Jika diperlukan, ganti email akun ke Gmail pribadi Anda. Tutorial: https://babay.web.id/url/change-gmail-gpt
-• Codex mungkin meminta verifikasi nomor WhatsApp. Gunakan nomor pribadi yang aktif dan dapat Anda akses.
-• Disarankan menggunakan maksimal 3 perangkat jika terhubung dari IP yang berbeda, atau maksimal 5 perangkat jika menggunakan IP yang sama. Hindari pemakaian bersamaan.
-• Tunggu sekitar 2–3 jam setelah menerima akun sebelum mengganti email atau profil.
-• Dilarang mengubah data Billing / Payment atau Plan akun karena dapat memicu verifikasi ulang.
-• Dilarang keras menggunakan proxy, router, atau layanan lain yang tidak diizinkan oleh OpenAI, termasuk 9router dan layanan sejenis.
-• Dilarang menggunakan tools pihak ketiga yang mengambil API, cookies, token, atau akses akun dengan cara tidak resmi.
-----------------------------------
-
-🛡️ KETENTUAN GARANSI:
-• ${garansiNote} Lebih dari itu diluar tanggung jawab kami.
-• OpenAI memiliki sistem keamanan yang ketat. Jadi jangan melanggar, agar akun tetap aman dan tidak terdeteksi aktivitas mencurigakan.
-• Garansi dari kami lebih mengarah ke kendala paket, seperti paket hilang, plan kembali ke Free, atau masalah paket yang bukan disebabkan oleh kesalahan pengguna.
-• Garansi hangus apabila akun terdeteksi digunakan secara berlebihan, spam, dipakai secara massal, menggunakan cookies/token, API/tools pihak ketiga, proxy/router terlarang, atau mengubah pengaturan.
-• Jika akun terkena deactivated, banned, terkunci, atau bermasalah karena terdapat unsur kesalahan pengguna, maka hal tersebut berada di luar tanggung jawab kami sebagai penyedia.
-• Dengan membeli dan menggunakan jasa ini, pembeli berarti sudah membaca, memahami, dan menyetujui aturan penggunaan serta ketentuannya.
-Terima kasih...
-----------------------------------`;
-
+    `PESANAN CHATGPT PLUS BERHASIL
+    ----------------------------------
+    Tgl Beli: ${tglFormatted}
+    Durasi  : ${labelDurasiTeks}
+    Methode : ${method}
+    
+    Garansi : ${garansiTeks}
+    ----------------------------------
+    ${accountBlocks}
+    
+    ⚠️ CARA LOGIN DAN CEK PAKET:
+    
+    1. Silahkan langung input email di gpt nya (bagian kolom bawah), lanjutkan & input password.
+    2. Jika saat login diminta kode One Time Code, ambil kode melalui link di atas sesuai akun yang digunakan.
+    3. Setelah berhasil masuk, silakan cek bagian pengaturan / penagihan terlebih dahulu untuk memastikan plan sudah Plus.
+    4. Jika plan sudah aktif, akun sudah bisa digunakan seperti biasa.
+    ----------------------------------
+    
+    ⚠️ ATURAN PENGGUNAAN AKUN:
+    • Segera ganti password akun. Penggantian password tidak memerlukan verifikasi email.
+    • Jangan pernah menonaktifkan MFA / autentikator agar kode verifikasi tidak dialihkan ke email.
+    • Lakukan backup chat atau prompt penting secara berkala. Jika diperlukan, ganti email akun ke Gmail pribadi Anda. Tutorial: https://babay.web.id/url/change-gmail-gpt
+    • Codex mungkin meminta verifikasi nomor WhatsApp. Gunakan nomor pribadi yang aktif dan dapat Anda akses.
+    • Disarankan menggunakan maksimal 3 perangkat jika terhubung dari IP yang berbeda, atau maksimal 5 perangkat jika menggunakan IP yang sama. Hindari pemakaian bersamaan.
+    • Tunggu sekitar 2–3 jam setelah menerima akun sebelum mengganti email atau profil.
+    • Dilarang mengubah data Billing / Payment atau Plan akun karena dapat memicu verifikasi ulang.
+    • Dilarang keras menggunakan proxy, router, atau layanan lain yang tidak diizinkan oleh OpenAI, termasuk 9router dan layanan sejenis.
+    • Dilarang menggunakan tools pihak ketiga yang mengambil API, cookies, token, atau akses akun dengan cara tidak resmi.
+    ----------------------------------
+    
+    🛡️ KETENTUAN GARANSI:
+    • ${garansiNote} Lebih dari itu diluar tanggung jawab kami.
+    • OpenAI memiliki sistem keamanan yang ketat. Jadi jangan melanggar, agar akun tetap aman dan tidak terdeteksi aktivitas mencurigakan.
+    • Garansi dari kami lebih mengarah ke kendala paket, seperti paket hilang, plan kembali ke Free, atau masalah paket yang bukan disebabkan oleh kesalahan pengguna.
+    • Garansi hangus apabila akun terdeteksi digunakan secara berlebihan, spam, dipakai secara massal, menggunakan cookies/token, API/tools pihak ketiga, proxy/router terlarang, atau mengubah pengaturan.
+    • Jika akun terkena deactivated, banned, terkunci, atau bermasalah karena terdapat unsur kesalahan pengguna, maka hal tersebut berada di luar tanggung jawab kami sebagai penyedia.
+    • Dengan membeli dan menggunakan jasa ini, pembeli berarti sudah membaca, memahami, dan menyetujui aturan penggunaan serta ketentuannya.
+    Terima kasih...
+    ----------------------------------`;
+    
       if (extraNote) {
         text += `\n\nCATATAN TAMBAHAN:\n${extraNote}`;
       }
-
+    
       const output = document.getElementById('output');
       const resultCard = document.getElementById('resultCard');
       const editBtn = document.getElementById('editBtn');
-
+    
       output.value = text;
       output.setAttribute('readonly', true);
       resultCard.classList.remove('hidden');
       document.getElementById('resultCountBadge').textContent = `${accounts.length} akun`;
       document.getElementById('accountCountBadge').textContent = `${accounts.length} akun`;
-
+    
       isEditMode = false;
       editBtn.textContent = 'Edit Nota';
-
+    
       if (!isAutomatic) resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
-
+    
     function toggleEdit() {
       const output = document.getElementById('output');
       const editBtn = document.getElementById('editBtn');
-
+    
       isEditMode = !isEditMode;
-
+    
       if (isEditMode) {
         output.removeAttribute('readonly');
         output.focus();
@@ -1174,11 +1175,11 @@ Terima kasih...
         editBtn.textContent = 'Edit Nota';
       }
     }
-
+    
     async function copyText() {
       const output = document.getElementById('output');
       const btn = document.getElementById('copyBtn');
-
+    
       try {
         if (navigator.clipboard && window.isSecureContext) {
           await navigator.clipboard.writeText(output.value);
@@ -1189,17 +1190,17 @@ Terima kasih...
           document.execCommand('copy');
           if (!isEditMode) output.setAttribute('readonly', true);
         }
-
+    
         btn.textContent = '✅ Tersalin!';
       } catch (error) {
         btn.textContent = 'Gagal Menyalin';
       }
-
+    
       setTimeout(() => {
         btn.textContent = 'Salin Pesan';
       }, 2000);
     }
-
+    
     function resetForm() {
       document.getElementById('inBulkAccounts').value = '';
       document.getElementById('accountList').innerHTML = '';
@@ -1211,7 +1212,7 @@ Terima kasih...
       clearBulkStatus();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
+    
     function setToday() {
       const now = new Date();
       const localDate = new Date(now.getTime() - now.getTimezoneOffset() * 60000)
@@ -1219,846 +1220,875 @@ Terima kasih...
         .slice(0, 10);
       document.getElementById('inTgl').value = localDate;
     }
-
+    
     setToday();
     toggleGaransiUI();
     addAccountRow();
     setInputMode('line');
-
+    
     document.querySelectorAll('#inTgl, #inMethod, #inMethodCustom, #inDurasiSelect, #inDurasiCustomVal, #inGaransiType, #inGaransiDay, #inNote')
       .forEach(field => {
         field.addEventListener('input', scheduleAutoGenerate);
         field.addEventListener('change', scheduleAutoGenerate);
       });
   </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 
-<style>
-  .language-switcher {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 14px;
-    padding: 6px 8px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: rgba(255,255,255,.035);
-  }
-
-  .language-switcher label {
-    margin: 0;
-    color: var(--muted);
-    font-size: 10px;
-  }
-
-  .language-switcher select {
-    width: auto;
-    min-width: 145px;
-    padding: 8px 10px;
-    border-radius: 9px;
-    font-size: 12px;
-  }
-</style>
-
-<script>
-(() => {
-  const translations = {
-    en: {
-      pageTitle: 'GPT Plus Generator',
-      eyebrow: 'BabayShop Tools',
-      title: 'GPT Plus Generator',
-      subtitle: 'Choose a one-line format or separate columns. Both modes support one account or hundreds of accounts.',
-      language: 'Language',
-      orderInfo: 'Order Information',
-      account: 'account',
-      accounts: 'accounts',
-      purchaseDate: 'Purchase Date',
-      paymentMethod: 'Payment Method',
-      customMethodName: 'Custom Method Name',
-      customMethodPlaceholder: 'Example: VISA / Mastercard',
-      packageDuration: 'Package Duration',
-      oneMonth: '1 Month (30 Days)',
-      threeMonths: '3 Months (90 Days)',
-      customDays: 'Custom (Days)',
-      warrantyType: 'Warranty Type',
-      loginWarranty: 'Login Warranty (24 Hours)',
-      dayWarranty: 'Day Warranty',
-      noWarranty: 'No Warranty',
-      customDuration: 'Custom Duration (Days)',
-      warrantyDays: 'Number of Warranty Days',
-      oneLine: 'One-Line Format',
-      columns: 'Email & Password Columns',
-      oneLineLabel: 'One-Line Input — One Account per Line',
-      oneLineHelper: 'You can enter one or multiple accounts. Spaces around the | separator are allowed, and empty lines are ignored.',
-      separateColumns: 'Input Using Separate Columns',
-      addAccount: '+ Add Account',
-      columnsHelper: 'Enter the email, password, and 2FA code in their respective fields. Click “Add Account” to create another account.',
-      additionalDescription: 'Additional Description (Optional)',
-      additionalPlaceholder: 'Example: Shared Account Bonus',
-      autoNote: 'The receipt is generated automatically after all information is complete and the account format is valid.',
-      privacyNote: 'Data is processed directly in your browser and is not sent to a server through this page.',
-      resultTitle: 'Generated Receipt',
-      copy: 'Copy Message',
-      edit: 'Edit Receipt',
-      finishEdit: 'Finish Editing',
-      reset: 'Reset',
-      remove: 'Remove',
-      accountTitle: 'Account',
-      passwordPlaceholder: 'Account password',
-      secretLabel: '32-Character Code / 2FA Secret Key',
-      secretPlaceholder: 'Example: KSGKNC2YOPBJLLBELLSD4CGLGHYSM4E4',
-      copied: '✅ Copied!',
-      copyFailed: 'Copy Failed',
-      chooseDate: 'Please select the purchase date first.',
-      invalidDuration: 'Package duration must be greater than 0 days.',
-      invalidWarranty: 'The number of warranty days must be greater than 0.',
-      minimumLine: 'Enter at least 1 account using the email|password|code format.',
-      minimumColumns: 'Enter at least 1 complete account in the Email, Password, and 2FA code fields.',
-      lineExact: n => `Line ${n}: must contain exactly 3 parts (email|password|code).`,
-      lineEmpty: n => `Line ${n}: email, password, or code is still empty.`,
-      lineEmail: n => `Line ${n}: invalid email format.`,
-      lineCode: n => `Line ${n}: the code must contain exactly 32 letters/numbers.`,
-      rowEmpty: n => `Account ${n}: Email, Password, and code must all be completed.`,
-      rowEmail: n => `Account ${n}: invalid email format.`,
-      rowCode: n => `Account ${n}: the code must contain exactly 32 letters/numbers.`,
-      moreErrors: n => ` There are ${n} more errors.`,
-      lineSuccess: n => `${n} account${n === 1 ? '' : 's'} successfully read from the one-line format.`,
-      columnSuccess: n => `${n} account${n === 1 ? '' : 's'} successfully read from separate columns.`,
-      dateLocale: 'en-US',
-      noEndDate: 'None',
-      duration1: '1 Month',
-      duration3: '3 Months',
-      durationDays: n => `${n} Days`,
-      loginWarrantyText: '24-Hour Login Warranty',
-      noWarrantyText: 'No Warranty',
-      dayWarrantyText: (days, end) => `${days} Days (until ${end})`,
-      loginWarrantyNote: 'Subject to the 24-hour login warranty description.',
-      noWarrantyNote: 'The product has no warranty after the account has been received and successfully logged in.',
-      dayWarrantyNote: days => `Subject to the full ${days}-day warranty description.`,
-      custom: 'Custom',
-      receipt: ({date, duration, method, warranty, accountBlocks, warrantyNote, extraNote}) => `CHATGPT PLUS ORDER SUCCESSFUL
-----------------------------------
-Purchase Date : ${date}
-Duration      : ${duration}
-Method        : ${method}
-
-Warranty      : ${warranty}
-----------------------------------
-${accountBlocks}
-
-⚠️ HOW TO LOG IN AND CHECK THE PLAN:
-
-1. Log in using the provided email and password.
-2. When an OTP is requested, retrieve it from the MFA link for the account being used.
-3. After signing in, check Settings / Billing first to confirm that the Plus plan is active.
-4. Once the plan is active, the account can be used normally.
-----------------------------------
-
-⚠️ ACCOUNT USAGE RULES:
-• Change the account password immediately. Email verification is not required to change it.
-• Never disable MFA / the authenticator, so verification codes are not redirected to email.
-• Back up important chats or prompts regularly. If needed, change the account email to your personal Gmail account. Tutorial: https://babay.web.id/url/change-gmail-gpt
-• Codex may request WhatsApp-number verification. Use an active personal number that you can access.
-• Use no more than 3 devices when connecting from different IP addresses, or 5 devices when using the same IP address. Avoid simultaneous use.
-• Wait approximately 2–3 hours after receiving the account before changing the email or profile.
-• Do not change Billing / Payment information or the account Plan, as this may trigger re-verification.
-• Do not use proxies, routers, or other services prohibited by OpenAI, including 9router and similar services.
-• Do not use third-party tools that extract APIs, cookies, tokens, or access the account through unauthorized methods.
-----------------------------------
-
-🛡️ WARRANTY TERMS:
-• ${warrantyNote} Anything beyond that is outside our responsibility.
-• Payment uses a valid method based on the account region.
-• OpenAI has strict security systems. Follow the rules to keep the account safe and avoid suspicious-activity detection.
-• Our warranty mainly covers plan-related issues, such as the plan disappearing, reverting to Free, or another package issue not caused by the user.
-• The warranty is void if the account is used excessively, spammed, accessed from too many devices, shared, connected through cookies/tokens, APIs or third-party tools, prohibited proxies/routers, or modified settings.
-• Deactivation, bans, locks, or other problems caused by user actions are outside our responsibility as the provider.
-• By purchasing and using this service, the buyer confirms that they have read, understood, and accepted all usage rules and terms.
-Thank you...
-----------------------------------${extraNote ? `
-
-ADDITIONAL NOTES:
-${extraNote}` : ''}`
-    },
-
-    id: {
-      pageTitle: 'GPT Plus Generator',
-      eyebrow: 'BabayShop Tools',
-      title: 'GPT Plus Generator',
-      subtitle: 'Pilih input format satu baris atau kolom terpisah. Keduanya bisa digunakan mulai dari 1 akun hingga ratusan akun.',
-      language: 'Bahasa',
-      orderInfo: 'Informasi Pesanan',
-      account: 'akun',
-      accounts: 'akun',
-      purchaseDate: 'Tanggal Pembelian',
-      paymentMethod: 'Metode Pembayaran',
-      customMethodName: 'Nama Metode Custom',
-      customMethodPlaceholder: 'Contoh: VISA / Mastercard',
-      packageDuration: 'Durasi Paket',
-      oneMonth: '1 Bulan (30 Hari)',
-      threeMonths: '3 Bulan (90 Hari)',
-      customDays: 'Custom (Hari)',
-      warrantyType: 'Tipe Garansi',
-      loginWarranty: 'Garansi Login (1x24 Jam)',
-      dayWarranty: 'Garansi Hari',
-      noWarranty: 'No Garansi',
-      customDuration: 'Durasi Custom (Hari)',
-      warrantyDays: 'Jumlah Hari Garansi',
-      oneLine: 'Format 1 Garis',
-      columns: 'Kolom Email & Password',
-      oneLineLabel: 'Input Format 1 Garis — Satu Akun per Baris',
-      oneLineHelper: 'Bisa diisi 1 akun atau banyak akun. Spasi di sekitar tanda | diperbolehkan dan baris kosong akan dilewati.',
-      separateColumns: 'Input Menggunakan Kolom Terpisah',
-      addAccount: '+ Tambah Akun',
-      columnsHelper: 'Isi Email, Password, dan kode 2FA pada kolom masing-masing. Tekan “Tambah Akun” untuk membuat akun berikutnya.',
-      additionalDescription: 'Deskripsi Tambahan (Opsional)',
-      additionalPlaceholder: 'Contoh: Bonus Shared Akun',
-      autoNote: 'Nota dibuat otomatis setelah data lengkap dan format akun dinyatakan valid.',
-      privacyNote: 'Data diproses langsung di browser dan tidak dikirim ke server melalui halaman ini.',
-      resultTitle: 'Nota Hasil',
-      copy: 'Salin Pesan',
-      edit: 'Edit Nota',
-      finishEdit: 'Selesai Edit',
-      reset: 'Reset',
-      remove: 'Hapus',
-      accountTitle: 'Akun',
-      passwordPlaceholder: 'Password akun',
-      secretLabel: '32 Digit Kode / Secret Key 2FA',
-      secretPlaceholder: 'Contoh: KSGKNC2YOPBJLLBELLSD4CGLGHYSM4E4',
-      copied: '✅ Tersalin!',
-      copyFailed: 'Gagal Menyalin',
-      chooseDate: 'Pilih tanggal pembelian terlebih dahulu.',
-      invalidDuration: 'Durasi paket harus lebih dari 0 hari.',
-      invalidWarranty: 'Jumlah hari garansi harus lebih dari 0.',
-      minimumLine: 'Masukkan minimal 1 akun menggunakan format email|password|kode.',
-      minimumColumns: 'Isi minimal 1 akun pada kolom Email, Password, dan kode 2FA.',
-      lineExact: n => `Baris ${n}: harus berisi tepat 3 bagian (email|password|kode).`,
-      lineEmpty: n => `Baris ${n}: email, password, atau kode masih kosong.`,
-      lineEmail: n => `Baris ${n}: format email tidak valid.`,
-      lineCode: n => `Baris ${n}: kode harus tepat 32 karakter huruf/angka.`,
-      rowEmpty: n => `Akun ${n}: Email, Password, dan kode harus diisi lengkap.`,
-      rowEmail: n => `Akun ${n}: format email tidak valid.`,
-      rowCode: n => `Akun ${n}: kode harus tepat 32 karakter huruf/angka.`,
-      moreErrors: n => ` Masih ada ${n} kesalahan lainnya.`,
-      lineSuccess: n => `${n} akun berhasil dibaca dari format satu garis.`,
-      columnSuccess: n => `${n} akun berhasil dibaca dari kolom terpisah.`,
-      dateLocale: 'id-ID',
-      noEndDate: 'Tdk Ada',
-      duration1: '1 Bulan',
-      duration3: '3 Bulan',
-      durationDays: n => `${n} Hari`,
-      loginWarrantyText: 'Garansi Login 1x24 Jam',
-      noWarrantyText: 'No Garansi',
-      dayWarrantyText: (days, end) => `${days} Hari (s/d ${end})`,
-      loginWarrantyNote: 'Sesuai deskripsi garansi login 1x24 jam.',
-      noWarrantyNote: 'Produk tidak memiliki garansi setelah akun berhasil diterima dan login.',
-      dayWarrantyNote: days => `Sesuai deskripsi garansi full ${days} hari.`,
-      custom: 'Custom',
-      receipt: ({date, duration, method, warranty, accountBlocks, warrantyNote, extraNote}) => `PESANAN CHATGPT PLUS BERHASIL
-----------------------------------
-Tgl Beli: ${date}
-Durasi  : ${duration}
-Methode : ${method}
-
-Garansi : ${warranty}
-----------------------------------
-${accountBlocks}
-
-⚠️ CARA LOGIN DAN CEK PAKET:
-
-1. Silahkan langung input email di gpt nya (bagian kolom bawah), lanjutkan & input password.
-2. Jika saat login diminta kode One Time Code, ambil kode melalui link di atas sesuai akun yang digunakan.
-3. Setelah berhasil masuk, silakan cek bagian pengaturan / penagihan terlebih dahulu untuk memastikan plan sudah Plus.
-4. Jika plan sudah aktif, akun sudah bisa digunakan seperti biasa.
-----------------------------------
-
-⚠️ ATURAN PENGGUNAAN AKUN:
-• Segera ganti password akun. Penggantian password tidak memerlukan verifikasi email.
-• Jangan pernah menonaktifkan MFA / autentikator agar kode verifikasi tidak dialihkan ke email.
-• Lakukan backup chat atau prompt penting secara berkala. Jika diperlukan, ganti email akun ke Gmail pribadi Anda. Tutorial: https://babay.web.id/url/change-gmail-gpt
-• Codex mungkin meminta verifikasi nomor WhatsApp. Gunakan nomor pribadi yang aktif dan dapat Anda akses.
-• Disarankan menggunakan maksimal 3 perangkat jika terhubung dari IP yang berbeda, atau maksimal 5 perangkat jika menggunakan IP yang sama. Hindari pemakaian bersamaan.
-• Tunggu sekitar 2–3 jam setelah menerima akun sebelum mengganti email atau profil.
-• Dilarang mengubah data Billing / Payment atau Plan akun karena dapat memicu verifikasi ulang.
-• Dilarang keras menggunakan proxy, router, atau layanan lain yang tidak diizinkan oleh OpenAI, termasuk 9router dan layanan sejenis.
-• Dilarang menggunakan tools pihak ketiga yang mengambil API, cookies, token, atau akses akun dengan cara tidak resmi.
-----------------------------------
-
-🛡️ KETENTUAN GARANSI:
-• ${warrantyNote} Lebih dari itu di luar tanggung jawab kami.
-• Metode pembayaran menggunakan method payment yang valid berdasarkan region akun.
-• OpenAI memiliki sistem keamanan yang ketat. Jadi jangan melanggar, agar akun tetap aman dan tidak terdeteksi aktivitas mencurigakan.
-• Garansi dari kami lebih mengarah ke kendala paket, seperti paket hilang, plan kembali ke Free, atau masalah paket yang bukan disebabkan oleh kesalahan pengguna.
-• Garansi hangus apabila akun terdeteksi digunakan secara berlebihan, spam, dipakai banyak perangkat, dibagikan ke orang lain, menggunakan cookies/token, API/tools pihak ketiga, proxy/router terlarang, atau mengubah pengaturan.
-• Jika akun terkena deactivated, banned, terkunci, atau bermasalah karena terdapat unsur kesalahan pengguna, maka hal tersebut berada di luar tanggung jawab kami sebagai penyedia.
-• Dengan membeli dan menggunakan jasa ini, pembeli berarti sudah membaca, memahami, dan menyetujui aturan penggunaan serta ketentuannya.
-Terima kasih...
-----------------------------------${extraNote ? `
-
-CATATAN TAMBAHAN:
-${extraNote}` : ''}`
+  <style>
+    .language-switcher {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 14px;
+      padding: 6px 8px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255,255,255,.035);
     }
-  };
-
-  let currentLanguage = localStorage.getItem('gptGeneratorLanguage') || 'en';
-
-  function tr(key, ...args) {
-    const value = translations[currentLanguage][key];
-    return typeof value === 'function' ? value(...args) : value;
-  }
-
-  function accountLabel(count) {
-    return `${count} ${count === 1 ? tr('account') : tr('accounts')}`;
-  }
-
-  function setText(selector, value) {
-    const element = document.querySelector(selector);
-    if (element) element.textContent = value;
-  }
-
-  function setOption(selectId, value, text) {
-    const option = document.querySelector(`#${selectId} option[value="${value}"]`);
-    if (option) option.textContent = text;
-  }
-
-  window.setLanguage = function(language) {
-    currentLanguage = language === 'id' ? 'id' : 'en';
-    localStorage.setItem('gptGeneratorLanguage', currentLanguage);
-    document.documentElement.lang = currentLanguage;
-    document.title = tr('pageTitle');
-
-    const languageSelect = document.getElementById('languageSelect');
-    if (languageSelect) languageSelect.value = currentLanguage;
-
-    setText('.eyebrow', tr('eyebrow'));
-    setText('.header h1', tr('title'));
-    setText('.subtitle', tr('subtitle'));
-    setText('.card:first-of-type .card-title h2', tr('orderInfo'));
-    setText('label[for="inTgl"]', tr('purchaseDate'));
-    setText('label[for="inMethod"]', tr('paymentMethod'));
-    setText('label[for="inMethodCustom"]', tr('customMethodName'));
-    setText('label[for="inDurasiSelect"]', tr('packageDuration'));
-    setText('label[for="inGaransiType"]', tr('warrantyType'));
-    setText('label[for="inDurasiCustomVal"]', tr('customDuration'));
-    setText('label[for="inGaransiDay"]', tr('warrantyDays'));
-    setText('#lineModeBtn', tr('oneLine'));
-    setText('#columnModeBtn', tr('columns'));
-    setText('label[for="inBulkAccounts"]', tr('oneLineLabel'));
-    setText('#lineInputSection .helper', tr('oneLineHelper'));
-    setText('#columnInputSection .group > label', tr('separateColumns'));
-    setText('.add-account-btn', tr('addAccount'));
-    setText('#columnInputSection .helper', tr('columnsHelper'));
-    setText('label[for="inNote"]', tr('additionalDescription'));
-
-    const infoNotes = document.querySelectorAll('.info-mini');
-    if (infoNotes[0]) infoNotes[0].textContent = tr('autoNote');
-    if (infoNotes[1]) infoNotes[1].textContent = tr('privacyNote');
-
-    setText('#resultCard .card-title h2', tr('resultTitle'));
-    setText('#copyBtn', tr('copy'));
-    setText('#editBtn', isEditMode ? tr('finishEdit') : tr('edit'));
-    setText('#resultCard .btn-danger-soft', tr('reset'));
-
-    document.getElementById('inMethodCustom').placeholder = tr('customMethodPlaceholder');
-    document.getElementById('inNote').placeholder = tr('additionalPlaceholder');
-
-    setOption('inDurasiSelect', '30', tr('oneMonth'));
-    setOption('inDurasiSelect', '90', tr('threeMonths'));
-    setOption('inDurasiSelect', 'custom', tr('customDays'));
-    setOption('inGaransiType', 'login', tr('loginWarranty'));
-    setOption('inGaransiType', 'hari', tr('dayWarranty'));
-    setOption('inGaransiType', 'none', tr('noWarranty'));
-
-    document.querySelectorAll('.account-item').forEach((row, index) => {
-      const title = row.querySelector('.account-item-title');
-      const removeButton = row.querySelector('.remove-account-btn');
-      const passwordInput = row.querySelector('.column-password');
-      const secretLabel = row.querySelector('.full-width label');
-      const secretInput = row.querySelector('.column-secret');
-
-      if (title) title.textContent = `${tr('accountTitle')} #${index + 1}`;
-      if (removeButton) removeButton.textContent = tr('remove');
-      if (passwordInput) passwordInput.placeholder = tr('passwordPlaceholder');
-      if (secretLabel) secretLabel.textContent = tr('secretLabel');
-      if (secretInput) secretInput.placeholder = tr('secretPlaceholder');
-    });
-
-    updateAccountCount();
-    scheduleAutoGenerate();
-  };
-
-  const originalCreateAccountRow = window.createAccountRow;
-  window.createAccountRow = function(email = '', password = '', secret = '') {
-    const row = originalCreateAccountRow(email, password, secret);
-    const removeButton = row.querySelector('.remove-account-btn');
-    const passwordInput = row.querySelector('.column-password');
-    const secretLabel = row.querySelector('.full-width label');
-    const secretInput = row.querySelector('.column-secret');
-
-    if (removeButton) removeButton.textContent = tr('remove');
-    if (passwordInput) passwordInput.placeholder = tr('passwordPlaceholder');
-    if (secretLabel) secretLabel.textContent = tr('secretLabel');
-    if (secretInput) secretInput.placeholder = tr('secretPlaceholder');
-    return row;
-  };
-
-  window.renumberAccountRows = function() {
-    document.querySelectorAll('.account-item').forEach((row, index) => {
-      row.querySelector('.account-item-title').textContent = `${tr('accountTitle')} #${index + 1}`;
-    });
-  };
-
-  window.formatDateObject = function(date) {
-    if (!(date instanceof Date) || Number.isNaN(date.getTime())) return '-';
-    return date.toLocaleDateString(tr('dateLocale'), {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    });
-  };
-
-  window.hitungTanggal = function(dateString, durasi) {
-    const date = parseLocalDate(dateString);
-    const days = Number.parseInt(durasi, 10);
-    if (!date || !Number.isFinite(days) || days <= 0) return tr('noEndDate');
-    date.setDate(date.getDate() + days);
-    return formatDateObject(date);
-  };
-
-  window.updateAccountCount = function() {
-    let count = 0;
-
-    if (inputMode === 'line') {
-      count = getNonEmptyBulkLines().length;
-    } else {
-      count = Array.from(document.querySelectorAll('.account-item')).filter(row => {
-        const email = row.querySelector('.column-email').value.trim();
-        const password = row.querySelector('.column-password').value.trim();
-        const secret = row.querySelector('.column-secret').value.trim();
-        return email || password || secret;
-      }).length;
+    
+    .language-switcher label {
+      margin: 0;
+      color: var(--muted);
+      font-size: 10px;
     }
-
-    document.getElementById('accountCountBadge').textContent = accountLabel(count);
-    clearBulkStatus();
-    scheduleAutoGenerate();
-  };
-
-  window.parseBulkAccounts = function() {
-    const lines = getNonEmptyBulkLines();
-    const accounts = [];
-    const errors = [];
-
-    lines.forEach((line, index) => {
-      const parts = line.split('|').map(part => part.trim());
-      const lineNumber = index + 1;
-
-      if (parts.length !== 3) {
-        errors.push(tr('lineExact', lineNumber));
-        return;
-      }
-
-      const [email, password, rawSecret] = parts;
-      const secret = rawSecret.replace(/\s+/g, '');
-
-      if (!email || !password || !secret) {
-        errors.push(tr('lineEmpty', lineNumber));
-        return;
-      }
-
-      if (!email.includes('@')) {
-        errors.push(tr('lineEmail', lineNumber));
-        return;
-      }
-
-      if (!/^[A-Za-z0-9]{32}$/.test(secret)) {
-        errors.push(tr('lineCode', lineNumber));
-        return;
-      }
-
-      accounts.push({ email, password, secret });
-    });
-
-    return { lines, accounts, errors };
-  };
-
-  window.parseColumnAccounts = function() {
-    const rows = Array.from(document.querySelectorAll('.account-item'));
-    const accounts = [];
-    const errors = [];
-
-    rows.forEach((row, index) => {
-      const email = row.querySelector('.column-email').value.trim();
-      const password = row.querySelector('.column-password').value.trim();
-      const secret = row.querySelector('.column-secret').value.replace(/\s+/g, '');
-      const rowNumber = index + 1;
-
-      if (!email && !password && !secret) return;
-
-      if (!email || !password || !secret) {
-        errors.push(tr('rowEmpty', rowNumber));
-        return;
-      }
-
-      if (!email.includes('@')) {
-        errors.push(tr('rowEmail', rowNumber));
-        return;
-      }
-
-      if (!/^[A-Za-z0-9]{32}$/.test(secret)) {
-        errors.push(tr('rowCode', rowNumber));
-        return;
-      }
-
-      accounts.push({ email, password, secret });
-    });
-
-    return { accounts, errors };
-  };
-
-  window.getAccounts = function() {
-    if (inputMode === 'line') {
-      const result = parseBulkAccounts();
-
-      if (result.lines.length < 1) {
-        showBulkStatus(tr('minimumLine'), 'error');
-        return null;
-      }
-
-      if (result.errors.length > 0) {
-        const preview = result.errors.slice(0, 8).join(' ');
-        const remaining = result.errors.length > 8 ? tr('moreErrors', result.errors.length - 8) : '';
-        showBulkStatus(preview + remaining, 'error');
-        return null;
-      }
-
-      showBulkStatus(tr('lineSuccess', result.accounts.length), 'success');
-      return result.accounts;
+    
+    .language-switcher select {
+      width: auto;
+      min-width: 145px;
+      padding: 8px 10px;
+      border-radius: 9px;
+      font-size: 12px;
     }
+  </style>
 
-    const result = parseColumnAccounts();
-
-    if (result.accounts.length < 1 && result.errors.length < 1) {
-      showBulkStatus(tr('minimumColumns'), 'error');
-      return null;
-    }
-
-    if (result.errors.length > 0) {
-      const preview = result.errors.slice(0, 8).join(' ');
-      const remaining = result.errors.length > 8 ? tr('moreErrors', result.errors.length - 8) : '';
-      showBulkStatus(preview + remaining, 'error');
-      return null;
-    }
-
-    showBulkStatus(tr('columnSuccess', result.accounts.length), 'success');
-    return result.accounts;
-  };
-
-  window.getMethodLabel = function() {
-    const method = document.getElementById('inMethod').value;
-    if (method !== 'custom') return method;
-    return document.getElementById('inMethodCustom').value.trim() || tr('custom');
-  };
-
-  window.buildAccountBlocks = function(accounts) {
-    return accounts.map((account, index) => {
-      const mfaLink = `https://babay.web.id/2fa/?key=${encodeURIComponent(account.secret)}`;
-      const heading = currentLanguage === 'id' ? `#Akun_${index + 1}` : `#Account_${index + 1}`;
-      return `${heading}\nEmail   : ${account.email}\nPassword: ${account.password}\nLink MFA: ${mfaLink}\n----------------------------------`;
-    }).join('\n');
-  };
-
-  window.generateNota = function(isAutomatic = false) {
-    const accounts = getAccounts();
-    if (!accounts) {
-      document.getElementById('resultCard').classList.add('hidden');
-      return;
-    }
-
-    const tglBeli = document.getElementById('inTgl').value;
-    if (!tglBeli) {
-      if (!isAutomatic) alert(tr('chooseDate'));
-      document.getElementById('resultCard').classList.add('hidden');
-      return;
-    }
-
-    const durasiSelect = document.getElementById('inDurasiSelect').value;
-    const durasiPaket = durasiSelect === 'custom'
-      ? Number.parseInt(document.getElementById('inDurasiCustomVal').value, 10)
-      : Number.parseInt(durasiSelect, 10);
-
-    if (!Number.isFinite(durasiPaket) || durasiPaket <= 0) {
-      if (!isAutomatic) alert(tr('invalidDuration'));
-      document.getElementById('resultCard').classList.add('hidden');
-      return;
-    }
-
-    const durationText = durasiSelect === '30'
-      ? tr('duration1')
-      : durasiSelect === '90'
-        ? tr('duration3')
-        : tr('durationDays', durasiPaket);
-
-    const warrantyType = document.getElementById('inGaransiType').value;
-    let warrantyText = '';
-    let warrantyNote = tr('loginWarrantyNote');
-
-    if (warrantyType === 'login') {
-      warrantyText = tr('loginWarrantyText');
-    } else if (warrantyType === 'none') {
-      warrantyText = tr('noWarrantyText');
-      warrantyNote = tr('noWarrantyNote');
-    } else {
-      const warrantyDays = Number.parseInt(document.getElementById('inGaransiDay').value, 10);
-      if (!Number.isFinite(warrantyDays) || warrantyDays <= 0) {
-        if (!isAutomatic) alert(tr('invalidWarranty'));
-        document.getElementById('resultCard').classList.add('hidden');
-        return;
+  <script>
+    (() => {
+      const translations = {
+        en: {
+          pageTitle: 'GPT Plus Generator',
+          eyebrow: 'BabayShop Tools',
+          title: 'GPT Plus Generator',
+          subtitle: 'Choose a one-line format or separate columns. Both modes support one account or hundreds of accounts.',
+          language: 'Language',
+          orderInfo: 'Order Information',
+          account: 'account',
+          accounts: 'accounts',
+          purchaseDate: 'Purchase Date',
+          paymentMethod: 'Payment Method',
+          customMethodName: 'Custom Method Name',
+          customMethodPlaceholder: 'Example: VISA / Mastercard',
+          packageDuration: 'Package Duration',
+          oneMonth: '1 Month (30 Days)',
+          threeMonths: '3 Months (90 Days)',
+          customDays: 'Custom (Days)',
+          warrantyType: 'Warranty Type',
+          loginWarranty: 'Login Warranty (24 Hours)',
+          dayWarranty: 'Day Warranty',
+          noWarranty: 'No Warranty',
+          customDuration: 'Custom Duration (Days)',
+          warrantyDays: 'Number of Warranty Days',
+          oneLine: 'One-Line Format',
+          columns: 'Email & Password Columns',
+          oneLineLabel: 'One-Line Input — One Account per Line',
+          oneLineHelper: 'You can enter one or multiple accounts. Spaces around the | separator are allowed, and empty lines are ignored.',
+          separateColumns: 'Input Using Separate Columns',
+          addAccount: '+ Add Account',
+          columnsHelper: 'Enter the email, password, and 2FA code in their respective fields. Click “Add Account” to create another account.',
+          additionalDescription: 'Additional Description (Optional)',
+          additionalPlaceholder: 'Example: Shared Account Bonus',
+          autoNote: 'The receipt is generated automatically after all information is complete and the account format is valid.',
+          privacyNote: 'Data is processed directly in your browser and is not sent to a server through this page.',
+          resultTitle: 'Generated Receipt',
+          copy: 'Copy Message',
+          edit: 'Edit Receipt',
+          finishEdit: 'Finish Editing',
+          reset: 'Reset',
+          remove: 'Remove',
+          accountTitle: 'Account',
+          passwordPlaceholder: 'Account password',
+          secretLabel: '32-Character Code / 2FA Secret Key',
+          secretPlaceholder: 'Example: KSGKNC2YOPBJLLBELLSD4CGLGHYSM4E4',
+          copied: '✅ Copied!',
+          copyFailed: 'Copy Failed',
+          chooseDate: 'Please select the purchase date first.',
+          invalidDuration: 'Package duration must be greater than 0 days.',
+          invalidWarranty: 'The number of warranty days must be greater than 0.',
+          minimumLine: 'Enter at least 1 account using the email|password|code format.',
+          minimumColumns: 'Enter at least 1 complete account in the Email, Password, and 2FA code fields.',
+          lineExact: n => `Line ${n}: must contain exactly 3 parts (email|password|code).`,
+          lineEmpty: n => `Line ${n}: email, password, or code is still empty.`,
+          lineEmail: n => `Line ${n}: invalid email format.`,
+          lineCode: n => `Line ${n}: the code must contain exactly 32 letters/numbers.`,
+          rowEmpty: n => `Account ${n}: Email, Password, and code must all be completed.`,
+          rowEmail: n => `Account ${n}: invalid email format.`,
+          rowCode: n => `Account ${n}: the code must contain exactly 32 letters/numbers.`,
+          moreErrors: n => ` There are ${n} more errors.`,
+          lineSuccess: n => `${n} account${n === 1 ? '' : 's'} successfully read from the one-line format.`,
+          columnSuccess: n => `${n} account${n === 1 ? '' : 's'} successfully read from separate columns.`,
+          dateLocale: 'en-US',
+          noEndDate: 'None',
+          duration1: '1 Month',
+          duration3: '3 Months',
+          durationDays: n => `${n} Days`,
+          loginWarrantyText: '24-Hour Login Warranty',
+          noWarrantyText: 'No Warranty',
+          dayWarrantyText: (days, end) => `${days} Days (until ${end})`,
+          loginWarrantyNote: 'Subject to the 24-hour login warranty description.',
+          noWarrantyNote: 'The product has no warranty after the account has been received and successfully logged in.',
+          dayWarrantyNote: days => `Subject to the full ${days}-day warranty description.`,
+          custom: 'Custom',
+          receipt: ({date, duration, method, warranty, accountBlocks, warrantyNote, extraNote}) => `CHATGPT PLUS ORDER SUCCESSFUL
+    ----------------------------------
+    Purchase Date : ${date}
+    Duration      : ${duration}
+    Method        : ${method}
+    
+    Warranty      : ${warranty}
+    ----------------------------------
+    ${accountBlocks}
+    
+    MUST READ !!!
+    
+    ⚠️ HOW TO LOG IN & CHECK THE PLAN
+    
+    1. Enter the account email in the chat field (the field at the bottom), continue, then enter the password.
+    2. If a One-Time Code (OTP) is requested, retrieve it using the link above for the account being used.
+    3. After signing in, check Settings / Billing to make sure the plan is already Plus.
+    4. Once the plan is active, the account is ready to use normally.
+    ----------------------------------
+    
+    🔐 ACCOUNT SECURITY GUIDE (MUST READ!)
+    
+    The accounts we sell come from an overseas supplier, so we cannot guarantee the security of their database. For your protection, we strongly recommend securing the account immediately after the first login using either of the following methods:
+    
+    Method 1 — Change the MFA Code (Two-Factor Authentication)
+    • Enable or replace MFA to protect the account from unauthorized access.
+    • Tutorial: https://youtu.be/PKeFOvvf_wA
+    
+    Method 2 — Change the Account Email
+    • Change the login email to your personal email so the account is fully under your control.
+    • Tutorial: https://youtu.be/EMAILGPT
+    • Alternative link: https://babay.web.id/url/change-gmail-gpt
+    
+    Changing the email and/or enabling MFA greatly reduces the risk of the account being taken over. Do this as soon as possible.
+    ----------------------------------
+    
+    ⚠️ ACCOUNT USAGE RULES
+    • Codex may request WhatsApp/SMS number verification. Use an active number you can access, or use an overseas SMS OTP service.
+    • Use no more than 3 devices when connecting from different IP addresses, or 5 devices when using the same IP address. Avoid simultaneous use.
+    • Do not change the account's Billing/Payment details or plan, as this may trigger payment re-verification.
+    • Do not use proxies, routers, or other services prohibited by OpenAI, including 9router and similar services.
+    • Do not use third-party tools that obtain APIs, cookies, tokens, or account access through unofficial methods.
+    ----------------------------------
+    
+    🛡️ WARRANTY TERMS
+    • ${warrantyNote} Anything beyond that is outside our responsibility.
+    • A valid payment method is required to qualify for the GPT Plus 1-month trial offer.
+    • OpenAI has strict security systems. Do not violate the rules, so the account remains safe and is not flagged for suspicious activity.
+    • Our warranty mainly covers plan-related issues, such as the plan disappearing, reverting to Free, or another package issue not caused by the user.
+    • The warranty is void if the account is used excessively, spammed, accessed from too many devices, shared, connected through cookies/tokens, APIs or third-party tools, prohibited proxies/routers, or modified settings.
+    • Deactivation, bans, locks, or other problems caused by user actions are outside our responsibility as the provider.
+    • By purchasing and using this service, the buyer confirms that they have read, understood, and accepted all usage rules and terms.
+    Thank you...
+    ----------------------------------${extraNote ? `
+    
+    ADDITIONAL NOTES:
+    ${extraNote}` : ''}`
+        },
+    
+        id: {
+          pageTitle: 'GPT Plus Generator',
+          eyebrow: 'BabayShop Tools',
+          title: 'GPT Plus Generator',
+          subtitle: 'Pilih input format satu baris atau kolom terpisah. Keduanya bisa digunakan mulai dari 1 akun hingga ratusan akun.',
+          language: 'Bahasa',
+          orderInfo: 'Informasi Pesanan',
+          account: 'akun',
+          accounts: 'akun',
+          purchaseDate: 'Tanggal Pembelian',
+          paymentMethod: 'Metode Pembayaran',
+          customMethodName: 'Nama Metode Custom',
+          customMethodPlaceholder: 'Contoh: VISA / Mastercard',
+          packageDuration: 'Durasi Paket',
+          oneMonth: '1 Bulan (30 Hari)',
+          threeMonths: '3 Bulan (90 Hari)',
+          customDays: 'Custom (Hari)',
+          warrantyType: 'Tipe Garansi',
+          loginWarranty: 'Garansi Login (1x24 Jam)',
+          dayWarranty: 'Garansi Hari',
+          noWarranty: 'No Garansi',
+          customDuration: 'Durasi Custom (Hari)',
+          warrantyDays: 'Jumlah Hari Garansi',
+          oneLine: 'Format 1 Garis',
+          columns: 'Kolom Email & Password',
+          oneLineLabel: 'Input Format 1 Garis — Satu Akun per Baris',
+          oneLineHelper: 'Bisa diisi 1 akun atau banyak akun. Spasi di sekitar tanda | diperbolehkan dan baris kosong akan dilewati.',
+          separateColumns: 'Input Menggunakan Kolom Terpisah',
+          addAccount: '+ Tambah Akun',
+          columnsHelper: 'Isi Email, Password, dan kode 2FA pada kolom masing-masing. Tekan “Tambah Akun” untuk membuat akun berikutnya.',
+          additionalDescription: 'Deskripsi Tambahan (Opsional)',
+          additionalPlaceholder: 'Contoh: Bonus Shared Akun',
+          autoNote: 'Nota dibuat otomatis setelah data lengkap dan format akun dinyatakan valid.',
+          privacyNote: 'Data diproses langsung di browser dan tidak dikirim ke server melalui halaman ini.',
+          resultTitle: 'Nota Hasil',
+          copy: 'Salin Pesan',
+          edit: 'Edit Nota',
+          finishEdit: 'Selesai Edit',
+          reset: 'Reset',
+          remove: 'Hapus',
+          accountTitle: 'Akun',
+          passwordPlaceholder: 'Password akun',
+          secretLabel: '32 Digit Kode / Secret Key 2FA',
+          secretPlaceholder: 'Contoh: KSGKNC2YOPBJLLBELLSD4CGLGHYSM4E4',
+          copied: '✅ Tersalin!',
+          copyFailed: 'Gagal Menyalin',
+          chooseDate: 'Pilih tanggal pembelian terlebih dahulu.',
+          invalidDuration: 'Durasi paket harus lebih dari 0 hari.',
+          invalidWarranty: 'Jumlah hari garansi harus lebih dari 0.',
+          minimumLine: 'Masukkan minimal 1 akun menggunakan format email|password|kode.',
+          minimumColumns: 'Isi minimal 1 akun pada kolom Email, Password, dan kode 2FA.',
+          lineExact: n => `Baris ${n}: harus berisi tepat 3 bagian (email|password|kode).`,
+          lineEmpty: n => `Baris ${n}: email, password, atau kode masih kosong.`,
+          lineEmail: n => `Baris ${n}: format email tidak valid.`,
+          lineCode: n => `Baris ${n}: kode harus tepat 32 karakter huruf/angka.`,
+          rowEmpty: n => `Akun ${n}: Email, Password, dan kode harus diisi lengkap.`,
+          rowEmail: n => `Akun ${n}: format email tidak valid.`,
+          rowCode: n => `Akun ${n}: kode harus tepat 32 karakter huruf/angka.`,
+          moreErrors: n => ` Masih ada ${n} kesalahan lainnya.`,
+          lineSuccess: n => `${n} akun berhasil dibaca dari format satu garis.`,
+          columnSuccess: n => `${n} akun berhasil dibaca dari kolom terpisah.`,
+          dateLocale: 'id-ID',
+          noEndDate: 'Tdk Ada',
+          duration1: '1 Bulan',
+          duration3: '3 Bulan',
+          durationDays: n => `${n} Hari`,
+          loginWarrantyText: 'Garansi Login 1x24 Jam',
+          noWarrantyText: 'No Garansi',
+          dayWarrantyText: (days, end) => `${days} Hari (s/d ${end})`,
+          loginWarrantyNote: 'Sesuai deskripsi garansi login 1x24 jam.',
+          noWarrantyNote: 'Produk tidak memiliki garansi setelah akun berhasil diterima dan login.',
+          dayWarrantyNote: days => `Sesuai deskripsi garansi full ${days} hari.`,
+          custom: 'Custom',
+          receipt: ({date, duration, method, warranty, accountBlocks, warrantyNote, extraNote}) => `PESANAN CHATGPT PLUS BERHASIL
+    ----------------------------------
+    Tgl Beli: ${date}
+    Durasi  : ${duration}
+    Methode : ${method}
+    
+    Garansi : ${warranty}
+    ----------------------------------
+    ${accountBlocks}
+    
+    WAJIB BACA !!!
+    
+    ⚠️ CARA LOGIN & CEK PAKET
+    
+    1. Masukkan email akun di kolom chat (bagian kolom bawah), lalu lanjutkan dengan memasukkan password.
+    2. Jika diminta kode One Time Code (OTP), ambil kode melalui link di atas sesuai akun yang digunakan.
+    3. Setelah berhasil masuk, cek bagian Pengaturan / Penagihan untuk memastikan plan sudah Plus.
+    4. Jika plan sudah aktif, akun siap digunakan seperti biasa.
+    ----------------------------------
+    
+    🔐 PANDUAN MENGAMANKAN AKUN (WAJIB BACA!)
+    
+    Akun yang kami jual berasal dari supplier luar negeri, sehingga kami tidak bisa menjamin keamanan database di pihak mereka. Demi keamanan, kami sangat menyarankan Anda segera mengamankan akun dengan salah satu cara berikut setelah login pertama:
+    
+    Cara 1 — Ganti Kode MFA (Two-Factor Authentication)
+    • Aktifkan / ganti MFA agar akun terlindungi dari akses orang lain.
+    • Tutorial: https://youtu.be/PKeFOvvf_wA
+    
+    Cara 2 — Ganti Email Akun
+    • Ganti email login ke email pribadi Anda agar akun sepenuhnya milik Anda.
+    • Tutorial: https://youtu.be/EMAILGPT
+    • Link alternatif: https://babay.web.id/url/change-gmail-gpt
+    
+    Dengan mengganti email dan/atau mengaktifkan MFA, risiko akun diambil alih orang lain akan jauh lebih kecil. Lakukan sesegera mungkin.
+    ----------------------------------
+    
+    ⚠️ ATURAN PENGGUNAAN AKUN
+    • Jika ingin menggunakan fitur Codex, akun mungkin diminta verifikasi nomor WhatsApp/SMS. Gunakan nomor aktif yang bisa Anda akses, atau gunakan layanan OTP SMS luar negeri.
+    • Disarankan menggunakan maksimal 3 perangkat jika terhubung dari IP yang berbeda, atau maksimal 5 perangkat jika menggunakan IP yang sama. Hindari pemakaian bersamaan.
+    • Dilarang mengubah data Billing/Payment atau plan akun karena dapat memicu verifikasi pembayaran ulang.
+    • Dilarang keras menggunakan proxy, router, atau layanan lain yang tidak diizinkan oleh OpenAI, termasuk 9router dan layanan sejenis.
+    • Dilarang menggunakan tools pihak ketiga yang mengambil API, cookies, token, atau akses akun dengan cara tidak resmi.
+    ----------------------------------
+    
+    🛡️ KETENTUAN GARANSI
+    • ${warrantyNote} Lebih dari itu di luar tanggung jawab kami.
+    • Metode pembayaran wajib valid agar tembus offer GPT Plus 1 month trial.
+    • OpenAI memiliki sistem keamanan yang ketat. Jangan melanggar aturan agar akun tetap aman dan tidak terdeteksi aktivitas mencurigakan.
+    • Garansi dari kami lebih mengarah ke kendala paket, seperti paket hilang, plan kembali ke Free, atau masalah paket yang bukan disebabkan oleh kesalahan pengguna.
+    • Garansi hangus apabila akun terdeteksi digunakan secara berlebihan, spam, dipakai banyak perangkat, dibagikan ke orang lain, menggunakan cookies/token, API/tools pihak ketiga, proxy/router terlarang, atau mengubah pengaturan.
+    • Jika akun terkena deactivated, banned, terkunci, atau bermasalah karena terdapat unsur kesalahan pengguna, maka hal tersebut berada di luar tanggung jawab kami sebagai penyedia.
+    • Dengan membeli dan menggunakan jasa ini, pembeli berarti sudah membaca, memahami, dan menyetujui aturan penggunaan serta ketentuannya.
+    Terima kasih...
+    ----------------------------------${extraNote ? `
+    
+    CATATAN TAMBAHAN:
+    ${extraNote}` : ''}`
+        }
+      };
+    
+      let currentLanguage = localStorage.getItem('gptGeneratorLanguage') || 'en';
+    
+      function tr(key, ...args) {
+        const value = translations[currentLanguage][key];
+        return typeof value === 'function' ? value(...args) : value;
       }
+    
+      function accountLabel(count) {
+        return `${count} ${count === 1 ? tr('account') : tr('accounts')}`;
+      }
+    
+      function setText(selector, value) {
+        const element = document.querySelector(selector);
+        if (element) element.textContent = value;
+      }
+    
+      function setOption(selectId, value, text) {
+        const option = document.querySelector(`#${selectId} option[value="${value}"]`);
+        if (option) option.textContent = text;
+      }
+    
+      window.setLanguage = function(language) {
+        currentLanguage = language === 'id' ? 'id' : 'en';
+        localStorage.setItem('gptGeneratorLanguage', currentLanguage);
+        document.documentElement.lang = currentLanguage;
+        document.title = tr('pageTitle');
+    
+        const languageSelect = document.getElementById('languageSelect');
+        if (languageSelect) languageSelect.value = currentLanguage;
+    
+        setText('.eyebrow', tr('eyebrow'));
+        setText('.header h1', tr('title'));
+        setText('.subtitle', tr('subtitle'));
+        setText('.card:first-of-type .card-title h2', tr('orderInfo'));
+        setText('label[for="inTgl"]', tr('purchaseDate'));
+        setText('label[for="inMethod"]', tr('paymentMethod'));
+        setText('label[for="inMethodCustom"]', tr('customMethodName'));
+        setText('label[for="inDurasiSelect"]', tr('packageDuration'));
+        setText('label[for="inGaransiType"]', tr('warrantyType'));
+        setText('label[for="inDurasiCustomVal"]', tr('customDuration'));
+        setText('label[for="inGaransiDay"]', tr('warrantyDays'));
+        setText('#lineModeBtn', tr('oneLine'));
+        setText('#columnModeBtn', tr('columns'));
+        setText('label[for="inBulkAccounts"]', tr('oneLineLabel'));
+        setText('#lineInputSection .helper', tr('oneLineHelper'));
+        setText('#columnInputSection .group > label', tr('separateColumns'));
+        setText('.add-account-btn', tr('addAccount'));
+        setText('#columnInputSection .helper', tr('columnsHelper'));
+        setText('label[for="inNote"]', tr('additionalDescription'));
+    
+        const infoNotes = document.querySelectorAll('.info-mini');
+        if (infoNotes[0]) infoNotes[0].textContent = tr('autoNote');
+        if (infoNotes[1]) infoNotes[1].textContent = tr('privacyNote');
+    
+        setText('#resultCard .card-title h2', tr('resultTitle'));
+        setText('#copyBtn', tr('copy'));
+        setText('#editBtn', isEditMode ? tr('finishEdit') : tr('edit'));
+        setText('#resultCard .btn-danger-soft', tr('reset'));
+    
+        document.getElementById('inMethodCustom').placeholder = tr('customMethodPlaceholder');
+        document.getElementById('inNote').placeholder = tr('additionalPlaceholder');
+    
+        setOption('inDurasiSelect', '30', tr('oneMonth'));
+        setOption('inDurasiSelect', '90', tr('threeMonths'));
+        setOption('inDurasiSelect', 'custom', tr('customDays'));
+        setOption('inGaransiType', 'login', tr('loginWarranty'));
+        setOption('inGaransiType', 'hari', tr('dayWarranty'));
+        setOption('inGaransiType', 'none', tr('noWarranty'));
+    
+        document.querySelectorAll('.account-item').forEach((row, index) => {
+          const title = row.querySelector('.account-item-title');
+          const removeButton = row.querySelector('.remove-account-btn');
+          const passwordInput = row.querySelector('.column-password');
+          const secretLabel = row.querySelector('.full-width label');
+          const secretInput = row.querySelector('.column-secret');
+    
+          if (title) title.textContent = `${tr('accountTitle')} #${index + 1}`;
+          if (removeButton) removeButton.textContent = tr('remove');
+          if (passwordInput) passwordInput.placeholder = tr('passwordPlaceholder');
+          if (secretLabel) secretLabel.textContent = tr('secretLabel');
+          if (secretInput) secretInput.placeholder = tr('secretPlaceholder');
+        });
+    
+        updateAccountCount();
+        scheduleAutoGenerate();
+      };
+    
+      const originalCreateAccountRow = window.createAccountRow;
+      window.createAccountRow = function(email = '', password = '', secret = '') {
+        const row = originalCreateAccountRow(email, password, secret);
+        const removeButton = row.querySelector('.remove-account-btn');
+        const passwordInput = row.querySelector('.column-password');
+        const secretLabel = row.querySelector('.full-width label');
+        const secretInput = row.querySelector('.column-secret');
+    
+        if (removeButton) removeButton.textContent = tr('remove');
+        if (passwordInput) passwordInput.placeholder = tr('passwordPlaceholder');
+        if (secretLabel) secretLabel.textContent = tr('secretLabel');
+        if (secretInput) secretInput.placeholder = tr('secretPlaceholder');
+        return row;
+      };
+    
+      window.renumberAccountRows = function() {
+        document.querySelectorAll('.account-item').forEach((row, index) => {
+          row.querySelector('.account-item-title').textContent = `${tr('accountTitle')} #${index + 1}`;
+        });
+      };
+    
+      window.formatDateObject = function(date) {
+        if (!(date instanceof Date) || Number.isNaN(date.getTime())) return '-';
+        return date.toLocaleDateString(tr('dateLocale'), {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        });
+      };
+    
+      window.hitungTanggal = function(dateString, durasi) {
+        const date = parseLocalDate(dateString);
+        const days = Number.parseInt(durasi, 10);
+        if (!date || !Number.isFinite(days) || days <= 0) return tr('noEndDate');
+        date.setDate(date.getDate() + days);
+        return formatDateObject(date);
+      };
+    
+      window.updateAccountCount = function() {
+        let count = 0;
+    
+        if (inputMode === 'line') {
+          count = getNonEmptyBulkLines().length;
+        } else {
+          count = Array.from(document.querySelectorAll('.account-item')).filter(row => {
+            const email = row.querySelector('.column-email').value.trim();
+            const password = row.querySelector('.column-password').value.trim();
+            const secret = row.querySelector('.column-secret').value.trim();
+            return email || password || secret;
+          }).length;
+        }
+    
+        document.getElementById('accountCountBadge').textContent = accountLabel(count);
+        clearBulkStatus();
+        scheduleAutoGenerate();
+      };
+    
+      window.parseBulkAccounts = function() {
+        const lines = getNonEmptyBulkLines();
+        const accounts = [];
+        const errors = [];
+    
+        lines.forEach((line, index) => {
+          const parts = line.split('|').map(part => part.trim());
+          const lineNumber = index + 1;
+    
+          if (parts.length !== 3) {
+            errors.push(tr('lineExact', lineNumber));
+            return;
+          }
+    
+          const [email, password, rawSecret] = parts;
+          const secret = rawSecret.replace(/\s+/g, '');
+    
+          if (!email || !password || !secret) {
+            errors.push(tr('lineEmpty', lineNumber));
+            return;
+          }
+    
+          if (!email.includes('@')) {
+            errors.push(tr('lineEmail', lineNumber));
+            return;
+          }
+    
+          if (!/^[A-Za-z0-9]{32}$/.test(secret)) {
+            errors.push(tr('lineCode', lineNumber));
+            return;
+          }
+    
+          accounts.push({ email, password, secret });
+        });
+    
+        return { lines, accounts, errors };
+      };
+    
+      window.parseColumnAccounts = function() {
+        const rows = Array.from(document.querySelectorAll('.account-item'));
+        const accounts = [];
+        const errors = [];
+    
+        rows.forEach((row, index) => {
+          const email = row.querySelector('.column-email').value.trim();
+          const password = row.querySelector('.column-password').value.trim();
+          const secret = row.querySelector('.column-secret').value.replace(/\s+/g, '');
+          const rowNumber = index + 1;
+    
+          if (!email && !password && !secret) return;
+    
+          if (!email || !password || !secret) {
+            errors.push(tr('rowEmpty', rowNumber));
+            return;
+          }
+    
+          if (!email.includes('@')) {
+            errors.push(tr('rowEmail', rowNumber));
+            return;
+          }
+    
+          if (!/^[A-Za-z0-9]{32}$/.test(secret)) {
+            errors.push(tr('rowCode', rowNumber));
+            return;
+          }
+    
+          accounts.push({ email, password, secret });
+        });
+    
+        return { accounts, errors };
+      };
+    
+      window.getAccounts = function() {
+        if (inputMode === 'line') {
+          const result = parseBulkAccounts();
+    
+          if (result.lines.length < 1) {
+            showBulkStatus(tr('minimumLine'), 'error');
+            return null;
+          }
+    
+          if (result.errors.length > 0) {
+            const preview = result.errors.slice(0, 8).join(' ');
+            const remaining = result.errors.length > 8 ? tr('moreErrors', result.errors.length - 8) : '';
+            showBulkStatus(preview + remaining, 'error');
+            return null;
+          }
+    
+          showBulkStatus(tr('lineSuccess', result.accounts.length), 'success');
+          return result.accounts;
+        }
+    
+        const result = parseColumnAccounts();
+    
+        if (result.accounts.length < 1 && result.errors.length < 1) {
+          showBulkStatus(tr('minimumColumns'), 'error');
+          return null;
+        }
+    
+        if (result.errors.length > 0) {
+          const preview = result.errors.slice(0, 8).join(' ');
+          const remaining = result.errors.length > 8 ? tr('moreErrors', result.errors.length - 8) : '';
+          showBulkStatus(preview + remaining, 'error');
+          return null;
+        }
+    
+        showBulkStatus(tr('columnSuccess', result.accounts.length), 'success');
+        return result.accounts;
+      };
+    
+      window.getMethodLabel = function() {
+        const method = document.getElementById('inMethod').value;
+        if (method !== 'custom') return method;
+        return document.getElementById('inMethodCustom').value.trim() || tr('custom');
+      };
+    
+      window.buildAccountBlocks = function(accounts) {
+        return accounts.map((account, index) => {
+          const mfaLink = `https://babay.web.id/2fa/?key=${encodeURIComponent(account.secret)}`;
+          const heading = currentLanguage === 'id' ? `#Akun_${index + 1}` : `#Account_${index + 1}`;
+          return `${heading}\nEmail   : ${account.email}\nPassword: ${account.password}\nLink MFA: ${mfaLink}\n----------------------------------`;
+        }).join('\n');
+      };
+    
+      window.generateNota = function(isAutomatic = false) {
+        const accounts = getAccounts();
+        if (!accounts) {
+          document.getElementById('resultCard').classList.add('hidden');
+          return;
+        }
+    
+        const tglBeli = document.getElementById('inTgl').value;
+        if (!tglBeli) {
+          if (!isAutomatic) alert(tr('chooseDate'));
+          document.getElementById('resultCard').classList.add('hidden');
+          return;
+        }
+    
+        const durasiSelect = document.getElementById('inDurasiSelect').value;
+        const durasiPaket = durasiSelect === 'custom'
+          ? Number.parseInt(document.getElementById('inDurasiCustomVal').value, 10)
+          : Number.parseInt(durasiSelect, 10);
+    
+        if (!Number.isFinite(durasiPaket) || durasiPaket <= 0) {
+          if (!isAutomatic) alert(tr('invalidDuration'));
+          document.getElementById('resultCard').classList.add('hidden');
+          return;
+        }
+    
+        const durationText = durasiSelect === '30'
+          ? tr('duration1')
+          : durasiSelect === '90'
+            ? tr('duration3')
+            : tr('durationDays', durasiPaket);
+    
+        const warrantyType = document.getElementById('inGaransiType').value;
+        let warrantyText = '';
+        let warrantyNote = tr('loginWarrantyNote');
+    
+        if (warrantyType === 'login') {
+          warrantyText = tr('loginWarrantyText');
+        } else if (warrantyType === 'none') {
+          warrantyText = tr('noWarrantyText');
+          warrantyNote = tr('noWarrantyNote');
+        } else {
+          const warrantyDays = Number.parseInt(document.getElementById('inGaransiDay').value, 10);
+          if (!Number.isFinite(warrantyDays) || warrantyDays <= 0) {
+            if (!isAutomatic) alert(tr('invalidWarranty'));
+            document.getElementById('resultCard').classList.add('hidden');
+            return;
+          }
+    
+          const warrantyEnd = hitungTanggal(tglBeli, warrantyDays);
+          warrantyText = tr('dayWarrantyText', warrantyDays, warrantyEnd);
+          warrantyNote = tr('dayWarrantyNote', warrantyDays);
+        }
+    
+        const text = tr('receipt', {
+          date: formatTanggal(tglBeli),
+          duration: durationText,
+          method: getMethodLabel(),
+          warranty: warrantyText,
+          accountBlocks: buildAccountBlocks(accounts),
+          warrantyNote,
+          extraNote: document.getElementById('inNote').value.trim()
+        });
+    
+        const output = document.getElementById('output');
+        const resultCard = document.getElementById('resultCard');
+        const editBtn = document.getElementById('editBtn');
+    
+        output.value = text;
+        output.setAttribute('readonly', true);
+        resultCard.classList.remove('hidden');
+        document.getElementById('resultCountBadge').textContent = accountLabel(accounts.length);
+        document.getElementById('accountCountBadge').textContent = accountLabel(accounts.length);
+    
+        isEditMode = false;
+        editBtn.textContent = tr('edit');
+    
+        if (!isAutomatic) resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      };
+    
+      window.toggleEdit = function() {
+        const output = document.getElementById('output');
+        const editBtn = document.getElementById('editBtn');
+    
+        isEditMode = !isEditMode;
+    
+        if (isEditMode) {
+          output.removeAttribute('readonly');
+          output.focus();
+          editBtn.textContent = tr('finishEdit');
+        } else {
+          output.setAttribute('readonly', true);
+          editBtn.textContent = tr('edit');
+        }
+      };
+    
+      window.copyText = async function() {
+        const output = document.getElementById('output');
+        const btn = document.getElementById('copyBtn');
+    
+        try {
+          if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(output.value);
+          } else {
+            output.removeAttribute('readonly');
+            output.select();
+            output.setSelectionRange(0, output.value.length);
+            document.execCommand('copy');
+            if (!isEditMode) output.setAttribute('readonly', true);
+          }
+    
+          btn.textContent = tr('copied');
+        } catch (error) {
+          btn.textContent = tr('copyFailed');
+        }
+    
+        setTimeout(() => {
+          btn.textContent = tr('copy');
+        }, 2000);
+      };
+    
+      const switcher = document.createElement('div');
+      switcher.className = 'language-switcher';
+      switcher.innerHTML = `
+        <label for="languageSelect">${tr('language')}</label>
+        <select id="languageSelect" onchange="setLanguage(this.value)">
+          <option value="en">English</option>
+          <option value="id">Bahasa Indonesia</option>
+        </select>
+      `;
+      document.querySelector('.header').appendChild(switcher);
+    
+      setLanguage(currentLanguage);
+    })();
+  </script>
 
-      const warrantyEnd = hitungTanggal(tglBeli, warrantyDays);
-      warrantyText = tr('dayWarrantyText', warrantyDays, warrantyEnd);
-      warrantyNote = tr('dayWarrantyNote', warrantyDays);
+  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1}' crossorigin="anonymous"></script>
+
+  <script>
+    function switchMainPanel(panel) {
+      const bulk = panel === 'bulk';
+      document.getElementById('bulkPanel').classList.toggle('active', bulk);
+      document.getElementById('packagePanel').classList.toggle('active', !bulk);
+      document.getElementById('navBulk').classList.toggle('active', bulk);
+      document.getElementById('navPackage').classList.toggle('active', !bulk);
+      window.scrollTo({top:0, behavior:'smooth'});
     }
-
-    const text = tr('receipt', {
-      date: formatTanggal(tglBeli),
-      duration: durationText,
-      method: getMethodLabel(),
-      warranty: warrantyText,
-      accountBlocks: buildAccountBlocks(accounts),
-      warrantyNote,
-      extraNote: document.getElementById('inNote').value.trim()
-    });
-
-    const output = document.getElementById('output');
-    const resultCard = document.getElementById('resultCard');
-    const editBtn = document.getElementById('editBtn');
-
-    output.value = text;
-    output.setAttribute('readonly', true);
-    resultCard.classList.remove('hidden');
-    document.getElementById('resultCountBadge').textContent = accountLabel(accounts.length);
-    document.getElementById('accountCountBadge').textContent = accountLabel(accounts.length);
-
-    isEditMode = false;
-    editBtn.textContent = tr('edit');
-
-    if (!isAutomatic) resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
-
-  window.toggleEdit = function() {
-    const output = document.getElementById('output');
-    const editBtn = document.getElementById('editBtn');
-
-    isEditMode = !isEditMode;
-
-    if (isEditMode) {
-      output.removeAttribute('readonly');
-      output.focus();
-      editBtn.textContent = tr('finishEdit');
-    } else {
-      output.setAttribute('readonly', true);
-      editBtn.textContent = tr('edit');
+    
+    function pkgToday() {
+      const now = new Date();
+      const local = new Date(now.getTime() - now.getTimezoneOffset()*60000).toISOString().slice(0,10);
+      document.getElementById('pkgOrderDate').value = local;
     }
-  };
-
-  window.copyText = async function() {
-    const output = document.getElementById('output');
-    const btn = document.getElementById('copyBtn');
-
-    try {
-      if (navigator.clipboard && window.isSecureContext) {
-        await navigator.clipboard.writeText(output.value);
+    function pkgDate(value) {
+      if(!value) return null;
+      const [y,m,d]=value.split('-').map(Number);
+      return new Date(y,m-1,d);
+    }
+    function pkgDateText(date) {
+      if(!date || Number.isNaN(date.getTime())) return '-';
+      return date.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+    }
+    function pkgAddDays(value, days) {
+      const date=pkgDate(value);
+      if(!date) return '-';
+      date.setDate(date.getDate()+Number(days||0));
+      return pkgDateText(date);
+    }
+    function pkgToggleDuration() {
+      document.getElementById('pkgCustomDurationWrap').classList.toggle('hidden', document.getElementById('pkgDuration').value!=='custom');
+    }
+    function pkgToggleWarranty() {
+      document.getElementById('pkgWarrantyDaysWrap').classList.toggle('hidden', document.getElementById('pkgWarrantyType').value!=='days');
+    }
+    function pkgToggleFields() {
+      const type=document.getElementById('pkgType').value;
+      const invite=type==='invite';
+      document.getElementById('pkgInviteFields').classList.toggle('hidden',!invite);
+      document.getElementById('pkgAccountFields').classList.toggle('hidden',invite);
+      const labels={invite:'Invite Team',direct:'Direct Private',sharing:'Sharing 3–5',go:'GPT GO'};
+      document.getElementById('pkgTypeBadge').textContent=labels[type];
+      if(type==='go' && document.getElementById('pkgDuration').value==='30') document.getElementById('pkgDuration').value='365';
+    }
+    function pkgParseAccounts() {
+      const lines=document.getElementById('pkgBulkAccounts').value.split(/\r?\n/).map(v=>v.trim()).filter(Boolean);
+      const errors=[];
+      const accounts=[];
+      lines.forEach((line,i)=>{
+        const p=line.split('|').map(v=>v.trim());
+        if(p.length<2 || p.length>3){ errors.push(`Baris ${i+1} harus menggunakan format email|password|secret/link.`); return; }
+        const [email,password,access='']=p;
+        if(!email || !password){ errors.push(`Baris ${i+1}: email dan password wajib diisi.`); return; }
+        accounts.push({email,password,access});
+      });
+      return {accounts,errors};
+    }
+    function pkgAccessLink(access) {
+      if(!access) return '';
+      if(/^https?:\/\//i.test(access)) return access;
+      const clean=access.replace(/\s+/g,'');
+      return `https://babay.web.id/2fa/?key=${encodeURIComponent(clean)}`;
+    }
+    function pkgWarrantyInfo() {
+      const type=document.getElementById('pkgWarrantyType').value;
+      const date=document.getElementById('pkgOrderDate').value;
+      if(type==='none') return {line:'Tanpa Garansi', sentence:'Produk tidak memiliki garansi setelah data akun diterima dan berhasil login.'};
+      if(type==='login') return {line:'Garansi Login 1×24 Jam', sentence:'Garansi login berlaku 1×24 jam sejak data akun dikirim.'};
+      const days=Math.max(1,parseInt(document.getElementById('pkgWarrantyDays').value,10)||1);
+      return {line:`${days} Hari — sampai ${pkgAddDays(date,days)}`, sentence:`Garansi berlaku selama ${days} hari. Lebih dari masa garansi, silakan order kembali.`};
+    }
+    function pkgDurationInfo() {
+      const select=document.getElementById('pkgDuration').value;
+      const days=select==='custom' ? Math.max(1,parseInt(document.getElementById('pkgCustomDuration').value,10)||1) : parseInt(select,10);
+      const label=select==='30'?'1 Bulan':select==='90'?'3 Bulan':select==='365'?'Max 1 Tahun':`${days} Hari`;
+      return {days,label};
+    }
+    function pkgBuildAccounts(accounts) {
+      return accounts.map((a,i)=>{
+        const link=pkgAccessLink(a.access);
+        return `#Akun_${i+1}\n▰ Email : ${a.email}\n▰ Password : ${a.password}${link?`\n▰ Link OTP / MFA : ${link}`:''}`;
+      }).join('\n\n');
+    }
+    function pkgLoginInstruction(hasMissingLink=false) {
+      return `📝 CARA LOGIN:\n1. Buka aplikasi atau website ChatGPT.\n2. Masukkan email langsung di halaman login ChatGPT.\n3. Masukkan password yang diberikan.\n4. Jika diminta One-Time Code, buka Link OTP / MFA sesuai akun yang digunakan.\n5. Salin kode OTP yang muncul lalu masukkan ke ChatGPT.\n6. Setelah masuk, cek Settings / Pengaturan untuk memastikan paket sudah aktif.${hasMissingLink?'\n7. Jika link OTP tidak tersedia tetapi kode diminta, hubungi admin.':''}`;
+    }
+    function pkgGenerate(automatic=false) {
+      const type=document.getElementById('pkgType').value;
+      const order=document.getElementById('pkgOrderDate').value;
+      if(!order){ if(!automatic) alert('Pilih tanggal order.'); return; }
+      const duration=pkgDurationInfo();
+      const warranty=pkgWarrantyInfo();
+      const extra=document.getElementById('pkgExtraNote').value.trim();
+      let item='',typeLabel='',data='',instructions='',count=1;
+    
+      if(type==='invite') {
+        const email=document.getElementById('pkgInviteEmail').value.trim();
+        const team=document.getElementById('pkgTeamName').value.trim();
+        if((!email || !team) && automatic) return;
+        if(!email || !team){ alert('Isi email pembeli dan nama team.'); return; }
+        item='AI ChatGPT Pro Plus Invite'; typeLabel='Private Invite (Team)';
+        data=`▰ Email User : ${email}\n▰ Invitation : ${team}`;
+        instructions=`📝 CARA AKTIVASI:\n1. Buka email yang didaftarkan.\n2. Cari email undangan dari OpenAI / ChatGPT.\n3. Klik “Join Team” lalu masuk ke workspace yang sesuai.\n4. Gunakan ChatGPT di dalam workspace tersebut.\n\n⚠️ PENTING:\n• Chat dan prompt di workspace hanya bisa diakses selama akun masih berada di dalam team.\n• Backup hasil chat penting sebelum masa aktif berakhir.\n• Jangan mengubah pengaturan team tanpa izin admin.`;
       } else {
-        output.removeAttribute('readonly');
-        output.select();
-        output.setSelectionRange(0, output.value.length);
-        document.execCommand('copy');
-        if (!isEditMode) output.setAttribute('readonly', true);
+        const parsed=pkgParseAccounts();
+        if(parsed.errors.length){ if(!automatic) alert(parsed.errors.join('\n')); return; }
+        if(!parsed.accounts.length){ if(!automatic) alert('Masukkan minimal satu akun.'); return; }
+        count=parsed.accounts.length;
+        data=pkgBuildAccounts(parsed.accounts);
+        const missing=parsed.accounts.some(a=>!a.access);
+        if(type==='direct') {
+          item='AI ChatGPT Plus Direct'; typeLabel='Private Account (Personal)';
+          instructions=`${pkgLoginInstruction(missing)}\n\n📌 KETENTUAN:\n• Akun bersifat private/personal.\n• Jangan mengganti email, password, billing, plan, atau pengaturan keamanan selama masa garansi.\n• Jangan menggunakan cookies, token, API, tools pihak ketiga, proxy, atau router terlarang.\n• Gunakan akun secara normal agar tidak terdeteksi aktivitas mencurigakan.`;
+        } else if(type==='sharing') {
+          item='AI ChatGPT Plus Sharing'; typeLabel='Sharing 3–5 Orang';
+          instructions=`${pkgLoginInstruction(missing)}\n\n📂 INSTRUKSI SHARING:\n• Akun digunakan bersama sekitar 3–5 orang.\n• Setiap pengguna mendapatkan Folder / Project masing-masing.\n• Sebelum mengisi prompt atau ngobrol, masuk ke Folder / Project milik masing-masing terlebih dahulu agar chat AI tidak tercampur.\n• Jangan membuka, mengubah, atau menghapus Folder / Project pengguna lain.\n\n⚠️ PEMAKAIAN:\n• Jangan menggunakan akun secara bar-bar, terlalu memaksa, atau mengirim request terlalu sering.\n• Hindari pemakaian berat secara terus-menerus karena akun dibagi dengan pengguna lain.\n• Jangan mengubah email, password, nama akun, billing, plan, atau keamanan akun.`;
+        } else {
+          item='AI ChatGPT GO'; typeLabel='Private Account (Personal)';
+          instructions=`${pkgLoginInstruction(missing)}\n\n📌 INFO AKUN:\n• Akun private, bukan sharing.\n• Gunakan secara normal dan jangan melakukan spam fitur.\n• Jangan mengubah billing, plan, atau pengaturan keamanan akun.\n• Jika ada kendala selama masa garansi, hubungi admin.`;
+        }
       }
-
-      btn.textContent = tr('copied');
-    } catch (error) {
-      btn.textContent = tr('copyFailed');
+    
+      let output=`╭────〔 BABAYSHOP.MY.ID 〕────\n┊・Item : ${item}\n┊・Type : ${typeLabel}\n┊・Order Date : ${pkgDateText(pkgDate(order))}\n┊・Durasi : ${duration.label}\n┊・Masa Aktif s/d : ${pkgAddDays(order,duration.days)}\n┊・Garansi : ${warranty.line}\n╰────────────────────\n\n📦 DATA AKSES:\n${data}\n\n╰────────────────────\n\n${instructions}\n\n🛡️ GARANSI:\n• ${warranty.sentence}\n• Garansi hanya mencakup kendala paket seperti plan hilang atau kembali ke Free yang bukan disebabkan kesalahan pengguna.\n• Garansi hangus jika akun digunakan berlebihan, spam, dibagikan tidak sesuai paket, menggunakan cookies/token/API/tools pihak ketiga, proxy/router terlarang, atau pengaturan akun diubah.\n• Jika akun deactivated, banned, atau terkunci akibat kesalahan pengguna, hal tersebut di luar tanggung jawab penyedia.\n• Dengan menggunakan akun, pembeli dianggap memahami dan menyetujui ketentuan ini.${extra?`\n\n📝 CATATAN TAMBAHAN:\n${extra}`:''}\n\n🌐 Info lengkap: https://babayshop.my.id/gpt/`;
+    
+      document.getElementById('pkgOutput').value=output;
+      document.getElementById('pkgResultBadge').textContent=`${count} akun`;
+      document.getElementById('pkgResultCard').classList.remove('hidden');
+      if(!automatic) document.getElementById('pkgResultCard').scrollIntoView({behavior:'smooth',block:'start'});
     }
-
-    setTimeout(() => {
-      btn.textContent = tr('copy');
-    }, 2000);
-  };
-
-  const switcher = document.createElement('div');
-  switcher.className = 'language-switcher';
-  switcher.innerHTML = `
-    <label for="languageSelect">${tr('language')}</label>
-    <select id="languageSelect" onchange="setLanguage(this.value)">
-      <option value="en">English</option>
-      <option value="id">Bahasa Indonesia</option>
-    </select>
-  `;
-  document.querySelector('.header').appendChild(switcher);
-
-  setLanguage(currentLanguage);
-})();
-</script>
-
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1}' crossorigin="anonymous"></script>
-
-<script>
-function switchMainPanel(panel) {
-  const bulk = panel === 'bulk';
-  document.getElementById('bulkPanel').classList.toggle('active', bulk);
-  document.getElementById('packagePanel').classList.toggle('active', !bulk);
-  document.getElementById('navBulk').classList.toggle('active', bulk);
-  document.getElementById('navPackage').classList.toggle('active', !bulk);
-  window.scrollTo({top:0, behavior:'smooth'});
-}
-
-function pkgToday() {
-  const now = new Date();
-  const local = new Date(now.getTime() - now.getTimezoneOffset()*60000).toISOString().slice(0,10);
-  document.getElementById('pkgOrderDate').value = local;
-}
-function pkgDate(value) {
-  if(!value) return null;
-  const [y,m,d]=value.split('-').map(Number);
-  return new Date(y,m-1,d);
-}
-function pkgDateText(date) {
-  if(!date || Number.isNaN(date.getTime())) return '-';
-  return date.toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
-}
-function pkgAddDays(value, days) {
-  const date=pkgDate(value);
-  if(!date) return '-';
-  date.setDate(date.getDate()+Number(days||0));
-  return pkgDateText(date);
-}
-function pkgToggleDuration() {
-  document.getElementById('pkgCustomDurationWrap').classList.toggle('hidden', document.getElementById('pkgDuration').value!=='custom');
-}
-function pkgToggleWarranty() {
-  document.getElementById('pkgWarrantyDaysWrap').classList.toggle('hidden', document.getElementById('pkgWarrantyType').value!=='days');
-}
-function pkgToggleFields() {
-  const type=document.getElementById('pkgType').value;
-  const invite=type==='invite';
-  document.getElementById('pkgInviteFields').classList.toggle('hidden',!invite);
-  document.getElementById('pkgAccountFields').classList.toggle('hidden',invite);
-  const labels={invite:'Invite Team',direct:'Direct Private',sharing:'Sharing 3–5',go:'GPT GO'};
-  document.getElementById('pkgTypeBadge').textContent=labels[type];
-  if(type==='go' && document.getElementById('pkgDuration').value==='30') document.getElementById('pkgDuration').value='365';
-}
-function pkgParseAccounts() {
-  const lines=document.getElementById('pkgBulkAccounts').value.split(/\r?\n/).map(v=>v.trim()).filter(Boolean);
-  const errors=[];
-  const accounts=[];
-  lines.forEach((line,i)=>{
-    const p=line.split('|').map(v=>v.trim());
-    if(p.length<2 || p.length>3){ errors.push(`Baris ${i+1} harus menggunakan format email|password|secret/link.`); return; }
-    const [email,password,access='']=p;
-    if(!email || !password){ errors.push(`Baris ${i+1}: email dan password wajib diisi.`); return; }
-    accounts.push({email,password,access});
-  });
-  return {accounts,errors};
-}
-function pkgAccessLink(access) {
-  if(!access) return '';
-  if(/^https?:\/\//i.test(access)) return access;
-  const clean=access.replace(/\s+/g,'');
-  return `https://babay.web.id/2fa/?key=${encodeURIComponent(clean)}`;
-}
-function pkgWarrantyInfo() {
-  const type=document.getElementById('pkgWarrantyType').value;
-  const date=document.getElementById('pkgOrderDate').value;
-  if(type==='none') return {line:'Tanpa Garansi', sentence:'Produk tidak memiliki garansi setelah data akun diterima dan berhasil login.'};
-  if(type==='login') return {line:'Garansi Login 1×24 Jam', sentence:'Garansi login berlaku 1×24 jam sejak data akun dikirim.'};
-  const days=Math.max(1,parseInt(document.getElementById('pkgWarrantyDays').value,10)||1);
-  return {line:`${days} Hari — sampai ${pkgAddDays(date,days)}`, sentence:`Garansi berlaku selama ${days} hari. Lebih dari masa garansi, silakan order kembali.`};
-}
-function pkgDurationInfo() {
-  const select=document.getElementById('pkgDuration').value;
-  const days=select==='custom' ? Math.max(1,parseInt(document.getElementById('pkgCustomDuration').value,10)||1) : parseInt(select,10);
-  const label=select==='30'?'1 Bulan':select==='90'?'3 Bulan':select==='365'?'Max 1 Tahun':`${days} Hari`;
-  return {days,label};
-}
-function pkgBuildAccounts(accounts) {
-  return accounts.map((a,i)=>{
-    const link=pkgAccessLink(a.access);
-    return `#Akun_${i+1}\n▰ Email : ${a.email}\n▰ Password : ${a.password}${link?`\n▰ Link OTP / MFA : ${link}`:''}`;
-  }).join('\n\n');
-}
-function pkgLoginInstruction(hasMissingLink=false) {
-  return `📝 CARA LOGIN:\n1. Buka aplikasi atau website ChatGPT.\n2. Masukkan email langsung di halaman login ChatGPT.\n3. Masukkan password yang diberikan.\n4. Jika diminta One-Time Code, buka Link OTP / MFA sesuai akun yang digunakan.\n5. Salin kode OTP yang muncul lalu masukkan ke ChatGPT.\n6. Setelah masuk, cek Settings / Pengaturan untuk memastikan paket sudah aktif.${hasMissingLink?'\n7. Jika link OTP tidak tersedia tetapi kode diminta, hubungi admin.':''}`;
-}
-function pkgGenerate(automatic=false) {
-  const type=document.getElementById('pkgType').value;
-  const order=document.getElementById('pkgOrderDate').value;
-  if(!order){ if(!automatic) alert('Pilih tanggal order.'); return; }
-  const duration=pkgDurationInfo();
-  const warranty=pkgWarrantyInfo();
-  const extra=document.getElementById('pkgExtraNote').value.trim();
-  let item='',typeLabel='',data='',instructions='',count=1;
-
-  if(type==='invite') {
-    const email=document.getElementById('pkgInviteEmail').value.trim();
-    const team=document.getElementById('pkgTeamName').value.trim();
-    if((!email || !team) && automatic) return;
-    if(!email || !team){ alert('Isi email pembeli dan nama team.'); return; }
-    item='AI ChatGPT Pro Plus Invite'; typeLabel='Private Invite (Team)';
-    data=`▰ Email User : ${email}\n▰ Invitation : ${team}`;
-    instructions=`📝 CARA AKTIVASI:\n1. Buka email yang didaftarkan.\n2. Cari email undangan dari OpenAI / ChatGPT.\n3. Klik “Join Team” lalu masuk ke workspace yang sesuai.\n4. Gunakan ChatGPT di dalam workspace tersebut.\n\n⚠️ PENTING:\n• Chat dan prompt di workspace hanya bisa diakses selama akun masih berada di dalam team.\n• Backup hasil chat penting sebelum masa aktif berakhir.\n• Jangan mengubah pengaturan team tanpa izin admin.`;
-  } else {
-    const parsed=pkgParseAccounts();
-    if(parsed.errors.length){ if(!automatic) alert(parsed.errors.join('\n')); return; }
-    if(!parsed.accounts.length){ if(!automatic) alert('Masukkan minimal satu akun.'); return; }
-    count=parsed.accounts.length;
-    data=pkgBuildAccounts(parsed.accounts);
-    const missing=parsed.accounts.some(a=>!a.access);
-    if(type==='direct') {
-      item='AI ChatGPT Plus Direct'; typeLabel='Private Account (Personal)';
-      instructions=`${pkgLoginInstruction(missing)}\n\n📌 KETENTUAN:\n• Akun bersifat private/personal.\n• Jangan mengganti email, password, billing, plan, atau pengaturan keamanan selama masa garansi.\n• Jangan menggunakan cookies, token, API, tools pihak ketiga, proxy, atau router terlarang.\n• Gunakan akun secara normal agar tidak terdeteksi aktivitas mencurigakan.`;
-    } else if(type==='sharing') {
-      item='AI ChatGPT Plus Sharing'; typeLabel='Sharing 3–5 Orang';
-      instructions=`${pkgLoginInstruction(missing)}\n\n📂 INSTRUKSI SHARING:\n• Akun digunakan bersama sekitar 3–5 orang.\n• Setiap pengguna mendapatkan Folder / Project masing-masing.\n• Sebelum mengisi prompt atau ngobrol, masuk ke Folder / Project milik masing-masing terlebih dahulu agar chat AI tidak tercampur.\n• Jangan membuka, mengubah, atau menghapus Folder / Project pengguna lain.\n\n⚠️ PEMAKAIAN:\n• Jangan menggunakan akun secara bar-bar, terlalu memaksa, atau mengirim request terlalu sering.\n• Hindari pemakaian berat secara terus-menerus karena akun dibagi dengan pengguna lain.\n• Jangan mengubah email, password, nama akun, billing, plan, atau keamanan akun.`;
-    } else {
-      item='AI ChatGPT GO'; typeLabel='Private Account (Personal)';
-      instructions=`${pkgLoginInstruction(missing)}\n\n📌 INFO AKUN:\n• Akun private, bukan sharing.\n• Gunakan secara normal dan jangan melakukan spam fitur.\n• Jangan mengubah billing, plan, atau pengaturan keamanan akun.\n• Jika ada kendala selama masa garansi, hubungi admin.`;
+    async function pkgCopy() {
+      const out=document.getElementById('pkgOutput');
+      const btn=document.getElementById('pkgCopyBtn');
+      try { await navigator.clipboard.writeText(out.value); btn.textContent='✅ Tersalin!'; }
+      catch(e){ out.select(); document.execCommand('copy'); btn.textContent='✅ Tersalin!'; }
+      setTimeout(()=>btn.textContent='Salin Nota',1800);
     }
-  }
+    function pkgReset() {
+      document.getElementById('pkgInviteEmail').value='';
+      document.getElementById('pkgTeamName').value='';
+      document.getElementById('pkgBulkAccounts').value='';
+      document.getElementById('pkgExtraNote').value='';
+      document.getElementById('pkgOutput').value='';
+      document.getElementById('pkgResultCard').classList.add('hidden');
+      pkgToday();
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+    ['pkgOrderDate','pkgCustomDuration','pkgWarrantyDays','pkgInviteEmail','pkgTeamName','pkgBulkAccounts','pkgExtraNote'].forEach(id=>{
+      const el=document.getElementById(id); if(el) el.addEventListener('input',()=>pkgGenerate(true));
+    });
+    pkgToday(); pkgToggleFields(); pkgToggleDuration(); pkgToggleWarranty();
+  </script>
 
-  let output=`╭────〔 BABAYSHOP.MY.ID 〕────\n┊・Item : ${item}\n┊・Type : ${typeLabel}\n┊・Order Date : ${pkgDateText(pkgDate(order))}\n┊・Durasi : ${duration.label}\n┊・Masa Aktif s/d : ${pkgAddDays(order,duration.days)}\n┊・Garansi : ${warranty.line}\n╰────────────────────\n\n📦 DATA AKSES:\n${data}\n\n╰────────────────────\n\n${instructions}\n\n🛡️ GARANSI:\n• ${warranty.sentence}\n• Garansi hanya mencakup kendala paket seperti plan hilang atau kembali ke Free yang bukan disebabkan kesalahan pengguna.\n• Garansi hangus jika akun digunakan berlebihan, spam, dibagikan tidak sesuai paket, menggunakan cookies/token/API/tools pihak ketiga, proxy/router terlarang, atau pengaturan akun diubah.\n• Jika akun deactivated, banned, atau terkunci akibat kesalahan pengguna, hal tersebut di luar tanggung jawab penyedia.\n• Dengan menggunakan akun, pembeli dianggap memahami dan menyetujui ketentuan ini.${extra?`\n\n📝 CATATAN TAMBAHAN:\n${extra}`:''}\n\n🌐 Info lengkap: https://babayshop.my.id/gpt/`;
-
-  document.getElementById('pkgOutput').value=output;
-  document.getElementById('pkgResultBadge').textContent=`${count} akun`;
-  document.getElementById('pkgResultCard').classList.remove('hidden');
-  if(!automatic) document.getElementById('pkgResultCard').scrollIntoView({behavior:'smooth',block:'start'});
-}
-async function pkgCopy() {
-  const out=document.getElementById('pkgOutput');
-  const btn=document.getElementById('pkgCopyBtn');
-  try { await navigator.clipboard.writeText(out.value); btn.textContent='✅ Tersalin!'; }
-  catch(e){ out.select(); document.execCommand('copy'); btn.textContent='✅ Tersalin!'; }
-  setTimeout(()=>btn.textContent='Salin Nota',1800);
-}
-function pkgReset() {
-  document.getElementById('pkgInviteEmail').value='';
-  document.getElementById('pkgTeamName').value='';
-  document.getElementById('pkgBulkAccounts').value='';
-  document.getElementById('pkgExtraNote').value='';
-  document.getElementById('pkgOutput').value='';
-  document.getElementById('pkgResultCard').classList.add('hidden');
-  pkgToday();
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-['pkgOrderDate','pkgCustomDuration','pkgWarrantyDays','pkgInviteEmail','pkgTeamName','pkgBulkAccounts','pkgExtraNote'].forEach(id=>{
-  const el=document.getElementById(id); if(el) el.addEventListener('input',()=>pkgGenerate(true));
-});
-pkgToday(); pkgToggleFields(); pkgToggleDuration(); pkgToggleWarranty();
-</script>
-
-<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1}' crossorigin="anonymous"></script>
+  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1}' crossorigin="anonymous"></script>
+  <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1}' crossorigin="anonymous"></script>
 </body>
 </html>
