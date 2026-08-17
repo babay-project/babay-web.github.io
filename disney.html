@@ -109,14 +109,15 @@
                     <div class="space-y-4">
                         <!-- Paket Selection -->
                         <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">Pilih Dimensi Waktu</label>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2 block">Pilih Paket</label>
                             <select id="paket" onchange="handlePaketChange()" class="w-full input-glow p-4 rounded-xl text-slate-200">
-                                <option value="1 Minggu" data-harga="10.000" data-garansi="5">1 Minggu — Rp 10.000</option>
-                                <option value="1 Bulan" data-harga="25.000" data-garansi="25" selected>1 Bulan — Rp 25.000</option>
-                                <option value="2 Bulan" data-harga="45.000" data-garansi="50">2 Bulan — Rp 45.000</option>
-                                <option value="3 Bulan" data-harga="60.000" data-garansi="75">3 Bulan — Rp 60.000</option>
+                                <option value="1 Bulan" data-harga="25,000" data-garansi="25" selected>1 Bulan — Rp. 25,000</option>
+                                <option value="2 Bulan" data-harga="45,000" data-garansi="50">2 Bulan — Rp. 45,000</option>
+                                <option value="3 Bulan" data-harga="65,000" data-garansi="75">3 Bulan — Rp. 65,000</option>
+                                <option value="6 Bulan" data-harga="120,000" data-garansi="150">6 Bulan — Rp. 120,000</option>
                                 <option value="KUSTOM" data-harga="0" data-garansi="0">✨ PAKET KUSTOM (Manual)</option>
                             </select>
+                            <p class="mt-2 text-xs font-semibold text-indigo-300">Garansi 25 hari / bulan</p>
                         </div>
 
                         <!-- Custom Input Fields -->
@@ -132,6 +133,29 @@
                             <div class="col-span-2">
                                 <label class="text-[10px] font-bold text-fuchsia-400 uppercase mb-1 block">Hari Garansi</label>
                                 <input type="number" id="kustom_garansi" placeholder="Berapa hari?" class="w-full input-glow p-3 rounded-lg text-sm">
+                            </div>
+                        </div>
+
+                        <!-- Buyer & Device Info -->
+                        <div class="space-y-3 rounded-2xl border border-sky-500/20 bg-sky-500/5 p-4">
+                            <div>
+                                <label class="text-[10px] font-bold text-sky-300 uppercase tracking-widest mb-2 block">Nama Pembeli</label>
+                                <input type="text" id="nama_pembeli" placeholder="Masukkan nama pembeli" class="w-full input-glow p-3 rounded-xl text-sm" required>
+                            </div>
+                            <div>
+                                <label class="text-[10px] font-bold text-sky-300 uppercase tracking-widest mb-2 block">Perangkat yang Digunakan</label>
+                                <select id="jenis_device" onchange="handleDeviceChange()" class="w-full input-glow p-3 rounded-xl text-sm">
+                                    <option value="">Pilih jenis perangkat...</option>
+                                    <option value="Android">Android</option>
+                                    <option value="iPhone">iPhone</option>
+                                    <option value="TV">TV</option>
+                                    <option value="Laptop / Komputer">Laptop / Komputer</option>
+                                </select>
+                            </div>
+                            <div id="device_detail_wrap" class="hidden">
+                                <label id="device_detail_label" class="text-[10px] font-bold text-sky-300 uppercase tracking-widest mb-2 block">Detail Perangkat</label>
+                                <input type="text" id="device_detail" class="w-full input-glow p-3 rounded-xl text-sm">
+                                <p id="device_detail_hint" class="mt-2 text-[11px] text-slate-400"></p>
                             </div>
                         </div>
 
@@ -172,7 +196,7 @@
                                 <div class="w-3 h-3 rounded-full bg-yellow-500/50"></div>
                                 <div class="w-3 h-3 rounded-full bg-green-500/50"></div>
                             </div>
-                            <div id="price_tag" class="px-4 py-1 rounded-full bg-indigo-500 text-[10px] font-black tracking-tighter">IDR 25.000</div>
+                            <div id="price_tag" class="px-4 py-1 rounded-full bg-indigo-500 text-[10px] font-black tracking-tighter">IDR 25,000</div>
                         </div>
 
                         <textarea id="hasilNota" readonly class="w-full flex-grow bg-transparent border-none resize-none text-indigo-100 font-mono text-xs md:text-sm leading-relaxed focus:outline-none" placeholder="Menunggu perintah transaksi..."></textarea>
@@ -222,6 +246,32 @@
         customInput.classList.toggle('hidden', val !== 'CUSTOM');
     }
 
+    function handleDeviceChange() {
+        const device = document.getElementById('jenis_device').value;
+        const wrap = document.getElementById('device_detail_wrap');
+        const label = document.getElementById('device_detail_label');
+        const input = document.getElementById('device_detail');
+        const hint = document.getElementById('device_detail_hint');
+
+        const config = {
+            'Android': ['Merek & Tipe Android', 'Contoh: Samsung Galaxy A54', 'Tuliskan merek dan tipe Android dengan jelas.'],
+            'iPhone': ['Tipe iPhone', 'Contoh: iPhone 13 Pro', 'Tuliskan tipe iPhone dengan jelas.'],
+            'TV': ['Merek & Tipe TV', 'Contoh: Samsung Smart TV', 'Tuliskan merek dan tipe TV dengan jelas.'],
+            'Laptop / Komputer': ['Browser yang Digunakan', 'Contoh: Google Chrome', 'Tuliskan nama browser yang digunakan.']
+        };
+
+        if (!config[device]) {
+            wrap.classList.add('hidden');
+            input.value = '';
+            return;
+        }
+
+        wrap.classList.remove('hidden');
+        label.innerText = config[device][0];
+        input.placeholder = config[device][1];
+        hint.innerText = config[device][2];
+    }
+
     function generateNota() {
         const select = document.getElementById('paket');
         let paket, garansiHari, harga;
@@ -234,6 +284,26 @@
             paket = select.value;
             garansiHari = select.options[select.selectedIndex].getAttribute('data-garansi');
             harga = select.options[select.selectedIndex].getAttribute('data-harga');
+        }
+
+        const namaPembeli = document.getElementById('nama_pembeli').value.trim();
+        const jenisDevice = document.getElementById('jenis_device').value;
+        const detailDevice = document.getElementById('device_detail').value.trim();
+
+        if (!namaPembeli) {
+            alert('Nama pembeli wajib diisi.');
+            document.getElementById('nama_pembeli').focus();
+            return;
+        }
+        if (!jenisDevice) {
+            alert('Jenis perangkat wajib dipilih.');
+            document.getElementById('jenis_device').focus();
+            return;
+        }
+        if (!detailDevice) {
+            alert('Detail perangkat wajib diisi dengan jelas.');
+            document.getElementById('device_detail').focus();
+            return;
         }
 
         let phone = document.getElementById('phone_select').value;
@@ -252,9 +322,15 @@
 ━━━━━━━━━━━━━━━━━━━━
 📦 Produk: Disney+ ${paket} Sharing
 🛡️ Garansi: ${garansiHari} Hari Full
-💰 Total: Rp ${harga}
+💰 Total: Rp. ${harga}
 📅 Tgl Beli: ${beliDate.toLocaleDateString('id-ID', options)}
 ⌛ Berlaku s/d: ${garansiDate.toLocaleDateString('id-ID', options)}
+━━━━━━━━━━━━━━━━━━━━
+
+👤 *DATA PEMBELI & PERANGKAT:*
+• Nama: ${namaPembeli}
+• Device: ${jenisDevice}
+• Detail: ${detailDevice}
 ━━━━━━━━━━━━━━━━━━━━
 
 📱 *DATA LOGIN:*
