@@ -1,79 +1,48 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0a0a0b" />
+  <title>Generator Nota Aktivasi Google Gemini Jio - BabayShop</title>
 
-  <title>Generator Email Aktivasi Google Gemini Jio</title>
-
-  <!-- ============================================================
-       FONT & STYLE UTAMA
-       - Semua style ada di file HTML ini, jadi mudah diedit.
-       - Kalau mau ganti warna, edit bagian :root di bawah.
-       ============================================================ -->
   <style>
-    /* Import font online. Jika ingin full offline, hapus baris ini. */
     @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&family=Space+Grotesk:wght@600;700&display=swap");
 
-    /* ============================================================
-       1. RESET & VARIABEL WARNA
-       ============================================================ */
-    *,
-    *::before,
-    *::after {
+    *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
     }
 
     :root {
-      /* Background */
       --bg: #0a0a0b;
       --bg-soft: #0e0e10;
       --surface: #141416;
       --surface-2: #1a1a1d;
       --surface-3: #202024;
-
-      /* Border */
       --border: rgba(255, 255, 255, 0.08);
       --border-strong: rgba(255, 255, 255, 0.16);
-
-      /* Text */
       --text: #ededee;
       --text-soft: #a4a4ac;
       --text-muted: #6f6f78;
-
-      /* Accent */
       --accent: #b9a8ff;
       --accent-soft: #d6cdff;
       --accent-line: rgba(185, 168, 255, 0.28);
       --glow: rgba(150, 130, 255, 0.16);
-
-      /* Status */
-      --success: #4ade80;
-      --warning: #fbbf24;
+      --whatsapp: #25d366;
       --danger: #fb7185;
-
-      /* Radius */
       --radius-sm: 10px;
       --radius-md: 14px;
       --radius-lg: 20px;
       --radius-xl: 28px;
-
-      /* Fonts */
       --font-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       --font-title: "Space Grotesk", "Inter", sans-serif;
       --font-mono: "JetBrains Mono", Consolas, monospace;
-
-      /* Layout */
-      --max-width: 760px;
+      --max-width: 740px;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
+    html { scroll-behavior: smooth; }
 
     body {
       min-height: 100vh;
@@ -88,7 +57,6 @@
       overflow-x: hidden;
       padding: 24px 14px 56px;
       -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
     }
 
     body::before {
@@ -105,41 +73,6 @@
       -webkit-mask-image: radial-gradient(ellipse 85% 55% at 50% 0%, #000 8%, transparent 76%);
     }
 
-    body::after {
-      content: "";
-      position: fixed;
-      top: -28vh;
-      left: 50%;
-      width: min(1000px, 90vw);
-      height: 70vh;
-      transform: translateX(-50%);
-      z-index: 0;
-      pointer-events: none;
-      background: radial-gradient(ellipse at center, var(--glow), transparent 68%);
-      filter: blur(22px);
-      opacity: 0.85;
-      animation: glow-breathe 12s ease-in-out infinite;
-    }
-
-    @keyframes glow-breathe {
-      0%, 100% { opacity: 0.58; }
-      50% { opacity: 0.95; }
-    }
-
-    ::selection {
-      color: #ffffff;
-      background: rgba(185, 168, 255, 0.28);
-    }
-
-    button,
-    input,
-    textarea {
-      font: inherit;
-    }
-
-    /* ============================================================
-       2. LAYOUT UTAMA
-       ============================================================ */
     .page {
       position: relative;
       z-index: 2;
@@ -150,20 +83,7 @@
 
     .hero {
       text-align: center;
-      padding: 18px 6px 26px;
-    }
-
-    .hero__logo {
-      display: inline-grid;
-      place-items: center;
-      width: 58px;
-      height: 58px;
-      margin-bottom: 16px;
-      border: 1px solid var(--accent-line);
-      border-radius: 18px;
-      background: rgba(185, 168, 255, 0.10);
-      box-shadow: 0 18px 50px -22px rgba(185, 168, 255, 0.70);
-      font-size: 1.75rem;
+      padding: 16px 6px 24px;
     }
 
     .hero__eyebrow {
@@ -171,7 +91,7 @@
       align-items: center;
       gap: 8px;
       margin-bottom: 12px;
-      padding: 7px 14px;
+      padding: 6px 14px;
       border: 1px solid var(--border);
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.03);
@@ -187,30 +107,20 @@
       width: 7px;
       height: 7px;
       border-radius: 999px;
-      background: var(--success);
-      box-shadow: 0 0 12px rgba(74, 222, 128, 0.70);
+      background: var(--whatsapp);
+      box-shadow: 0 0 10px rgba(37, 211, 102, 0.8);
     }
 
     .hero__title {
       margin: 0 auto;
-      max-width: 680px;
       font-family: var(--font-title);
-      font-size: clamp(2rem, 7vw, 3.25rem);
+      font-size: clamp(1.85rem, 6vw, 2.75rem);
       font-weight: 700;
-      line-height: 1.05;
-      letter-spacing: -0.04em;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
     }
 
-    .hero__title span {
-      color: var(--accent-soft);
-    }
-
-    .hero__desc {
-      max-width: 560px;
-      margin: 14px auto 0;
-      color: var(--text-soft);
-      font-size: 0.98rem;
-    }
+    .hero__title span { color: var(--accent-soft); }
 
     .card {
       position: relative;
@@ -220,23 +130,9 @@
       border: 1px solid var(--border);
       border-radius: var(--radius-xl);
       background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.042), rgba(255, 255, 255, 0.012)),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01)),
         var(--surface);
       box-shadow: 0 34px 80px -50px rgba(0, 0, 0, 0.92);
-    }
-
-    .card::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background: radial-gradient(circle at top right, rgba(185, 168, 255, 0.10), transparent 32%);
-      opacity: 0.9;
-    }
-
-    .card > * {
-      position: relative;
-      z-index: 1;
     }
 
     .card__header {
@@ -244,17 +140,13 @@
       align-items: flex-start;
       justify-content: space-between;
       gap: 16px;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
 
     .card__title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
       font-family: var(--font-title);
       font-size: 1.05rem;
       font-weight: 700;
-      letter-spacing: -0.01em;
     }
 
     .card__caption {
@@ -264,28 +156,18 @@
     }
 
     .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      flex-shrink: 0;
-      padding: 6px 11px;
+      padding: 6px 12px;
       border: 1px solid var(--accent-line);
       border-radius: 999px;
       background: rgba(185, 168, 255, 0.10);
       color: var(--accent-soft);
       font-family: var(--font-mono);
-      font-size: 0.66rem;
+      font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 0.04em;
-      text-transform: uppercase;
     }
 
-    /* ============================================================
-       3. FORM
-       ============================================================ */
-    .field {
-      margin-bottom: 18px;
-    }
+    .field { margin-bottom: 18px; }
 
     .field__label {
       display: flex;
@@ -298,66 +180,31 @@
       font-weight: 700;
     }
 
-    .field__label span {
-      color: var(--danger);
-    }
+    .field__label span { color: var(--danger); }
+    .field__hint { margin-top: 6px; color: var(--text-muted); font-size: 0.75rem; }
+    .field__error { display: none; margin-top: 6px; color: var(--danger); font-size: 0.76rem; font-weight: 600; }
+    .field__error.is-show { display: block; }
 
-    .field__hint {
-      margin-top: 6px;
-      color: var(--text-muted);
-      font-size: 0.74rem;
-    }
-
-    .field__error {
-      display: none;
-      margin-top: 6px;
-      color: var(--danger);
-      font-size: 0.76rem;
-      font-weight: 600;
-    }
-
-    .field__error.is-show {
-      display: block;
-    }
-
-    .input,
     .textarea {
       width: 100%;
+      min-height: 120px;
+      padding: 13px 15px;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
       outline: none;
       background: rgba(255, 255, 255, 0.045);
       color: var(--text);
-      transition:
-        border-color 0.2s ease,
-        background 0.2s ease,
-        box-shadow 0.2s ease;
-    }
-
-    .input {
-      min-height: 48px;
-      padding: 0 15px;
-    }
-
-    .textarea {
-      min-height: 126px;
-      padding: 13px 15px;
+      font-family: inherit;
       resize: vertical;
+      transition: all 0.2s ease;
     }
 
-    .input::placeholder,
-    .textarea::placeholder {
-      color: rgba(164, 164, 172, 0.58);
-    }
-
-    .input:focus,
     .textarea:focus {
       border-color: var(--accent-line);
       background: rgba(255, 255, 255, 0.065);
       box-shadow: 0 0 0 4px rgba(185, 168, 255, 0.10);
     }
 
-    .input.is-error,
     .textarea.is-error {
       border-color: rgba(251, 113, 133, 0.70);
       box-shadow: 0 0 0 4px rgba(251, 113, 133, 0.10);
@@ -367,7 +214,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 10px;
-      margin-top: 22px;
+      margin-top: 18px;
     }
 
     .btn {
@@ -381,65 +228,37 @@
       border-radius: 999px;
       cursor: pointer;
       text-decoration: none;
-      white-space: nowrap;
-      font-size: 0.9rem;
-      font-weight: 800;
-      transition:
-        transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
-        background 0.2s ease,
-        border-color 0.2s ease,
-        color 0.2s ease,
-        box-shadow 0.2s ease;
+      font-size: 0.88rem;
+      font-weight: 700;
+      transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
     }
 
-    .btn:hover {
-      transform: translateY(-2px);
-    }
-
-    .btn:active {
-      transform: scale(0.985);
-    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: scale(0.985); }
 
     .btn--primary {
       color: #0a0a0b;
       background: #fafafa;
-      box-shadow: 0 18px 44px -24px rgba(255, 255, 255, 0.7);
+      box-shadow: 0 16px 36px -20px rgba(255, 255, 255, 0.7);
     }
-
-    .btn--primary:hover {
-      background: #ffffff;
-    }
-
     .btn--ghost {
       color: var(--text-soft);
       border-color: var(--border-strong);
       background: rgba(255, 255, 255, 0.03);
     }
-
-    .btn--ghost:hover {
-      color: var(--text);
-      border-color: var(--text-soft);
-      background: rgba(255, 255, 255, 0.06);
-    }
-
     .btn--accent {
       color: var(--accent-soft);
       border-color: var(--accent-line);
       background: rgba(185, 168, 255, 0.10);
     }
-
-    .btn--accent:hover {
+    .btn--wa {
       color: #ffffff;
-      background: rgba(185, 168, 255, 0.16);
+      background: #25d366;
+      box-shadow: 0 14px 34px -16px rgba(37, 211, 102, 0.8);
     }
+    .btn--wa:hover { background: #22bf5b; }
 
-    /* ============================================================
-       4. HASIL EMAIL
-       ============================================================ */
-    .result {
-      display: none;
-    }
-
+    .result { display: none; }
     .result.is-show {
       display: block;
       animation: result-in 0.35s cubic-bezier(0.22, 1, 0.36, 1);
@@ -450,54 +269,36 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .email-box,
-    .subject-box,
     .output-box {
       width: 100%;
+      min-height: 540px;
+      padding: 16px;
       border: 1px solid var(--border);
       border-radius: var(--radius-md);
-      background: rgba(0, 0, 0, 0.26);
+      background: rgba(0, 0, 0, 0.35);
       color: #e9e7ff;
-    }
-
-    .email-box,
-    .subject-box {
-      padding: 13px 15px;
-      word-break: break-word;
-      font-size: 0.86rem;
-    }
-
-    .output-box {
-      min-height: 520px;
-      padding: 16px;
-      resize: vertical;
       font-family: var(--font-mono);
-      font-size: 0.8rem;
-      line-height: 1.75;
-      white-space: pre;
-      overflow-x: auto;
+      font-size: 0.82rem;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+      resize: vertical;
     }
 
     .result__actions {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: 1fr 1fr;
       gap: 10px;
       margin-top: 16px;
     }
 
-    /* ============================================================
-       5. FOOTER & TOAST
-       ============================================================ */
     .footer {
       padding: 20px 8px 0;
       color: var(--text-muted);
       text-align: center;
       font-size: 0.78rem;
     }
-
-    .footer strong {
-      color: var(--accent-soft);
-    }
+    .footer strong { color: var(--accent-soft); }
 
     .toast {
       position: fixed;
@@ -505,211 +306,113 @@
       bottom: 26px;
       z-index: 999;
       transform: translateX(-50%) translateY(18px);
-      padding: 10px 18px;
+      padding: 10px 20px;
       border-radius: 999px;
       background: #fafafa;
       color: #0a0a0b;
-      box-shadow: 0 18px 48px -20px rgba(0, 0, 0, 0.88);
+      box-shadow: 0 18px 48px -20px rgba(0, 0, 0, 0.9);
       font-size: 0.86rem;
-      font-weight: 800;
+      font-weight: 700;
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.25s ease, transform 0.25s ease;
     }
-
     .toast.is-show {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
 
-    /* ============================================================
-       6. RESPONSIVE MOBILE
-       ============================================================ */
     @media (max-width: 640px) {
-      body {
-        padding: 18px 12px 44px;
-      }
-
-      .hero {
-        padding-top: 8px;
-      }
-
-      .card {
-        padding: 18px;
-        border-radius: 22px;
-      }
-
-      .card__header {
-        display: block;
-      }
-
-      .pill {
-        margin-top: 12px;
-      }
-
-      .actions,
-      .result__actions {
-        grid-template-columns: 1fr;
-      }
-
-      .output-box {
-        min-height: 430px;
-        font-size: 0.74rem;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.001ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-        transition-duration: 0.001ms !important;
-      }
+      body { padding: 16px 12px 40px; }
+      .card { padding: 18px; }
+      .actions, .result__actions { grid-template-columns: 1fr; }
+      .output-box { min-height: 480px; font-size: 0.76rem; }
     }
   </style>
 </head>
-
 <body>
-  <!-- ============================================================
-       WRAPPER UTAMA
-       ============================================================ -->
+
   <main class="page">
-    <!-- HEADER -->
     <header class="hero">
+      <div class="hero__eyebrow">WhatsApp Format Ready</div>
       <h1 class="hero__title">
-        Generator Email Aktivasi <span>Google AI Pro Jio</span>
+        Generator Nota <span>Google AI Pro Jio</span>
       </h1>
     </header>
 
-    <!-- FORM INPUT -->
+    <!-- FORM INPUT LINK -->
     <section class="card" aria-labelledby="formTitle">
       <div class="card__header">
         <div>
-          <h2 class="card__title" id="formTitle">📋 Data Aktivasi</h2>
-          <p class="card__caption">Isi data di bawah ini. Link aktivasi akan otomatis masuk ke template email.</p>
+          <h2 class="card__title" id="formTitle">📋 Input Link Voucher</h2>
+          <p class="card__caption">Tempel satu atau beberapa link sekaligus (pisahkan baris/enter).</p>
         </div>
-
         <div class="pill">BabayShop</div>
       </div>
 
       <div class="field">
-        <label class="field__label" for="emailTujuan">
-          Email Tujuan <span>*</span>
-        </label>
-
-        <input
-          class="input"
-          type="email"
-          id="emailTujuan"
-          placeholder="contoh@gmail.com"
-          autocomplete="off"
-        />
-
-        <p class="field__hint">Masukkan email pembeli yang akan menerima link aktivasi.</p>
-        <p class="field__error" id="errEmailTujuan">Email tujuan tidak boleh kosong.</p>
-      </div>
-
-      <div class="field">
         <label class="field__label" for="linkAktivasi">
-          Link Aktivasi Paket <span>*</span>
+          Link Aktivasi Jio <span>*</span>
         </label>
-
         <textarea
           class="textarea"
           id="linkAktivasi"
-          placeholder="Tempel link aktivasi Google One / Jio di sini..."
+          placeholder="Tempel link di sini... (Bisa lebih dari 1 link, pisahkan dengan baris baru)"
         ></textarea>
-
-        <p class="field__hint">Pastikan link aktivasi sudah benar sebelum dikirim ke customer.</p>
-        <p class="field__error" id="errLinkAktivasi">Link aktivasi tidak boleh kosong.</p>
+        <p class="field__hint">Jumlah link voucher akan terdeteksi otomatis.</p>
+        <p class="field__error" id="errLinkAktivasi">Harap masukkan minimal 1 link aktivasi!</p>
       </div>
 
       <div class="actions">
-        <button class="btn btn--primary" type="button" onclick="generateEmail()">
-          ✨ Generate Email
+        <button class="btn btn--primary" type="button" onclick="generateNota()">
+          ⚡ Buat Nota WhatsApp
         </button>
-
         <button class="btn btn--ghost" type="button" onclick="resetForm()">
           🔄 Reset
         </button>
       </div>
     </section>
 
-    <!-- HASIL EMAIL -->
+    <!-- HASIL NOTA -->
     <section class="card result" id="outputCard" aria-labelledby="resultTitle">
       <div class="card__header">
         <div>
-          <h2 class="card__title" id="resultTitle">📄 Hasil Email</h2>
-          <p class="card__caption">Silakan copy subject, copy isi email, atau langsung buka draft Gmail.</p>
+          <h2 class="card__title" id="resultTitle">💬 Hasil Nota WhatsApp</h2>
+          <p class="card__caption">Sudah terhitung jumlah voucher, tanggal pembuatan, dan panduan cek masa aktif.</p>
         </div>
-
-        <div class="pill">Ready</div>
+        <div class="pill" id="badgeTotalVoucher">0 Voucher</div>
       </div>
 
       <div class="field">
-        <label class="field__label">Email Tujuan</label>
-        <div class="email-box" id="emailTujuanBox"></div>
-      </div>
-
-      <div class="field">
-        <label class="field__label">Subjek Email</label>
-        <div class="subject-box" id="subjectBox"></div>
-      </div>
-
-      <div class="field">
-        <label class="field__label" for="outputBox">Isi Email</label>
+        <label class="field__label" for="outputBox">Preview Teks Nota</label>
         <textarea class="output-box" id="outputBox" readonly></textarea>
       </div>
 
       <div class="result__actions">
-        <button class="btn btn--accent" type="button" onclick="copyEmailTujuan()">
-          📧 Copy Email Tujuan
+        <button class="btn btn--accent" type="button" onclick="copyNota()">
+          📋 Copy Format WhatsApp
         </button>
-
-        <button class="btn btn--accent" type="button" onclick="copySubject()">
-          📌 Copy Subject
-        </button>
-
-        <button class="btn btn--accent" type="button" onclick="copyEmail()">
-          📋 Copy Isi Email
-        </button>
-
-        <a class="btn btn--primary" id="gmailBtn" href="#" target="_blank" rel="noopener">
-          📨 Buka Gmail
+        <a class="btn btn--wa" id="waShareBtn" href="#" target="_blank" rel="noopener">
+          📲 Kirim ke WhatsApp
         </a>
       </div>
     </section>
 
-    <!-- FOOTER -->
     <footer class="footer">
-      Dibuat untuk <strong>BabayShop</strong> • Generator Email Aktivasi Google Gemini Jio
+      Dibuat untuk <strong>BabayShop</strong> • Generator Nota WhatsApp Google Gemini Jio
     </footer>
   </main>
 
-  <div class="toast" id="toast">✅ Berhasil disalin!</div>
+  <div class="toast" id="toast">✅ Berhasil disalin ke clipboard!</div>
 
-  <!-- ============================================================
-       JAVASCRIPT
-       Supaya mudah diedit, teks utama ada di bagian CONFIG.
-       ============================================================ -->
   <script>
-    /* ============================================================
-       AREA EDIT CEPAT
-       - Ganti subject, link website, atau nama toko di sini.
-       ============================================================ */
     const CONFIG = {
       storeName: "BabayShop",
-      subject: "Google Gemini Offer: Free 18-Month Pro Plan for Jio Users",
       infoGoogleUrl: "https://babay.web.id/google",
       forumJioUrl: "https://babay.web.id/jio",
       benefitsUrl: "https://one.google.com/benefits/"
     };
 
-    /* ============================================================
-       HELPER DOM
-       ============================================================ */
     function getEl(id) {
       return document.getElementById(id);
     }
@@ -717,154 +420,130 @@
     function setFieldError(fieldId, errorId, isError) {
       const field = getEl(fieldId);
       const error = getEl(errorId);
-
       field.classList.toggle("is-error", isError);
       error.classList.toggle("is-show", isError);
     }
 
-    /* ============================================================
-       TEMPLATE EMAIL
-       - Bagian ini boleh diedit untuk ubah isi email customer.
-       - Jangan hapus ${linkAktivasi}, karena itu tempat link masuk.
-       ============================================================ */
-    function buildEmailBody(linkAktivasi) {
-      return `Silakan aktifkan paket Google AI Pro Gemini 18 bulan melalui link aktivasi yang sudah disediakan.
-
-⚠️ Pastikan Anda menggunakan profil atau akun Google yang benar sebelum melakukan aktivasi.
-Mohon periksa kembali akun Google yang sedang login agar paket tidak salah terklaim ke akun Google lain yang tidak diinginkan.
-
-━━━━━━━━━━━━━━━━━━━━━━━
-
-📌 SEBELUM AKTIVASI
-
-Sebelum mengaktifkan paket, wajib membaca informasi dan ketentuan mengenai paket Jio terlebih dahulu.
-
-Saat muncul halaman keterangan masa aktif paket, mohon screenshot bagian yang menampilkan tulisan:
-
-"Your Google AI Pro plan will end on..."
-
-atau
-
-"Paket Google AI Pro Anda akan berakhir pada..."
-
-Setelah itu, kirim screenshot tersebut kepada admin penjual untuk pendataan serta pengaktifan garansi layanan.
-
-Jika screenshot sudah dikirim, silakan lanjutkan proses aktivasi paket sampai selesai.
-
-━━━━━━━━━━━━━━━━━━━━━━━
-
-🔗 LINK AKTIVASI PAKET
-
-${linkAktivasi}
-
-━━━━━━━━━━━━━━━━━━━━━━━
-
-📅 CARA CEK MASA AKTIF PAKET
-
-Jika ingin mengecek kembali sampai kapan paket berakhir, silakan buka:
-
-${CONFIG.benefitsUrl}
-
-Lalu scroll ke bagian paling bawah pada menu:
-
-"Manfaat Mendatang"
-
-Biasanya akan muncul benefit seperti YouTube Premium Lite dengan keterangan tanggal tersedia sampai kapan.
-Tanggal tersebut bisa menjadi tanda masa aktif paket Google AI Pro / Google Gemini Anda.
-
-━━━━━━━━━━━━━━━━━━━━━━━
-
-📖 INFORMASI LENGKAP PAKET
-
-Semua penjelasan mengenai paket ini dapat dibaca di website berikut:
-
-${CONFIG.infoGoogleUrl}
-
-━━━━━━━━━━━━━━━━━━━━━━━
-
-📌 CATATAN PENTING
-
-• Pastikan akun Google yang digunakan sudah benar sebelum aktivasi.
-• Link aktivasi hanya digunakan untuk proses klaim paket.
-• Garansi voucher/link aktivasi Jio berlaku 1x24 jam sejak link dikirim sampai proses klaim dilakukan.
-• Setelah voucher berhasil diklaim ke akun Google yang benar, masa aktif dan benefit mengikuti ketentuan paket yang tampil di akun tersebut.
-• Jangan terburu-buru klik aktivasi sebelum memastikan akun Google yang aktif sudah benar.
-• Screenshot masa aktif paket wajib dikirim ke admin untuk pendataan garansi.
-• Simpan email ini agar link dan panduan aktivasi tidak hilang.
-• Forum diskusi dan rangkuman tentang paket Jio bisa dibaca di:
-  ${CONFIG.forumJioUrl}
-
-Terima kasih sudah order di ${CONFIG.storeName} 🙏`;
+    function getFormattedDateTime() {
+      const now = new Date();
+      const options = {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      };
+      const formatted = new Intl.DateTimeFormat('id-ID', options).format(now);
+      return `${formatted} WIB`.replace(/\./g, ':');
     }
 
-    /* ============================================================
-       GENERATE EMAIL
-       ============================================================ */
-    function generateEmail() {
-      const emailTujuan = getEl("emailTujuan").value.trim();
-      const linkAktivasi = getEl("linkAktivasi").value.trim();
+    function parseVoucherLinks(rawInput) {
+      return rawInput
+        .split('\n')
+        .map(line => line.trim())
+        .filter(line => line.length > 0);
+    }
 
-      const emailKosong = emailTujuan.length === 0;
-      const linkKosong = linkAktivasi.length === 0;
+    function buildWhatsAppNota(links, dateCreated) {
+      const count = links.length;
 
-      setFieldError("emailTujuan", "errEmailTujuan", emailKosong);
-      setFieldError("linkAktivasi", "errLinkAktivasi", linkKosong);
+      let formattedLinks = "";
+      if (count === 1) {
+        formattedLinks = links[0];
+      } else {
+        formattedLinks = links.map((link, idx) => `*Voucher ${idx + 1}:*\n${link}`).join('\n\n');
+      }
 
-      if (emailKosong || linkKosong) return;
+      return `*AKTIVASI GOOGLE AI PRO GEMINI (JIO)*
+*Order via ${CONFIG.storeName}*
+━━━━━━━━━━━━━━━━━━━━━━━━
+📅 *Nota dibuat tanggal:* ${dateCreated}
+📦 *Jumlah Voucher:* ${count} Akun / Link
+━━━━━━━━━━━━━━━━━━━━━━━━
 
-      const emailBody = buildEmailBody(linkAktivasi);
+Halo Kak, terima kasih banyak sudah order! 🙏
+Berikut link serta panduan aktivasi paket Google AI Pro Gemini 18 Bulan Anda:
 
-      getEl("emailTujuanBox").textContent = emailTujuan;
-      getEl("subjectBox").textContent = CONFIG.subject;
-      getEl("outputBox").value = emailBody;
+🔗 *LINK AKTIVASI ANDA:*
+${formattedLinks}
+
+⚠️ *PENTING SEBELUM KLIK:*
+1. Pastikan browser sudah login ke akun Google yang *BENAR* (yang ingin diaktifkan).
+2. Jangan sampai salah klaim ke akun Google lain, karena tautan hanya bisa dipakai satu kali.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+📸 *SYARAT KLAIM GARANSI (WAJIB):*
+Saat membuka link dan muncul halaman keterangan paket, *SEBELUM* klik konfirmasi/aktifkan, mohon screenshot layar yang bertuliskan:
+👉 _"Your Google AI Pro plan will end on..."_ 
+atau
+👉 _"Paket Google AI Pro Anda akan berakhir pada..."_
+
+Kirimkan screenshot tersebut ke chat admin kami untuk pencatatan masa aktif dan validasi garansi.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+🛡️ *KETENTUAN GARANSI:*
+• *Garansi Sebelum Klaim:* 1x24 jam sejak link diberikan untuk proses redeem/klaim.
+• *Garansi Setelah Klaim:* 1x24 jam setelah paket berhasil aktif di akun Anda.
+• *Lebih dari 24 jam*, masa aktif dan operasional paket sepenuhnya di luar tanggung jawab kami.
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+🔍 *CARA CEK MASA AKTIF PAKET:*
+Setelah aktivasi, jika ingin mengecek durasi paket yang sedang berjalan, silakan buka:
+${CONFIG.benefitsUrl}
+
+Scroll ke bagian paling bawah, lalu perhatikan subjudul:
+👉 *"Manfaat mendatang"*
+_(Berikut beberapa manfaat yang dapat Anda peroleh sebagai pelanggan)_
+
+Di bawahnya akan tertera jadwal benefit berikutnya, contoh:
+📌 *"TERSEDIA PADA Dec 5, 2027"* (atau tanggal lainnya)
+
+💡 *Kesimpulannya:*
+Benefit mendatang tersebut baru akan diberikan saat paket utama (Google AI Pro Jio) *selesai / expired*. Jadi, tanggal yang tertulis di "Manfaat mendatang" tersebut adalah tanggal berakhirnya paket Google AI Pro Anda!
+
+━━━━━━━━━━━━━━━━━━━━━━━━
+📖 *PANDUAN & DISKUSI LENGKAP:*
+• Web Panduan: ${CONFIG.infoGoogleUrl}
+• Forum & FAQ: ${CONFIG.forumJioUrl}
+━━━━━━━━━━━━━━━━━━━━━━━━
+
+Jika ada kendala saat proses klaim, silakan hubungi admin kembali ya Kak. Terima kasih! ✨`;
+    }
+
+    function generateNota() {
+      const linkInput = getEl("linkAktivasi");
+      const rawText = linkInput.value.trim();
+      const links = parseVoucherLinks(rawText);
+
+      if (links.length === 0) {
+        setFieldError("linkAktivasi", "errLinkAktivasi", true);
+        linkInput.focus();
+        return;
+      }
+
+      setFieldError("linkAktivasi", "errLinkAktivasi", false);
+
+      const dateCreated = getFormattedDateTime();
+      const notaText = buildWhatsAppNota(links, dateCreated);
+
+      getEl("outputBox").value = notaText;
+      getEl("badgeTotalVoucher").textContent = `${links.length} Voucher Terdeteksi`;
       getEl("outputCard").classList.add("is-show");
 
-      const gmailUrl =
-        "https://mail.google.com/mail/?view=cm&fs=1" +
-        "&to=" + encodeURIComponent(emailTujuan) +
-        "&su=" + encodeURIComponent(CONFIG.subject) +
-        "&body=" + encodeURIComponent(emailBody);
-
-      getEl("gmailBtn").href = gmailUrl;
+      const waUrl = "https://api.whatsapp.com/send?text=" + encodeURIComponent(notaText);
+      getEl("waShareBtn").href = waUrl;
 
       setTimeout(function () {
-        getEl("outputCard").scrollIntoView({
-          behavior: "smooth",
-          block: "start"
-        });
+        getEl("outputCard").scrollIntoView({ behavior: "smooth", block: "start" });
       }, 100);
     }
 
-    /* ============================================================
-       COPY BUTTON
-       ============================================================ */
-    function copyEmailTujuan() {
-      const emailTujuan = getEl("emailTujuanBox").textContent.trim();
-
-      if (!emailTujuan) {
-        alert("Belum ada email tujuan yang bisa disalin.");
-        return;
-      }
-
-      copyText(emailTujuan);
-    }
-
-    function copySubject() {
-      copyText(CONFIG.subject);
-    }
-
-    function copyEmail() {
+    function copyNota() {
       const text = getEl("outputBox").value;
+      if (!text) return;
 
-      if (!text) {
-        alert("Belum ada isi email yang bisa disalin.");
-        return;
-      }
-
-      copyText(text);
-    }
-
-    function copyText(text) {
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(showToast).catch(function () {
           fallbackCopy(text);
@@ -879,7 +558,6 @@ Terima kasih sudah order di ${CONFIG.storeName} 🙏`;
       temp.value = text;
       document.body.appendChild(temp);
       temp.select();
-      temp.setSelectionRange(0, 99999);
       document.execCommand("copy");
       document.body.removeChild(temp);
       showToast();
@@ -888,28 +566,18 @@ Terima kasih sudah order di ${CONFIG.storeName} 🙏`;
     function showToast() {
       const toast = getEl("toast");
       toast.classList.add("is-show");
-
       setTimeout(function () {
         toast.classList.remove("is-show");
       }, 2200);
     }
 
-    /* ============================================================
-       RESET FORM
-       ============================================================ */
     function resetForm() {
-      getEl("emailTujuan").value = "";
       getEl("linkAktivasi").value = "";
-      getEl("emailTujuanBox").textContent = "";
-      getEl("subjectBox").textContent = "";
       getEl("outputBox").value = "";
-      getEl("gmailBtn").href = "#";
       getEl("outputCard").classList.remove("is-show");
-
-      setFieldError("emailTujuan", "errEmailTujuan", false);
+      getEl("waShareBtn").href = "#";
       setFieldError("linkAktivasi", "errLinkAktivasi", false);
     }
   </script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
