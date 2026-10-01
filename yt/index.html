@@ -1,5 +1,4 @@
 
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -168,21 +167,7 @@
             </div>
             <p id="durasiError" class="hidden mt-2 text-xs text-red-400">Durasi akhir harus sama atau lebih besar dari durasi mulai (maks. 30 hari).</p>
           </div>
-
-          <div>
-            <label class="block mb-2 text-sm font-semibold text-gray-200">Harga</label>
-            <select
-              id="harga"
-              class="w-full bg-black/45 border border-white/10 text-white rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500"
-            >
-              <option value="13000">Rp13.000</option>
-              <option value="14000">Rp14.000</option>
-              <option value="15000">Rp15.000</option>
-              <option value="range">Rp13.000 - Rp15.000</option>
-            </select>
-          </div>
-
-          <div>
+<div>
             <label class="block mb-2 text-sm font-semibold text-gray-200">Estimasi Habis</label>
             <input
               type="text"
@@ -281,7 +266,6 @@
       const emailCustomerInput = document.getElementById('emailCustomer');
       const emailAdminInput = document.getElementById('emailAdmin');
 
-      const hargaInput = document.getElementById('harga');
       const durasiMulaiInput = document.getElementById('durasiMulai');
       const durasiSampaiInput = document.getElementById('durasiSampai');
       const durasiError = document.getElementById('durasiError');
@@ -322,14 +306,6 @@
         });
       }
 
-      function formatRupiah(number) {
-        return new Intl.NumberFormat('id-ID', {
-          style: 'currency',
-          currency: 'IDR',
-          maximumFractionDigits: 0
-        }).format(number);
-      }
-
       function addDays(date, days) {
         const result = new Date(date);
         result.setDate(result.getDate() + Number(days));
@@ -347,15 +323,6 @@
         return `YT-FAM-${d}${m}${y}-${h}${min}`;
       }
 
-      function getHargaText() {
-        const harga = hargaInput.value;
-
-        if (harga === 'range') {
-          return 'Rp13.000 - Rp15.000';
-        }
-
-        return formatRupiah(Number(harga));
-      }
 
       function getEstimasiHabisText() {
         const tglHabisAwal = addDays(now, getDurasiMulai());
@@ -397,9 +364,9 @@
       function getTutorEmailBaru() {
         return `
 
-📩 *Tutor Join Email Baru:*
-Cek email undangan Google Family, lalu klik *Join/Accept*.
-Jika tidak ada, buka: https://g.co/yourfamily
+📩 \*Tutor Join Email Baru:\*
+Cek email undangan Google Family, lalu klik \*Join/Accept\*.
+Jika tidak ada, buka: https\://g.co/yourfamily
 
 Setelah join, buka YouTube pakai email yang sama.`;
       }
@@ -407,20 +374,20 @@ Setelah join, buka YouTube pakai email yang sama.`;
       function getTutorPerpanjang() {
         return `
 
-🔄 *Tutor Perpanjang:*
+🔄 \*Tutor Perpanjang:\*
 1. Tunggu hingga benefit YouTube Premium Family hilang dan admin mengabarkan bahwa family lama akan diganti.
 2. Setelah mendapat instruksi admin, cek Gmail. Biasanya akan ada email dari Google yang memberitahukan bahwa grup keluarga sudah tidak tersedia.
-3. Keluar dari family lama melalui https://g.co/yourfamily dan pastikan email sudah tidak tergabung di grup tersebut.
+3. Keluar dari family lama melalui https\://g.co/yourfamily dan pastikan email sudah tidak tergabung di grup tersebut.
 4. Tunggu undangan untuk bergabung ke family baru.
-5. Buka email undangan Google Family, lalu pilih *Join/Accept*.
-6. Jika email undangan tidak ditemukan, buka https://g.co/yourfamily, pilih menu *Lihat undangan*, lalu terima undangan family baru.
+5. Buka email undangan Google Family, lalu pilih \*Join/Accept\*.
+6. Jika email undangan tidak ditemukan, buka https\://g.co/yourfamily, pilih menu \*Lihat undangan\*, lalu terima undangan family baru.
 7. Setelah berhasil bergabung, buka YouTube menggunakan email yang sama dan periksa kembali benefit Premium.`;
       }
 
       function getPeringatanTutor() {
         return `
 
-⚠️ *PERINGATAN PENTING:*
+⚠️ \*PERINGATAN PENTING:\*
 Jangan pernah keluar dari family sebelum ada instruksi dari admin.
 
 Jika keluar sendiri tanpa arahan admin, garansi akan hangus dan email berisiko terkena pembatasan Google sehingga tidak dapat bergabung ke grup keluarga lain hingga 12 bulan.`;
@@ -459,22 +426,24 @@ Jika keluar sendiri tanpa arahan admin, garansi akan hangus dan email berisiko t
         const estimasiHabisText = getEstimasiHabisText();
         const tutorText = getTutorText();
 
-        return `*NOTA YOUTUBE PREMIUM FAMILY* 🎬
+        return `\*NOTA YOUTUBE PREMIUM FAMILY\* 🎬
 
-🧾 *Order:* ${nomorOrder}
-📅 *Invite:* ${tglInvite}, ${jamInvite} WIB
-📧 *Email:* ${emailCustomer}
-👤 *Admin Invite:* ${emailAdmin}
+🧾 \*Order:\* ${nomorOrder}
+📅 \*Invite:\* ${tglInvite}, ${jamInvite} WIB
+📧 \*Email:\* ${emailCustomer}
+👤 \*Admin Invite:\* ${emailAdmin}
 
-📦 *Layanan:* YouTube Premium Family
-⏳ *Durasi:* Estimasi ${getDurasiText()}
-📆 *Estimasi Habis:* ${estimasiHabisText}
-💰 *Harga:* ${getHargaText()}${tutorText}
+📦 \*Layanan:\* YouTube Premium Family
+⏳ \*Durasi:\* Estimasi ${getDurasiText()}
+📆 \*Estimasi Habis:\* ${estimasiHabisText}
 
-🎁 *Bonus:* Google One/Pro 100GB-5TB jika tersedia dan beruntung.
+📝 \*Catatan:\*
+Masa YouTube Premium mengikuti estimasi tanggal habis di atas. Jika sudah melewati estimasi tersebut dan admin belum memberikan pesan/informasi, silakan konfirmasi ulang kepada admin apakah ingin \*berhenti berlangganan\* atau \*lanjut perpanjang\*.${tutorText}
+
+🎁 \*Bonus:\* Google One/Pro 100GB-5TB jika tersedia dan beruntung.
 
 ✅ Membeli berarti setuju dengan ketentuan layanan.
-Terima kasih sudah order di *BabayShop* 🙏`.trim();
+Terima kasih sudah order di \*BabayShop\* 🙏`.trim();
       }
 
       updateTanggalDanOrder();
@@ -483,7 +452,6 @@ Terima kasih sudah order di *BabayShop* 🙏`.trim();
         tutorBox.classList.toggle('hidden', !pakaiTutorInput.checked);
       });
 
-      hargaInput.addEventListener('change', updateTanggalDanOrder);
       durasiMulaiInput.addEventListener('input', validateDurasi);
       durasiSampaiInput.addEventListener('input', validateDurasi);
 
@@ -530,5 +498,6 @@ Terima kasih sudah order di *BabayShop* 🙏`.trim();
       });
     });
   </script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"spa":2}' crossorigin="anonymous"></script>
 </body>
 </html>
