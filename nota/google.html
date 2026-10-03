@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Generator Nota Google AI Pro - BabayShop</title>
+    <meta name="description" content="Generator nota Google AI Pro untuk BabayShop. Tampilan grid white-black, mudah diedit, dan siap copy ke WhatsApp." />
+    <meta name="theme-color" content="#050505" />
+    <style>
+      /* ============================================================
+       BABAYSHOP GENERATOR NOTA - GRID WHITE BLACK UI
+       Edit cepat:
+       1. Ubah warna utama di :root
+       2. Ubah isi nota di fungsi generateNota()
+       3. Mode Direct tersedia untuk akun sudah klaim dan belum klaim
+       ============================================================ */
+      :root {
+        --bg: #050505;
+        --bg-soft: #090909;
+        --surface: rgba(255, 255, 255, 0.055);
+        --surface-strong: rgba(255, 255, 255, 0.085);
+        --surface-inset: rgba(0, 0, 0, 0.28);
+        --line: rgba(255, 255, 255, 0.12);
+        --line-strong: rgba(255, 255, 255, 0.22);
+        --text: #f7f7f7;
+        --text-soft: #b8b8b8;
+        --muted: #7d7d7d;
+        --white: #ffffff;
+        --black: #050505;
+        --green: #60f28b;
+        --amber: #ffcc66;
+        --red: #ff7b7b;
+        --blue: #93c5fd;
+        --shadow: 0 32px 80px rgba(0, 0, 0, 0.55);
+        --radius-sm: 12px;
+        --radius-md: 18px;
+        --radius-lg: 26px;
+        --radius-xl: 34px;
+        --max: 980px;
+        --font: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family: var(--font);
+        color: var(--text);
+        background: var(--bg);
+        line-height: 1.65;
+        overflow-x: hidden;
+        padding: 24px 16px 70px;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      /* ===== BACKGROUND GRID RINGAN ===== */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -3;
+        pointer-events: none;
+        background:
+          linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+        background-size: 44px 44px;
+        mask-image: radial-gradient(circle at 50% 12%, #000 0%, rgba(0, 0, 0, 0.82) 36%, transparent 78%);
+        -webkit-mask-image: radial-gradient(circle at 50% 12%, #000 0%, rgba(0, 0, 0, 0.82) 36%, transparent 78%);
+        animation: gridMove 18s linear infinite;
+      }
+
+      body::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        pointer-events: none;
+        background:
+          radial-gradient(circle at 18% 8%, rgba(255, 255, 255, 0.16), transparent 26%),
+          radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.08), transparent 24%),
+          radial-gradient(circle at 50% 100%, rgba(255, 255, 255, 0.08), transparent 32%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent 34%, rgba(255, 255, 255, 0.035));
+        opacity: 0.9;
+      }
+
+      .scanline {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+        background: linear-gradient(110deg, transparent 0%, transparent 42%, rgba(255, 255, 255, 0.08) 50%, transparent 58%, transparent 100%);
+        transform: translateX(-100%);
+        animation: scanLight 8s ease-in-out infinite;
+        opacity: 0.55;
+      }
+
+      @keyframes gridMove {
+        from {
+          background-position: 0 0, 0 0;
+        }
+
+        to {
+          background-position: 44px 44px, 44px 44px;
+        }
+      }
+
+      @keyframes scanLight {
+
+        0%,
+        18% {
+          transform: translateX(-120%);
+        }
+
+        45%,
+        100% {
+          transform: translateX(120%);
+        }
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .wrapper {
+        width: min(var(--max), 100%);
+        margin: 0 auto;
+        position: relative;
+        z-index: 2;
+      }
+
+      .top-pill {
+        width: fit-content;
+        margin: 0 auto 18px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 8px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.045);
+        color: var(--text-soft);
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        backdrop-filter: blur(18px);
+      }
+
+      .top-pill span {
+        width: 7px;
+        height: 7px;
+        border-radius: 999px;
+        background: var(--green);
+        box-shadow: 0 0 16px rgba(96, 242, 139, 0.8);
+      }
+
+      .header {
+        text-align: center;
+        padding: 22px 0 28px;
+      }
+
+      .header-icon {
+        width: 62px;
+        height: 62px;
+        margin: 0 auto 16px;
+        display: grid;
+        place-items: center;
+        border-radius: 22px;
+        background: linear-gradient(145deg, #fff, #9c9c9c);
+        color: #050505;
+        font-size: 28px;
+        box-shadow: 0 24px 60px rgba(255, 255, 255, 0.12);
+      }
+
+      .header h1 {
+        max-width: 740px;
+        margin: 0 auto;
+        font-size: clamp(34px, 6vw, 68px);
+        line-height: 0.95;
+        letter-spacing: -0.075em;
+        font-weight: 950;
+        text-wrap: balance;
+      }
+
+      .header h1 .fade {
+        display: block;
+        color: transparent;
+        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.42);
+        text-shadow: none;
+      }
+
+      .header p {
+        max-width: 620px;
+        margin: 18px auto 0;
+        color: var(--text-soft);
+        font-size: 15px;
+      }
+
+      .badge-row {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 18px;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        padding: 7px 13px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid var(--line);
+        color: var(--text-soft);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 330px;
+        gap: 18px;
+        align-items: start;
+        margin-top: 18px;
+      }
+
+      .main-stack,
+      .side-stack {
+        display: grid;
+        gap: 18px;
+      }
+
+      .card {
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.035));
+        border: 1px solid var(--line);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(20px) saturate(140%);
+        -webkit-backdrop-filter: blur(20px) saturate(140%);
+        overflow: hidden;
+      }
+
+      .card-inner {
+        padding: 24px;
+      }
+
+      .card-title {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        font-size: 13px;
+        font-weight: 900;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+        color: var(--white);
+      }
+
+      .card-title::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: linear-gradient(90deg, var(--line-strong), transparent);
+      }
+
+      .field {
+        margin-bottom: 17px;
+      }
+
+      label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 7px;
+        color: var(--text-soft);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .req {
+        color: var(--red);
+        margin-left: 3px;
+      }
+
+      input[type="text"],
+      input[type="email"],
+      input[type="password"],
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: rgba(0, 0, 0, 0.32);
+        color: var(--text);
+        font-family: inherit;
+        font-size: 14px;
+        padding: 13px 15px;
+        outline: none;
+        transition: border-color .2s ease, background .2s ease, box-shadow .2s ease, transform .2s ease;
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: rgba(255, 255, 255, 0.5);
+        background: rgba(255, 255, 255, 0.07);
+        box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.08);
+      }
+
+      input.error,
+      select.error,
+      textarea.error {
+        border-color: rgba(255, 123, 123, 0.75);
+        box-shadow: 0 0 0 4px rgba(255, 123, 123, 0.12);
+      }
+
+      select option {
+        background: #111;
+        color: var(--text);
+      }
+
+      .hint,
+      .error-msg {
+        margin-top: 6px;
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .hint {
+        color: var(--muted);
+      }
+
+      .error-msg {
+        display: none;
+        color: var(--red);
+        font-weight: 700;
+      }
+
+      .error-msg.show {
+        display: block;
+      }
+
+      .check-row {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        gap: 10px;
+        padding: 12px 14px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius-md);
+        background: rgba(0, 0, 0, 0.22);
+        cursor: pointer;
+      }
+
+      .check-row input {
+        width: 18px;
+        height: 18px;
+        accent-color: #fff;
+      }
+
+      .check-row span {
+        color: var(--text-soft);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      #recoverySection,
+      #durasiCustomSection,
+      #garansiCustomSection {
+        display: none;
+        margin-top: 10px;
+      }
+
+      #recoverySection.show,
+      #durasiCustomSection.show,
+      #garansiCustomSection.show {
+        display: block;
+      }
+
+      #redeemSection {
+        display: none;
+        margin-top: 4px;
+        padding-top: 18px;
+        border-top: 1px dashed var(--line);
+      }
+
+      #redeemSection.show {
+        display: block;
+      }
+
+      .btn-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 8px;
+      }
+
+      .btn {
+        min-width: 138px;
+        flex: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        border: 1px solid transparent;
+        border-radius: 999px;
+        padding: 13px 18px;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 900;
+        cursor: pointer;
+        transition: transform .18s ease, border-color .18s ease, background .18s ease, opacity .18s ease;
+      }
+
+      .btn:active {
+        transform: scale(0.975);
+      }
+
+      .btn-primary {
+        background: var(--white);
+        color: var(--black);
+        box-shadow: 0 18px 44px rgba(255, 255, 255, 0.12);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        background: #f1f1f1;
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--line-strong);
+        color: var(--text);
+      }
+
+      .btn-secondary:hover,
+      .btn-ghost:hover {
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 0.38);
+        background: rgba(255, 255, 255, 0.12);
+      }
+
+      .btn-ghost {
+        background: rgba(255, 255, 255, 0.04);
+        border-color: var(--line);
+        color: var(--text-soft);
+      }
+
+      .info-card {
+        position: sticky;
+        top: 16px;
+      }
+
+      .mini-title {
+        font-size: 20px;
+        line-height: 1.15;
+        font-weight: 950;
+        letter-spacing: -0.045em;
+        margin-bottom: 10px;
+      }
+
+      .mini-desc {
+        color: var(--text-soft);
+        font-size: 13px;
+        line-height: 1.7;
+        margin-bottom: 16px;
+      }
+
+      .info-list {
+        display: grid;
+        gap: 10px;
+        list-style: none;
+      }
+
+      .info-list li {
+        padding: 12px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.22);
+        color: var(--text-soft);
+        font-size: 12.5px;
+        line-height: 1.6;
+      }
+
+      .info-list b {
+        display: block;
+        color: var(--text);
+        margin-bottom: 4px;
+        font-size: 13px;
+      }
+
+      .notice {
+        margin-top: 14px;
+        padding: 14px;
+        border-radius: 18px;
+        border: 1px solid rgba(255, 204, 102, 0.28);
+        background: rgba(255, 204, 102, 0.08);
+        color: #ffe1a3;
+        font-size: 12.5px;
+        line-height: 1.65;
+      }
+
+      .direct-box {
+        min-height: 150px;
+        resize: vertical;
+        font-family: var(--mono);
+        font-size: 13px;
+        line-height: 1.65;
+        white-space: pre;
+        background: rgba(0, 0, 0, 0.48);
+      }
+
+      .direct-example {
+        margin-top: 12px;
+        padding: 13px;
+        border-radius: 16px;
+        border: 1px solid var(--line);
+        background: rgba(0, 0, 0, 0.22);
+        color: var(--text-soft);
+        font-family: var(--mono);
+        font-size: 12px;
+        line-height: 1.7;
+        white-space: pre-line;
+      }
+
+      .direct-note {
+        margin: -4px 0 14px;
+        color: var(--muted);
+        font-size: 12.5px;
+        line-height: 1.6;
+      }
+
+      .direct-status {
+        min-height: 22px;
+        margin: -5px 0 12px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .direct-status.valid {
+        color: var(--green);
+      }
+
+      .direct-status.invalid {
+        color: var(--red);
+      }
+
+      .direct-block+.direct-block {
+        margin-top: 22px;
+        padding-top: 22px;
+        border-top: 1px solid var(--line);
+      }
+
+      .btn-mini {
+        min-width: 0;
+        padding: 10px 13px;
+        font-size: 12.5px;
+      }
+
+      #outputCard {
+        display: none;
+      }
+
+      #outputCard.show {
+        display: block;
+      }
+
+      #outputBox {
+        min-height: 540px;
+        resize: vertical;
+        background: rgba(0, 0, 0, 0.46);
+        border-color: rgba(255, 255, 255, 0.16);
+        color: #f2f2f2;
+        font-family: var(--mono);
+        font-size: 12.8px;
+        line-height: 1.75;
+        white-space: pre;
+        overflow-x: auto;
+      }
+
+      .footer {
+        text-align: center;
+        margin-top: 30px;
+        color: var(--muted);
+        font-size: 12px;
+      }
+
+      .footer span {
+        color: var(--text);
+        font-weight: 900;
+      }
+
+      #toast {
+        position: fixed;
+        left: 50%;
+        bottom: 26px;
+        transform: translateX(-50%) translateY(18px);
+        z-index: 999;
+        padding: 11px 18px;
+        border-radius: 999px;
+        background: #f7f7f7;
+        color: #050505;
+        box-shadow: 0 18px 44px rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        pointer-events: none;
+        font-size: 13px;
+        font-weight: 900;
+        transition: opacity .25s ease, transform .25s ease;
+        white-space: nowrap;
+      }
+
+      #toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      @media (max-width: 900px) {
+        .layout {
+          grid-template-columns: 1fr;
+        }
+
+        .info-card {
+          position: relative;
+          top: auto;
+        }
+      }
+
+      @media (max-width: 520px) {
+        body {
+          padding-inline: 12px;
+        }
+
+        .card-inner {
+          padding: 19px;
+        }
+
+        .header h1 {
+          font-size: 38px;
+        }
+
+        .btn-row {
+          flex-direction: column;
+        }
+
+        .btn {
+          width: 100%;
+        }
+
+        .top-pill {
+          font-size: 10.5px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+
+        *,
+        *::before,
+        *::after {
+          animation: none !important;
+          transition: none !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="scanline" aria-hidden="true"></div>
+    <div class="wrapper">
+      <header class="header">
+        <div class="top-pill">
+          <span></span> BabayShop Tools
+        </div>
+        <div class="header-icon">📦</div>
+        <h1>Generator Nota <span class="fade">Google AI Pro</span>
+        </h1>
+      </header>
+      <main class="layout">
+        <div class="main-stack">
+          <section class="card">
+            <div class="card-inner">
+              <div class="card-title">📋 Data Akun</div>
+              <div class="field">
+                <label for="emailAkun">Email Akun Google <span class="req">*</span>
+                </label>
+                <input type="email" id="emailAkun" placeholder="contoh@gmail.com" autocomplete="off" />
+                <div class="error-msg" id="errEmailAkun">Email akun tidak boleh kosong.</div>
+              </div>
+              <div class="field">
+                <label for="passwordAkun">Password Akun <span class="req">*</span>
+                </label>
+                <input type="text" id="passwordAkun" placeholder="Masukkan password akun" autocomplete="off" />
+                <div class="error-msg" id="errPassword">Password tidak boleh kosong.</div>
+              </div>
+              <div class="field">
+                <label>Email Pemulihan <span style="color:var(--muted);font-weight:700;">Opsional</span></label>
+                <label class="check-row" for="pakaiEmailPemulihan">
+                  <input type="checkbox" id="pakaiEmailPemulihan" onchange="toggleRecoverySection()" />
+                  <span>Centang jika akun menggunakan email pemulihan</span>
+                </label>
+                <div id="recoverySection">
+                  <input type="email" id="emailPemulihan" placeholder="recovery@gmail.com" autocomplete="off" />
+                  <div class="error-msg" id="errEmailPemulihan">Isi email pemulihan atau hilangkan centang.</div>
+                </div>
+              </div>
+              <div class="field">
+                <label for="durasiPro">Durasi Google AI Pro <span class="req">*</span></label>
+                <select id="durasiPro" onchange="toggleCustomOptions()">
+                  <option value="1">1 Bulan</option>
+                  <option value="3">3 Bulan</option>
+                  <option value="10">10 Bulan</option>
+                  <option value="custom">Custom</option>
+                </select>
+                <div id="durasiCustomSection">
+                  <input type="text" id="durasiCustom" placeholder="Contoh: 6 Bulan / sampai 20 Mei 2027" autocomplete="off" />
+                  <div class="error-msg" id="errDurasiCustom">Durasi custom wajib diisi.</div>
+                </div>
+              </div>
+              <div class="field">
+                <label for="garansiPaket">Garansi <span class="req">*</span></label>
+                <select id="garansiPaket" onchange="toggleCustomOptions()">
+                  <option value="1">1 Bulan</option>
+                  <option value="none">No Garansi</option>
+                  <option value="custom">Custom</option>
+                </select>
+                <div id="garansiCustomSection">
+                  <input type="text" id="garansiCustom" placeholder="Contoh: 7 Hari / 3 Bulan" autocomplete="off" />
+                  <div class="error-msg" id="errGaransiCustom">Garansi custom wajib diisi.</div>
+                </div>
+              </div>
+              <div class="field">
+                <label for="kode2fa">Kode Autentikator 32 Digit <span class="req">*</span>
+                </label>
+                <input type="text" id="kode2fa" placeholder="qnavutpouxtzm5ahff3c7xokpsnnxjcf" maxlength="60" autocomplete="off" />
+                <div class="hint">Spasi akan dihapus otomatis. Link 2FA akan dibuat ke babay.web.id/2fa.</div>
+                <div class="error-msg" id="errKode2fa">Kode autentikator tidak boleh kosong.</div>
+              </div>
+              <div class="field">
+                <label for="statusKlaim">Status Klaim Voucher Google AI Pro <span class="req">*</span>
+                </label>
+                <select id="statusKlaim" onchange="toggleRedeemSection()">
+                  <option value="">-- Pilih Status --</option>
+                  <option value="sudah">✅ Sudah Klaim</option>
+                  <option value="belum">🎁 Belum Klaim</option>
+                </select>
+                <div class="error-msg" id="errStatus">Pilih status klaim voucher.</div>
+              </div>
+              <div id="redeemSection">
+                <div class="field">
+                  <label for="linkRedeem">Link Redeem Voucher <span class="req">*</span>
+                  </label>
+                  <input type="text" id="linkRedeem" placeholder="https://one.google.com/partner-eft-onboard/..." autocomplete="off" />
+                  <div class="hint">Wajib diisi jika status klaim voucher masih belum. Sistem akan menolak generate jika link kosong.</div>
+                  <div class="error-msg" id="errRedeem">Link redeem wajib diisi jika status klaim masih belum.</div>
+                </div>
+              </div>
+              <div class="field">
+                <label for="tanggalAktif">Tanggal Aktif / Tanggal Transaksi <span class="req">*</span>
+                </label>
+                <input type="text" id="tanggalAktif" placeholder="cth: 22 Juni 2026" autocomplete="off" />
+                <div class="hint">Masa aktif dan garansi dihitung otomatis dari tanggal ini.</div>
+                <div class="error-msg" id="errTanggal">Tanggal aktif tidak boleh kosong.</div>
+              </div>
+              <div class="btn-row" style="margin-top: 24px;">
+                <button class="btn btn-ghost" type="button" onclick="resetForm()">🔄 Reset Form</button>
+              </div>
+            </div>
+          </section>
+          <section class="card" id="outputCard">
+            <div class="card-inner">
+              <div class="card-title">📄 Hasil Nota</div>
+              <textarea id="outputBox" readonly></textarea>
+              <div class="btn-row" style="margin-top: 16px;">
+                <button class="btn btn-secondary" type="button" onclick="copyNota()">📋 Copy Hasil Nota</button>
+              </div>
+            </div>
+          </section>
+        </div>
+        <aside class="side-stack">
+          <section class="card info-card">
+            <div class="card-inner">
+              <div class="mini-title">Mode Direct — Auto Submit</div>
+              <p class="mini-desc">Pilih kolom sesuai status akun, lalu tempel format satu baris. Sistem otomatis mengecek dan membuat nota tanpa tombol submit.</p>
+              <div class="direct-block">
+                <div class="mini-title">🎁 Belum Klaim</div>
+                <textarea id="directBelum" class="direct-box" placeholder="email | pw | 32digit kode | link redeem
+atau: email | pw | email pemulihan | 32digit kode | link redeem"></textarea>
+                <div class="direct-note">Format: email | password | kode 32 digit | link redeem — email pemulihan opsional</div>
+                <div class="direct-status" id="statusDirectBelum">Menunggu data…</div>
+              </div>
+              <div class="direct-block">
+                <div class="mini-title">✅ Sudah Klaim</div>
+                <textarea id="directSudah" class="direct-box" placeholder="email | pw | 32digit kode
+atau: email | pw | email pemulihan | 32digit kode"></textarea>
+                <div class="direct-note">Format: email | password | kode 32 digit — email pemulihan opsional</div>
+                <div class="direct-status" id="statusDirectSudah">Menunggu data…</div>
+              </div>
+          </section>
+        </aside>
+      </main>
+      <div class="footer"> Dibuat untuk <span>BabayShop</span> • Google AI Pro • Grid White Black UI </div>
+    </div>
+    <div id="toast">✅ Nota berhasil disalin!</div>
+    <script>
+      /* ============================================================
+       LOGIKA GENERATOR NOTA
+       ============================================================ */
+      function toggleRecoverySection() {
+        const checked = document.getElementById('pakaiEmailPemulihan').checked;
+        const section = document.getElementById('recoverySection');
+        section.classList.toggle('show', checked);
+        if (!checked) {
+          document.getElementById('emailPemulihan').value = '';
+          setError('emailPemulihan', 'errEmailPemulihan', false);
+        }
+      }
+
+      function toggleCustomOptions() {
+        const durasi = document.getElementById('durasiPro').value;
+        const garansi = document.getElementById('garansiPaket').value;
+        document.getElementById('durasiCustomSection').classList.toggle('show', durasi === 'custom');
+        document.getElementById('garansiCustomSection').classList.toggle('show', garansi === 'custom');
+      }
+
+      function toggleRedeemSection() {
+        const status = document.getElementById('statusKlaim').value;
+        const section = document.getElementById('redeemSection');
+        if (status === 'belum') section.classList.add('show');
+        else section.classList.remove('show');
+      }
+
+      function setError(fieldId, errId, show) {
+        const field = document.getElementById(fieldId);
+        const err = document.getElementById(errId);
+        if (!field || !err) return;
+        if (show) {
+          field.classList.add('error');
+          err.classList.add('show');
+        } else {
+          field.classList.remove('error');
+          err.classList.remove('show');
+        }
+      }
+
+      function tambahDurasi(tanggalStr, bulan) {
+        const bln = {
+          januari: 1,
+          februari: 2,
+          maret: 3,
+          april: 4,
+          mei: 5,
+          juni: 6,
+          juli: 7,
+          agustus: 8,
+          september: 9,
+          oktober: 10,
+          november: 11,
+          desember: 12
+        };
+        const parts = tanggalStr.trim().toLowerCase().split(/\s+/);
+        if (parts.length === 3) {
+          const tgl = parseInt(parts[0], 10);
+          const blnIdx = bln[parts[1]];
+          const thn = parseInt(parts[2], 10);
+          if (tgl && blnIdx && thn) {
+            const d = new Date(thn, blnIdx - 1 + bulan, tgl);
+            const namaBln = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            return `${d.getDate()} ${namaBln[d.getMonth()]} ${d.getFullYear()}`;
+          }
+        }
+        return tanggalStr + (bulan === 12 ? ' + 1 Tahun' : ' + 1 Bulan');
+      }
+
+      function generateNota(options = {}) {
+        const emailAkun = document.getElementById('emailAkun').value.trim();
+        const passwordAkun = document.getElementById('passwordAkun').value.trim();
+        const pakaiEmailPemulihan = document.getElementById('pakaiEmailPemulihan').checked;
+        const emailPemulihan = document.getElementById('emailPemulihan').value.trim();
+        const durasiPro = document.getElementById('durasiPro').value;
+        const durasiCustom = document.getElementById('durasiCustom').value.trim();
+        const garansiPaket = document.getElementById('garansiPaket').value;
+        const garansiCustom = document.getElementById('garansiCustom').value.trim();
+        const kode2fa = document.getElementById('kode2fa').value.replace(/\s+/g, '');
+        const statusKlaim = document.getElementById('statusKlaim').value;
+        const linkRedeem = document.getElementById('linkRedeem').value.trim();
+        const tanggalAktif = document.getElementById('tanggalAktif').value.trim();
+        let valid = true;
+        setError('emailAkun', 'errEmailAkun', !emailAkun);
+        if (!emailAkun) valid = false;
+        setError('passwordAkun', 'errPassword', !passwordAkun);
+        if (!passwordAkun) valid = false;
+        setError('emailPemulihan', 'errEmailPemulihan', pakaiEmailPemulihan && !emailPemulihan);
+        if (pakaiEmailPemulihan && !emailPemulihan) valid = false;
+        setError('durasiCustom', 'errDurasiCustom', durasiPro === 'custom' && !durasiCustom);
+        if (durasiPro === 'custom' && !durasiCustom) valid = false;
+        setError('garansiCustom', 'errGaransiCustom', garansiPaket === 'custom' && !garansiCustom);
+        if (garansiPaket === 'custom' && !garansiCustom) valid = false;
+        setError('kode2fa', 'errKode2fa', !kode2fa);
+        if (!kode2fa) valid = false;
+        setError('statusKlaim', 'errStatus', !statusKlaim);
+        if (!statusKlaim) valid = false;
+        // Link redeem wajib jika status klaim masih belum.
+        const redeemRequired = statusKlaim === 'belum';
+        setError('linkRedeem', 'errRedeem', redeemRequired && !linkRedeem);
+        if (redeemRequired && !linkRedeem) valid = false;
+        setError('tanggalAktif', 'errTanggal', !tanggalAktif);
+        if (!tanggalAktif) valid = false;
+        if (!valid) {
+          document.getElementById('outputCard').classList.remove('show');
+          return false;
+        }
+        const durasiLabel = durasiPro === 'custom' ? durasiCustom : `${durasiPro} Bulan`;
+        const tanggalMasaAktif = durasiPro === 'custom' ? durasiCustom : tambahDurasi(tanggalAktif, Number(durasiPro));
+        const tanggalGaransi = garansiPaket === '1' ? tambahDurasi(tanggalAktif, 1) : '';
+        const garansiLabel = garansiPaket === '1' ? `1 Bulan (s/d ${tanggalGaransi})` : garansiPaket === 'none' ? 'No Garansi' : garansiCustom;
+        const link2FA = `https://babay.web.id/2fa/?key=${kode2fa}`;
+        let nota = '';
+        nota += `📦 Akun Email Old/Lama — Google One AI Pro\n`;
+        nota += `⏳ Durasi Pro: ${durasiLabel}\n`;
+        nota += `⏳ Masa Aktif: ${durasiPro === 'custom' ? tanggalMasaAktif : 's/d ' + tanggalMasaAktif}\n`;
+        nota += `🛡️ Garansi: ${garansiLabel}\n`;
+        nota += `--------------------\n\n`;
+        nota += `📧 Detail Login:\n`;
+        nota += `Email: ${emailAkun}\n`;
+        nota += `Password: ${passwordAkun}\n`;
+        if (pakaiEmailPemulihan) nota += `Email Pemulihan: ${emailPemulihan}\n`;
+        nota += `\n`;
+        nota += `🔎 Verifikasi Login Akun:\n`;
+        nota += `Gunakan hanya salah satu metode berikut:\n`;
+        if (pakaiEmailPemulihan) nota += `• Tebak/konfirmasi Email Pemulihan; atau\n`;
+        nota += `• Masukkan kode dari Google Authenticator melalui link 2FA di bawah.\n`;
+        nota += `Gunakan metode verifikasi yang tersedia pada akun.\n\n`;
+        nota += `🔐 Kode Autentikator:\n`;
+        nota += `Akses kode 2FA di web berikut:\n`;
+        nota += `${link2FA}\n\n`;
+        if (statusKlaim === 'belum') {
+          nota += `🎁 Link Redeem Voucher:\n`;
+          nota += `${linkRedeem}\n\n`;
+          nota += `📌 Tutorial Klaim Voucher Google AI Pro:\n\n`;
+          nota += `1. Tambahkan metode pembayaran terlebih dahulu di Google Play Store:\n`;
+          nota += `   https://play.google.com/store/paymentmethods?hl=id\n`;
+          nota += `2. Bisa menggunakan DANA, GoPay, kartu, atau metode pembayaran lain yang tersedia.\n`;
+          nota += `3. Pastikan saldo minimal sekitar Rp10.000 untuk pancingan/verifikasi metode pembayaran.\n`;
+          nota += `4. Saldo tersebut hanya untuk verifikasi dan biasanya bisa direfund sesuai sistem Google/Play Store.\n`;
+          nota += `5. Setelah metode pembayaran berhasil ditambahkan, klik link redeem voucher di atas.\n`;
+          nota += `6. Ikuti instruksi sampai proses klaim Google AI Pro berhasil aktif.\n\n`;
+        } else {
+          nota += `✅ Status Voucher:\n`;
+          nota += `Voucher Google AI Pro sudah diklaim dan akun sudah siap digunakan.\n\n`;
+        }
+        nota += `👨‍👩‍👧 Sharing Family Google One:\n`;
+        nota += `Untuk sharing Google One AI Pro, bisa aktifkan family melalui:\n`;
+        nota += `https://g.co/yourfamily\n\n`;
+        nota += `📖 S&K / Panduan:\n`;
+        nota += `Tips penggunaan Head, Invite, Antigravity, Flow, dan family sharing bisa dibaca di:\n`;
+        nota += `https://babay.web.id/snk/\n\n`;
+        nota += `📌 Catatan Penting:\n\n`;
+        nota += `• Simpan data login dengan aman.\n`;
+        nota += `• Akun yang diberikan merupakan akun email old/lama.\n`;
+        nota += `• WAJIB login akun di smartphone, lalu tambahkan nomor HP pemulihan dan tambahkan/ganti email pemulihan agar akun lebih terjaga dan mengurangi risiko akun dinonaktifkan.\n`;
+        nota += `• Biarkan akun login di perangkat kurang lebih selama 3 hari sebelum mengubah password, email pemulihan, atau data keamanan lainnya secara bertahap.\n`;
+        nota += `• Jangan terlalu sering login/logout di banyak perangkat agar tidak terjadi aktivitas mencurigakan.\n`;
+        nota += `• Jika diminta kode autentikator, gunakan link 2FA yang sudah diberikan.\n`;
+        nota += `• Tidak disarankan langsung menggunakan akun untuk Antigravity atau proxy. Cara yang lebih disarankan adalah membagikan benefit paket melalui Google Family, lalu mengundang email yang sering kamu gunakan sebagai anggota keluarga.\n`;
+        nota += `• Jika email utama kamu pernah bergabung ke family lain dan terkena batas sebagai anggota, jadikan email utama tersebut sebagai kepala keluarga/buat grup keluarga baru. Setelah itu, masukkan Gmail Pro yang dibeli dari admin sebagai anggota.\n`;
+        nota += `• Benefit tidak hanya dapat dibagikan oleh kepala keluarga. Anggota yang memiliki paket juga dapat membagikan benefit dengan fungsi yang sama; hanya kuota atau limit pemakaian yang digunakan bersama (sharing).\n`;
+        nota += `• Masa aktif paket bisa dilihat di menu langganan Play Store: https://play.google.com/store/account/subscriptions.\n`;
+        nota += `• Garansi mengikuti pilihan pada nota: ${garansiLabel}.\n`;
+        nota += `• Di luar masa garansi, kami sudah lepas tanggung jawab. Namun, kami tetap akan membantu semampu kami apabila ada kendala.\n`;
+        nota += `• Perlu diingat, ini adalah paket Google alternatif yang diperoleh dari promo, referral, atau event. Silakan pahami karakter dan risikonya sebelum menggunakan paket.\n`;
+        nota += `• Garansi tidak berlaku jika pembeli melanggar kebijakan Google, mengganti pengaturan tanpa arahan, atau terjadi kesalahan penggunaan dari pembeli.\n\n`;
+        nota += `Terima kasih sudah order di BabayShop 🙏`;
+        const outputBox = document.getElementById('outputBox');
+        const outputCard = document.getElementById('outputCard');
+        outputBox.value = nota;
+        outputCard.classList.add('show');
+        if (options.scroll !== false) {
+          setTimeout(() => outputCard.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          }), 100);
+        }
+        return true;
+      }
+
+      function copyNota() {
+        const outputBox = document.getElementById('outputBox');
+        const text = outputBox.value;
+        if (!text) return;
+        if (navigator.clipboard && window.isSecureContext) {
+          navigator.clipboard.writeText(text).then(showToast).catch(() => fallbackCopy(outputBox));
+        } else {
+          fallbackCopy(outputBox);
+        }
+      }
+
+      function fallbackCopy(el) {
+        el.select();
+        el.setSelectionRange(0, 99999);
+        document.execCommand('copy');
+        showToast();
+      }
+
+      function showToast() {
+        const toast = document.getElementById('toast');
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 2600);
+      }
+
+      function getTanggalHariIni() {
+        const namaBln = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        const now = new Date();
+        return `${now.getDate()} ${namaBln[now.getMonth()]} ${now.getFullYear()}`;
+      }
+
+      function parseDirectInput(mode) {
+        const direct = document.getElementById(mode === 'belum' ? 'directBelum' : 'directSudah');
+        const raw = direct ? direct.value.trim() : '';
+        if (!raw) return { empty: true };
+        const parts = raw.split('|').map(item => item.trim());
+        const minExpected = mode === 'belum' ? 4 : 3;
+        const maxExpected = mode === 'belum' ? 5 : 4;
+        if (parts.length < minExpected || parts.length > maxExpected || parts.some(item => !item)) {
+          return { error: `Format harus berisi ${minExpected} bagian, atau ${maxExpected} bagian jika memakai email pemulihan.` };
+        }
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(parts[0])) return { error: 'Format email akun belum valid.' };
+        const hasRecovery = parts.length === maxExpected;
+        const recoveryIndex = hasRecovery ? 2 : -1;
+        const kodeIndex = hasRecovery ? 3 : 2;
+        const linkIndex = hasRecovery ? 4 : 3;
+        if (hasRecovery && !emailPattern.test(parts[recoveryIndex])) return { error: 'Format email pemulihan belum valid.' };
+        const kode = parts[kodeIndex].replace(/\s+/g, '');
+        if (!/^[a-zA-Z0-9]{32}$/.test(kode)) return { error: 'Kode autentikator wajib tepat 32 karakter huruf/angka.' };
+        if (mode === 'belum' && !/^https?:\/\//i.test(parts[linkIndex])) return { error: 'Link redeem harus diawali http:// atau https://.' };
+        return {
+          emailAkun: parts[0],
+          passwordAkun: parts[1],
+          emailPemulihan: hasRecovery ? parts[recoveryIndex] : '',
+          pakaiEmailPemulihan: hasRecovery,
+          kode2fa: kode,
+          statusKlaim: mode,
+          linkRedeem: mode === 'belum' ? parts[linkIndex] : ''
+        };
+      }
+
+      function setDirectStatus(mode, message, state = '') {
+        const status = document.getElementById(mode === 'belum' ? 'statusDirectBelum' : 'statusDirectSudah');
+        status.textContent = message;
+        status.className = `direct-status ${state}`.trim();
+      }
+
+      function fillFormFromDirect(data) {
+        if (!data || data.error || data.empty) return false;
+        document.getElementById('emailAkun').value = data.emailAkun;
+        document.getElementById('passwordAkun').value = data.passwordAkun;
+        document.getElementById('pakaiEmailPemulihan').checked = !!data.pakaiEmailPemulihan;
+        document.getElementById('emailPemulihan').value = data.emailPemulihan || '';
+        toggleRecoverySection();
+        document.getElementById('kode2fa').value = data.kode2fa;
+        document.getElementById('statusKlaim').value = data.statusKlaim;
+        document.getElementById('linkRedeem').value = data.linkRedeem || '';
+        toggleRedeemSection();
+        document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('show'));
+        document.querySelectorAll('input, select, textarea').forEach(el => el.classList.remove('error'));
+        return true;
+      }
+
+      function autoGenerateDirect(mode) {
+        const otherMode = mode === 'belum' ? 'sudah' : 'belum';
+        const otherInput = document.getElementById(otherMode === 'belum' ? 'directBelum' : 'directSudah');
+        const data = parseDirectInput(mode);
+        if (data.empty) {
+          setDirectStatus(mode, 'Menunggu data…');
+          return;
+        }
+        if (data.error) {
+          setDirectStatus(mode, `❌ ${data.error}`, 'invalid');
+          document.getElementById('outputCard').classList.remove('show');
+          return;
+        }
+        otherInput.value = '';
+        setDirectStatus(otherMode, 'Menunggu data…');
+        fillFormFromDirect(data);
+        if (generateNota({
+            scroll: false
+          })) {
+          setDirectStatus(mode, '✅ Format valid — nota dibuat otomatis.', 'valid');
+        }
+      }
+
+      function resetForm() {
+        ['emailAkun', 'passwordAkun', 'emailPemulihan', 'kode2fa', 'linkRedeem'].forEach(id => {
+          const el = document.getElementById(id);
+          el.value = '';
+          el.classList.remove('error');
+        });
+        document.getElementById('tanggalAktif').value = getTanggalHariIni();
+        document.getElementById('tanggalAktif').classList.remove('error');
+        document.getElementById('pakaiEmailPemulihan').checked = false;
+        toggleRecoverySection();
+        document.getElementById('durasiPro').value = '1';
+        document.getElementById('garansiPaket').value = '1';
+        document.getElementById('durasiCustom').value = '';
+        document.getElementById('garansiCustom').value = '';
+        toggleCustomOptions();
+        document.getElementById('statusKlaim').value = '';
+        document.getElementById('statusKlaim').classList.remove('error');
+        document.querySelectorAll('.error-msg').forEach(el => el.classList.remove('show'));
+        document.getElementById('redeemSection').classList.remove('show');
+        document.getElementById('outputCard').classList.remove('show');
+        document.getElementById('outputBox').value = '';
+        ['directBelum', 'directSudah'].forEach(id => document.getElementById(id).value = '');
+        setDirectStatus('belum', 'Menunggu data…');
+        setDirectStatus('sudah', 'Menunggu data…');
+      }
+      window.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('tanggalAktif').value = getTanggalHariIni();
+        toggleRecoverySection();
+        toggleCustomOptions();
+        let directTimer;
+        ['belum', 'sudah'].forEach(mode => {
+          const input = document.getElementById(mode === 'belum' ? 'directBelum' : 'directSudah');
+          input.addEventListener('input', () => {
+            clearTimeout(directTimer);
+            directTimer = setTimeout(() => autoGenerateDirect(mode), 250);
+          });
+        });
+        let formTimer;
+        document.querySelectorAll('#emailAkun, #passwordAkun, #pakaiEmailPemulihan, #emailPemulihan, #durasiPro, #durasiCustom, #garansiPaket, #garansiCustom, #kode2fa, #statusKlaim, #linkRedeem, #tanggalAktif').forEach(el => {
+          el.addEventListener('input', () => {
+            clearTimeout(formTimer);
+            formTimer = setTimeout(() => generateNota({
+              scroll: false
+            }), 300);
+          });
+          el.addEventListener('change', () => generateNota({
+            scroll: false
+          }));
+        });
+      });
+    </script>
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+    <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+    <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v31edd6df95cf4e85bb4c19e7a9bdbcba1788362987495" integrity="sha512-iIg7k2xntmwu6/uSb5tpc/hySgZc4eoL31yB29W6tJFo2akwjPWcEqnCEdJvGexCL0KEQwVYv5BlowfhVz26hg==" data-cf-beacon='{"version":"2024.11.0","token":"6da13f81a4834c19b7163863b8805240","r":1,"spa":2}' crossorigin="anonymous"></script>
+  </body>
+</html>
